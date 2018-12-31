@@ -26,15 +26,26 @@ deploy {
     }
 }
 
+String ntCoreJNIJarName;
+
+switch(System.getProperty('os.name').toLowerCase().split()[0]) {
+  case 'windows':
+    ntCoreJNIJarName = 'ntcore-jni*windows*.jar' 
+    break
+  case 'linux':
+    ntCoreJNIJarName = 'ntcore-jni*linux*.jar' 
+    break
+  default:
+    throw new Exception('Unknown OS')
+}
 // Defining my dependencies. In this case, WPILib (+ friends), CTRE Toolsuite (Talon SRX)
 // and NavX.
 dependencies {
     compile wpilib()
     compile ctre()
-    compile navx()
+    //compile navx()
     
-compile fileTree(dir: "${System.env.WPILIB}/user/java/lib", include: "**/*.jar")
-compile fileTree(dir: "${System.env.WPILIB}/java/current/lib", include: "**/*.jar")
+    compile fileTree(dir: "${System.env.WPILIB}/user/java/lib", include: "jsch-0.1.54.jar")
 }
 
 // Setting up my Jar File. In this case, adding all libraries into the main jar ('fat jar')

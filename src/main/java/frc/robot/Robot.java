@@ -25,6 +25,7 @@ public class Robot extends TimedRobot {
 	 */
 	public void robotInit() {
 		RobotMap.init();
+		robotGyro.resetGyro();
 		oi = new OI();
 	}
 

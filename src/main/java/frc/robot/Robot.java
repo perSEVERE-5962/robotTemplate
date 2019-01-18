@@ -18,7 +18,7 @@ public class Robot extends TimedRobot {
 
 	public static OI oi;
 	public static Drive drive = new Drive();
-	
+	private static RunAutonomous runAutonomous;
 	/**
 	 * This function is run when the robot is first started up and should be used
 	 * for any initialization code.
@@ -67,7 +67,11 @@ public class Robot extends TimedRobot {
      */
     @Override
 	public void autonomousInit() {
-	}
+		autonomousCommand = new RunAutonomous();
+		
+		if (autonomousCommand != null) {
+			autonomousCommand.start();
+		}
 
 	/**
 	 * This function is called periodically during autonomous

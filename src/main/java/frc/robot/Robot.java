@@ -5,7 +5,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.subsystems.Drive;
-
+import frc.robot.commands.RunAutonomous;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -15,10 +15,11 @@ import frc.robot.subsystems.Drive;
  * project.
  */
 public class Robot extends TimedRobot {
+	public static RobotGyro robotGyro = new RobotGyro();
 
 	public static OI oi;
 	public static Drive drive = new Drive();
-	private static RunAutonomous runAutonomous;
+	private static RunAutonomous autonomousCommand;
 	/**
 	 * This function is run when the robot is first started up and should be used
 	 * for any initialization code.

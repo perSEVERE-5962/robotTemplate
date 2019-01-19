@@ -1,1 +1,1 @@
-package sensors;
+package frc.robot.sensors;

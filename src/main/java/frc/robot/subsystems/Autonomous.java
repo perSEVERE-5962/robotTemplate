@@ -22,3 +22,25 @@ public class Autonomous extends Subsystem {
     // setDefaultCommand(new MySpecialCommand());
   }
 }
+
+public void initDefaultCommand() {
+  // Set the default command for a subsystem here.
+  // setDefaultCommand(new MySpecialCommand());
+}, Step 1: drive forward 47 inches.
+
+public void initDefaultCommand() {
+  // Set the default command for a subsystem here.
+  // setDefaultCommand(new MySpecialCommand());
+}, Step 2: Drive forward 48.28 inches.
+
+public void initDefaultCommand() {
+  // Set the default command for a subsystem here.
+  // setDefaultCommand(new MySpecialCommand());
+}, Step 3: drive forward 164.52 inches.
+
+public void initDefaultCommand() {
+  // Set the default command for a subsystem here.
+  // setDefaultCommand(new MySpecialCommand());
+} Step 4: Turn 90 degrees.
+
+

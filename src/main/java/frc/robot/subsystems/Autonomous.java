@@ -21,26 +21,53 @@ public class Autonomous extends Subsystem {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
   }
+
+public void Step1(){
+  int dist = Robot.magEncoder.getDistance();
+  if(dist>=48){
+    Step1_done=true;
+    encoder.reset ()
+  }
 }
+public void initialize() {
+  Step1-done=false;
 
-public void initDefaultCommand() {
-  // Set the default command for a subsystem here.
-  // setDefaultCommand(new MySpecialCommand());
-}, Step 1: drive forward 47 inches.
+public void Step2(){
+  int dist = Robot.magEncoder.getDistance();
+  if(dist>=49){
+    Step1_done=true;
+    encoder.reset ()
+  }
+}
+public void initialize() {
+  Step1-done=false;
 
-public void initDefaultCommand() {
-  // Set the default command for a subsystem here.
-  // setDefaultCommand(new MySpecialCommand());
-}, Step 2: Drive forward 48.28 inches.
+public void Step3(){
+  int dist = Robot.magEncoder.getDistance();
+  if(dist>=165){
+    Step1_done=true;
+    encoder.reset ()
+    }
+  }
+public void initialize() {
+  Step1-done=false;
 
-public void initDefaultCommand() {
-  // Set the default command for a subsystem here.
-  // setDefaultCommand(new MySpecialCommand());
-}, Step 3: drive forward 164.52 inches.
+public void Step4(){
+  int dist = Robot.magEncoder.getDistance();
+  if(rotate 90 degrees to the left){
+      Step1_done=true;
+      encoder.reset ()
+        }
+      }
+public void initialize() {
+   Step1-done=false;
 
-public void initDefaultCommand() {
-  // Set the default command for a subsystem here.
-  // setDefaultCommand(new MySpecialCommand());
-} Step 4: Turn 90 degrees.
-
-
+public void Step5(){
+  int dist = Robot.magEncoder.getDistance();
+  if(dist>=24){
+    Step1_done=true;
+    encoder.reset ()
+    }
+  }
+ public void initialize() {
+  Step1-done=false;

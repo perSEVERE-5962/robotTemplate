@@ -35,4 +35,18 @@ public class RunAutonomous extends Command {
 		// TODO Auto-generated method stub
 		return false;
 	}
+}	
+execute (){
+	if (Step1-done==false)
+		Step1();
+	else if (Step2-done==false)
+		Step2();
+	else if (Step3-done==false)
+		Step3();
+	else if (Step4-done==false)
+		Step4();
+	else if (Step5-done==false)
+		Step5();
+	else
+		initialize();
 }

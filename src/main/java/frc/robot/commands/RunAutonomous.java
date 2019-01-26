@@ -1,6 +1,7 @@
 package frc.robot.commands;
 import frc.robot.subsystems.Autonomous;
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.subsystems.*;
 
 
 public class RunAutonomous extends Command {
@@ -16,15 +17,35 @@ public class RunAutonomous extends Command {
 	//Initializes the timer, switch location
 	protected void initialize(){
 		
-		autonomousSubsystem.init();
+		//autonomousSubsystem.init();
 		
 		
 	}
 
 	//Runs until we reach our end goal
+	//public boolean Step1_done;
 	protected void execute() 
 	{	
-		autonomousSubsystem.elapsedTime();
+		if(autonomousSubsystem.Step1_done == false){
+			autonomousSubsystem.Step1();
+		}
+		else if(autonomousSubsystem.Step2_done == false){
+			autonomousSubsystem.Step2();
+		}
+		else if(autonomousSubsystem.Step3_done == false){
+			autonomousSubsystem.Step3();
+		}
+		else if(autonomousSubsystem.Step4_done == false){
+			autonomousSubsystem.Step4();
+		}
+		else if(autonomousSubsystem.Step5_done == false){
+			autonomousSubsystem.Step5();
+		}
+		else if(autonomousSubsystem.Step6_done == false){
+			autonomousSubsystem.Step6();
+		}				
+
+	//	autonomousSubsystem.elapsedTime();
 	
 		
 	}

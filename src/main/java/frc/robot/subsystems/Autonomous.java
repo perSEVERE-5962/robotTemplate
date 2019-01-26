@@ -8,6 +8,9 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
+import frc.robot.sensors.*;
+import frc.robot.Robot;
 
 /**
  * Add your docs here.
@@ -21,53 +24,64 @@ public class Autonomous extends Subsystem {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
   }
+  public RobotGyro gyro = new RobotGyro();
+  public double dist;
+  public boolean Step1_done;
+  public boolean Step2_done;
+  public boolean Step3_done;
+  public boolean Step4_done;
+  public boolean Step5_done;
+  public boolean Step6_done;
+  public boolean Step7_done;
+  public boolean Step8_done;
+  
 
-public void Step1(){
-  int dist = Robot.magEncoder.getDistance();
-  if(dist>=48){
-    Step1_done=true;
-    encoder.reset ()
+  public void Step1(){
+    dist = Robot.magEncoder.getDistance();
+    if(dist>=48){
+      Step1_done = true;
+      Robot.magEncoder.reset();
+    }
+  }
+  public void Step2(){
+    dist = Robot.magEncoder.getDistance();
+    if(dist>=59){
+      Step2_done = true;
+      Robot.magEncoder.reset();
+    }
+  }
+  public void Step3(){
+    if(gyro.getGyroAngle()>=getTurn()){//Should turn 67.29 degrees towards right
+      gyro.resetGyro();
+    }
+  }
+  public void Step4(){
+    dist = Robot.magEncoder.getDistance();
+    if(dist>=124.61){
+      Step4_done = true;
+      Robot.magEncoder.reset();
+    }
+  }
+  public void Step5(){
+    if(gyro.getGyroAngle()>=getTurn()){//Should turn 67.29 degrees towards left
+      gyro.resetGyro();
+    }       
+  }
+  public void Step6(){// Should it stop some distance before the cargo ship if yes, how much?
+    dist = Robot.magEncoder.getDistance();
+    if(dist>=48.06){
+      Step6_done = true;
+      Robot.magEncoder.reset();
+    }
+  }
+  
+  private double getTurn(){    
+    return 90;
+  }
+  private double getUltrasonicDist(){
+    return 0;
   }
 }
 public void initialize() {
   Step1-done=false;
 
-public void Step2(){
-  int dist = Robot.magEncoder.getDistance();
-  if(dist>=49){
-    Step1_done=true;
-    encoder.reset ()
-  }
-}
-public void initialize() {
-  Step1-done=false;
-
-public void Step3(){
-  int dist = Robot.magEncoder.getDistance();
-  if(dist>=179){
-    Step1_done=true;
-    encoder.reset ()
-    }
-  }
-public void initialize() {
-  Step1-done=false;
-
-public void Step4(){
-  int dist = Robot.magEncoder.getDistance();
-  if(rotate 62.82 degrees to the left){
-      Step1_done=true;
-      encoder.reset ()
-        }
-      }
-public void initialize() {
-   Step1-done=false;
-
-public void Step5(){
-  int dist = Robot.magEncoder.getDistance();
-  if(dist>=24){
-    Step1_done=true;
-    encoder.reset ()
-    }
-  }
- public void initialize() {
-  Step1-done=false;

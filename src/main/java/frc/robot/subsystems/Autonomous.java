@@ -44,7 +44,7 @@ public void initialize() {
 
 public void Step3(){
   int dist = Robot.magEncoder.getDistance();
-  if(dist>=165){
+  if(dist>=179){
     Step1_done=true;
     encoder.reset ()
     }
@@ -54,7 +54,7 @@ public void initialize() {
 
 public void Step4(){
   int dist = Robot.magEncoder.getDistance();
-  if(rotate 90 degrees to the left){
+  if(rotate 62.82 degrees to the left){
       Step1_done=true;
       encoder.reset ()
         }

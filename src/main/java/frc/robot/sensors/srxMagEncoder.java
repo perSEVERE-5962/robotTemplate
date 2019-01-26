@@ -10,7 +10,7 @@ public class srxMagEncoder{
 	final int kBookEnd_1 = 1137;	/* 100 deg */
 	final double diameter = 7.5;
 	final double circumferance = Math.PI*diameter;
-    String ToInch(int units) {
+    double ToInch(double units) {
 		double deg = units * 360.0 / 4096.0;
 
 		/* truncate to 0.1 res */
@@ -19,7 +19,7 @@ public class srxMagEncoder{
 		deg /= 10;
 		double inchConversion = (deg/360)*circumferance;
 		
-		return "" + inchConversion;
+		return inchConversion;
     }
     
     
@@ -30,10 +30,10 @@ public class srxMagEncoder{
 
 	}
 
-    public int getDistance(){  
-    	int pulseWidthWithoutOverflows =RobotMap.robotLeftTalon.getSensorCollection().getQuadraturePosition();
-        SmartDashboard.putString("Encoder Value " , ToInch(pulseWidthWithoutOverflows));
-		return -1;
+    public double getDistance(){  
+    	double pulseWidthWithoutOverflows =RobotMap.robotLeftTalon.getSensorCollection().getQuadraturePosition();
+        
+		return ToInch(pulseWidthWithoutOverflows);
     }
     
     public void initQuadrature() {

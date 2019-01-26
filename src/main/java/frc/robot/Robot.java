@@ -4,6 +4,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Drive;
 import frc.robot.commands.RunAutonomous;
 import frc.robot.sensors.srxMagEncoder;
@@ -86,7 +87,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousPeriodic(){
 		Scheduler.getInstance().run();
-		magEncoder.getDistance();
+		SmartDashboard.putString("Encoder Value ", "" + magEncoder.getDistance());
 	}
 
 	@Override

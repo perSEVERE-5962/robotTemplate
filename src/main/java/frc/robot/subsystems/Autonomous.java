@@ -21,4 +21,53 @@ public class Autonomous extends Subsystem {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
   }
+
+public void Step1(){
+  int dist = Robot.magEncoder.getDistance();
+  if(dist>=48){
+    Step1_done=true;
+    encoder.reset ()
+  }
 }
+public void initialize() {
+  Step1-done=false;
+
+public void Step2(){
+  int dist = Robot.magEncoder.getDistance();
+  if(dist>=49){
+    Step1_done=true;
+    encoder.reset ()
+  }
+}
+public void initialize() {
+  Step1-done=false;
+
+public void Step3(){
+  int dist = Robot.magEncoder.getDistance();
+  if(dist>=179){
+    Step1_done=true;
+    encoder.reset ()
+    }
+  }
+public void initialize() {
+  Step1-done=false;
+
+public void Step4(){
+  int dist = Robot.magEncoder.getDistance();
+  if(rotate 62.82 degrees to the left){
+      Step1_done=true;
+      encoder.reset ()
+        }
+      }
+public void initialize() {
+   Step1-done=false;
+
+public void Step5(){
+  int dist = Robot.magEncoder.getDistance();
+  if(dist>=24){
+    Step1_done=true;
+    encoder.reset ()
+    }
+  }
+ public void initialize() {
+  Step1-done=false;

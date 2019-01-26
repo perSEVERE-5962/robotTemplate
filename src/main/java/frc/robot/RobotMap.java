@@ -22,6 +22,7 @@ public class RobotMap {
 	public static SpeedController leftDrive;
 	public static SpeedController rightDrive;
 	
+	
 	public static void init() {
 
 		robotLeftTalon = new WPI_TalonSRX(23);

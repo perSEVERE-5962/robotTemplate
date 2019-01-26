@@ -3,7 +3,7 @@ package frc.robot.sensors;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 
 public class RobotGyro {
-
+   //ADIS16470
 	public ADXRS450_Gyro gyro;
 	final int gyroChannel = 0;
 	double angleSetPoint = 0.0;

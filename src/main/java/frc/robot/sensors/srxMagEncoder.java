@@ -25,18 +25,26 @@ public class srxMagEncoder{
     
 	public void init() {
         RobotMap.robotLeftTalon.setSelectedSensorPosition(0 , 0 , kTimeoutMs);   
-        initQuadrature();
+        initLeftQuadrature();
         RobotMap.robotLeftTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, kTimeoutMs);								// Timeout
-
+		RobotMap.robotRightTalon.setSelectedSensorPosition(0 , 0 , kTimeoutMs);   
+        initRightQuadrature();
+        RobotMap.robotRightTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, kTimeoutMs);								// Timeout
 	}
 
-    public double getDistance(){  
-    	double pulseWidthWithoutOverflows =RobotMap.robotLeftTalon.getSensorCollection().getQuadraturePosition();
-        
-		return ToInch(pulseWidthWithoutOverflows);
-    }
-    
-    public void initQuadrature() {
+    public double getLeftDistance(){  
+    	double pulseWidthWithoutOverflows =RobotMap.robotLeftTalon.getSensorCollection().getQuadraturePosition(); 
+		return -ToInch(pulseWidthWithoutOverflows);
+	}
+	public double getRightDistance(){
+		double pulseWidthWithoutOverflows =RobotMap.robotRightTalon.getSensorCollection().getQuadraturePosition();
+        return ToInch(pulseWidthWithoutOverflows);
+	}
+	public double getDistance(){
+		return (getLeftDistance() + getRightDistance())/2;
+	}
+	
+    public void initLeftQuadrature() {
 		/* get the absolute pulse width position */
 		int pulseWidth = RobotMap.robotLeftTalon.getSensorCollection().getPulseWidthPosition();
 
@@ -51,10 +59,24 @@ public class srxMagEncoder{
 		/* Update Quadrature position */
         RobotMap.robotLeftTalon.getSensorCollection().setQuadraturePosition(pulseWidth, kTimeoutMs);
 	}
+	public void initRightQuadrature(){
+		int pulseWidth = RobotMap.robotRightTalon.getSensorCollection().getPulseWidthPosition();
+
+		if (kDiscontinuityPresent) {
+			int newCenter;
+			newCenter = (kBookEnd_0 + kBookEnd_1) / 2;
+			newCenter &= 0xFFF;
+			pulseWidth -= newCenter;
+		}
+		pulseWidth = pulseWidth & 0xFFF;
+
+		/* Update Quadrature position */
+        RobotMap.robotRightTalon.getSensorCollection().setQuadraturePosition(pulseWidth, kTimeoutMs);
+	}
 	
 
 	public  void reset(){
 		RobotMap.robotLeftTalon.getSensorCollection().setQuadraturePosition(0, 10);
-
+		RobotMap.robotRightTalon.getSensorCollection().setQuadraturePosition(0, 10);
 	}
 }

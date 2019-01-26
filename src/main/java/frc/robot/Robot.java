@@ -87,6 +87,8 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousPeriodic(){
 		Scheduler.getInstance().run();
+		SmartDashboard.putString("Encoder Left Value ", "" + magEncoder.getLeftDistance());
+		SmartDashboard.putString("Encoder Right Value ", "" + magEncoder.getRightDistance());
 		SmartDashboard.putString("Encoder Value ", "" + magEncoder.getDistance());
 	}
 

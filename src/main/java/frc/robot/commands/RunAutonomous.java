@@ -44,6 +44,9 @@ public class RunAutonomous extends Command {
 		else if(autonomousSubsystem.Step6_done == false){
 			autonomousSubsystem.Step6();
 		}				
+		else if(autonomousSubsystem.Step7_done == false){
+			autonomousSubsystem.Step7();
+		}				
 
 	//	autonomousSubsystem.elapsedTime();
 	
@@ -56,4 +59,4 @@ public class RunAutonomous extends Command {
 		// TODO Auto-generated method stub
 		return false;
 	}
-}
+}	

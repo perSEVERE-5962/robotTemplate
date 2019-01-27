@@ -18,23 +18,26 @@ import frc.robot.Robot;
 public class Autonomous extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
+  public RobotGyro gyro = new RobotGyro();
+  public double dist = 0;
+  public boolean Step1_done = false;
+  public boolean Step2_done = false;
+  public boolean Step3_done = false;
+  public boolean Step4_done = false;
+  public boolean Step5_done = false;
+  public boolean Step6_done = false;
+  public boolean Step7_done = false;
+  public boolean Step8_done = false;
 
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
   }
-  public RobotGyro gyro = new RobotGyro();
-  public double dist;
-  public boolean Step1_done;
-  public boolean Step2_done;
-  public boolean Step3_done;
-  public boolean Step4_done;
-  public boolean Step5_done;
-  public boolean Step6_done;
-  public boolean Step7_done;
-  public boolean Step8_done;
-  
+
+  public void initialize() {
+    Step1_done=false;
+  }  
 
   public void Step1(){
     dist = Robot.magEncoder.getDistance();
@@ -74,7 +77,14 @@ public class Autonomous extends Subsystem {
       Robot.magEncoder.reset();
     }
   }
-  
+  public void Step7(){
+    dist = Robot.magEncoder.getDistance();
+    if(dist>=21.75){
+      Step7_done = true;
+      Robot.magEncoder.reset();
+    }
+  }
+
   private double getTurn(){    
     return 90;
   }

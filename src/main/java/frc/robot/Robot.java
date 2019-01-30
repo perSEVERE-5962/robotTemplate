@@ -2,10 +2,15 @@
 package frc.robot;
 
 
+import com.analog.adis16470.frc.ADIS16470_IMU;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Drive;
 import frc.robot.commands.RunAutonomous;
+import frc.robot.sensors.srxMagEncoder;
+import frc.robot.subsystems.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -15,8 +20,9 @@ import frc.robot.commands.RunAutonomous;
  * project.
  */
 public class Robot extends TimedRobot {
-	public static RobotGyro robotGyro = new RobotGyro();
-
+	//public static RobotGyro robotGyro = new RobotGyro();
+	public static srxMagEncoder magEncoder = new srxMagEncoder();
+	public static ADIS16470_IMU gyro = new ADIS16470_IMU();
 	public static OI oi;
 	public static Drive drive = new Drive();
 	private static RunAutonomous autonomousCommand;
@@ -26,8 +32,11 @@ public class Robot extends TimedRobot {
 	 */
 	public void robotInit() {
 		RobotMap.init();
-		robotGyro.resetGyro();
+		gyro.reset();
+		//robotGyro.resetGyro();
 		oi = new OI();
+		magEncoder.init();
+		magEncoder.reset();
 	}
 
   	/**
@@ -73,19 +82,26 @@ public class Robot extends TimedRobot {
 		
 		if (autonomousCommand != null) {
 			autonomousCommand.start();
+		
 		}
-
+		magEncoder.reset();
+	}
 	/**
 	 * This function is called periodically during autonomous
 	 */
 	@Override
-	public void autonomousPeriodic() {
+	public void autonomousPeriodic(){
 		Scheduler.getInstance().run();
+		SmartDashboard.putString("Encoder Left Value ", "" + magEncoder.getLeftDistance());
+		SmartDashboard.putString("Encoder Right Value ", "" + magEncoder.getRightDistance());
+		SmartDashboard.putString("Encoder Value ", "" + magEncoder.getDistance());
+		SmartDashboard.putNumber("Gyro Value" , gyro.getAngleX());
 	}
 
 	@Override
 	public void teleopInit() {
 		oi.startDriveCommand();	
+		magEncoder.reset();
 	}
 
 	/**
@@ -99,8 +115,12 @@ public class Robot extends TimedRobot {
 	/**
 	 * This function is called periodically during test mode
 	 */
+	Autonomous auto = new Autonomous();
 	@Override
 	public void testPeriodic() {
+		if(auto.Step1_done == false){
+			auto.Step1();
+		}
 	}
 	
 }

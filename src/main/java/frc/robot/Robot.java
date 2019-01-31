@@ -109,7 +109,13 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-		Scheduler.getInstance().run();		
+		Scheduler.getInstance().run();
+		if (oi.getIntake()){
+RobotMap.IntakeVictor.drive(1);
+		}	
+		else{
+RobotMap.IntakeVictor.drive(0);
+		}
 	}
 
 	/**

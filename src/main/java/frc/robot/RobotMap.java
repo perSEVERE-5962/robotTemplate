@@ -21,6 +21,7 @@ public class RobotMap {
 	public static DifferentialDrive myRobot;
 	public static SpeedController leftDrive;
 	public static SpeedController rightDrive;
+	public static WPI_VictorSPX IntakeVictor;
 	
 	
 	public static void init() {
@@ -34,5 +35,6 @@ public class RobotMap {
 		leftDrive = new MultiSpeedController(robotLeftTalon, robotLeftTalon);
 		rightDrive = new MultiSpeedController(robotRightTalon, robotRightTalon);
 		myRobot = new DifferentialDrive(leftDrive, rightDrive);
+		IntakeVictor = new WPI_VictorSPX(12);
 	}
 }

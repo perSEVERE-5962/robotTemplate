@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Drive;
 import frc.robot.commands.RunAutonomous;
 import frc.robot.sensors.srxMagEncoder;
-import frc.robot.subsystems.*;
+import frc.robot.sensors.srxintakeEncoder;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -22,6 +22,7 @@ import frc.robot.subsystems.*;
 public class Robot extends TimedRobot {
 	//public static RobotGyro robotGyro = new RobotGyro();
 	public static srxMagEncoder magEncoder = new srxMagEncoder();
+	public static srxMagEncoder intakeEncoder = new srxMagEncoder();
 	public static ADIS16470_IMU gyro = new ADIS16470_IMU();
 	public static OI oi;
 	public static Drive drive = new Drive();
@@ -37,6 +38,8 @@ public class Robot extends TimedRobot {
 		oi = new OI();
 		magEncoder.init();
 		magEncoder.reset();
+		intakeEncoder.init();
+		intakeEncoder.reset();
 	}
 
   	/**
@@ -85,6 +88,7 @@ public class Robot extends TimedRobot {
 		
 		}
 		magEncoder.reset();
+		intakeEncoder.reset();
 	}
 	/**
 	 * This function is called periodically during autonomous
@@ -102,6 +106,7 @@ public class Robot extends TimedRobot {
 	public void teleopInit() {
 		oi.startDriveCommand();	
 		magEncoder.reset();
+		intakeEncoder.reset();
 	}
 
 	/**

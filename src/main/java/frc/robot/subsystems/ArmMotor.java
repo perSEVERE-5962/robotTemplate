@@ -7,31 +7,43 @@ import edu.wpi.first.wpilibj.command.Subsystems;
 /** 
  * 
  */
-public class InTakeMotor extends Subsystem {
+public class ArmMotor extends Subsystem {
     
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 	
-	Victor inTakeVictor = RobotMap.inTakeVictor;
+WPI_TalonSRX armTalon = RobotMap.armTalon;
 	
 	public void runUpward (){
-		inTakeVictor.set(-0.5);
-	  //Turn on Belt
+		armTalon.set(-0.5);
+    double dist = Robot.magEncoder.getDistance();
+    if(dist>=48){
+			//Drive Motor
+		}
 	}
-	
+
 	public void runUpwardSlow (){
-		inTakeVictor.set(-0.5);
-	  //Turn on Belt
+		armTalon.set(-0.5);
+		double dist = Robot.magEncoder.getDistance();
+    if(dist>=48){
+			//Drive Motor
+		}
 	}
 	
 	public void runDownward (){
-		inTakeVictor.set(1);
-	  //Turn on Belt
+		armTalon.set(1);
+		double dist = Robot.magEncoder.getDistance();
+    if(dist>=48){
+			//Drive Motor
+		}
 	}
 	
 	public void stop (){
-		inTakeVictor.set(0);
-	  //Turn off Belt
+		armTalon.set(0);
+		double dist = Robot.magEncoder.getDistance();
+    if(dist>=48){
+			//Drive Motor
+		}
 	}
 	
 	

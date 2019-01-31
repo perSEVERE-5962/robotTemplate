@@ -18,7 +18,7 @@ import frc.robot.Robot;
 public class Autonomous extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
-  public RobotGyro gyro = new RobotGyro();
+  //public RobotGyro gyro = new RobotGyro();
   public double dist = 0;
   public boolean Step1_done = false;
   public boolean Step2_done = false;
@@ -54,8 +54,8 @@ public class Autonomous extends Subsystem {
     }
   }
   public void Step3(){
-    if(gyro.getGyroAngle()>=getTurn()){//Should turn 67.29 degrees towards right
-      gyro.resetGyro();
+    if(Robot.gyro.getAngleX()>=getTurn()){//Should turn 67.29 degrees towards right
+      Robot.gyro.reset();;
     }
   }
   public void Step4(){
@@ -66,8 +66,8 @@ public class Autonomous extends Subsystem {
     }
   }
   public void Step5(){
-    if(gyro.getGyroAngle()>=getTurn()){//Should turn 67.29 degrees towards left
-      gyro.resetGyro();
+    if(Robot.gyro.getAngleX()>=getTurn()){//Should turn 67.29 degrees towards left
+      Robot.gyro.reset();
     }       
   }
   public void Step6(){// Should it stop some distance before the cargo ship if yes, how much?

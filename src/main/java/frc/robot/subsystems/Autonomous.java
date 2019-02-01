@@ -92,4 +92,11 @@ public class Autonomous extends Subsystem {
     return 0;
   }
 }
+public void Step2(){
+	dist = Robot.magEncoder.getDistance();
+	if(dist>=49){
+    Step2_done = true;
+   Robot.magEncoder.reset();
+  }
+}
 

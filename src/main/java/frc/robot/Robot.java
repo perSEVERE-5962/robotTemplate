@@ -33,7 +33,8 @@ public class Robot extends TimedRobot {
 	 */
 	public void robotInit() {
 		RobotMap.init();
-		gyro.reset();
+		//gyro.reset();
+		gyro.calibrate();
 		//robotGyro.resetGyro();
 		oi = new OI();
 		magEncoder.init();
@@ -82,7 +83,8 @@ public class Robot extends TimedRobot {
     @Override
 	public void autonomousInit() {
 		autonomousCommand = new RunAutonomous();
-		
+		gyro.reset();
+	
 		if (autonomousCommand != null) {
 			autonomousCommand.start();
 		
@@ -105,6 +107,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopInit() {
 		oi.startDriveCommand();	
+		gyro.reset();
 		magEncoder.reset();
 		intakeEncoder.reset();
 	}

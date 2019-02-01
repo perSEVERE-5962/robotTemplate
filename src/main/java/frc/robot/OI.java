@@ -17,7 +17,8 @@ public class OI {
 	public Joystick joystickRight;
 	public Joystick gamepad1;
 	public Joystick xBoxController;
-	
+	public boolean isSolenoidZeroPressed = false;
+	public boolean isSolenoidOnePressed = false;
 
 	public OI() {
 		joystickLeft = new Joystick(1);

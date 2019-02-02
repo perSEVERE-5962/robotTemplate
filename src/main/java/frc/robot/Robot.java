@@ -116,7 +116,14 @@ RobotMap.IntakeVictor.drive(1);
 		else{
 RobotMap.IntakeVictor.drive(0);
 		}
+		if (oi.getOuttake()){
+			Robotmap.OuttakeVictor.drive(-1);
+		}
+	else{
+		RobotMap.OuttakeVictor.drive(0);
 	}
+	}
+
 
 	/**
 	 * This function is called periodically during test mode

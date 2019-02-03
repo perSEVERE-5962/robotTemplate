@@ -111,16 +111,14 @@ public class Robot extends TimedRobot {
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 		if (oi.getIntake()){
-RobotMap.IntakeVictor.drive(1);
+RobotMap.IntakeVictor.set(1);
 		}	
-		else{
-RobotMap.IntakeVictor.drive(0);
-		}
-		if (oi.getOuttake()){
-			Robotmap.OuttakeVictor.drive(-1);
+		else if (oi.getOuttake()){
+			RobotMap.IntakeVictor.set(-1);
+		
 		}
 	else{
-		RobotMap.OuttakeVictor.drive(0);
+		RobotMap.IntakeVictor.set(0);
 	}
 	}
 

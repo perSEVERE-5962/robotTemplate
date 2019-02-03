@@ -31,8 +31,11 @@ public class ActivateOne extends Command {
   @Override
   protected boolean isFinished() {
     if (Robot.oi.isSolenoidOnePressed == true){
-    return false;
-  }
+      return false;
+    }
+    else{
+      return true;
+    }
   }
 
   // Called once after isFinished returns true

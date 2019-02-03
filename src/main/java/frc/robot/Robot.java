@@ -1,16 +1,19 @@
 
 package frc.robot;
 
-
+import java.util.concurrent.TimeUnit;
 import com.analog.adis16470.frc.ADIS16470_IMU;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Drive;
 import frc.robot.commands.RunAutonomous;
 import frc.robot.sensors.srxMagEncoder;
-import frc.robot.sensors.srxintakeEncoder;
+import frc.robot.subsystems.*;
+import frc.robot.sensors.*;
+//import frc.robot.sensors.srxintakeEncoder;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -20,13 +23,28 @@ import frc.robot.sensors.srxintakeEncoder;
  * project.
  */
 public class Robot extends TimedRobot {
-	//public static RobotGyro robotGyro = new RobotGyro();
-	public static srxMagEncoder magEncoder = new srxMagEncoder();
-	public static srxMagEncoder intakeEncoder = new srxMagEncoder();
-	public static ADIS16470_IMU gyro = new ADIS16470_IMU();
+	public static RobotGyro gyro = new RobotGyro();
+	public static srxMagEncoder magEncoder; // = new srxMagEncoder();
+	//public static srxMagEncoder intakeEncoder = new srxMagEncoder();
+	//public static ADIS16470_IMU gyro = new ADIS16470_IMU();
 	public static OI oi;
 	public static Drive drive = new Drive();
 	private static RunAutonomous autonomousCommand;
+	private static boolean isLeft = false;
+	private AutoPID autoPID = new AutoPID();
+	public static TalonConfigsPID pidValue = new TalonConfigsPID();
+	int counter = 0;
+	public static boolean getIsLeft(){
+		return isLeft;
+	}
+	private static boolean isMiddle = false;
+	public static boolean getIsMiddle(){
+		return isMiddle;
+	}
+	private static boolean isRight = false;
+	public static boolean getIsRight(){
+		return isRight;
+	}
 	/**
 	 * This function is run when the robot is first started up and should be used
 	 * for any initialization code.
@@ -34,13 +52,17 @@ public class Robot extends TimedRobot {
 	public void robotInit() {
 		RobotMap.init();
 		//gyro.reset();
-		gyro.calibrate();
+		//gyro.calibrate();
 		//robotGyro.resetGyro();
 		oi = new OI();
-		magEncoder.init();
-		magEncoder.reset();
-		intakeEncoder.init();
-		intakeEncoder.reset();
+		//magEncoder.init();
+		//magEncoder.reset();
+		//intakeEncoder.init();
+		//intakeEncoder.reset();
+		
+		SmartDashboard.putNumber("kP Value" , pidValue.getkP() );
+		SmartDashboard.putNumber("kI Value" , pidValue.getkI() );
+		SmartDashboard.putNumber("kD Value" , pidValue.getkD() );
 	}
 
   	/**
@@ -82,15 +104,16 @@ public class Robot extends TimedRobot {
      */
     @Override
 	public void autonomousInit() {
-		autonomousCommand = new RunAutonomous();
-		gyro.reset();
+		//autonomousCommand = new RunAutonomous();
+		gyro.resetGyro();
 	
-		if (autonomousCommand != null) {
-			autonomousCommand.start();
-		
-		}
-		magEncoder.reset();
-		intakeEncoder.reset();
+		/** if (autonomousCommand != null) {
+			autonomousCommand.start();		
+		}*/
+		//magEncoder.reset();
+		//intakeEncoder.reset();
+		RobotMap.robotRightTalon.setSelectedSensorPosition(0, 0, pidValue.getkTimeoutMS());
+        RobotMap.robotLeftTalon.setSelectedSensorPosition(0, 0, pidValue.getkTimeoutMS());
 	}
 	/**
 	 * This function is called periodically during autonomous
@@ -98,18 +121,59 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousPeriodic(){
 		Scheduler.getInstance().run();
-		SmartDashboard.putString("Encoder Left Value ", "" + magEncoder.getLeftDistance());
-		SmartDashboard.putString("Encoder Right Value ", "" + magEncoder.getRightDistance());
-		SmartDashboard.putString("Encoder Value ", "" + magEncoder.getDistance());
-		SmartDashboard.putNumber("Gyro Value" , gyro.getAngleX());
+		//SmartDashboard.putString("Encoder Left Value ", "" + magEncoder.getLeftDistance());
+		//SmartDashboard.putString("Encoder Right Value ", "" + magEncoder.getRightDistance());
+		//SmartDashboard.putString("Encoder Value ", "" + magEncoder.getDistance());
+		SmartDashboard.putNumber("Gyro Value" , gyro.getGyroAngle());
+		RobotMap.robotLeftTalon.clearStickyFaults(pidValue.getkTimeoutMS());
+		RobotMap.robotRightTalon.clearStickyFaults(pidValue.getkTimeoutMS());
+
+		pidValue.setkP(SmartDashboard.getNumber("kP Value" , pidValue.getkP()));
+		pidValue.setkI(SmartDashboard.getNumber("kI Value" , pidValue.getkI()));
+		pidValue.setkD(SmartDashboard.getNumber("kD Value" , pidValue.getkD()));
+
+		if (autoPID.isStep1Done()==false){
+			autoPID.step1();
+		}
+		
+		SmartDashboard.putNumber("Left Error", (double) RobotMap.robotLeftTalon.getClosedLoopError(0));
+		SmartDashboard.putNumber("Right Error", (double) RobotMap.robotRightTalon.getClosedLoopError(0));
+
+		//try {
+		//	TimeUnit.MILLISECONDS.sleep(10);
+		//	counter += 10;
+		//} catch (Exception e) { /* Black Magic */ }
+		
+		/**(auto.Step2_done == false){
+			auto.Step2();
+		}
+		else if (auto.Step3_done == false){
+			auto.Step3();
+		}
+		if( auto.Step4_done == false){
+			auto.Step4();
+		}
+		 if(auto.Step5_done == false){
+			auto.Step5();
+		}
+		 else if(auto.Step5_done == true && auto.Step6_done == false){
+			auto.Step6();
+		}
+		else if(auto.Step6_done == true && auto.Step7_done == false){
+			auto.Step7();
+		}
+		else{
+			RobotMap.myRobot.tankDrive(0, 0);	
+		}*/
+		
 	}
 
 	@Override
 	public void teleopInit() {
 		oi.startDriveCommand();	
-		gyro.reset();
-		magEncoder.reset();
-		intakeEncoder.reset();
+		gyro.resetGyro();
+		//magEncoder.reset();
+		//intakeEncoder.reset();
 	}
 
 	/**
@@ -119,10 +183,10 @@ public class Robot extends TimedRobot {
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 		if (oi.getIntake()){
-RobotMap.IntakeVictor.drive(1);
+//RobotMap.IntakeVictor.drive(1);
 		}	
 		else{
-RobotMap.IntakeVictor.drive(0);
+//RobotMap.IntakeVictor.drive(0);
 		}
 	}
 
@@ -132,9 +196,7 @@ RobotMap.IntakeVictor.drive(0);
 	Autonomous auto = new Autonomous();
 	@Override
 	public void testPeriodic() {
-		if(auto.Step1_done == false){
-			auto.Step1();
+		LiveWindow.run();
 		}
-	}
 	
 }

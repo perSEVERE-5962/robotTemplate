@@ -28,16 +28,18 @@ public class AutoPID{
         return (inches*(4096.0/circumferance));
     }
     public void stop(){
-        RobotMap.robotLeftTalon.set(ControlMode.Position, 0);
-        RobotMap.robotRightTalon.set(ControlMode.Position, 0);
-     }
+        RobotMap.robotLeftTalon.set(ControlMode.PercentOutput, 0);
+        RobotMap.robotRightTalon.set(ControlMode.PercentOutput, 0);
+         }
 
     public void step1(){
         double target = getTicks(36);
         SmartDashboard.putNumber("ticks", target);
+        if(Step1_done == false){
         RobotMap.robotLeftTalon.set(ControlMode.Position, target);
         RobotMap.robotRightTalon.set(ControlMode.Position, target);
         Step1_done = true;
+        }
     }
     public boolean isStep1Done() {
         return Step1_done;

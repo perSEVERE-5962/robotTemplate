@@ -32,6 +32,7 @@ public class Robot extends TimedRobot {
 	private static RunAutonomous autonomousCommand;
 	private static boolean isLeft = false;
 	private AutoPID autoPID = new AutoPID();
+	boolean step1done = false;
 	public static TalonConfigsPID pidValue = new TalonConfigsPID();
 	int counter = 0;
 	public static boolean getIsLeft(){
@@ -113,7 +114,13 @@ public class Robot extends TimedRobot {
 		//magEncoder.reset();
 		//intakeEncoder.reset();
 		RobotMap.robotRightTalon.setSelectedSensorPosition(0, 0, pidValue.getkTimeoutMS());
-        RobotMap.robotLeftTalon.setSelectedSensorPosition(0, 0, pidValue.getkTimeoutMS());
+		RobotMap.robotLeftTalon.setSelectedSensorPosition(0, 0, pidValue.getkTimeoutMS());
+		//if(step1done == false){
+			//autoPID.step1();
+		//}
+		// else{
+		// 	autoPID.stop();
+		// }
 	}
 	/**
 	 * This function is called periodically during autonomous
@@ -132,9 +139,12 @@ public class Robot extends TimedRobot {
 		pidValue.setkI(SmartDashboard.getNumber("kI Value" , pidValue.getkI()));
 		pidValue.setkD(SmartDashboard.getNumber("kD Value" , pidValue.getkD()));
 
-		if (autoPID.isStep1Done()==false){
+		if(autoPID.isStep1Done()==false){
 			autoPID.step1();
 		}
+		//else{
+		//autoPID.stop();
+		//}
 		
 		SmartDashboard.putNumber("Left Error", (double) RobotMap.robotLeftTalon.getClosedLoopError(0));
 		SmartDashboard.putNumber("Right Error", (double) RobotMap.robotRightTalon.getClosedLoopError(0));

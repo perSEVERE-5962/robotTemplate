@@ -27,6 +27,7 @@ public class Robot extends TimedRobot {
 	public static OI oi;
 	public static Drive drive = new Drive();
 	private static RunAutonomous autonomousCommand;
+	private static ArmMotor armMotor;
 	/**
 	 * This function is run when the robot is first started up and should be used
 	 * for any initialization code.
@@ -40,6 +41,7 @@ public class Robot extends TimedRobot {
 		magEncoder.reset();
 		intakeEncoder.init();
 		intakeEncoder.reset();
+		armMotor = new ArmMotor ();
 	}
 
   	/**
@@ -114,9 +116,19 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-		Scheduler.getInstance().run();		
+		Scheduler.getInstance().run();
+		if (xBoxController.getRawAxis(5)>0.2) {
+			armMotor.runDownward();
+		}
+		else if (xBoxController.getRawAxis(5)< -0.2) {
+			armMotor.runUpward();
+		} 
+		else {
+			armMotor.stop ();
+		}
 	}
-
+		
+	xBoxController.getRawAxis(5);
 	/**
 	 * This function is called periodically during test mode
 	 */

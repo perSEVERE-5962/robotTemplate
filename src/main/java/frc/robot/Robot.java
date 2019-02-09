@@ -2,15 +2,13 @@
 package frc.robot;
 
 
-import com.analog.adis16470.frc.ADIS16470_IMU;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.subsystems.Drive;
+import frc.robot.subsystems.*;
 import frc.robot.commands.RunAutonomous;
 import frc.robot.sensors.srxMagEncoder;
-import frc.robot.sensors.srxintakeEncoder;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -20,10 +18,8 @@ import frc.robot.sensors.srxintakeEncoder;
  * project.
  */
 public class Robot extends TimedRobot {
-	//public static RobotGyro robotGyro = new RobotGyro();
 	public static srxMagEncoder magEncoder = new srxMagEncoder();
 	public static srxMagEncoder intakeEncoder = new srxMagEncoder();
-	public static ADIS16470_IMU gyro = new ADIS16470_IMU();
 	public static OI oi;
 	public static Drive drive = new Drive();
 	private static RunAutonomous autonomousCommand;
@@ -34,8 +30,6 @@ public class Robot extends TimedRobot {
 	 */
 	public void robotInit() {
 		RobotMap.init();
-		gyro.reset();
-		//robotGyro.resetGyro();
 		oi = new OI();
 		magEncoder.init();
 		magEncoder.reset();
@@ -101,7 +95,6 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putString("Encoder Left Value ", "" + magEncoder.getLeftDistance());
 		SmartDashboard.putString("Encoder Right Value ", "" + magEncoder.getRightDistance());
 		SmartDashboard.putString("Encoder Value ", "" + magEncoder.getDistance());
-		SmartDashboard.putNumber("Gyro Value" , gyro.getAngleX());
 	}
 
 	@Override
@@ -117,10 +110,10 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-		if (xBoxController.getRawAxis(5)>0.2) {
+		if (oi.xBoxController.getRawAxis(5)>0.2) {
 			armMotor.runDownward();
 		}
-		else if (xBoxController.getRawAxis(5)< -0.2) {
+		else if (oi.xBoxController.getRawAxis(5)< -0.2) {
 			armMotor.runUpward();
 		} 
 		else {
@@ -128,7 +121,6 @@ public class Robot extends TimedRobot {
 		}
 	}
 		
-	xBoxController.getRawAxis(5);
 	/**
 	 * This function is called periodically during test mode
 	 */

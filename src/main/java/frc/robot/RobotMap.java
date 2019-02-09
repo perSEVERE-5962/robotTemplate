@@ -21,7 +21,7 @@ public class RobotMap {
 	public static DifferentialDrive myRobot;
 	public static SpeedController leftDrive;
 	public static SpeedController rightDrive;
-	public static WPI_TalonSRX armTalon
+	public static WPI_TalonSRX armTalon;
 	
 	public static void init() {
 

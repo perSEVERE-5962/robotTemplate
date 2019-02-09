@@ -1,8 +1,9 @@
-package org.usfirst.frc.team5962.robot.subsystems;
-
-import org.usfirst.frc.team5962.robot.RobotMap;
+package frc.robot.subsystems;
+import frc.robot.Robot;
+import frc.robot.RobotMap;
 import edu.wpi.first.wpilibj.Victor;
-import edu.wpi.first.wpilibj.command.Subsystems;
+import edu.wpi.first.wpilibj.command.Subsystem;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 /** 
  * 
@@ -15,7 +16,7 @@ public class ArmMotor extends Subsystem {
 WPI_TalonSRX armTalon = RobotMap.armTalon;
 	
 	public void runUpward (){
-		armTalon.set(-0.5);
+		armTalon.set(Robot.oi.xBoxController.getRawAxis(5));
     double dist = Robot.magEncoder.getDistance();
     if(dist>=48){
 			//Drive Motor
@@ -23,7 +24,7 @@ WPI_TalonSRX armTalon = RobotMap.armTalon;
 	}
 
 	public void runUpwardSlow (){
-		armTalon.set(-0.5);
+		armTalon.set(Robot.oi.xBoxController.getRawAxis(5));
 		double dist = Robot.magEncoder.getDistance();
     if(dist>=48){
 			//Drive Motor
@@ -31,7 +32,7 @@ WPI_TalonSRX armTalon = RobotMap.armTalon;
 	}
 	
 	public void runDownward (){
-		armTalon.set(1);
+		armTalon.set(Robot.oi.xBoxController.getRawAxis(5));
 		double dist = Robot.magEncoder.getDistance();
     if(dist>=48){
 			//Drive Motor

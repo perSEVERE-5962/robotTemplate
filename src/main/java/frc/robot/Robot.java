@@ -6,6 +6,7 @@ import com.analog.adis16470.frc.ADIS16470_IMU;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Drive;
 import frc.robot.commands.RunAutonomous;
@@ -120,11 +121,19 @@ public class Robot extends TimedRobot {
 	 * This function is called periodically during test mode
 	 */
 	Autonomous auto = new Autonomous();
+	SolenoidSubsystem solenoid = new SolenoidSubsystem();
+	int t = 0;
 	@Override
 	public void testPeriodic() {
-		if(auto.Step1_done == false){
-			auto.Step1();
+		LiveWindow.run();
+		if (t == 0){
+		solenoid.activateOne();
+		}
+		t++;
+		SmartDashboard.putNumber("t: ", t);
+		if (t > 2000){
+			solenoid.stop();
 		}
 	}
 	
-}
+}  

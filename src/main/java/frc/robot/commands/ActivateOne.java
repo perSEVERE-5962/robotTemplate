@@ -13,8 +13,6 @@ import frc.robot.Robot;
 
 public class ActivateOne extends Command {
   public ActivateOne() {
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
   }
 
   // Called just before this Command runs the first time
@@ -25,6 +23,8 @@ public class ActivateOne extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    Robot.oi.isSolenoidOnePressed  = true;
+    Robot.oi.isSolenoidZeroPressed = false;
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -32,8 +32,11 @@ public class ActivateOne extends Command {
   protected boolean isFinished() {
     if (Robot.oi.isSolenoidOnePressed == true){
     return false;
+  } else {
+    return true;
   }
   }
+  
 
   // Called once after isFinished returns true
   @Override

@@ -3,6 +3,7 @@ package frc.robot;
 
 import frc.robot.commands.*;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -18,13 +19,20 @@ public class OI {
 	public Joystick xBoxController;
 	public boolean isSolenoidZeroPressed = false;
 	public boolean isSolenoidOnePressed = false;
-
+	public JoystickButton buttonOne;
+	public JoystickButton buttonTwo;
+	ActivateZero activateZero = new ActivateZero();
+    ActivateOne activateOne = new ActivateOne();
 
 	public OI() {
 		joystickLeft = new Joystick(1);
 		joystickRight = new Joystick(2);
 		gamepad1 = new Joystick(0);
 		xBoxController = new Joystick(3);
+		buttonOne = new JoystickButton(xBoxController, 5);
+		buttonTwo = new JoystickButton(xBoxController, 6);
+		buttonOne.whenPressed(activateZero);
+		buttonTwo.whenPressed(activateOne);
 	}
 	
 	public void startDriveCommand() {

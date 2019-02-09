@@ -10,9 +10,10 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class ActivateZero extends Command {
-
-  public ActivateZero() {
+public class Stop extends Command {
+  public Stop() {
+    Robot.oi.isSolenoidZeroPressed = false;
+    Robot.oi.isSolenoidOnePressed = false;
   }
 
   // Called just before this Command runs the first time
@@ -23,17 +24,15 @@ public class ActivateZero extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.oi.isSolenoidZeroPressed = true;
-    Robot.oi.isSolenoidOnePressed = false;
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    if (Robot.oi.isSolenoidZeroPressed == true){
-      return false;
-    } else {
+    if (Robot.oi.isSolenoidZeroPressed == false || Robot.oi.isSolenoidOnePressed == false){
       return true;
+    } else {
+      return false;
     }
   }
 

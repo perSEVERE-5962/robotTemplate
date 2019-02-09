@@ -34,7 +34,7 @@ public class srxMagEncoder{
 
     public double getLeftDistance(){  
     	double pulseWidthWithoutOverflows =RobotMap.robotLeftTalon.getSensorCollection().getQuadraturePosition(); 
-		return -ToInch(pulseWidthWithoutOverflows);
+		return ToInch(pulseWidthWithoutOverflows);
 	}
 	public double getRightDistance(){
 		double pulseWidthWithoutOverflows =RobotMap.robotRightTalon.getSensorCollection().getQuadraturePosition();

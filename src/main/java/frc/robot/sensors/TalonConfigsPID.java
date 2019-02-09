@@ -6,7 +6,7 @@ import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 
 public class TalonConfigsPID {
     final int kTimeoutMS = 10;
-    double kP = 0.1, kI = 0.000015, kD = 0.1, kF = .1;
+    double kP = 1, kI = 0.0, kD = 0.0, kF = 0;
     public int getkTimeoutMS(){
         return kTimeoutMS;
     }
@@ -31,11 +31,18 @@ public class TalonConfigsPID {
     
     
 	public void configTalons() {
-		RobotMap.robotLeftTalon.setSensorPhase(true);
-		RobotMap.robotLeftTalon.setInverted(true);
-		RobotMap.robotRightTalon.setSensorPhase(true);
-		RobotMap.robotRightTalon.setInverted(true);
-		
+		RobotMap.robotLeftVictor.follow(RobotMap.robotLeftTalon);
+        RobotMap.robotRightVictor.follow(RobotMap.robotRightTalon);		
+
+        
+    	RobotMap.robotLeftTalon.setInverted(false);
+		RobotMap.robotLeftVictor.setInverted(false);
+		RobotMap.robotRightTalon.setInverted(true);		
+        RobotMap.robotRightVictor.setInverted(true);
+        
+        RobotMap.robotLeftTalon.setSensorPhase(false);
+		RobotMap.robotRightTalon.setSensorPhase(false);
+        
         RobotMap.robotLeftTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
         RobotMap.robotRightTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
 		

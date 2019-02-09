@@ -9,10 +9,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 
 public class AutoPID{
-    private boolean Step1_done = false;
+    private static boolean Step1_done = false;
+
+    private static int i=0;
 
     final double diameter = 7.5;
-	final double circumferance = Math.PI*diameter;
+    final double circumferance = Math.PI*diameter;
+    final double ticksPerRotation = 4096;
 	private double ToInch(double units) {
 		double deg = units * 360.0 / 4096.0;
 
@@ -34,11 +37,14 @@ public class AutoPID{
 
     public void step1(){
         double target = getTicks(36);
-        SmartDashboard.putNumber("ticks", target);
+        SmartDashboard.putNumber("ticks",target);
         if(Step1_done == false){
-        RobotMap.robotLeftTalon.set(ControlMode.Position, target);
-        RobotMap.robotRightTalon.set(ControlMode.Position, target);
-        Step1_done = true;
+            ++i;
+            SmartDashboard.putNumber("step1 i", i);
+            Step1_done = true;
+        RobotMap.robotLeftTalon.set(ControlMode.Position, 1.5*ticksPerRotation);
+        RobotMap.robotRightTalon.set(ControlMode.Position,1.5*ticksPerRotation);
+      
         }
     }
     public boolean isStep1Done() {

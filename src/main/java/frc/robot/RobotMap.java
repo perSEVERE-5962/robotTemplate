@@ -34,25 +34,24 @@ public class RobotMap {
 
 		robotLeftTalon = new TalonSRX(23);
 		robotRightTalon = new TalonSRX(22);
-
 		robotLeftVictor = new VictorSPX(20);
-		robotLeftVictor.setInverted(true);
-		robotLeftVictor.follow(robotLeftTalon);
-
 		robotRightVictor = new VictorSPX(21);
-		robotRightVictor.setInverted(true);
-		robotRightVictor.follow(robotRightTalon);
+
+		RobotMap.robotRightTalon.configFactoryDefault();
+		RobotMap.robotRightVictor.configFactoryDefault();
+		RobotMap.robotLeftTalon.configFactoryDefault();
+		RobotMap.robotLeftVictor.configFactoryDefault();		
 
 		Robot.pidValue.configTalons();
 
-		//leftDrive = new MultiSpeedController(robotLeftTalon, robotLeftTalon);
-		//rightDrive = new MultiSpeedController(robotRightTalon, robotRightTalon);
-		//RobotMap.robotLeftTalon.setSelectedSensorPosition(0 , 0 , kTimeoutMs);   
-        //initLeftQuadrature();
-        //RobotMap.robotLeftTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, kTimeoutMs);								// Timeout
-		//RobotMap.robotRightTalon.setSelectedSensorPosition(0 , 0 , kTimeoutMs);   
-        //initRightQuadrature();
-        //RobotMap.robotRightTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, kTimeoutMs);								// Timeout
+		// leftDrive = new MultiSpeedController(robotLeftTalon, robotLeftTalon);
+		// rightDrive = new MultiSpeedController(robotRightTalon, robotRightTalon);
+		// RobotMap.robotLeftTalon.setSelectedSensorPosition(0 , 0 , kTimeoutMs);   
+        // initLeftQuadrature();
+        // RobotMap.robotLeftTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, kTimeoutMs);								// Timeout
+		// RobotMap.robotRightTalon.setSelectedSensorPosition(0 , 0 , kTimeoutMs);   
+        // initRightQuadrature();
+        // RobotMap.robotRightTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, kTimeoutMs);								// Timeout
 	
 		//myRobot = new DifferentialDrive(leftDrive, rightDrive);
 		IntakeVictor = new WPI_VictorSPX(12);

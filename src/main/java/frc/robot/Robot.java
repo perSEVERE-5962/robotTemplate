@@ -3,6 +3,7 @@ package frc.robot;
 
 import java.util.concurrent.TimeUnit;
 import com.analog.adis16470.frc.ADIS16470_IMU;
+import com.ctre.phoenix.motorcontrol.Faults;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -24,7 +25,7 @@ import frc.robot.sensors.*;
  */
 public class Robot extends TimedRobot {
 	public static RobotGyro gyro = new RobotGyro();
-	public static srxMagEncoder magEncoder; // = new srxMagEncoder();
+	public static srxMagEncoder magEncoder = new srxMagEncoder();
 	//public static srxMagEncoder intakeEncoder = new srxMagEncoder();
 	//public static ADIS16470_IMU gyro = new ADIS16470_IMU();
 	public static OI oi;
@@ -34,6 +35,8 @@ public class Robot extends TimedRobot {
 	private AutoPID autoPID = new AutoPID();
 	boolean step1done = false;
 	public static TalonConfigsPID pidValue = new TalonConfigsPID();
+	private static Faults leftFaults = new Faults();
+	private static Faults rightFaults = new Faults();
 	int counter = 0;
 	public static boolean getIsLeft(){
 		return isLeft;
@@ -113,8 +116,16 @@ public class Robot extends TimedRobot {
 		}*/
 		//magEncoder.reset();
 		//intakeEncoder.reset();
+		pidValue.setkP(SmartDashboard.getNumber("kP Value" , pidValue.getkP()));
+		pidValue.setkI(SmartDashboard.getNumber("kI Value" , pidValue.getkI()));
+		pidValue.setkD(SmartDashboard.getNumber("kD Value" , pidValue.getkD()));
+
 		RobotMap.robotRightTalon.setSelectedSensorPosition(0, 0, pidValue.getkTimeoutMS());
 		RobotMap.robotLeftTalon.setSelectedSensorPosition(0, 0, pidValue.getkTimeoutMS());
+
+
+		SmartDashboard.putString("Auto Step 1 Done", "No");
+
 		//if(step1done == false){
 			//autoPID.step1();
 		//}
@@ -135,19 +146,35 @@ public class Robot extends TimedRobot {
 		RobotMap.robotLeftTalon.clearStickyFaults(pidValue.getkTimeoutMS());
 		RobotMap.robotRightTalon.clearStickyFaults(pidValue.getkTimeoutMS());
 
-		pidValue.setkP(SmartDashboard.getNumber("kP Value" , pidValue.getkP()));
-		pidValue.setkI(SmartDashboard.getNumber("kI Value" , pidValue.getkI()));
-		pidValue.setkD(SmartDashboard.getNumber("kD Value" , pidValue.getkD()));
+
 
 		if(autoPID.isStep1Done()==false){
 			autoPID.step1();
+			SmartDashboard.putString("Auto Step 1", "Done");
+			SmartDashboard.putString("Auto Step 1 Done", "yes");
 		}
-		//else{
+		else{
 		//autoPID.stop();
-		//}
+			SmartDashboard.putString("Auto Step 1", "Running");
+			
+			// if(RobotMap.robotLeftTalon.getClosedLoopError()< 2000 && RobotMap.robotRightTalon.getClosedLoopError()<2000){
+			// 	autoPID.stop();
+			// }
+		}
 		
 		SmartDashboard.putNumber("Left Error", (double) RobotMap.robotLeftTalon.getClosedLoopError(0));
 		SmartDashboard.putNumber("Right Error", (double) RobotMap.robotRightTalon.getClosedLoopError(0));
+	
+		SmartDashboard.putNumber("Left Distance ", RobotMap.robotLeftTalon.getSelectedSensorPosition());
+		SmartDashboard.putNumber("Right Distance ", RobotMap.robotRightTalon.getSelectedSensorPosition());
+		RobotMap.robotRightTalon.getFaults(rightFaults);
+		RobotMap.robotLeftTalon.getFaults(leftFaults);
+
+		SmartDashboard.putBoolean("Left Out of Phase ", leftFaults.SensorOutOfPhase);
+		SmartDashboard.putBoolean("Right Out of Phase ", rightFaults.SensorOutOfPhase);
+
+
+		
 
 		//try {
 		//	TimeUnit.MILLISECONDS.sleep(10);
@@ -197,8 +224,9 @@ public class Robot extends TimedRobot {
 		}	
 		else{
 //RobotMap.IntakeVictor.drive(0);
-		}
+
 	}
+}
 
 	/**
 	 * This function is called periodically during test mode

@@ -14,7 +14,6 @@ import frc.robot.commands.RunAutonomous;
 import frc.robot.sensors.srxMagEncoder;
 import frc.robot.subsystems.*;
 import frc.robot.sensors.*;
-//import frc.robot.sensors.srxintakeEncoder;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -24,8 +23,8 @@ import frc.robot.sensors.*;
  * project.
  */
 public class Robot extends TimedRobot {
-	// public static RobotGyro robotGyro = new RobotGyro();
-	public static ADIS16470_IMU gyro = new ADIS16470_IMU();
+	 public static RobotGyro gyro = new RobotGyro();
+	//public static ADIS16470_IMU gyro = new ADIS16470_IMU();
 	public static srxMagEncoder magEncoder = new srxMagEncoder();
 	public static srxMagEncoder intakeEncoder = new srxMagEncoder();
 	public static OI oi;
@@ -58,9 +57,7 @@ public class Robot extends TimedRobot {
 	 */
 	public void robotInit() {
 		RobotMap.init();
-		// gyro.reset();
-		//gyro.calibrate();
-		// robotGyro.resetGyro();
+		// gyro.resetGyro();
 		oi = new OI();
 		//magEncoder.init();
 		//magEncoder.reset();
@@ -247,9 +244,9 @@ public class Robot extends TimedRobot {
 			RobotMap.IntakeVictor.set(0);
 		}
 		Scheduler.getInstance().run();
-		SmartDashboard.putNumber("Gyro Value", Robot.gyro.getAngleX());
+		SmartDashboard.putNumber("Gyro Value", Robot.gyro.getGyroAngle());
 	}
-}
+
 
 	/**
 	 * This function is called periodically during test mode

@@ -1,7 +1,6 @@
 
 package frc.robot;
 
-
 import com.analog.adis16470.frc.ADIS16470_IMU;
 
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -14,7 +13,6 @@ import frc.robot.sensors.srxMagEncoder;
 import frc.robot.subsystems.*;
 import frc.robot.sensors.*;
 
-
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -23,51 +21,54 @@ import frc.robot.sensors.*;
  * project.
  */
 public class Robot extends TimedRobot {
-	//public static RobotGyro robotGyro = new RobotGyro();
-	public static srxMagEncoder magEncoder = new srxMagEncoder();
+	// public static RobotGyro robotGyro = new RobotGyro();
 	public static ADIS16470_IMU gyro = new ADIS16470_IMU();
+	public static srxMagEncoder magEncoder = new srxMagEncoder();
 	public static srxMagEncoder intakeEncoder = new srxMagEncoder();
 	public static OI oi;
 	public static Drive drive = new Drive();
 	public static UltrasonicAnalog ultrasonicanalog = new UltrasonicAnalog(1);
 	private static RunAutonomous autonomousCommand;
 	private static ArmMotor armMotor;
+
 	/**
 	 * This function is run when the robot is first started up and should be used
 	 * for any initialization code.
 	 */
 	public void robotInit() {
 		RobotMap.init();
-		//gyro.reset();
+		// gyro.reset();
 		gyro.calibrate();
-		//robotGyro.resetGyro();
+		// robotGyro.resetGyro();
 		oi = new OI();
 		magEncoder.init();
 		magEncoder.reset();
 		intakeEncoder.init();
 		intakeEncoder.reset();
-		armMotor = new ArmMotor ();
-		SmartDashboard.putNumber("Ultrasonic Distance ",0);
+		armMotor = new ArmMotor();
+		SmartDashboard.putNumber("Ultrasonic Distance ", 0);
 	}
-  	/**
-   	 * This function is called every robot packet, no matter the mode. Use
-   	 * this for items like diagnostics that you want ran during disabled,
-   	 * autonomous, teleoperated and test.
-   	 *
-   	 * <p>This runs after the mode specific periodic functions, but before
-   	 * LiveWindow and SmartDashboard integrated updating.
-   	 */
-  	@Override
-  	public void robotPeriodic() {
+
+	/**
+	 * This function is called every robot packet, no matter the mode. Use this for
+	 * items like diagnostics that you want ran during disabled, autonomous,
+	 * teleoperated and test.
+	 *
+	 * <p>
+	 * This runs after the mode specific periodic functions, but before LiveWindow
+	 * and SmartDashboard integrated updating.
+	 */
+	@Override
+	public void robotPeriodic() {
 	}
-	  
-    /**
-     * This function is called once each time the robot enters Disabled mode.
-     * You can use it to reset any subsystem information you want to clear when
-     * the robot is disabled.
-     */
-    @Override
-  	public void disabledInit() {
+
+	/**
+	 * This function is called once each time the robot enters Disabled mode. You
+	 * can use it to reset any subsystem information you want to clear when the
+	 * robot is disabled.
+	 */
+	@Override
+	public void disabledInit() {
 	}
 
 	@Override
@@ -75,44 +76,46 @@ public class Robot extends TimedRobot {
 		Scheduler.getInstance().run();
 	}
 
-    /**
-     * This autonomous (along with the chooser code above) shows how to select
-     *  between different autonomous modes using the dashboard. The sendable
-     * chooser code works with the Java SmartDashboard. If you prefer the
-     * LabVIEW Dashboard, remove all of the chooser code and uncomment the
-     * getString code to get the auto name from the text box below the Gyro
-     *
-     * <p>You can add additional auto modes by adding additional commands to the
-     * chooser code above (like the commented example) or additional comparisons
-     * to the switch structure below with additional strings & commands.
-     */
-    @Override
+	/**
+	 * This autonomous (along with the chooser code above) shows how to select
+	 * between different autonomous modes using the dashboard. The sendable chooser
+	 * code works with the Java SmartDashboard. If you prefer the LabVIEW Dashboard,
+	 * remove all of the chooser code and uncomment the getString code to get the
+	 * auto name from the text box below the Gyro
+	 *
+	 * <p>
+	 * You can add additional auto modes by adding additional commands to the
+	 * chooser code above (like the commented example) or additional comparisons to
+	 * the switch structure below with additional strings & commands.
+	 */
+	@Override
 	public void autonomousInit() {
 		autonomousCommand = new RunAutonomous();
 		gyro.reset();
-	
+
 		if (autonomousCommand != null) {
 			autonomousCommand.start();
-		
+
 		}
 		magEncoder.reset();
 		intakeEncoder.reset();
 	}
+
 	/**
 	 * This function is called periodically during autonomous
 	 */
 	@Override
-	public void autonomousPeriodic(){
+	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
 		SmartDashboard.putString("Encoder Left Value ", "" + magEncoder.getLeftDistance());
 		SmartDashboard.putString("Encoder Right Value ", "" + magEncoder.getRightDistance());
 		SmartDashboard.putString("Encoder Value ", "" + magEncoder.getDistance());
-		SmartDashboard.putNumber("Gyro Value" , gyro.getAngleX());
+		SmartDashboard.putNumber("Gyro Value", gyro.getAngleX());
 	}
 
 	@Override
 	public void teleopInit() {
-		oi.startDriveCommand();	
+		oi.startDriveCommand();
 		gyro.reset();
 		magEncoder.reset();
 		intakeEncoder.reset();
@@ -124,57 +127,45 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-		if (oi.xBoxController.getRawAxis(5)>0.2) {
+		if (oi.xBoxController.getRawAxis(5) > 0.2) {
 			armMotor.runDownward();
-		}
-		else if (oi.xBoxController.getRawAxis(5)< -0.2) {
+		} else if (oi.xBoxController.getRawAxis(5) < -0.2) {
 			armMotor.runUpward();
-		} 
-		else {
-			armMotor.stop ();
+		} else {
+			armMotor.stop();
 		}
-		if (oi.getIntake()){
-			SmartDashboard.putString("value ", ""+GetDistance());
-			if (GetDistance()<0.1){
+		if (oi.getIntake()) {
+			SmartDashboard.putString("value ", "" + GetDistance());
+			if (GetDistance() < 0.1) {
 				RobotMap.IntakeVictor.set(0);
-			}
-			else{
+			} else {
 				RobotMap.IntakeVictor.set(1);
 			}
-		}	
-		else if (oi.getOuttake()){
+		} else if (oi.getOuttake()) {
 			RobotMap.IntakeVictor.set(-1);
-		
+
+		} else {
+			RobotMap.IntakeVictor.set(0);
 		}
-	else{
-		RobotMap.IntakeVictor.set(0);
-	}
-		Scheduler.getInstance().run();		
-		SmartDashboard.putNumber("Gyro Value" , Robot.gyro.getAngleX());
+		Scheduler.getInstance().run();
+		SmartDashboard.putNumber("Gyro Value", Robot.gyro.getAngleX());
 	}
 
 	/**
 	 * This function is called periodically during test mode
 	 */
 	Autonomous auto = new Autonomous();
-	SolenoidSubsystem solenoid = new SolenoidSubsystem();
-	int t = 0;
+
 	@Override
 	public void testPeriodic() {
-		if(auto.Step1_done == false){
-			auto.Step1();
 		LiveWindow.run();
-		if (t == 0){
-		solenoid.activateOne();
-		}
-		t++;
-		SmartDashboard.putNumber("t: ", t);
-		if (t > 2000){
-			solenoid.stop();
+		if (auto.Step1_done == false) {
+			auto.Step1();
 		}
 	}
-	private double GetDistance(){
-	return	SmartDashboard.getNumber("Ultrasonic Distance ", -50);
+
+	private double GetDistance() {
+		return SmartDashboard.getNumber("Ultrasonic Distance ", -50);
 
 	}
-}  
+}

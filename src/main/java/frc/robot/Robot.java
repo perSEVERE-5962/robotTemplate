@@ -6,6 +6,7 @@ import com.analog.adis16470.frc.ADIS16470_IMU;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Drive;
 import frc.robot.commands.RunAutonomous;
@@ -37,7 +38,8 @@ public class Robot extends TimedRobot {
 	 */
 	public void robotInit() {
 		RobotMap.init();
-		gyro.reset();
+		//gyro.reset();
+		gyro.calibrate();
 		//robotGyro.resetGyro();
 		oi = new OI();
 		magEncoder.init();
@@ -87,7 +89,8 @@ public class Robot extends TimedRobot {
     @Override
 	public void autonomousInit() {
 		autonomousCommand = new RunAutonomous();
-		
+		gyro.reset();
+	
 		if (autonomousCommand != null) {
 			autonomousCommand.start();
 		
@@ -110,6 +113,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopInit() {
 		oi.startDriveCommand();	
+		gyro.reset();
 		magEncoder.reset();
 		intakeEncoder.reset();
 	}
@@ -145,20 +149,32 @@ public class Robot extends TimedRobot {
 	else{
 		RobotMap.IntakeVictor.set(0);
 	}
+		Scheduler.getInstance().run();		
+		SmartDashboard.putNumber("Gyro Value" , Robot.gyro.getAngleX());
 	}
 
 	/**
 	 * This function is called periodically during test mode
 	 */
 	Autonomous auto = new Autonomous();
+	SolenoidSubsystem solenoid = new SolenoidSubsystem();
+	int t = 0;
 	@Override
 	public void testPeriodic() {
 		if(auto.Step1_done == false){
 			auto.Step1();
+		LiveWindow.run();
+		if (t == 0){
+		solenoid.activateOne();
+		}
+		t++;
+		SmartDashboard.putNumber("t: ", t);
+		if (t > 2000){
+			solenoid.stop();
 		}
 	}
 	private double GetDistance(){
 	return	SmartDashboard.getNumber("Ultrasonic Distance ", -50);
 
 	}
-}
+}  

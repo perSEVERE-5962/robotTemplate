@@ -233,9 +233,10 @@ public class Robot extends TimedRobot {
 		} else {
 			armMotor.stop();
 		}
+		SmartDashboard.putNumber("Ultrasonic Value", ultrasonicanalog.getRange());
 		if (oi.getIntake()) {
 			SmartDashboard.putString("value ", "" + GetDistance());
-			if (GetDistance() < 0.1) {
+			if (GetDistance() < 4) {
 				RobotMap.IntakeVictor.set(0);
 			} else {
 				RobotMap.IntakeVictor.set(1);
@@ -264,6 +265,7 @@ public class Robot extends TimedRobot {
 	}
 
 	private double GetDistance() {
+		SmartDashboard.putNumber("Ultrasonic Value", ultrasonicanalog.getRange());
 		return SmartDashboard.getNumber("Ultrasonic Distance ", -50);
 
 	}

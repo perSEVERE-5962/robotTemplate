@@ -46,7 +46,8 @@ public class OI {
 	   return value > 0.1;
 	}
 	public void startDriveCommand() {
-		Command command = new RunJoystickTank();
+//		Command command = new RunJoystickTank();
+		Command command = new RunGameTank();
 		command.start();
 	}
 	

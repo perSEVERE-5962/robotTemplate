@@ -3,6 +3,7 @@ package frc.robot;
 
 import frc.robot.commands.*;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.buttons.Trigger;
@@ -36,6 +37,7 @@ public class OI {
 		buttonTwo = new JoystickButton(xBoxController, 6);
 		buttonOne.whenPressed(activateZero);
 		buttonTwo.whenPressed(activateOne);
+		xBoxController.setRumble(RumbleType.kLeftRumble, 0);
 	}
 	public boolean getIntake() {
 		 double value = xBoxController.getRawAxis(3);

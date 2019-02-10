@@ -13,6 +13,7 @@ import frc.robot.subsystems.Drive;
 import frc.robot.commands.RunAutonomous;
 import frc.robot.subsystems.*;
 import frc.robot.sensors.*;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -32,6 +33,7 @@ public class Robot extends TimedRobot {
 	private static RunAutonomous autonomousCommand;
 	private static ArmMotor armMotor;
 	public static SolenoidSubsystem solenoidSubsystem;
+	
 
 	private static boolean isLeft = false;
 	private AutoPID autoPID = new AutoPID();
@@ -223,6 +225,7 @@ public class Robot extends TimedRobot {
 	/**
 	 * This function is called periodically during operator control
 	 */
+	int RumbleCount=0;
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
@@ -236,8 +239,10 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Ultrasonic Value", ultrasonicanalog.getRange());
 		if (oi.getIntake()) {
 			SmartDashboard.putString("value ", "" + GetDistance());
-			if (GetDistance() < 4) {
+			if (ultrasonicanalog.getRange() < 6) {
 				RobotMap.IntakeVictor.set(0);
+				oi.xBoxController.setRumble(RumbleType.kLeftRumble, 1);
+				++RumbleCount;
 			} else {
 				RobotMap.IntakeVictor.set(1);
 			}
@@ -246,9 +251,19 @@ public class Robot extends TimedRobot {
 		} else {
 			RobotMap.IntakeVictor.set(0);
 		}
+		if (RumbleCount >0){
+			if (RumbleCount >100){
+			oi.xBoxController.setRumble(RumbleType.kLeftRumble, 0);
+			RumbleCount=0;
+		}
+		else {
+			++RumbleCount;
+		}
+		}
 		Scheduler.getInstance().run();
 		SmartDashboard.putNumber("Gyro Value", Robot.gyro.getGyroAngle());
 	}
+	
 
 
 	/**

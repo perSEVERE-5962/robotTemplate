@@ -6,6 +6,8 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.buttons.Trigger;
+import frc.robot.commands.ActivateOne;
+import frc.robot.commands.ActivateZero;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -24,7 +26,6 @@ public class OI {
 	public JoystickButton buttonTwo;
 	ActivateZero activateZero = new ActivateZero();
 	ActivateOne activateOne = new ActivateOne();
-	Stop stop = new Stop();
 
 	public OI() {
 		joystickLeft = new Joystick(1);
@@ -34,9 +35,7 @@ public class OI {
 		buttonOne = new JoystickButton(xBoxController, 5);
 		buttonTwo = new JoystickButton(xBoxController, 6);
 		buttonOne.whenPressed(activateZero);
-		buttonOne.whenReleased(stop);
 		buttonTwo.whenPressed(activateOne);
-		buttonTwo.whenReleased(stop);
 	}
 	public boolean getIntake() {
 		 double value = xBoxController.getRawAxis(3);

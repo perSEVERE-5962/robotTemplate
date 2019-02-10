@@ -25,19 +25,21 @@ public class ActivateOne extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.oi.isSolenoidOnePressed  = true;
-    Robot.oi.isSolenoidZeroPressed = false;
+    // Robot.oi.isSolenoidOnePressed  = true;
+    // Robot.oi.isSolenoidZeroPressed = false;
+    
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    if (Robot.oi.isSolenoidOnePressed == true){
-      return false;
-    }
-    else{
-      return true;
-    }
+    // if (Robot.oi.isSolenoidOnePressed == true){
+    //   return false;
+    // }
+    // else{
+    //   return true;
+    // }
+    return true;
   }
   
 

@@ -3,6 +3,7 @@ package frc.robot;
 
 import frc.robot.commands.*;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.buttons.Trigger;
 
@@ -17,14 +18,25 @@ public class OI {
 	public Joystick joystickRight;
 	public Joystick gamepad1;
 	public Joystick xBoxController;
-	
+	public boolean isSolenoidZeroPressed = false;
+	public boolean isSolenoidOnePressed = false;
+	public JoystickButton buttonOne;
+	public JoystickButton buttonTwo;
+	ActivateZero activateZero = new ActivateZero();
+	ActivateOne activateOne = new ActivateOne();
+	Stop stop = new Stop();
 
 	public OI() {
 		joystickLeft = new Joystick(1);
 		joystickRight = new Joystick(2);
 		gamepad1 = new Joystick(0);
 		xBoxController = new Joystick(3);
-	
+		buttonOne = new JoystickButton(xBoxController, 5);
+		buttonTwo = new JoystickButton(xBoxController, 6);
+		buttonOne.whenPressed(activateZero);
+		buttonOne.whenReleased(stop);
+		buttonTwo.whenPressed(activateOne);
+		buttonTwo.whenReleased(stop);
 	}
 	public boolean getIntake() {
 		 double value = xBoxController.getRawAxis(3);

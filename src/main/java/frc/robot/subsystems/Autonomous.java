@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import frc.robot.sensors.*;
 import frc.robot.Robot;
+import frc.robot.RobotMap;
 
 /**
  * Add your docs here.
@@ -18,8 +19,9 @@ import frc.robot.Robot;
 public class Autonomous extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
-  public RobotGyro gyro = new RobotGyro();
+  //public RobotGyro gyro = new RobotGyro();
   public double dist = 0;
+  public double angle = 0;
   public boolean Step1_done = false;
   public boolean Step2_done = false;
   public boolean Step3_done = false;
@@ -28,7 +30,18 @@ public class Autonomous extends Subsystem {
   public boolean Step6_done = false;
   public boolean Step7_done = false;
   public boolean Step8_done = false;
-
+  public void driveEncoder(double left, double right){
+    RobotMap.myRobot.tankDrive(left , right);
+  }
+  public void stopDrive(){
+    RobotMap.myRobot.tankDrive(0, 0);
+  }
+  public void turnLeft(double speed){
+    RobotMap.myRobot.tankDrive(speed , -speed);
+  }
+  public void turnRight(double speed){
+    RobotMap.myRobot.tankDrive(-speed , speed);
+  }
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
@@ -51,30 +64,65 @@ public class Autonomous extends Subsystem {
     if(dist>=59){
       Step2_done = true;
       Robot.magEncoder.reset();
+      stopDrive();
+    }
+    else{
+      driveEncoder(-0.37892 , -0.37892);
     }
   }
   public void Step3(){
-    if(gyro.getGyroAngle()>=getTurn()){//Should turn 67.29 degrees towards right
-      gyro.resetGyro();
+    angle = Robot.gyro.getGyroAngle();
+    if(angle >=17.3532){//Should turn 67.29 degrees towards right
+      //Robot.gyro.reset();
+      Step3_done = true;      
+      stopDrive();
+    }
+    else{
+      if(Robot.getIsRight() == true){
+        turnRight(0.5);
+      }
+      else if(Robot.getIsLeft() == true){
+        turnLeft(0.5);
+      }
     }
   }
   public void Step4(){
     dist = Robot.magEncoder.getDistance();
-    if(dist>=124.61){
+    if(dist>=161.134){
+      stopDrive();
       Step4_done = true;
       Robot.magEncoder.reset();
+      
+    }
+    else{
+      driveEncoder(0.7 , 0.7);
     }
   }
   public void Step5(){
-    if(gyro.getGyroAngle()>=getTurn()){//Should turn 67.29 degrees towards left
-      gyro.resetGyro();
+    angle = Robot.gyro.getGyroAngle();
+    if(angle >=-90){//Should turn 67.29 degrees towards left
+      //Robot.gyro.reset();
+      if(Robot.getIsRight() == true){
+       turnLeft(0.5);
+      }
+      else if(Robot.getIsLeft() == true){
+        turnRight(0.5);
+      }
     }       
+    else{
+      Step5_done = true;
+      stopDrive();
+    }
   }
   public void Step6(){// Should it stop some distance before the cargo ship if yes, how much?
     dist = Robot.magEncoder.getDistance();
     if(dist>=48.06){
       Step6_done = true;
       Robot.magEncoder.reset();
+      stopDrive();
+    }
+    else{
+      driveEncoder(0.5 , 0.5);
     }
   }
   public void Step7(){
@@ -82,6 +130,10 @@ public class Autonomous extends Subsystem {
     if(dist>=21.75){
       Step7_done = true;
       Robot.magEncoder.reset();
+      stopDrive();
+    }
+    else{
+      driveEncoder(0.3 , 0.3);
     }
   }
 

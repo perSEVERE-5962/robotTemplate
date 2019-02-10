@@ -8,9 +8,9 @@ public class srxMagEncoder{
     final boolean kDiscontinuityPresent = true;
     final int kBookEnd_0 = 910;		/* 80 deg */
 	final int kBookEnd_1 = 1137;	/* 100 deg */
-	final double diameter = 7.5;
-	final double circumferance = Math.PI*diameter;
-    double ToInch(double units) {
+	final static double diameter = 7.5;
+	final static double circumferance = Math.PI*diameter;
+	public static double ToInch(double units) {
 		double deg = units * 360.0 / 4096.0;
 
 		/* truncate to 0.1 res */
@@ -24,24 +24,24 @@ public class srxMagEncoder{
     
     
 	public void init() {
-        RobotMap.robotLeftTalon.setSelectedSensorPosition(0 , 0 , kTimeoutMs);   
+        //RobotMap.robotLeftTalon.setSelectedSensorPosition(0 , 0 , kTimeoutMs);   
         initLeftQuadrature();
-        RobotMap.robotLeftTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, kTimeoutMs);								// Timeout
-		RobotMap.robotRightTalon.setSelectedSensorPosition(0 , 0 , kTimeoutMs);   
+        //RobotMap.robotLeftTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, kTimeoutMs);								// Timeout
+		//RobotMap.robotRightTalon.setSelectedSensorPosition(0 , 0 , kTimeoutMs);   
         initRightQuadrature();
-        RobotMap.robotRightTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, kTimeoutMs);								// Timeout
+        //RobotMap.robotRightTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, kTimeoutMs);								// Timeout
 	}
 
     public double getLeftDistance(){  
     	double pulseWidthWithoutOverflows =RobotMap.robotLeftTalon.getSensorCollection().getQuadraturePosition(); 
-		return -ToInch(pulseWidthWithoutOverflows);
+		return ToInch(pulseWidthWithoutOverflows);
 	}
 	public double getRightDistance(){
 		double pulseWidthWithoutOverflows =RobotMap.robotRightTalon.getSensorCollection().getQuadraturePosition();
         return ToInch(pulseWidthWithoutOverflows);
 	}
 	public double getDistance(){
-		return (getLeftDistance() + getRightDistance())/2;
+		return (getLeftDistance() + getRightDistance())/-2;
 	}
 	
     public void initLeftQuadrature() {

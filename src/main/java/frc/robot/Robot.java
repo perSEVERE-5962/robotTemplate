@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Drive;
 import frc.robot.commands.RunAutonomous;
-import frc.robot.sensors.srxMagEncoder;
 import frc.robot.subsystems.*;
 import frc.robot.sensors.*;
 
@@ -32,6 +31,7 @@ public class Robot extends TimedRobot {
 	public static UltrasonicAnalog ultrasonicanalog = new UltrasonicAnalog(1);
 	private static RunAutonomous autonomousCommand;
 	private static ArmMotor armMotor;
+	public static SolenoidSubsystem solenoidSubsystem;
 
 	private static boolean isLeft = false;
 	private AutoPID autoPID = new AutoPID();
@@ -64,6 +64,8 @@ public class Robot extends TimedRobot {
 		//intakeEncoder.init();
 		//intakeEncoder.reset();
 		armMotor = new ArmMotor();
+		solenoidSubsystem = new SolenoidSubsystem();
+
 		SmartDashboard.putNumber("Ultrasonic Distance ", 0);		
 		SmartDashboard.putNumber("kP Value" , pidValue.getkP() );
 		SmartDashboard.putNumber("kI Value" , pidValue.getkI() );

@@ -10,36 +10,34 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
+public class ActivateLeft extends Command {
 
-public class ActivateOne extends Command {
-  public ActivateOne() {
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
+  public ActivateLeft() {
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    Robot.solenoidSubsystem.activateLeft();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.oi.isSolenoidOnePressed  = true;
-    Robot.oi.isSolenoidZeroPressed = false;
+    // Robot.oi.isSolenoidZeroPressed = true;
+    // Robot.oi.isSolenoidOnePressed = false;
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    if (Robot.oi.isSolenoidOnePressed == true){
-      return false;
-    }
-    else{
-      return true;
-    }
+    // if (Robot.oi.isSolenoidZeroPressed == true){
+    //   return false;
+    // } else {
+    //   return true;
+    // }
+    return true;
   }
-  
 
   // Called once after isFinished returns true
   @Override

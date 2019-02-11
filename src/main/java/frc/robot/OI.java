@@ -3,9 +3,12 @@ package frc.robot;
 
 import frc.robot.commands.*;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.buttons.Trigger;
+import frc.robot.commands.ActivateRight;
+import frc.robot.commands.ActivateLeft;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -22,9 +25,8 @@ public class OI {
 	public boolean isSolenoidOnePressed = false;
 	public JoystickButton buttonOne;
 	public JoystickButton buttonTwo;
-	ActivateZero activateZero = new ActivateZero();
-	ActivateOne activateOne = new ActivateOne();
-	Stop stop = new Stop();
+	ActivateLeft activateZero = new ActivateLeft();
+	ActivateRight activateOne = new ActivateRight();
 
 	public OI() {
 		joystickLeft = new Joystick(1);
@@ -34,9 +36,8 @@ public class OI {
 		buttonOne = new JoystickButton(xBoxController, 5);
 		buttonTwo = new JoystickButton(xBoxController, 6);
 		buttonOne.whenPressed(activateZero);
-		buttonOne.whenReleased(stop);
 		buttonTwo.whenPressed(activateOne);
-		buttonTwo.whenReleased(stop);
+		xBoxController.setRumble(RumbleType.kLeftRumble, 0);
 	}
 	public boolean getIntake() {
 		 double value = xBoxController.getRawAxis(3);
@@ -47,7 +48,8 @@ public class OI {
 	   return value > 0.1;
 	}
 	public void startDriveCommand() {
-		Command command = new RunJoystickTank();
+//		Command command = new RunJoystickTank();
+		Command command = new RunGameTank();
 		command.start();
 	}
 	

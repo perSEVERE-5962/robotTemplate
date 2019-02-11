@@ -9,11 +9,12 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.Compressor;
 import frc.robot.subsystems.Drive;
 import frc.robot.commands.RunAutonomous;
-import frc.robot.sensors.srxMagEncoder;
 import frc.robot.subsystems.*;
 import frc.robot.sensors.*;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -32,6 +33,8 @@ public class Robot extends TimedRobot {
 	public static UltrasonicAnalog ultrasonicanalog = new UltrasonicAnalog(1);
 	private static RunAutonomous autonomousCommand;
 	private static ArmMotor armMotor;
+	public static SolenoidSubsystem solenoidSubsystem;
+	
 
 	private static boolean isLeft = false;
 	private AutoPID autoPID = new AutoPID();
@@ -40,6 +43,9 @@ public class Robot extends TimedRobot {
 	private static Faults leftFaults = new Faults();
 	private static Faults rightFaults = new Faults();
 	int counter = 0;
+	Compressor compressor = new Compressor(0);
+
+
 	public static boolean getIsLeft(){
 		return isLeft;
 	}
@@ -64,6 +70,10 @@ public class Robot extends TimedRobot {
 		//intakeEncoder.init();
 		//intakeEncoder.reset();
 		armMotor = new ArmMotor();
+		solenoidSubsystem = new SolenoidSubsystem();
+		solenoidSubsystem.activateRight();
+		compressor.setClosedLoopControl(true);
+
 		SmartDashboard.putNumber("Ultrasonic Distance ", 0);		
 		SmartDashboard.putNumber("kP Value" , pidValue.getkP() );
 		SmartDashboard.putNumber("kI Value" , pidValue.getkI() );
@@ -221,6 +231,7 @@ public class Robot extends TimedRobot {
 	/**
 	 * This function is called periodically during operator control
 	 */
+	int RumbleCount=0;
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
@@ -231,10 +242,13 @@ public class Robot extends TimedRobot {
 		} else {
 			armMotor.stop();
 		}
+		SmartDashboard.putNumber("Ultrasonic Value", ultrasonicanalog.getRange());
 		if (oi.getIntake()) {
 			SmartDashboard.putString("value ", "" + GetDistance());
-			if (GetDistance() < 0.1) {
+			if (ultrasonicanalog.getRange() < 6) {
 				RobotMap.IntakeVictor.set(0);
+				oi.xBoxController.setRumble(RumbleType.kLeftRumble, 1);
+				++RumbleCount;
 			} else {
 				RobotMap.IntakeVictor.set(1);
 			}
@@ -243,9 +257,19 @@ public class Robot extends TimedRobot {
 		} else {
 			RobotMap.IntakeVictor.set(0);
 		}
+		if (RumbleCount >0){
+			if (RumbleCount >100){
+			oi.xBoxController.setRumble(RumbleType.kLeftRumble, 0);
+			RumbleCount=0;
+		}
+		else {
+			++RumbleCount;
+		}
+		}
 		Scheduler.getInstance().run();
 		SmartDashboard.putNumber("Gyro Value", Robot.gyro.getGyroAngle());
 	}
+	
 
 
 	/**
@@ -262,6 +286,7 @@ public class Robot extends TimedRobot {
 	}
 
 	private double GetDistance() {
+		SmartDashboard.putNumber("Ultrasonic Value", ultrasonicanalog.getRange());
 		return SmartDashboard.getNumber("Ultrasonic Distance ", -50);
 
 	}

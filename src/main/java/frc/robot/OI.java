@@ -6,8 +6,8 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.buttons.Trigger;
-import frc.robot.commands.ActivateOne;
-import frc.robot.commands.ActivateZero;
+import frc.robot.commands.ActivateRight;
+import frc.robot.commands.ActivateLeft;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -24,8 +24,8 @@ public class OI {
 	public boolean isSolenoidOnePressed = false;
 	public JoystickButton buttonOne;
 	public JoystickButton buttonTwo;
-	ActivateZero activateZero = new ActivateZero();
-	ActivateOne activateOne = new ActivateOne();
+	ActivateLeft activateZero = new ActivateLeft();
+	ActivateRight activateOne = new ActivateRight();
 
 	public OI() {
 		joystickLeft = new Joystick(1);

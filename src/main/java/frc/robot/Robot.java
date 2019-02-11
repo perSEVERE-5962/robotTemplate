@@ -6,9 +6,11 @@ import com.analog.adis16470.frc.ADIS16470_IMU;
 import com.ctre.phoenix.motorcontrol.Faults;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.Compressor;
 import frc.robot.subsystems.Drive;
 import frc.robot.commands.RunAutonomous;
 import frc.robot.subsystems.*;
@@ -40,6 +42,9 @@ public class Robot extends TimedRobot {
 	private static Faults leftFaults = new Faults();
 	private static Faults rightFaults = new Faults();
 	int counter = 0;
+	Compressor compressor = new Compressor(0);
+
+
 	public static boolean getIsLeft(){
 		return isLeft;
 	}
@@ -65,6 +70,8 @@ public class Robot extends TimedRobot {
 		//intakeEncoder.reset();
 		armMotor = new ArmMotor();
 		solenoidSubsystem = new SolenoidSubsystem();
+		solenoidSubsystem.activateRight();
+		compressor.setClosedLoopControl(true);
 
 		SmartDashboard.putNumber("Ultrasonic Distance ", 0);		
 		SmartDashboard.putNumber("kP Value" , pidValue.getkP() );
@@ -223,6 +230,7 @@ public class Robot extends TimedRobot {
 	/**
 	 * This function is called periodically during operator control
 	 */
+	int rumbleCount = 0;
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
@@ -236,8 +244,10 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Ultrasonic Value", ultrasonicanalog.getRange());
 		if (oi.getIntake()) {
 			SmartDashboard.putString("value ", "" + GetDistance());
-			if (GetDistance() < 4) {
+			if (ultrasonicanalog.getRange() < 6) {
 				RobotMap.IntakeVictor.set(0);
+				oi.xBoxController.setRumble(RumbleType.kLeftRumble, 1);
+				++rumbleCount;
 			} else {
 				RobotMap.IntakeVictor.set(1);
 			}
@@ -245,6 +255,15 @@ public class Robot extends TimedRobot {
 			RobotMap.IntakeVictor.set(-1);
 		} else {
 			RobotMap.IntakeVictor.set(0);
+		}
+		if (rumbleCount > 0) {
+			if (rumbleCount >100){
+				oi.xBoxController.setRumble(RumbleType.kLeftRumble, 0);
+				rumbleCount = 0;
+			} else {
+				++rumbleCount;
+		}
+
 		}
 		Scheduler.getInstance().run();
 		SmartDashboard.putNumber("Gyro Value", Robot.gyro.getGyroAngle());

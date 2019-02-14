@@ -15,6 +15,7 @@ import frc.robot.commands.RunAutonomous;
 import frc.robot.subsystems.*;
 import frc.robot.sensors.*;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -45,6 +46,63 @@ public class Robot extends TimedRobot {
 	int counter = 0;
 	Compressor compressor = new Compressor(0);
 
+	public static enum StartingPosition{
+		Left_Lvl_2,
+		Left_Lvl_1,
+		Middle_Lvl_1,
+		Right_Lvl_1,
+		Right_Lvl_2,
+	}
+
+	public static enum TargetPosition{
+		Left_Bay_1,
+		Left_Bay_2,
+		Left_Bay_3,
+		Middle_Bay_1,
+		Middle_Bay_2,
+		Right_Bay_1,
+		Right_Bay_2,
+		Right_Bay_3,
+	}
+
+	public static enum GamePiece{
+		Ball,
+		Hatch_Panel,
+	}
+
+	SendableChooser<StartingPosition> startingPosition;
+	SendableChooser<TargetPosition> targetPosition;
+	SendableChooser<GamePiece> gamePiece;
+
+	private void initStartingPosition(){
+		startingPosition = new SendableChooser<StartingPosition>();
+		startingPosition.addDefault("Left_Lvl_2", StartingPosition.Left_Lvl_2);
+		startingPosition.addObject("Left_Lvl_1", StartingPosition.Left_Lvl_1);
+		startingPosition.addObject("Middle_Lvl_1", StartingPosition.Middle_Lvl_1);
+		startingPosition.addObject("Right_Lvl_1", StartingPosition.Right_Lvl_1);
+		startingPosition.addObject("Right_Lvl_2", StartingPosition.Right_Lvl_2);
+		SmartDashboard.putData("Select starting position:", startingPosition);
+	}
+
+	private void initTargetPosition(){
+		targetPosition = new SendableChooser<TargetPosition>();
+		targetPosition.addDefault("Left_Bay_1", TargetPosition.Left_Bay_1);
+		targetPosition.addObject("Left_Bay_2", TargetPosition.Left_Bay_2);
+		targetPosition.addObject("Left_Bay_3", TargetPosition.Left_Bay_3);
+		targetPosition.addObject("Middle_Bay_1", TargetPosition.Middle_Bay_1);
+		targetPosition.addObject("Middle_Bay_2", TargetPosition.Middle_Bay_2);
+		targetPosition.addObject("Right_Bay_1", TargetPosition.Right_Bay_1);
+		targetPosition.addObject("Right_Bay_2", TargetPosition.Right_Bay_2);
+		targetPosition.addObject("Right_Bay_3", TargetPosition.Right_Bay_3);
+		SmartDashboard.putData("Select target position:", targetPosition);
+	}
+
+	private void initGamePiece(){
+		gamePiece = new SendableChooser<GamePiece>();
+		gamePiece.addDefault("Ball", GamePiece.Ball);
+		gamePiece.addObject("Hatch_Panel", GamePiece.Hatch_Panel);
+		SmartDashboard.putData("Select game piece:", gamePiece);
+	}
 
 	public static boolean getIsLeft(){
 		return isLeft;

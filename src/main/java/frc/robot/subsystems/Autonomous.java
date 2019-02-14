@@ -143,6 +143,27 @@ public class Autonomous extends Subsystem {
   private double getUltrasonicDist(){
     return 0;
   }
+
+public void step8(){
+  angle = Robot.gyro.getGyroAngle();
+  if(angle >=5){
+    Step8_done = true;      
+    stopDrive();
+  }
+  else{
+    if(Robot.getIsRight() == true){
+      turnRight(5);
+    }
+    else if(Robot.getIsLeft() == true){
+      turnLeft(5);
+    }
+  }
+}
+public void Step9(){
+  dist = Robot.magEncoder.getDistance();
+  if(dist>=118.75){
+   }
+  }
 }
 
 

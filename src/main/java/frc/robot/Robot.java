@@ -14,6 +14,7 @@ import frc.robot.commands.RunAutonomous;
 import frc.robot.subsystems.*;
 import frc.robot.sensors.*;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
+import frc.robot.utils.logger;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -33,6 +34,7 @@ public class Robot extends TimedRobot {
 	private static RunAutonomous autonomousCommand;
 	private static ArmMotor armMotor;
 	public static SolenoidSubsystem solenoidSubsystem;
+	public static logger LoggerUtils = new logger();
 	
 
 	private static boolean isLeft = false;
@@ -68,10 +70,10 @@ public class Robot extends TimedRobot {
 		armMotor = new ArmMotor();
 		solenoidSubsystem = new SolenoidSubsystem();
 
-		SmartDashboard.putNumber("Ultrasonic Distance ", 0);		
-		SmartDashboard.putNumber("kP Value" , pidValue.getkP() );
-		SmartDashboard.putNumber("kI Value" , pidValue.getkI() );
-		SmartDashboard.putNumber("kD Value" , pidValue.getkD() );
+		LoggerUtils.putNumber("Ultrasonic Distance ", 0);		
+		LoggerUtils.putNumber("kP Value" , pidValue.getkP() );
+		LoggerUtils.putNumber("kI Value" , pidValue.getkI() );
+		LoggerUtils.putNumber("kD Value" , pidValue.getkD() );
 
 	}
 
@@ -124,15 +126,15 @@ public class Robot extends TimedRobot {
 		}*/
 		//magEncoder.reset();
 		//intakeEncoder.reset();
-		pidValue.setkP(SmartDashboard.getNumber("kP Value" , pidValue.getkP()));
-		pidValue.setkI(SmartDashboard.getNumber("kI Value" , pidValue.getkI()));
-		pidValue.setkD(SmartDashboard.getNumber("kD Value" , pidValue.getkD()));
+		pidValue.setkP(LoggerUtils.getNumber("kP Value" , pidValue.getkP()));
+		pidValue.setkI(LoggerUtils.getNumber("kI Value" , pidValue.getkI()));
+		pidValue.setkD(LoggerUtils.getNumber("kD Value" , pidValue.getkD()));
 
 		RobotMap.robotRightTalon.setSelectedSensorPosition(0, 0, pidValue.getkTimeoutMS());
 		RobotMap.robotLeftTalon.setSelectedSensorPosition(0, 0, pidValue.getkTimeoutMS());
 
 
-		SmartDashboard.putString("Auto Step 1 Done", "No");
+		LoggerUtils.putString("Auto Step 1 Done", "No");
 
 		//if(step1done == false){
 			//autoPID.step1();
@@ -151,7 +153,7 @@ public class Robot extends TimedRobot {
 		//SmartDashboard.putString("Encoder Left Value ", "" + magEncoder.getLeftDistance());
 		//SmartDashboard.putString("Encoder Right Value ", "" + magEncoder.getRightDistance());
 		//SmartDashboard.putString("Encoder Value ", "" + magEncoder.getDistance());
-		SmartDashboard.putNumber("Gyro Value" , gyro.getGyroAngle());
+		LoggerUtils.putNumber("Gyro Value" , gyro.getGyroAngle());
 		RobotMap.robotLeftTalon.clearStickyFaults(pidValue.getkTimeoutMS());
 		RobotMap.robotRightTalon.clearStickyFaults(pidValue.getkTimeoutMS());
 
@@ -159,28 +161,28 @@ public class Robot extends TimedRobot {
 
 		if(autoPID.isStep1Done()==false){
 			autoPID.step1();
-			SmartDashboard.putString("Auto Step 1", "Done");
-			SmartDashboard.putString("Auto Step 1 Done", "yes");
+			LoggerUtils.putString("Auto Step 1", "Done");
+			LoggerUtils.putString("Auto Step 1 Done", "yes");
 		}
 		else{
 		//autoPID.stop();
-			SmartDashboard.putString("Auto Step 1", "Running");
+			LoggerUtils.putString("Auto Step 1", "Running");
 			
 			// if(RobotMap.robotLeftTalon.getClosedLoopError()< 2000 && RobotMap.robotRightTalon.getClosedLoopError()<2000){
 			// 	autoPID.stop();
 			// }
 		}
 		
-		SmartDashboard.putNumber("Left Error", (double) RobotMap.robotLeftTalon.getClosedLoopError(0));
-		SmartDashboard.putNumber("Right Error", (double) RobotMap.robotRightTalon.getClosedLoopError(0));
+		LoggerUtils.putNumber("Left Error", (double) RobotMap.robotLeftTalon.getClosedLoopError(0));
+		LoggerUtils.putNumber("Right Error", (double) RobotMap.robotRightTalon.getClosedLoopError(0));
 	
-		SmartDashboard.putNumber("Left Distance ", RobotMap.robotLeftTalon.getSelectedSensorPosition());
-		SmartDashboard.putNumber("Right Distance ", RobotMap.robotRightTalon.getSelectedSensorPosition());
+		LoggerUtils.putNumber("Left Distance ", RobotMap.robotLeftTalon.getSelectedSensorPosition());
+		LoggerUtils.putNumber("Right Distance ", RobotMap.robotRightTalon.getSelectedSensorPosition());
 		RobotMap.robotRightTalon.getFaults(rightFaults);
 		RobotMap.robotLeftTalon.getFaults(leftFaults);
 
-		SmartDashboard.putBoolean("Left Out of Phase ", leftFaults.SensorOutOfPhase);
-		SmartDashboard.putBoolean("Right Out of Phase ", rightFaults.SensorOutOfPhase);
+		LoggerUtils.putBoolean("Left Out of Phase ", leftFaults.SensorOutOfPhase);
+		LoggerUtils.putBoolean("Right Out of Phase ", rightFaults.SensorOutOfPhase);
 
 
 		
@@ -236,9 +238,9 @@ public class Robot extends TimedRobot {
 		} else {
 			armMotor.stop();
 		}
-		SmartDashboard.putNumber("Ultrasonic Value", ultrasonicanalog.getRange());
+		LoggerUtils.putNumber("Ultrasonic Value", ultrasonicanalog.getRange());
 		if (oi.getIntake()) {
-			SmartDashboard.putString("value ", "" + GetDistance());
+			LoggerUtils.putString("value ", "" + GetDistance());
 			if (ultrasonicanalog.getRange() < 6) {
 				RobotMap.IntakeVictor.set(0);
 				oi.xBoxController.setRumble(RumbleType.kLeftRumble, 1);
@@ -261,7 +263,7 @@ public class Robot extends TimedRobot {
 		}
 		}
 		Scheduler.getInstance().run();
-		SmartDashboard.putNumber("Gyro Value", Robot.gyro.getGyroAngle());
+		LoggerUtils.putNumber("Gyro Value", Robot.gyro.getGyroAngle());
 	}
 	
 
@@ -280,8 +282,8 @@ public class Robot extends TimedRobot {
 	}
 
 	private double GetDistance() {
-		SmartDashboard.putNumber("Ultrasonic Value", ultrasonicanalog.getRange());
-		return SmartDashboard.getNumber("Ultrasonic Distance ", -50);
+		LoggerUtils.putNumber("Ultrasonic Value", ultrasonicanalog.getRange());
+		return LoggerUtils.getNumber("Ultrasonic Distance ", -50);
 
 	}
 }

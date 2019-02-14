@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import frc.robot.subsystems.*;
 import frc.robot.sensors.*;
+import frc.robot.Robot;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
@@ -37,10 +38,10 @@ public class AutoPID{
 
     public void step1(){
         double target = getTicks(36);
-        SmartDashboard.putNumber("ticks",target);
+        Robot.LoggerUtils.putNumber("ticks",target);
         if(Step1_done == false){
             ++i;
-            SmartDashboard.putNumber("step1 i", i);
+            Robot.LoggerUtils.putNumber("step1 i", i);
             Step1_done = true;
         RobotMap.robotLeftTalon.set(ControlMode.Position, 1.5*ticksPerRotation);
         RobotMap.robotRightTalon.set(ControlMode.Position,1.5*ticksPerRotation);

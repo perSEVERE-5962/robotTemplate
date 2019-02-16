@@ -15,7 +15,7 @@ import frc.robot.subsystems.*;
 
  
 public class OI {
-	public Arm armMotor = new Arm();
+	public ArmMotor armMotor = new ArmMotor();
 	public Joystick joystickLeft;
 	public Joystick joystickRight;
 	public Joystick gamepad1;
@@ -24,6 +24,8 @@ public class OI {
 	public boolean isSolenoidOnePressed = false;
 	public JoystickButton buttonOne;
 	public JoystickButton buttonTwo;
+	public JoystickButton onFloor;
+	public JoystickButton inRobot;
 	public JoystickButton placeHatch;
 	public boolean hatch = false;
 	public JoystickButton shootBall;
@@ -41,8 +43,15 @@ public class OI {
 		buttonTwo = new JoystickButton(xBoxController, 6);
 		buttonOne.whenPressed(activateZero);
 		buttonTwo.whenPressed(activateOne);
-		placeHatch = new JoystickButton(gamepad1 , 1);
+		onFloor = new JoystickButton(gamepad1, 1);
+		onFloor.whenPressed(new onFloor());
+		shootBall = new JoystickButton(gamepad1 , 2);
+		shootBall.whenPressed(new shootBall());
+		inRobot = new JoystickButton(gamepad1, 3);
+		inRobot.whenPressed(new inRobot());
+		placeHatch = new JoystickButton(gamepad1 , 4);
 		placeHatch.whenPressed(new placeHatch());
+
 
 	}
 	public boolean getIntake() {

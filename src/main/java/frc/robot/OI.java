@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.buttons.Trigger;
 import frc.robot.commands.ActivateRight;
 import frc.robot.commands.ActivateLeft;
+import frc.robot.subsystems.*;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -17,6 +18,7 @@ import frc.robot.commands.ActivateLeft;
 
  
 public class OI {
+	public ArmMotor armMotor = new ArmMotor();
 	public Joystick joystickLeft;
 	public Joystick joystickRight;
 	public Joystick gamepad1;
@@ -27,6 +29,15 @@ public class OI {
 	public JoystickButton buttonTwo;
 	ActivateLeft activateZero = new ActivateLeft();
 	ActivateRight activateOne = new ActivateRight();
+	public JoystickButton onFloor;
+	public JoystickButton inRobot;
+	public JoystickButton placeHatch;
+	public boolean hatch = false;
+	public JoystickButton shootBall;
+	public JoystickButton intakeZero;
+
+	ActivateZero activateZero = new ActivateZero();
+	ActivateOne activateOne = new ActivateOne();
 
 	public OI() {
 		joystickLeft = new Joystick(1);
@@ -38,6 +49,16 @@ public class OI {
 		buttonOne.whenPressed(activateZero);
 		buttonTwo.whenPressed(activateOne);
 		xBoxController.setRumble(RumbleType.kLeftRumble, 0);
+		onFloor = new JoystickButton(gamepad1, 1);
+		onFloor.whenPressed(new onFloor());
+		shootBall = new JoystickButton(gamepad1 , 2);
+		shootBall.whenPressed(new shootBall());
+		inRobot = new JoystickButton(gamepad1, 3);
+		inRobot.whenPressed(new inRobot());
+		placeHatch = new JoystickButton(gamepad1 , 4);
+		placeHatch.whenPressed(new placeHatch());
+
+
 	}
 	public boolean getIntake() {
 		 double value = xBoxController.getRawAxis(3);
@@ -53,6 +74,7 @@ public class OI {
 		command.start();
 	}
 	
+
 	public double joystickLeftAxis() {
 		return joystickLeft.getRawAxis(1);
 	}

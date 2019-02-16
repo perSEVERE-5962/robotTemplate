@@ -33,14 +33,19 @@ public class Robot extends TimedRobot {
 	public static OI oi;
 	public static Drive drive = new Drive();
 	public static UltrasonicAnalog ultrasonicanalog = new UltrasonicAnalog(1);
-	private static RunAutonomous autonomousCommand;
+	private static RunAutonomous autonomous = new RunAutonomous();
 	private static ArmMotor armMotor;
 	public static ArmPID armPID = new ArmPID();
 	public static SolenoidSubsystem solenoidSubsystem;
-	
-
+	private static boolean Step1_done = false;
+	private static boolean Step2_done = false;
+	private static boolean Step3_done = false;
+	private static boolean Step4_done = false;
+	private static boolean Step5_done = false;
+	private static boolean Step6_done = false;
+	private static boolean Step7_done = false;
 	private static boolean isLeft = false;
-	private AutoPID autoPID = new AutoPID();
+	private Autonomous Auto = new Autonomous();
 	boolean step1done = false;
 	public static TalonConfigsPID pidValue = new TalonConfigsPID();
 	private static Faults leftFaults = new Faults();
@@ -137,11 +142,13 @@ public class Robot extends TimedRobot {
 		pidValue.setkI(SmartDashboard.getNumber("kI Value" , pidValue.getkI()));
 		pidValue.setkD(SmartDashboard.getNumber("kD Value" , pidValue.getkD()));
 
-		RobotMap.robotRightTalon.setSelectedSensorPosition(0, 0, pidValue.getkTimeoutMS());
-		RobotMap.robotLeftTalon.setSelectedSensorPosition(0, 0, pidValue.getkTimeoutMS());
-
+		autonomous.run();
+		// RobotMap.robotRightTalon.setSelectedSensorPosition(0, 0, pidValue.getkTimeoutMS());
+		// RobotMap.robotLeftTalon.setSelectedSensorPosition(0, 0, pidValue.getkTimeoutMS());
 
 		SmartDashboard.putString("Auto Step 1 Done", "No");
+
+
 
 		//if(step1done == false){
 			//autoPID.step1();
@@ -166,19 +173,19 @@ public class Robot extends TimedRobot {
 
 
 
-		if(autoPID.isStep1Done()==false){
-			autoPID.step1();
-			SmartDashboard.putString("Auto Step 1", "Done");
-			SmartDashboard.putString("Auto Step 1 Done", "yes");
-		}
-		else{
-		//autoPID.stop();
-			SmartDashboard.putString("Auto Step 1", "Running");
+		// if(auto.isStep1Done()==false){
+		// 	auto.step1();
+		// 	SmartDashboard.putString("Auto Step 1", "Done");
+		// 	SmartDashboard.putString("Auto Step 1 Done", "yes");
+		// }
+		// else{
+		// //autoPID.stop();
+		// 	SmartDashboard.putString("Auto Step 1", "Running");
 			
-			// if(RobotMap.robotLeftTalon.getClosedLoopError()< 2000 && RobotMap.robotRightTalon.getClosedLoopError()<2000){
-			// 	autoPID.stop();
-			// }
-		}
+		// 	if(RobotMap.robotLeftTalon.getClosedLoopError()< 2000 && RobotMap.robotRightTalon.getClosedLoopError()<2000){
+		// 	 	auto.stop();
+		// 	}
+		// }
 		
 		SmartDashboard.putNumber("Left Error", (double) RobotMap.robotLeftTalon.getClosedLoopError(0));
 		SmartDashboard.putNumber("Right Error", (double) RobotMap.robotRightTalon.getClosedLoopError(0));
@@ -192,35 +199,6 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putBoolean("Right Out of Phase ", rightFaults.SensorOutOfPhase);
 
 
-		
-
-		//try {
-		//	TimeUnit.MILLISECONDS.sleep(10);
-		//	counter += 10;
-		//} catch (Exception e) { /* Black Magic */ }
-		
-		/**(auto.Step2_done == false){
-			auto.Step2();
-		}
-		else if (auto.Step3_done == false){
-			auto.Step3();
-		}
-		if( auto.Step4_done == false){
-			auto.Step4();
-		}
-		 if(auto.Step5_done == false){
-			auto.Step5();
-		}
-		 else if(auto.Step5_done == true && auto.Step6_done == false){
-			auto.Step6();
-		}
-		else if(auto.Step6_done == true && auto.Step7_done == false){
-			auto.Step7();
-		}
-		else{
-			RobotMap.myRobot.tankDrive(0, 0);	
-		}*/
-		
 	}
 
 	@Override
@@ -283,11 +261,8 @@ public class Robot extends TimedRobot {
 	@Override
 	public void testPeriodic() {
 		LiveWindow.run();
-		if (auto.Step1_done == false) {
-			auto.Step1();
-		}
 	}
-
+	
 	private double GetDistance() {
 		SmartDashboard.putNumber("Ultrasonic Value", ultrasonicanalog.getRange());
 		return SmartDashboard.getNumber("Ultrasonic Distance ", -50);

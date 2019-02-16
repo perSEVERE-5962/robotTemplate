@@ -30,7 +30,7 @@ public class Robot extends TimedRobot {
 	public static Drive drive = new Drive();
 	public static UltrasonicAnalog ultrasonicanalog = new UltrasonicAnalog(1);
 	private static RunAutonomous autonomous = new RunAutonomous();
-	private static ArmMotor armMotor;
+	//private static ArmMotor armMotor;
 	public static SolenoidSubsystem solenoidSubsystem;
 	private static boolean Step1_done = false;
 	private static boolean Step2_done = false;

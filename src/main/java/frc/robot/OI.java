@@ -6,8 +6,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.buttons.Trigger;
-import frc.robot.commands.ActivateOne;
-import frc.robot.commands.ActivateZero;
+import frc.robot.subsystems.*;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -16,6 +15,7 @@ import frc.robot.commands.ActivateZero;
 
  
 public class OI {
+	public Arm armMotor = new Arm();
 	public Joystick joystickLeft;
 	public Joystick joystickRight;
 	public Joystick gamepad1;
@@ -24,6 +24,11 @@ public class OI {
 	public boolean isSolenoidOnePressed = false;
 	public JoystickButton buttonOne;
 	public JoystickButton buttonTwo;
+	public JoystickButton placeHatch;
+	public boolean hatch = false;
+	public JoystickButton shootBall;
+	public JoystickButton intakeZero;
+
 	ActivateZero activateZero = new ActivateZero();
 	ActivateOne activateOne = new ActivateOne();
 
@@ -36,6 +41,9 @@ public class OI {
 		buttonTwo = new JoystickButton(xBoxController, 6);
 		buttonOne.whenPressed(activateZero);
 		buttonTwo.whenPressed(activateOne);
+		placeHatch = new JoystickButton(gamepad1 , 1);
+		placeHatch.whenPressed(new placeHatch());
+
 	}
 	public boolean getIntake() {
 		 double value = xBoxController.getRawAxis(3);
@@ -50,6 +58,7 @@ public class OI {
 		command.start();
 	}
 	
+
 	public double joystickLeftAxis() {
 		return joystickLeft.getRawAxis(1);
 	}

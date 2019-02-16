@@ -37,24 +37,26 @@ public class RobotMap {
 		robotLeftVictor = new WPI_VictorSPX(20);
 		robotRightVictor = new WPI_VictorSPX(21);
 
-		RobotMap.robotRightTalon.configFactoryDefault();
-		RobotMap.robotRightVictor.configFactoryDefault();
-		RobotMap.robotLeftTalon.configFactoryDefault();
-		RobotMap.robotLeftVictor.configFactoryDefault();		
+		robotRightTalon.configFactoryDefault();
+		robotRightVictor.configFactoryDefault();
+		robotLeftTalon.configFactoryDefault();
+		robotLeftVictor.configFactoryDefault();		
 
 		Robot.pidValue.configTalons();
 
 		leftDrive = new MultiSpeedController(robotLeftTalon, robotLeftTalon);
 		rightDrive = new MultiSpeedController(robotRightTalon, robotRightTalon);
-		RobotMap.robotLeftTalon.setSelectedSensorPosition(0 , 0 , kTimeoutMs);   
+		robotLeftTalon.setSelectedSensorPosition(0 , 0 , kTimeoutMs);   
         //initLeftQuadrature();
-        RobotMap.robotLeftTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, kTimeoutMs);								// Timeout
-		RobotMap.robotRightTalon.setSelectedSensorPosition(0 , 0 , kTimeoutMs);   
+        robotLeftTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, kTimeoutMs);								// Timeout
+		robotRightTalon.setSelectedSensorPosition(0 , 0 , kTimeoutMs);   
         //initRightQuadrature();
-        RobotMap.robotRightTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, kTimeoutMs);								// Timeout
+        robotRightTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, kTimeoutMs);								// Timeout
 	
 		myRobot = new DifferentialDrive(leftDrive, rightDrive);
 		IntakeVictor = new WPI_VictorSPX(12);
 		armTalon = new WPI_TalonSRX(11);
+		armTalon.configFactoryDefault();	
+		Robot.armPID.init();	
 	}
 }

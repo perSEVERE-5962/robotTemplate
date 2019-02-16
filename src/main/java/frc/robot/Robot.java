@@ -15,6 +15,8 @@ import frc.robot.commands.RunAutonomous;
 import frc.robot.subsystems.*;
 import frc.robot.sensors.*;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
+import frc.robot.utils.TalonConfigsPID;
+import frc.robot.utils.ArmPID;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -33,6 +35,7 @@ public class Robot extends TimedRobot {
 	public static UltrasonicAnalog ultrasonicanalog = new UltrasonicAnalog(1);
 	private static RunAutonomous autonomousCommand;
 	private static ArmMotor armMotor;
+	public static ArmPID armPID = new ArmPID();
 	public static SolenoidSubsystem solenoidSubsystem;
 	
 

@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Compressor;
 import frc.robot.subsystems.Drive;
 import frc.robot.commands.RunAutonomous;
+import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.*;
 import frc.robot.sensors.*;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
@@ -76,31 +77,31 @@ public class Robot extends TimedRobot {
 
 	private void initStartingPosition(){
 		startingPosition = new SendableChooser<StartingPosition>();
-		startingPosition.addDefault("Left_Lvl_2", StartingPosition.Left_Lvl_2);
-		startingPosition.addObject("Left_Lvl_1", StartingPosition.Left_Lvl_1);
-		startingPosition.addObject("Middle_Lvl_1", StartingPosition.Middle_Lvl_1);
-		startingPosition.addObject("Right_Lvl_1", StartingPosition.Right_Lvl_1);
-		startingPosition.addObject("Right_Lvl_2", StartingPosition.Right_Lvl_2);
+		startingPosition.setDefaultOption("Left_Lvl_2", StartingPosition.Left_Lvl_2);
+		startingPosition.addOption("Left_Lvl_1", StartingPosition.Left_Lvl_1);
+		startingPosition.addOption("Middle_Lvl_1", StartingPosition.Middle_Lvl_1);
+		startingPosition.addOption("Right_Lvl_1", StartingPosition.Right_Lvl_1);
+		startingPosition.addOption("Right_Lvl_2", StartingPosition.Right_Lvl_2);
 		SmartDashboard.putData("Select starting position:", startingPosition);
 	}
 
 	private void initTargetPosition(){
 		targetPosition = new SendableChooser<TargetPosition>();
-		targetPosition.addDefault("Left_Bay_1", TargetPosition.Left_Bay_1);
-		targetPosition.addObject("Left_Bay_2", TargetPosition.Left_Bay_2);
-		targetPosition.addObject("Left_Bay_3", TargetPosition.Left_Bay_3);
-		targetPosition.addObject("Middle_Bay_1", TargetPosition.Middle_Bay_1);
-		targetPosition.addObject("Middle_Bay_2", TargetPosition.Middle_Bay_2);
-		targetPosition.addObject("Right_Bay_1", TargetPosition.Right_Bay_1);
-		targetPosition.addObject("Right_Bay_2", TargetPosition.Right_Bay_2);
-		targetPosition.addObject("Right_Bay_3", TargetPosition.Right_Bay_3);
+		targetPosition.setDefaultOption("Left_Bay_1", TargetPosition.Left_Bay_1);
+		targetPosition.addOption("Left_Bay_2", TargetPosition.Left_Bay_2);
+		targetPosition.addOption("Left_Bay_3", TargetPosition.Left_Bay_3);
+		targetPosition.addOption("Middle_Bay_1", TargetPosition.Middle_Bay_1);
+		targetPosition.addOption("Middle_Bay_2", TargetPosition.Middle_Bay_2);
+		targetPosition.addOption("Right_Bay_1", TargetPosition.Right_Bay_1);
+		targetPosition.addOption("Right_Bay_2", TargetPosition.Right_Bay_2);
+		targetPosition.addOption("Right_Bay_3", TargetPosition.Right_Bay_3);
 		SmartDashboard.putData("Select target position:", targetPosition);
 	}
 
 	private void initGamePiece(){
 		gamePiece = new SendableChooser<GamePiece>();
-		gamePiece.addDefault("Ball", GamePiece.Ball);
-		gamePiece.addObject("Hatch_Panel", GamePiece.Hatch_Panel);
+		gamePiece.setDefaultOption("Ball", GamePiece.Ball);
+		gamePiece.addOption("Hatch_Panel", GamePiece.Hatch_Panel);
 		SmartDashboard.putData("Select game piece:", gamePiece);
 	}
 
@@ -136,7 +137,9 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("kP Value" , pidValue.getkP() );
 		SmartDashboard.putNumber("kI Value" , pidValue.getkI() );
 		SmartDashboard.putNumber("kD Value" , pidValue.getkD() );
-
+		initStartingPosition();
+		initTargetPosition();
+		initGamePiece();
 	}
 
 	/**
@@ -194,9 +197,18 @@ public class Robot extends TimedRobot {
 
 		RobotMap.robotRightTalon.setSelectedSensorPosition(0, 0, pidValue.getkTimeoutMS());
 		RobotMap.robotLeftTalon.setSelectedSensorPosition(0, 0, pidValue.getkTimeoutMS());
-
+        
 
 		SmartDashboard.putString("Auto Step 1 Done", "No");
+
+		StartingPosition selectedStartingPosition = (StartingPosition) startingPosition.getSelected();
+		TargetPosition selectedTargetPosition = (TargetPosition) targetPosition.getSelected();
+		GamePiece selectedGamePiece = (GamePiece) gamePiece.getSelected();
+
+		Command AutonomousCommand = new RunAutonomous(selectedStartingPosition, selectedTargetPosition, selectedGamePiece);
+		// if (AutonomousCommand != null){
+		// 	AutonomousCommand.start();	
+		// }
 
 		//if(step1done == false){
 			//autoPID.step1();
@@ -218,8 +230,6 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Gyro Value" , gyro.getGyroAngle());
 		RobotMap.robotLeftTalon.clearStickyFaults(pidValue.getkTimeoutMS());
 		RobotMap.robotRightTalon.clearStickyFaults(pidValue.getkTimeoutMS());
-
-
 
 		if(autoPID.isStep1Done()==false){
 			autoPID.step1();

@@ -30,6 +30,8 @@ public class Autonomous extends Subsystem {
   public boolean Step6_done = false;
   public boolean Step7_done = false;
   public boolean Step8_done = false;
+  public boolean Step9_done = false;
+  public boolean Step10_done = false;
   public void driveEncoder(double left, double right){
     RobotMap.myRobot.tankDrive(left , right);
   }
@@ -162,8 +164,29 @@ public void step8(){
 public void Step9(){
   dist = Robot.magEncoder.getDistance();
   if(dist>=118.75){
-   }
+    Step9_done = true;
+    Robot.magEncoder.reset();
+    stopDrive();
   }
+  else{
+    driveEncoder(0.3 , 0.3);
+    }
+  }
+public void step10(){
+  angle = Robot.gyro.getGyroAngle();
+  if(angle >=-5){
+    Step10_done = true;      
+    stopDrive();
+  }
+  else{
+    if(Robot.getIsRight() == true){
+      turnRight(-5);
+    }
+    else if(Robot.getIsLeft() == true){
+      turnLeft(-5);
+    }
+  }
+}
 }
 
 

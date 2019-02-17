@@ -4,6 +4,7 @@ package frc.robot;
 import java.util.concurrent.TimeUnit;
 import com.analog.adis16470.frc.ADIS16470_IMU;
 import com.ctre.phoenix.motorcontrol.Faults;
+import java.io.IOException;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -34,7 +35,7 @@ public class Robot extends TimedRobot {
 	private static RunAutonomous autonomousCommand;
 	private static ArmMotor armMotor;
 	public static SolenoidSubsystem solenoidSubsystem;
-	public static logger LoggerUtils = new logger();
+	public static logger LoggerUtils;
 	
 
 	private static boolean isLeft = false;
@@ -70,11 +71,15 @@ public class Robot extends TimedRobot {
 		armMotor = new ArmMotor();
 		solenoidSubsystem = new SolenoidSubsystem();
 
+		
+		LoggerUtils = new logger();
 		LoggerUtils.putNumber("Ultrasonic Distance ", 0);		
 		LoggerUtils.putNumber("kP Value" , pidValue.getkP() );
 		LoggerUtils.putNumber("kI Value" , pidValue.getkI() );
 		LoggerUtils.putNumber("kD Value" , pidValue.getkD() );
+		}
 
+		
 	}
 
 	/**
@@ -126,15 +131,18 @@ public class Robot extends TimedRobot {
 		}*/
 		//magEncoder.reset();
 		//intakeEncoder.reset();
+		
 		pidValue.setkP(LoggerUtils.getNumber("kP Value" , pidValue.getkP()));
 		pidValue.setkI(LoggerUtils.getNumber("kI Value" , pidValue.getkI()));
 		pidValue.setkD(LoggerUtils.getNumber("kD Value" , pidValue.getkD()));
-
+		
 		RobotMap.robotRightTalon.setSelectedSensorPosition(0, 0, pidValue.getkTimeoutMS());
 		RobotMap.robotLeftTalon.setSelectedSensorPosition(0, 0, pidValue.getkTimeoutMS());
 
 
 		LoggerUtils.putString("Auto Step 1 Done", "No");
+		}
+		
 
 		//if(step1done == false){
 			//autoPID.step1();
@@ -142,7 +150,7 @@ public class Robot extends TimedRobot {
 		// else{
 		// 	autoPID.stop();
 		// }
-	}
+		}
 
 	/**
 	 * This function is called periodically during autonomous

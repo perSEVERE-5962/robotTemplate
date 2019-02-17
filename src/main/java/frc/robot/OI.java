@@ -84,6 +84,10 @@ public class OI {
 		return gamepad1.getRawAxis(3);
 	}
 	
+	public boolean gamePadXButtonPressed(){
+        return gamepad1.getRawButton(3);
+	}
+
 	public double xBoxLeftAxis() {
 		return xBoxController.getRawAxis(1);
 	}

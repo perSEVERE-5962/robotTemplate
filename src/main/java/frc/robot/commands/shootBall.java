@@ -44,7 +44,7 @@ public class shootBall extends Command {
     if (Robot.armMotor.isPIDRunning() == false) {
       Robot.armMotor.moveToShootBall();
     }
-    SmartDashboard.putNumber("Closed Loop Error", RobotMap.armTalon.getClosedLoopError());
+    Robot.logger.putNumber("Closed Loop Error", RobotMap.armTalon.getClosedLoopError());
   }
 
   // Make this return true when this Command no longer needs to run execute()

@@ -54,7 +54,7 @@ public class onFloor extends Command {
       // isRunning = true;
       Robot.armMotor.moveToIntakeBall();
     }
-    SmartDashboard.putNumber("Closed Loop Error", RobotMap.armTalon.getClosedLoopError());
+    Robot.logger.putNumber("Closed Loop Error", RobotMap.armTalon.getClosedLoopError());
   }
 
   // Make this return true when this Command no longer needs to run execute()

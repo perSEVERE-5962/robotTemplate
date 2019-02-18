@@ -46,15 +46,18 @@ public class RunAutonomous extends Command {
 		else if(auto.isStep7Done() == false){
 			auto.Step7();
 		}
-		else if(autonomousSubsystem.Step8_done == false){
-			autonomousSubsystem.step8();
+		/*
+			STEP8 = place the game piece
+		*/
+		else if(auto.isStep9Done() == false){
+			auto.step9();
 		}	
-		else if(autonomousSubsystem.Step9_done == false){
-			autonomousSubsystem.Step9();
-		}	
-		else if(autonomousSubsystem.Step10_done == false){
-			autonomousSubsystem.step10();
+		else if(auto.isStep10Done() == false){
+			auto.Step10();
 		}		
+		else if(auto.isStep11Done() == false){
+			auto.step11();
+		}	
 
 	//	auto.elapsedTime();
 	

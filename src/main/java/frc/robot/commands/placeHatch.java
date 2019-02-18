@@ -38,7 +38,7 @@ public class placeHatch extends Command {
         if (Robot.armMotor.isPIDRunning() == false) {
             Robot.armMotor.moveToPlaceHatch();
         }
-        SmartDashboard.putNumber("Closed Loop Error", RobotMap.armTalon.getClosedLoopError());
+        Robot.logger.putNumber("Closed Loop Error", RobotMap.armTalon.getClosedLoopError());
     }
 
     protected boolean isFinished() {

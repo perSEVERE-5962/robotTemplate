@@ -1,6 +1,8 @@
 package frc.robot.sensors;
 import frc.robot.RobotMap;
 
+import javax.net.ssl.TrustManager;
+
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 
@@ -35,13 +37,13 @@ public class TalonConfigsPID {
         RobotMap.robotRightVictor.follow(RobotMap.robotRightTalon);		
 
         
-    	RobotMap.robotLeftTalon.setInverted(false);
-		RobotMap.robotLeftVictor.setInverted(false);
+    	RobotMap.robotLeftTalon.setInverted(true);
+		RobotMap.robotLeftVictor.setInverted(true);
 		RobotMap.robotRightTalon.setInverted(true);		
         RobotMap.robotRightVictor.setInverted(true);
         
-        RobotMap.robotLeftTalon.setSensorPhase(false);
-		RobotMap.robotRightTalon.setSensorPhase(false);
+        RobotMap.robotLeftTalon.setSensorPhase(true);//check on actual robot 2019
+		RobotMap.robotRightTalon.setSensorPhase(false);//check on actual robot 2019
         
         RobotMap.robotLeftTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
         RobotMap.robotRightTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
@@ -78,7 +80,7 @@ public class TalonConfigsPID {
         
         RobotMap.robotLeftTalon.configMotionCruiseVelocity(8000, kTimeoutMS);
         RobotMap.robotLeftTalon.configMotionCruiseVelocity(8000, kTimeoutMS);
-        RobotMap.robotLeftTalon.configMotionAcceleration(3000, kTimeoutMS);
+        RobotMap.robotRightTalon.configMotionAcceleration(3000, kTimeoutMS);
         RobotMap.robotRightTalon.configMotionAcceleration(3000, kTimeoutMS);
 	}
 	

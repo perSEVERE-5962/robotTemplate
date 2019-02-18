@@ -26,7 +26,7 @@ public class shootBall extends Command {
     // eg. requires(chassis);
   }
   public void moveToShootBall (){
-    RobotMap.armTalon.set(ControlMode.Position, SHOOT_BALL_POSITION);
+    RobotMap.armTalon.set(ControlMode.Position, 853.06);
   }
   // Called just before this Command runs the first time
   @Override

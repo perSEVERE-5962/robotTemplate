@@ -43,13 +43,13 @@ public class OI {
 		buttonTwo = new JoystickButton(xBoxController, 6);
 		buttonOne.whenPressed(activateZero);
 		buttonTwo.whenPressed(activateOne);
-		onFloor = new JoystickButton(gamepad1, 1);
+		onFloor = new JoystickButton(xBoxController, 1);
 		onFloor.whenPressed(new onFloor());
-		shootBall = new JoystickButton(gamepad1 , 2);
+		shootBall = new JoystickButton(xBoxController , 2);
 		shootBall.whenPressed(new shootBall());
-		inRobot = new JoystickButton(gamepad1, 3);
+		inRobot = new JoystickButton(xBoxController, 3);
 		inRobot.whenPressed(new inRobot());
-		placeHatch = new JoystickButton(gamepad1 , 4);
+		placeHatch = new JoystickButton(xBoxController , 4);
 		placeHatch.whenPressed(new placeHatch());
 
 

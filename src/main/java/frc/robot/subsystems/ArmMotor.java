@@ -33,22 +33,22 @@ public boolean isOnTarget() {
 
 	public void runUpward (){
 		armTalon.set(Robot.oi.xBoxController.getRawAxis(5));
-	double dist = Robot.magEncoder.getDistance();
+	//double dist = Robot.magEncoder.getDistance();
     }
     public void runDownward (){
 		armTalon.set(Robot.oi.xBoxController.getRawAxis(5));
-		double dist = Robot.magEncoder.getDistance();
-    if(dist>=48){
-			//Drive Motor
-		}
+	// 	double dist = Robot.magEncoder.getDistance();
+    // if(dist>=48){
+	// 		//Drive Motor
+	// 	}
 	}
 	
 	public void stop (){
 		armTalon.set(0);
-		double dist = Robot.magEncoder.getDistance();
-    if(dist>=48){
-			//Drive Motor
-		}
+	// 	double dist = Robot.magEncoder.getDistance();
+    // if(dist>=48){
+	// 		//Drive Motor
+	// 	}
 	}
 	
 	

@@ -73,8 +73,6 @@ public class srxMagEncoder{
 		/* Update Quadrature position */
         RobotMap.robotRightTalon.getSensorCollection().setQuadraturePosition(pulseWidth, kTimeoutMs);
 	}
-	
-
 	public  void reset(){
 		RobotMap.robotLeftTalon.getSensorCollection().setQuadraturePosition(0, 10);
 		RobotMap.robotRightTalon.getSensorCollection().setQuadraturePosition(0, 10);

@@ -15,7 +15,7 @@ public boolean onTarget(){
     return false;
 }
 public void moveToPlaceHatch (){
-    RobotMap.armTalon.set(ControlMode.Position, PLACE_HATCH_POSITION);
+    RobotMap.armTalon.set(ControlMode.Position, 682.2);
 }
 public placeHatch() {
     // Use requires() here to declare subsystem dependencies

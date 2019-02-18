@@ -23,7 +23,7 @@ public class onFloor extends Command {
     return false;
 }
 public void moveToIntakeBall (){
-  RobotMap.armTalon.set(ControlMode.Position, INTAKE_BALL_POSITION);
+  RobotMap.armTalon.set(ControlMode.Position, 1479.1);
 }
   public onFloor() {
     // Use requires() here to declare subsystem dependencies

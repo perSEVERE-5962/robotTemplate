@@ -12,51 +12,51 @@ public class Logger {
     BufferedWriter writer;
 
     public Logger() {
-        try {
-            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-            writer = new BufferedWriter(new FileWriter("file" + timestamp + ".txt"));
-        } catch (IOException E) {
-        }
+//         try {
+//             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+//            writer = new BufferedWriter(new FileWriter("file" + timestamp + ".txt"));
+//         } catch (IOException E) {
+//         }
     }
 
     public void putNumber(String key, double value) {
         SmartDashboard.putNumber(key, value);
-        try {
-            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-            writer.append(key + ", " + value + " " + timestamp);
-        } catch (IOException ioe) {
+//         try {
+//             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+//             writer.append(key + ", " + value + " " + timestamp);
+//         } catch (IOException ioe) {
 
-        }            
+//         }            
     }
 
     public double getNumber(String key, double value)  {
-        try {
-            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-            writer.append(key + ", " + value + " " + timestamp);
-        } catch (IOException ioe) {
+//         try {
+//             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+//             writer.append(key + ", " + value + " " + timestamp);
+//         } catch (IOException ioe) {
 
-        } 
+//         } 
         return SmartDashboard.getNumber(key, value);
     }
 
     public void putString(String key, String value)  {
         SmartDashboard.putString(key, value);
-        try {
-            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-            writer.append(key + ", " + value + " " + timestamp);
-        } catch (IOException ioe) {
+//         try {
+//             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+//             writer.append(key + ", " + value + " " + timestamp);
+//         } catch (IOException ioe) {
 
-        }
+//         }
     }
 
     public void putBoolean(String key, Boolean value) {
         SmartDashboard.putBoolean(key, value);
-        try {
-            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-            writer.append(key + ", " + value + " " + timestamp);
-        } catch (IOException ioe) {
+//         try {
+//             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+//             writer.append(key + ", " + value + " " + timestamp);
+//         } catch (IOException ioe) {
 
-        }
+//         }
     }
 
 }

@@ -35,13 +35,13 @@ public class TalonConfigsPID {
         RobotMap.robotRightVictor.follow(RobotMap.robotRightTalon);		
 
         
-    	RobotMap.robotLeftTalon.setInverted(false);
-		RobotMap.robotLeftVictor.setInverted(false);
-		RobotMap.robotRightTalon.setInverted(true);		
-        RobotMap.robotRightVictor.setInverted(true);
+    	RobotMap.robotLeftTalon.setInverted(true);
+		RobotMap.robotLeftVictor.setInverted(true);
+		RobotMap.robotRightTalon.setInverted(false);		
+        RobotMap.robotRightVictor.setInverted(false);
         
-        RobotMap.robotLeftTalon.setSensorPhase(false);
-		RobotMap.robotRightTalon.setSensorPhase(false);
+        RobotMap.robotLeftTalon.setSensorPhase(true);
+		RobotMap.robotRightTalon.setSensorPhase(true);
         
         RobotMap.robotLeftTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
         RobotMap.robotRightTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
@@ -58,10 +58,10 @@ public class TalonConfigsPID {
 		RobotMap.robotRightTalon.configNominalOutputForward(0, kTimeoutMS);
 		RobotMap.robotLeftTalon.configNominalOutputReverse(0, kTimeoutMS);
 		RobotMap.robotRightTalon.configNominalOutputReverse(0, kTimeoutMS);
-		RobotMap.robotLeftTalon.configPeakOutputForward(0.5, kTimeoutMS);
-		RobotMap.robotRightTalon.configPeakOutputForward(0.5, kTimeoutMS);
-		RobotMap.robotLeftTalon.configPeakOutputReverse(-0.5, kTimeoutMS);
-		RobotMap.robotRightTalon.configPeakOutputReverse(-0.5, kTimeoutMS);
+		RobotMap.robotLeftTalon.configPeakOutputForward(1, kTimeoutMS);
+		RobotMap.robotRightTalon.configPeakOutputForward(1, kTimeoutMS);
+		RobotMap.robotLeftTalon.configPeakOutputReverse(-1, kTimeoutMS);
+		RobotMap.robotRightTalon.configPeakOutputReverse(-1, kTimeoutMS);
 		
         RobotMap.robotLeftTalon.config_kF(0, kF, kTimeoutMS);
         RobotMap.robotLeftTalon.config_kP(0, kP, kTimeoutMS);

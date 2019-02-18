@@ -27,8 +27,8 @@ public class RobotMap {
 	public static TalonSRX armTalon;
 	
 	public static void init() {
-		robotLeftTalon = new TalonSRX(22);
-		robotRightTalon = new TalonSRX(23);
+		robotLeftTalon = new TalonSRX(23);
+		robotRightTalon = new TalonSRX(22);
 		robotLeftVictor = new VictorSPX(20);
 		robotRightVictor = new VictorSPX(21);
 
@@ -44,5 +44,6 @@ public class RobotMap {
 		armTalon = new TalonSRX(11);
 		armTalon.configFactoryDefault();	
 		Robot.armPID.init();	
+		armTalon.setSelectedSensorPosition(0);
 	}
 }

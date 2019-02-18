@@ -62,14 +62,14 @@ public class OI {
 		buttonOne.whenPressed(activateLeft);
 		buttonTwo.whenPressed(activateRight);
 		xBoxController.setRumble(RumbleType.kLeftRumble, 0);
-		onFloor = new JoystickButton(xBoxController, 1);
-		onFloor.whenPressed(new onFloor());
-		shootBall = new JoystickButton(xBoxController , 2);
-		shootBall.whenPressed(new shootBall());
-		inRobot = new JoystickButton(xBoxController, 3);
-		inRobot.whenPressed(new inRobot());
-		placeHatch = new JoystickButton(xBoxController , 4);
-		placeHatch.whenPressed(new placeHatch());
+		// onFloor = new JoystickButton(xBoxController, 1);
+		// onFloor.whenPressed(new onFloor());
+		// shootBall = new JoystickButton(xBoxController , 2);
+		// shootBall.whenPressed(new shootBall());
+		// inRobot = new JoystickButton(xBoxController, 3);
+		// inRobot.whenPressed(new inRobot());
+		// placeHatch = new JoystickButton(xBoxController , 4);
+		// placeHatch.whenPressed(new placeHatch());
 
 
 	}

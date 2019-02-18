@@ -96,6 +96,9 @@ public class Robot extends TimedRobot {
 		logger.putNumber("kP Value", pidValue.getkP());
 		logger.putNumber("kI Value", pidValue.getkI());
 		logger.putNumber("kD Value", pidValue.getkD());
+
+		SmartDashboard.putNumber("Arm Start Position", RobotMap.armTalon.getSensorCollection().getPulseWidthPosition());
+
 	}
 
 	/**
@@ -189,16 +192,26 @@ public class Robot extends TimedRobot {
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 
+
 		// run arm with joystick
-		if (topStop.get()) {
+		/*if (topStop.get()) {
 			armMotor.stop();
 		} else if (bottomStop.get()) {
 			armMotor.stop();
-		} else if (oi.xBoxController.getRawAxis(5) > 0.2) {
+		} else*/ 
+		// if (oi.xBoxController.getRawAxis(5) > 0.2) {
+		// 	armMotor.runDownward();
+		// } else if (oi.xBoxController.getRawAxis(5) < -0.2) {
+		// 	armMotor.runUpward();
+		// } else if (armMotor.isPIDRunning() == false) {
+		// 	armMotor.stop();
+		// }
+
+		if (oi.xBoxController.getRawAxis(5) > 0.2) {
 			armMotor.runDownward();
 		} else if (oi.xBoxController.getRawAxis(5) < -0.2) {
 			armMotor.runUpward();
-		} else if (armMotor.isPIDRunning() == false) {
+		} else {
 			armMotor.stop();
 		}
 
@@ -206,7 +219,7 @@ public class Robot extends TimedRobot {
 		double range = ultrasonicanalog.getRange();
 		logger.putNumber("Ultrasonic Value", range);
 		if (oi.getIntake()) {
-			if (ultrasonicanalog.getRange() < 6) {
+			if (ultrasonicanalog.getRange() < 3) {
 				RobotMap.intakeVictor.set(0);
 				oi.xBoxController.setRumble(RumbleType.kLeftRumble, 1);
 				oi.incrementRumbleCount();
@@ -227,6 +240,10 @@ public class Robot extends TimedRobot {
 				oi.incrementRumbleCount();
 			}
 		}
+
+		SmartDashboard.putNumber("Arm current Position", RobotMap.armTalon.getSensorCollection().getPulseWidthPosition());
+		SmartDashboard.putNumber("Left Encoder", RobotMap.robotLeftTalon.getSensorCollection().getPulseWidthPosition());
+		SmartDashboard.putNumber("Right Encoder", RobotMap.robotRightTalon.getSensorCollection().getPulseWidthPosition());
 	}
 
 	/**
@@ -235,6 +252,9 @@ public class Robot extends TimedRobot {
 	@Override
 	public void testPeriodic() {
 		LiveWindow.run();
+
+
+
 	}
 
 }

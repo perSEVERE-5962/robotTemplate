@@ -46,8 +46,8 @@ public class ArmPID {
 		/* Config the peak and nominal outputs, 12V means full */
 		RobotMap.armTalon.configNominalOutputForward(0, kTimeoutMs);
 		RobotMap.armTalon.configNominalOutputReverse(0, kTimeoutMs);
-		RobotMap.armTalon.configPeakOutputForward(0.5, kTimeoutMs);
-		RobotMap.armTalon.configPeakOutputReverse(-0.5, kTimeoutMs);
+		RobotMap.armTalon.configPeakOutputForward(0.3, kTimeoutMs);
+		RobotMap.armTalon.configPeakOutputReverse(-0.3, kTimeoutMs);
 
 		/**
 		 * Config the allowable closed-loop error, Closed-Loop output will be

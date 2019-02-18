@@ -45,7 +45,16 @@ public class RunAutonomous extends Command {
 		}				
 		else if(auto.isStep7Done() == false){
 			auto.Step7();
-		}				
+		}
+		else if(autonomousSubsystem.Step8_done == false){
+			autonomousSubsystem.step8();
+		}	
+		else if(autonomousSubsystem.Step9_done == false){
+			autonomousSubsystem.Step9();
+		}	
+		else if(autonomousSubsystem.Step10_done == false){
+			autonomousSubsystem.step10();
+		}		
 
 	//	auto.elapsedTime();
 	

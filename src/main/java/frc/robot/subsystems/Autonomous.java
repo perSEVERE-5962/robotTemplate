@@ -1,3 +1,9 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
 package frc.robot.subsystems;
 
 import frc.robot.subsystems.*;
@@ -10,8 +16,25 @@ import frc.robot.Robot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 
-public class Autonomous {
-    private static boolean Step1_done = false;
+/**
+ * Add your docs here.
+ */
+public class Autonomous extends Subsystem {
+  // Put methods for controlling this subsystem
+  // here. Call these from Commands.
+  //public RobotGyro gyro = new RobotGyro();
+  public double dist = 0;
+  public double angle = 0;
+  public boolean Step1_done = false;
+  public boolean Step2_done = false;
+  public boolean Step3_done = false;
+  public boolean Step4_done = false;
+  public boolean Step5_done = false;
+  public boolean Step6_done = false;
+  public boolean Step7_done = false;
+  public boolean Step8_done = false;
+  public boolean Step9_done = false;
+  public boolean Step10_done = false;
 
     public boolean isStep1Done() {
         return Step1_done;
@@ -164,6 +187,7 @@ public class Autonomous {
             Step4_done = true;
         }
     }
+}
 
     public void Step5() {
         angle = Robot.gyro.getGyroAngle();
@@ -189,6 +213,9 @@ public class Autonomous {
             Step6_done = true;
         }
     }
+  }
+}
+}
 
     public void Step7() {
         if (Step7_Started == false) {
@@ -200,5 +227,45 @@ public class Autonomous {
             Step7_done = true;
         }
     }
-
+public void step8(){
+  angle = Robot.gyro.getGyroAngle();
+  if(angle >=5){
+    Step8_done = true;      
+    stopDrive();
+  }
+  else{
+    if(Robot.getIsRight() == true){
+      turnRight(5);
+    }
+    else if(Robot.getIsLeft() == true){
+      turnLeft(5);
+    }
+  }
+}
+public void Step9(){
+  dist = Robot.magEncoder.getDistance();
+  if(dist>=118.75){
+    Step9_done = true;
+    Robot.magEncoder.reset();
+    stopDrive();
+  }
+  else{
+    driveEncoder(0.3 , 0.3);
+    }
+  }
+public void step10(){
+  angle = Robot.gyro.getGyroAngle();
+  if(angle >=-5){
+    Step10_done = true;      
+    stopDrive();
+  }
+  else{
+    if(Robot.getIsRight() == true){
+      turnRight(-5);
+    }
+    else if(Robot.getIsLeft() == true){
+      turnLeft(-5);
+    }
+  }
+}
 }

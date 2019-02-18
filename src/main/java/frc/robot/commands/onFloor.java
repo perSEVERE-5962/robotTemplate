@@ -6,25 +6,35 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot.commands;
+
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import frc.robot.*;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class onFloor extends Command {
-  final double INTAKE_BALL_POSITION = 0.75 * 4096;// [_]
+  // final double INTAKE_BALL_POSITION =1705.5;// [_]
+  // final double INTAKE_BALL_POSITION =2048;// [_]
+  // static boolean isRunning = false;
 
-  public boolean onTarget(){
-    if(Math.abs(RobotMap.armTalon.getClosedLoopError())<100){
-        return true;
-    }
-    return false;
-}
-public void moveToIntakeBall (){
-  RobotMap.armTalon.set(ControlMode.Position, INTAKE_BALL_POSITION);
-}
+  // public boolean onTarget() {
+  //   if (Math.abs(RobotMap.armTalon.getClosedLoopError()) < 10) {
+  //     SmartDashboard.putString("On Floor OnTarget", "true");
+  //     return true;
+  //   }
+  //   SmartDashboard.putString("On Floor OnTarget", "false");
+  //   return false;
+  // }
+
+  // public void moveToIntakeBall() {
+  //   RobotMap.armTalon.set(ControlMode.Position, INTAKE_BALL_POSITION);
+  //   SmartDashboard.putNumber("target position", INTAKE_BALL_POSITION);
+
+  // }
+
   public onFloor() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
@@ -33,23 +43,33 @@ public void moveToIntakeBall (){
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    moveToIntakeBall();
+
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    if (Robot.armMotor.isPIDRunning() == false) {
+      // moveToIntakeBall();
+      // isRunning = true;
+      Robot.armMotor.moveToIntakeBall();
+    }
+    SmartDashboard.putNumber("Closed Loop Error", RobotMap.armTalon.getClosedLoopError());
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    if(onTarget()){
+    if (Robot.armMotor.isOnTarget() == true) {
+      // Robot.armPID.currentPosition = INTAKE_BALL_POSITION;
+      // isRunning = false;
       return true;
-   }
-   else{
-     return false;
-   }  }
+    } else {
+      return false;
+
+    }
+
+  }
 
   // Called once after isFinished returns true
   @Override

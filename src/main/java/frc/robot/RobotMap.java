@@ -19,23 +19,18 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
  */
 public class RobotMap {
 
-	public static WPI_TalonSRX robotLeftTalon;
-	public static WPI_VictorSPX robotLeftVictor;
-	public static WPI_TalonSRX robotRightTalon;
-	public static WPI_VictorSPX robotRightVictor;
-	public static DifferentialDrive myRobot;
-	public static SpeedController leftDrive;
-	public static SpeedController rightDrive;
-	public static WPI_VictorSPX IntakeVictor;
-	public static WPI_TalonSRX armTalon;
+	public static TalonSRX robotLeftTalon;
+	public static VictorSPX robotLeftVictor;
+	public static TalonSRX robotRightTalon;
+	public static VictorSPX robotRightVictor;
+	public static WPI_VictorSPX intakeVictor;
+	public static TalonSRX armTalon;
 	
 	public static void init() {
-		final int kTimeoutMs = 10;
-
-		robotLeftTalon = new WPI_TalonSRX(23);
-		robotRightTalon = new WPI_TalonSRX(22);
-		robotLeftVictor = new WPI_VictorSPX(20);
-		robotRightVictor = new WPI_VictorSPX(21);
+		robotLeftTalon = new TalonSRX(22);
+		robotRightTalon = new TalonSRX(23);
+		robotLeftVictor = new VictorSPX(20);
+		robotRightVictor = new VictorSPX(21);
 
 		robotRightTalon.configFactoryDefault();
 		robotRightVictor.configFactoryDefault();
@@ -44,18 +39,9 @@ public class RobotMap {
 
 		Robot.pidValue.configTalons();
 
-		leftDrive = new MultiSpeedController(robotLeftTalon, robotLeftTalon);
-		rightDrive = new MultiSpeedController(robotRightTalon, robotRightTalon);
-		robotLeftTalon.setSelectedSensorPosition(0 , 0 , kTimeoutMs);   
-        //initLeftQuadrature();
-        robotLeftTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, kTimeoutMs);								// Timeout
-		robotRightTalon.setSelectedSensorPosition(0 , 0 , kTimeoutMs);   
-        //initRightQuadrature();
-        robotRightTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, kTimeoutMs);								// Timeout
-	
-		myRobot = new DifferentialDrive(leftDrive, rightDrive);
-		IntakeVictor = new WPI_VictorSPX(12);
-		armTalon = new WPI_TalonSRX(11);
+		intakeVictor = new WPI_VictorSPX(12);
+
+		armTalon = new TalonSRX(11);
 		armTalon.configFactoryDefault();	
 		Robot.armPID.init();	
 	}

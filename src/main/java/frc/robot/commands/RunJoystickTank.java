@@ -16,7 +16,7 @@ public class RunJoystickTank extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	RobotMap.myRobot.setMaxOutput ((.350));
+//    	RobotMap.myRobot.setMaxOutput ((.350));
     }
 
     // Called repeatedly when this Command is scheduled to run

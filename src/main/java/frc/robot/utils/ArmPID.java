@@ -21,14 +21,14 @@ public class ArmPID {
 	final int kPIDLoopIdx = 0;
 	final int kTimeoutMs = 30;
 	boolean kSensorPhase = false;
-    boolean kMotorInvert = false;
+	boolean kMotorInvert = false;
+	public int absolutePosition=0;
+	public double currentPosition = 0;
 
     // Gains(kp, ki, kd, kf, izone, peak output);
     final Gains kGains = new Gains(1.6, 0.0, 0.0, 0.0, 0, 1.0);
 
     public void init() {
-        RobotMap.armTalon.configFactoryDefault();
-
 		/* Config the sensor used for Primary PID and sensor direction */
         RobotMap.armTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 
                                             kPIDLoopIdx,
@@ -46,8 +46,8 @@ public class ArmPID {
 		/* Config the peak and nominal outputs, 12V means full */
 		RobotMap.armTalon.configNominalOutputForward(0, kTimeoutMs);
 		RobotMap.armTalon.configNominalOutputReverse(0, kTimeoutMs);
-		RobotMap.armTalon.configPeakOutputForward(1, kTimeoutMs);
-		RobotMap.armTalon.configPeakOutputReverse(-1, kTimeoutMs);
+		RobotMap.armTalon.configPeakOutputForward(0.5, kTimeoutMs);
+		RobotMap.armTalon.configPeakOutputReverse(-0.5, kTimeoutMs);
 
 		/**
 		 * Config the allowable closed-loop error, Closed-Loop output will be
@@ -66,7 +66,7 @@ public class ArmPID {
 		 * Grab the 360 degree position of the MagEncoder's absolute
 		 * position, and intitally set the relative sensor to match.
 		 */
-		int absolutePosition = RobotMap.armTalon.getSensorCollection().getPulseWidthPosition();
+		absolutePosition = RobotMap.armTalon.getSensorCollection().getPulseWidthPosition();
 
 		/* Mask out overflows, keep bottom 12 bits */
 		absolutePosition &= 0xFFF;

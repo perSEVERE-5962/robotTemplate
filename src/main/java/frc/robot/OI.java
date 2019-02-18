@@ -27,35 +27,48 @@ public class OI {
 	public boolean isSolenoidOnePressed = false;
 	public JoystickButton buttonOne;
 	public JoystickButton buttonTwo;
-	ActivateLeft activateZero = new ActivateLeft();
-	ActivateRight activateOne = new ActivateRight();
 	public JoystickButton onFloor;
 	public JoystickButton inRobot;
 	public JoystickButton placeHatch;
 	public boolean hatch = false;
 	public JoystickButton shootBall;
 	public JoystickButton intakeZero;
+	public JoystickButton speedButton;
 
-	ActivateZero activateZero = new ActivateZero();
-	ActivateOne activateOne = new ActivateOne();
+	private int rumbleCount=0;
+
+	ActivateLeft activateLeft = new ActivateLeft();
+	ActivateRight activateRight = new ActivateRight();
+
+	public void incrementRumbleCount() {
+		++rumbleCount;
+	}
+	public void setRumbleCount(int value) {
+		rumbleCount = value;
+	}
+	public int getRumbleCount() {
+		return rumbleCount;
+	}
 
 	public OI() {
 		joystickLeft = new Joystick(1);
 		joystickRight = new Joystick(2);
-		gamepad1 = new Joystick(0);
-		xBoxController = new Joystick(3);
+		gamepad1 = new Joystick(0);	// Driver
+		xBoxController = new Joystick(3); // Copilot
+		speedButton = new JoystickButton(gamepad1, 3);	// X
+		speedButton.toggleWhenPressed(new SpeedControl());
 		buttonOne = new JoystickButton(xBoxController, 5);
 		buttonTwo = new JoystickButton(xBoxController, 6);
-		buttonOne.whenPressed(activateZero);
-		buttonTwo.whenPressed(activateOne);
+		buttonOne.whenPressed(activateLeft);
+		buttonTwo.whenPressed(activateRight);
 		xBoxController.setRumble(RumbleType.kLeftRumble, 0);
-		onFloor = new JoystickButton(gamepad1, 1);
+		onFloor = new JoystickButton(xBoxController, 1);
 		onFloor.whenPressed(new onFloor());
-		shootBall = new JoystickButton(gamepad1 , 2);
+		shootBall = new JoystickButton(xBoxController , 2);
 		shootBall.whenPressed(new shootBall());
-		inRobot = new JoystickButton(gamepad1, 3);
+		inRobot = new JoystickButton(xBoxController, 3);
 		inRobot.whenPressed(new inRobot());
-		placeHatch = new JoystickButton(gamepad1 , 4);
+		placeHatch = new JoystickButton(xBoxController , 4);
 		placeHatch.whenPressed(new placeHatch());
 
 

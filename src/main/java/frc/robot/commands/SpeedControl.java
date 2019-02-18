@@ -7,13 +7,17 @@
 
 package frc.robot.commands;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.RobotMap;
 import frc.robot.Robot;
 
-public class Stop extends Command {
-  public Stop() {
-    Robot.oi.isSolenoidZeroPressed = false;
-    Robot.oi.isSolenoidOnePressed = false;
+public class SpeedControl extends Command {
+
+  public SpeedControl() {
+    // Use requires() here to declare subsystem dependencies
+    // eg. requires(chassis);
   }
 
   // Called just before this Command runs the first time
@@ -24,16 +28,19 @@ public class Stop extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    if (Robot.drive.getIsReducedSpeed()) {
+      // set to full speed
+      Robot.drive.setIsReducedSpeed(false);
+    } else {
+      // set to half speed
+      Robot.drive.setIsReducedSpeed(true);
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    if (Robot.oi.isSolenoidZeroPressed == false || Robot.oi.isSolenoidOnePressed == false){
-      return true;
-    } else {
-      return false;
-    }
+    return true;
   }
 
   // Called once after isFinished returns true

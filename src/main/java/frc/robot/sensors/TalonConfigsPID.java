@@ -1,6 +1,8 @@
 package frc.robot.sensors;
 import frc.robot.RobotMap;
 
+import javax.net.ssl.TrustManager;
+
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 
@@ -78,7 +80,7 @@ public class TalonConfigsPID {
         
         RobotMap.robotLeftTalon.configMotionCruiseVelocity(8000, kTimeoutMS);
         RobotMap.robotLeftTalon.configMotionCruiseVelocity(8000, kTimeoutMS);
-        RobotMap.robotLeftTalon.configMotionAcceleration(3000, kTimeoutMS);
+        RobotMap.robotRightTalon.configMotionAcceleration(3000, kTimeoutMS);
         RobotMap.robotRightTalon.configMotionAcceleration(3000, kTimeoutMS);
 	}
 	

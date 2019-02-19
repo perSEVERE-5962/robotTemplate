@@ -8,7 +8,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-//import frc.robot.RobotMap;
+// //import frc.robot.RobotMap;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 //import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
@@ -19,12 +19,12 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
  */
 public class RobotMap {
 
-	public static TalonSRX robotLeftTalon;
-	public static VictorSPX robotLeftVictor;
-	public static TalonSRX robotRightTalon;
-	public static VictorSPX robotRightVictor;
-	public static WPI_VictorSPX intakeVictor;
-	public static TalonSRX armTalon;
+	public static WPI_TalonSRX robotLeftTalon;
+	public static WPI_VictorSPX robotLeftVictor;
+	public static WPI_TalonSRX robotRightTalon;
+	public static WPI_VictorSPX robotRightVictor;
+	public static WPI_TalonSRX armTalon;
+	public static WPI_VictorSPX IntakeVictor;
 	
 	public static void init() {
 		// Competition Robot
@@ -33,11 +33,10 @@ public class RobotMap {
 		// robotLeftVictor = new VictorSPX(20);
 		// robotRightVictor = new VictorSPX(21);
 
-		// Demo Robot
-		robotLeftTalon = new TalonSRX(22);
-		robotRightTalon = new TalonSRX(23);
-		robotLeftVictor = new VictorSPX(20);
-		robotRightVictor = new VictorSPX(21);
+		robotLeftTalon = new WPI_TalonSRX(22);
+		robotRightTalon = new WPI_TalonSRX(23);
+		robotLeftVictor = new WPI_VictorSPX(20);
+		robotRightVictor = new WPI_VictorSPX(21);
 
 		robotRightTalon.configFactoryDefault();
 		robotRightVictor.configFactoryDefault();
@@ -46,14 +45,13 @@ public class RobotMap {
 
 		Robot.pidValue.configTalons();
 
+		armTalon = new WPI_TalonSRX(11);
+		IntakeVictor = new WPI_VictorSPX(12);
+		RobotMap.robotLeftTalon.getSensorCollection().setPulseWidthPosition(0, 30);
+		armTalon.setSelectedSensorPosition(0);
+		Robot.armPID.init();	
+		armTalon.configFactoryDefault();	
 		RobotMap.robotLeftTalon.getSensorCollection().setPulseWidthPosition(0, 30);
 		RobotMap.robotRightTalon.getSensorCollection().setPulseWidthPosition(0, 30);
-
-		intakeVictor = new WPI_VictorSPX(12);
-
-		armTalon = new TalonSRX(11);
-		armTalon.configFactoryDefault();	
-		Robot.armPID.init();	
-		armTalon.setSelectedSensorPosition(0);
 	}
 }

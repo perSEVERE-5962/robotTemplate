@@ -2,35 +2,97 @@ package frc.robot;
 
 //import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.cameraserver.CameraServer;
-// import edu.wpi.cscore.HttpCamera;
-// import edu.wpi.cscore.MjpegServer;
-// import edu.wpi.cscore.CvSink;
+import edu.wpi.cscore.HttpCamera;
+import edu.wpi.cscore.MjpegServer;
+import edu.wpi.cscore.CvSink;
 // import edu.wpi.cscore.CvSource;
-// import edu.wpi.first.networktables.NetworkTableEntry;
-// import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.NetworkTable;
 
 public class Camera{ //extends Subsystem
+
+HttpCamera camera1;
+HttpCamera camera2;
+CvSink outputStream;
 CameraServer server = CameraServer.getInstance();
-int streamport = 1181;
+boolean gamePadXButtonPressed = false;
+NetworkTable table;
+NetworkTableInstance inst = NetworkTableInstance.getDefault();
+table = inst.getTable("Camera");
+NetworkTableEntry myEntry;
 
-public void CameraImage(int streamport){
-server.addServer("10.99.88.35", streamport);
-//server.startAutomaticCapture(streamport);
+void robotInit(){
+    camera1 = server.startAutomaticCapture(camera);
+    camera2 = server.startAutomaticCapture(camera);
 }
 
-public void SwitchCams(){
-    if (Robot.oi.gamePadXButtonPressed())
-    if (streamport == 1181){
-        streamport = 1182;
-        CameraImage(streamport);
-    } else if (streamport == 1182){
-        streamport = 1181;
-        CameraImage(streamport);
-    } else {
-        streamport = 1181;
-        CameraImage(streamport);
+void SwitchCams(){
+    if (gamePadXButtonPressed){
+        System.out.printf("Setting Camera 2\n");
+        myEntry = table.getEntry("CameraSelection");
+        myEntry.setString(camera2.getName());
+    } else if (!gamePadXButtonPressed){
+        System.out.printf("Setting Camera 1\n");
+        myEntry = table.getEntry("Camera Selection");
+        myEntry.setString(camera1.getName());
     }
+    gamePadXButtonPressed = Robot.oi.gamePadXButtonPressed();
 }
+
+// Mjpeg server function: addSwitchedCamera();
+
+// void camera1Init(){
+//     camera1 = server.startAutomaticCapture(camera);
+    
+// }
+
+// void camera1Off(){
+//     camera1 = server.removeServer();
+// }
+
+// void camera2Init(){
+//     camera2 = server.startAutomaticCapture("10.99.88.35", 1181);
+// }
+
+// void camera2Off(){
+//     camera2 = server.removeServer();
+// }
+
+// void TeleopPeriodic(){
+//     if (gamePadXButtonPressed){
+//         camera1Off();
+//         camera2Init();
+//     } else if (!gamePadXButtonPressed){
+//         camera2Off();
+//         camera1Init();
+//     }
+//     gamePadXButtonPressed = Robot.oi.gamePadXButtonPressed(); 
+// }
+
+// CameraServer server = CameraServer.getInstance();
+// int streamport = 1181;
+
+// public void CameraImage(MjpegServer video){
+// server.addServer("10.99.88.35", streamport);
+// server.startAutomaticCapture(video);
+// //server.startAutomaticCapture(streamport);
+// }
+
+// public void SwitchCams(){
+//     if (Robot.oi.gamePadXButtonPressed())
+//     if (streamport == 1181){
+//         streamport = 1182;
+//         CameraImage(streamport);
+//     } else if (streamport == 1182){
+//         streamport = 1181;
+//         CameraImage(streamport);
+//     } else {
+//         streamport = 1181;
+//         CameraImage(streamport);
+//     }
+// }
 
 // public static double centerX = 0.0;
 // public static double centerY = 0.0;

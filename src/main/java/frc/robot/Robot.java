@@ -195,15 +195,15 @@ public class Robot extends TimedRobot {
 		double rightPos = RobotMap.robotRightTalon.getSensorCollection().getPulseWidthPosition();
 		SmartDashboard.putNumber("Right Position", rightPos);
 		//ato.runSteps();
-		ato.Step1();
+		//ato.Step1();
 		// if(count == 0){
 		// 	SmartDashboard.putString("Step1 Done", "no");
-		// if(ato.isStep1Done() == false){
-		// 	ato.Step1();
-		// }
-		// else if (ato.isStep1Done() == true && ato.isStep2Done() == false){
-		// 	ato.Step2();
-		// }
+		if(ato.isStep1Done() == false){
+			ato.Step1();
+		}
+		else if (ato.isStep1Done() == true && ato.isStep2Done() == false){
+			ato.Step2();
+		}
 		// 	++count;
 		// }
 		// if(ato.isStep1Done() == true){

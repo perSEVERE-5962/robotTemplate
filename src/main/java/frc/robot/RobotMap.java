@@ -8,6 +8,8 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 // //import frc.robot.RobotMap;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 //import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -24,7 +26,7 @@ public class RobotMap {
 	public static WPI_TalonSRX robotRightTalon;
 	public static WPI_VictorSPX robotRightVictor;
 	public static WPI_TalonSRX armTalon;
-	public static WPI_VictorSPX IntakeVictor;
+	public static WPI_VictorSPX intakeVictor;
 	
 	public static void init() {
 		// Competition Robot
@@ -45,14 +47,23 @@ public class RobotMap {
 		robotLeftVictor.configFactoryDefault();		
 
 		Robot.pidValue.configTalons();
+		robotLeftTalon.setSelectedSensorPosition(0);
+		robotRightTalon.setSelectedSensorPosition(0);
+		robotRightTalon.getSensorCollection().setPulseWidthPosition(0, 10);
+		robotLeftTalon.getSensorCollection().setPulseWidthPosition(0, 10);
+		SmartDashboard.putNumber("LEFT START", robotLeftTalon.getSelectedSensorPosition(0));
+		SmartDashboard.putNumber("RIGHT START", robotRightTalon.getSelectedSensorPosition(0));
+		SmartDashboard.putNumber("LEFT START2", robotLeftTalon.getSensorCollection().getPulseWidthPosition());
+		SmartDashboard.putNumber("RIGHT START2", robotRightTalon.getSensorCollection().getPulseWidthPosition());
 
 		armTalon = new WPI_TalonSRX(11);
-		IntakeVictor = new WPI_VictorSPX(12);
-		RobotMap.robotLeftTalon.getSensorCollection().setPulseWidthPosition(0, 30);
-		armTalon.setSelectedSensorPosition(0);
+		intakeVictor = new WPI_VictorSPX(12);
+		armTalon.configFactoryDefault();
 		Robot.armPID.init();	
-		armTalon.configFactoryDefault();	
-		RobotMap.robotLeftTalon.getSensorCollection().setPulseWidthPosition(0, 30);
-		RobotMap.robotRightTalon.getSensorCollection().setPulseWidthPosition(0, 30);
+		armTalon.setSelectedSensorPosition(0);
+		armTalon.getSensorCollection().setPulseWidthPosition(0, 10);
+		SmartDashboard.putNumber("ARM START", armTalon.getSelectedSensorPosition(0));
+		SmartDashboard.putNumber("ARM START2", armTalon.getSensorCollection().getPulseWidthPosition());
+			
 	}
 }

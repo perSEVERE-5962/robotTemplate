@@ -47,9 +47,13 @@ public class Robot extends TimedRobot {
 
 	// commands
 	private static RunAutonomous autonomous = new RunAutonomous();
-	private Autonomous Auto = new Autonomous();
+	private Autonomous ato = new Autonomous();
 
-	public static TalonConfigsPID pidValue = new TalonConfigsPID();
+	// utils
+	public static pidControl pidValue = new pidControl();
+	public static ArmPID armPID = new ArmPID();
+	public static Logger logger = new Logger();
+
 	private static Faults leftFaults = new Faults();
 	private static Faults rightFaults = new Faults();
 
@@ -86,9 +90,9 @@ public class Robot extends TimedRobot {
 		compressor.setClosedLoopControl(true);
 
 		SmartDashboard.putNumber("Ultrasonic Distance ", 0);		
-		SmartDashboard.putNumber("kP Value" , pidValue.getkP() );
-		SmartDashboard.putNumber("kI Value" , pidValue.getkI() );
-		SmartDashboard.putNumber("kD Value" , pidValue.getkD() );
+		// SmartDashboard.putNumber("kP Value" , pidValue.getkP() );
+		// SmartDashboard.putNumber("kI Value" , pidValue.getkI() );
+		// SmartDashboard.putNumber("kD Value" , pidValue.getkD() );
 
 	}
 
@@ -141,9 +145,9 @@ public class Robot extends TimedRobot {
 		}*/
 		//magEncoder.reset();
 		//intakeEncoder.reset();
-		pidValue.setkP(SmartDashboard.getNumber("kP Value" , pidValue.getkP()));
-		pidValue.setkI(SmartDashboard.getNumber("kI Value" , pidValue.getkI()));
-		pidValue.setkD(SmartDashboard.getNumber("kD Value" , pidValue.getkD()));
+		// pidValue.setkP(SmartDashboard.getNumber("kP Value" , pidValue.getkP()));
+		// pidValue.setkI(SmartDashboard.getNumber("kI Value" , pidValue.getkI()));
+		// pidValue.setkD(SmartDashboard.getNumber("kD Value" , pidValue.getkD()));
 
 		autonomous.run();
 		// RobotMap.robotRightTalon.setSelectedSensorPosition(0, 0, pidValue.getkTimeoutMS());

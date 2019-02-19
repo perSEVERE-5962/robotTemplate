@@ -84,7 +84,11 @@ public class pidControl {
 		RobotMap.robotRightTalon.config_kP(Constants.kPIDLoopIdx, Constants.kGains.kP, Constants.kTimeoutMs);
 		RobotMap.robotRightTalon.config_kI(Constants.kPIDLoopIdx, Constants.kGains.kI, Constants.kTimeoutMs);
 	    RobotMap.robotRightTalon.config_kD(Constants.kPIDLoopIdx, Constants.kGains.kD, Constants.kTimeoutMs);
-    
+
+		// reset the position
+		RobotMap.robotLeftTalon.getSensorCollection().setPulseWidthPosition(0, Constants.kTimeoutMs);
+		RobotMap.robotRightTalon.getSensorCollection().setPulseWidthPosition(0, Constants.kTimeoutMs);
+
 		/**
 		 * Grab the 360 degree position of the MagEncoder's absolute
 		 * position, and intitally set the relative sensor to match.

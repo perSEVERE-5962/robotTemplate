@@ -81,6 +81,12 @@ public class pidControl {
 		 * Grab the 360 degree position of the MagEncoder's absolute
 		 * position, and intitally set the relative sensor to match.
 		 */
+
+		 //resetting ENC
+		 RobotMap.robotLeftTalon.getSensorCollection().setPulseWidthPosition(0, Constants.kTimeoutMs);
+		 RobotMap.robotRightTalon.getSensorCollection().setPulseWidthPosition(0, Constants.kTimeoutMs);
+
+
 		int absolutePositionLeft = RobotMap.robotLeftTalon.getSensorCollection().getPulseWidthPosition();
 		int absolutePositionRight = RobotMap.robotRightTalon.getSensorCollection().getPulseWidthPosition();
 
@@ -94,8 +100,8 @@ public class pidControl {
 
 		
 		/* Set the quadrature (relative) sensor to match absolute */
-		RobotMap.robotLeftTalon.setSelectedSensorPosition(absolutePositionLeft, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
-		RobotMap.robotRightTalon.setSelectedSensorPosition(absolutePositionRight, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+		RobotMap.robotLeftTalon.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+		RobotMap.robotRightTalon.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
 
     }
 }

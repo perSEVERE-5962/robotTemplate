@@ -99,8 +99,11 @@ public class Autonomous{
 
     public void Step1(){
         if(Step1_Started == false ){
-            RobotMap.robotLeftTalon.setSelectedSensorPosition(0);
-            RobotMap.robotRightTalon.setSelectedSensorPosition(0);
+            // RobotMap.robotLeftTalon.setSelectedSensorPosition(0);
+            // RobotMap.robotRightTalon.setSelectedSensorPosition(0);
+            
+            RobotMap.robotLeftTalon.getSensorCollection().setPulseWidthPosition(0, 30);
+            RobotMap.robotRightTalon.getSensorCollection().setPulseWidthPosition(0, 30);
             Step1_Started = true;
         }
         else if (Step1_inProgress == false){
@@ -112,20 +115,20 @@ public class Autonomous{
             //Step1_inProgress = false;
             SmartDashboard.putString("Step1 onTarget", "yes");
             Step1_done = true;
-                    } 
+        } 
         
     }
     public void Step2(){
         if(Step2_Started == false){
-            RobotMap.robotLeftTalon.setSelectedSensorPosition(0);
-            RobotMap.robotRightTalon.setSelectedSensorPosition(0);
-            // RobotMap.robotLeftTalon.getSensorCollection().setPulseWidthPosition(0, 30);
-            // RobotMap.robotRightTalon.getSensorCollection().setPulseWidthPosition(0, 30);
+        //     RobotMap.robotLeftTalon.setSelectedSensorPosition(0);
+        //     RobotMap.robotRightTalon.setSelectedSensorPosition(0);
+            RobotMap.robotLeftTalon.getSensorCollection().setPulseWidthPosition(0, 30);
+            RobotMap.robotRightTalon.getSensorCollection().setPulseWidthPosition(0, 30);
             Step2_Started = true;
         }
         else if(Step2_Started == true && Step2_inProgress == false){
             RobotMap.robotLeftTalon.set(ControlMode.Position, goStraight(59));
-            RobotMap.robotRightTalon.set(ControlMode.Position,goStraight(59));
+            RobotMap.robotRightTalon.set(ControlMode.Position,goStraight(59 ));
             Step2_inProgress = true;
         }
 

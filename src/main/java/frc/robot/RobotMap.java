@@ -8,6 +8,8 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 // //import frc.robot.RobotMap;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 //import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -44,9 +46,9 @@ public class RobotMap {
 		RobotMap.robotLeftVictor.configFactoryDefault();		
 
 		Robot.pidValue.configTalons();
-
-		RobotMap.robotLeftTalon.getSensorCollection().setPulseWidthPosition(0, 30);
-		RobotMap.robotRightTalon.getSensorCollection().setPulseWidthPosition(0, 30);
+		// SmartDashboard.putNumber("ARM START", armTalon.getSensorCollection().getPulseWidthPosition());
+		// RobotMap.robotLeftTalon.getSensorCollection().setPulseWidthPosition(0, 30);
+		// RobotMap.robotRightTalon.getSensorCollection().setPulseWidthPosition(0, 30);
 
 		// leftDrive = new MultiSpeedController(robotLeftTalon, robotLeftTalon);
 		// rightDrive = new MultiSpeedController(robotRightTalon, robotRightTalon);
@@ -58,6 +60,10 @@ public class RobotMap {
         // RobotMap.robotRightTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, kTimeoutMs);								// Timeout
 	
 		// myRobot = new DifferentialDrive(leftDrive, rightDrive);
+		SmartDashboard.putNumber("RIGHT START", robotRightTalon.getSensorCollection().getPulseWidthPosition());
+		SmartDashboard.putNumber("LEFT START", robotLeftTalon.getSensorCollection().getPulseWidthPosition());
+
+
 		IntakeVictor = new WPI_VictorSPX(12);
 		armTalon = new WPI_TalonSRX(11);
 	}

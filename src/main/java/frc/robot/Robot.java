@@ -156,7 +156,12 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
-
+		// if(Step1_done == false){
+			
+        //     RobotMap.robotLeftTalon.set(ControlMode.Position, 7475.2);
+		// 	RobotMap.robotRightTalon.set(ControlMode.Position,7475.2);
+			
+		// }
 
 		// SmartDashboard.putString("Encoder Left Value ", "" + magEncoder.getLeftDistance());
 		// SmartDashboard.putString("Encoder Right Value ", "" + magEncoder.getRightDistance());
@@ -201,7 +206,7 @@ public class Robot extends TimedRobot {
 		if(ato.isStep1Done() == false){
 			ato.Step1();
 		}
-		else if (ato.isStep1Done() == true && ato.isStep2Done() == false){
+		else if (ato.isStep2Done() == false){
 			ato.Step2();
 		}
 		// 	++count;

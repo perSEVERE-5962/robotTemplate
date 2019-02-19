@@ -47,13 +47,13 @@ public class Robot extends TimedRobot {
 
 	// commands
 	private static RunAutonomous autonomous = new RunAutonomous();
-	private static RunAutonomous autonomousCommand;
+	private Autonomous ato = new Autonomous();
 	public static Logger logger;
 
 	// utils
 	public static ArmPID armPID = new ArmPID();
-	public static TalonConfigsPID pidValue = new TalonConfigsPID();
-
+	//public static TalonConfigsPID pidValue = new TalonConfigsPID();
+	public static pidControl pidValue = new pidControl();
 	// other
 	private static Faults leftFaults = new Faults();
 	private static Faults rightFaults = new Faults();
@@ -93,9 +93,9 @@ public class Robot extends TimedRobot {
 
 		logger = new Logger();
 		logger.putNumber("Ultrasonic Distance ", 0);
-		logger.putNumber("kP Value", pidValue.getkP());
-		logger.putNumber("kI Value", pidValue.getkI());
-		logger.putNumber("kD Value", pidValue.getkD());
+		// logger.putNumber("kP Value", pidValue.getkP());
+		// logger.putNumber("kI Value", pidValue.getkI());
+		// logger.putNumber("kD Value", pidValue.getkD());
 
 		SmartDashboard.putNumber("Arm Start Position", RobotMap.armTalon.getSensorCollection().getPulseWidthPosition());
 
@@ -149,11 +149,11 @@ public class Robot extends TimedRobot {
 		 * if (autonomousCommand != null) { autonomousCommand.start(); }
 		 */
 
-		pidValue.setkP(logger.getNumber("kP Value", pidValue.getkP()));
-		pidValue.setkI(logger.getNumber("kI Value", pidValue.getkI()));
-		pidValue.setkD(logger.getNumber("kD Value", pidValue.getkD()));
+		// pidValue.setkP(logger.getNumber("kP Value", pidValue.getkP()));
+		// pidValue.setkI(logger.getNumber("kI Value", pidValue.getkI()));
+		// pidValue.setkD(logger.getNumber("kD Value", pidValue.getkD()));
 
-		autonomous.run();
+//		autonomous.run();
 	}
 
 	/**
@@ -163,20 +163,34 @@ public class Robot extends TimedRobot {
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
 
-		logger.putNumber("Gyro Value", gyro.getGyroAngle());
-		RobotMap.robotLeftTalon.clearStickyFaults(pidValue.getkTimeoutMS());
-		RobotMap.robotRightTalon.clearStickyFaults(pidValue.getkTimeoutMS());
+		// logger.putNumber("Gyro Value", gyro.getGyroAngle());
+		// RobotMap.robotLeftTalon.clearStickyFaults(30);
+		// RobotMap.robotRightTalon.clearStickyFaults(30);
 
-		logger.putNumber("Left Error", (double) RobotMap.robotLeftTalon.getClosedLoopError(0));
-		logger.putNumber("Right Error", (double) RobotMap.robotRightTalon.getClosedLoopError(0));
+		// logger.putNumber("Left Error", (double) RobotMap.robotLeftTalon.getClosedLoopError(0));
+		// logger.putNumber("Right Error", (double) RobotMap.robotRightTalon.getClosedLoopError(0));
 
-		logger.putNumber("Left Distance ", RobotMap.robotLeftTalon.getSelectedSensorPosition());
-		logger.putNumber("Right Distance ", RobotMap.robotRightTalon.getSelectedSensorPosition());
-		RobotMap.robotRightTalon.getFaults(rightFaults);
-		RobotMap.robotLeftTalon.getFaults(leftFaults);
-		logger.putBoolean("Left Out of Phase ", leftFaults.SensorOutOfPhase);
-		logger.putBoolean("Right Out of Phase ", rightFaults.SensorOutOfPhase);
+		// logger.putNumber("Left Distance ", RobotMap.robotLeftTalon.getSelectedSensorPosition());
+		// logger.putNumber("Right Distance ", RobotMap.robotRightTalon.getSelectedSensorPosition());
+		// RobotMap.robotRightTalon.getFaults(rightFaults);
+		// RobotMap.robotLeftTalon.getFaults(leftFaults);
+		// logger.putBoolean("Left Out of Phase ", leftFaults.SensorOutOfPhase);
+		// logger.putBoolean("Right Out of Phase ", rightFaults.SensorOutOfPhase);
 
+		double leftPos = RobotMap.robotLeftTalon.getSensorCollection().getPulseWidthPosition();
+		SmartDashboard.putNumber("Left Position", leftPos);
+		double rightPos = RobotMap.robotRightTalon.getSensorCollection().getPulseWidthPosition();
+		SmartDashboard.putNumber("Right Position", rightPos);
+		//ato.runSteps();
+		if (ato.daveStep1_Done == false) {
+			ato.daveStep1();
+		} else if (ato.daveStep2_Done == false) {
+			ato.daveStep2();
+		} else {
+			ato.stopDrive();
+		}
+
+		//ato.Step1();
 	}
 
 	@Override

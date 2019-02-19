@@ -27,8 +27,15 @@ public class RobotMap {
 	public static TalonSRX armTalon;
 	
 	public static void init() {
-		robotLeftTalon = new TalonSRX(23);
-		robotRightTalon = new TalonSRX(22);
+		// Competition Robot
+		// robotLeftTalon = new TalonSRX(23);
+		// robotRightTalon = new TalonSRX(22);
+		// robotLeftVictor = new VictorSPX(20);
+		// robotRightVictor = new VictorSPX(21);
+
+		// Demo Robot
+		robotLeftTalon = new TalonSRX(22);
+		robotRightTalon = new TalonSRX(23);
 		robotLeftVictor = new VictorSPX(20);
 		robotRightVictor = new VictorSPX(21);
 
@@ -38,6 +45,9 @@ public class RobotMap {
 		robotLeftVictor.configFactoryDefault();		
 
 		Robot.pidValue.configTalons();
+
+		RobotMap.robotLeftTalon.getSensorCollection().setPulseWidthPosition(0, 30);
+		RobotMap.robotRightTalon.getSensorCollection().setPulseWidthPosition(0, 30);
 
 		intakeVictor = new WPI_VictorSPX(12);
 

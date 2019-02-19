@@ -33,6 +33,7 @@ public class RobotMap {
 		// robotLeftVictor = new VictorSPX(20);
 		// robotRightVictor = new VictorSPX(21);
 
+		// demo robot
 		robotLeftTalon = new WPI_TalonSRX(22);
 		robotRightTalon = new WPI_TalonSRX(23);
 		robotLeftVictor = new WPI_VictorSPX(20);

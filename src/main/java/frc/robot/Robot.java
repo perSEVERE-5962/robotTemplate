@@ -31,10 +31,6 @@ import frc.robot.utils.Logger;
  * project.
  */
 public class Robot extends TimedRobot {
-	 public static RobotGyro gyro = new RobotGyro();
-	//public static ADIS16470_IMU gyro = new ADIS16470_IMU();
-	public static srxMagEncoder magEncoder = new srxMagEncoder();
-	public static srxMagEncoder intakeEncoder = new srxMagEncoder();
 	public static OI oi;
 
 	// subsystems
@@ -51,18 +47,8 @@ public class Robot extends TimedRobot {
 
 	// commands
 	private static RunAutonomous autonomous = new RunAutonomous();
-	private static ArmMotor armMotor;
-	public static SolenoidSubsystem solenoidSubsystem;
-	private static boolean Step1_done = false;
-	private static boolean Step2_done = false;
-	private static boolean Step3_done = false;
-	private static boolean Step4_done = false;
-	private static boolean Step5_done = false;
-	private static boolean Step6_done = false;
-	private static boolean Step7_done = false;
-	private static boolean isLeft = false;
 	private Autonomous Auto = new Autonomous();
-	boolean step1done = false;
+
 	public static TalonConfigsPID pidValue = new TalonConfigsPID();
 	private static Faults leftFaults = new Faults();
 	private static Faults rightFaults = new Faults();

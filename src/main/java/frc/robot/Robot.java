@@ -14,10 +14,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Compressor;
 import frc.robot.subsystems.Drive;
 import frc.robot.commands.RunAutonomous;
+import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.*;
 import frc.robot.sensors.*;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
-import frc.robot.sensors.TalonConfigsPID;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.utils.ArmPID;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -57,9 +58,66 @@ public class Robot extends TimedRobot {
 	private static Faults leftFaults = new Faults();
 	private static Faults rightFaults = new Faults();
 
+	public static enum StartingPosition{
+		Left_Lvl_2,
+		Left_Lvl_1,
+		Middle_Lvl_1,
+		Right_Lvl_1,
+		Right_Lvl_2,
+	}
 	private static boolean isLeft = false;
 
-	public static boolean getIsLeft() {
+	public static enum TargetPosition{
+		Left_Bay_1,
+		Left_Bay_2,
+		Left_Bay_3,
+		Middle_Bay_1,
+		Middle_Bay_2,
+		Right_Bay_1,
+		Right_Bay_2,
+		Right_Bay_3,
+	}
+
+	public static enum GamePiece{
+		Ball,
+		Hatch_Panel,
+	}
+
+	SendableChooser<StartingPosition> startingPosition;
+	SendableChooser<TargetPosition> targetPosition;
+	SendableChooser<GamePiece> gamePiece;
+
+	private void initStartingPosition(){
+		startingPosition = new SendableChooser<StartingPosition>();
+		startingPosition.setDefaultOption("Left_Lvl_2", StartingPosition.Left_Lvl_2);
+		startingPosition.addOption("Left_Lvl_1", StartingPosition.Left_Lvl_1);
+		startingPosition.addOption("Middle_Lvl_1", StartingPosition.Middle_Lvl_1);
+		startingPosition.addOption("Right_Lvl_1", StartingPosition.Right_Lvl_1);
+		startingPosition.addOption("Right_Lvl_2", StartingPosition.Right_Lvl_2);
+		SmartDashboard.putData("Select starting position:", startingPosition);
+	}
+
+	private void initTargetPosition(){
+		targetPosition = new SendableChooser<TargetPosition>();
+		targetPosition.setDefaultOption("Left_Bay_1", TargetPosition.Left_Bay_1);
+		targetPosition.addOption("Left_Bay_2", TargetPosition.Left_Bay_2);
+		targetPosition.addOption("Left_Bay_3", TargetPosition.Left_Bay_3);
+		targetPosition.addOption("Middle_Bay_1", TargetPosition.Middle_Bay_1);
+		targetPosition.addOption("Middle_Bay_2", TargetPosition.Middle_Bay_2);
+		targetPosition.addOption("Right_Bay_1", TargetPosition.Right_Bay_1);
+		targetPosition.addOption("Right_Bay_2", TargetPosition.Right_Bay_2);
+		targetPosition.addOption("Right_Bay_3", TargetPosition.Right_Bay_3);
+		SmartDashboard.putData("Select target position:", targetPosition);
+	}
+
+	private void initGamePiece(){
+		gamePiece = new SendableChooser<GamePiece>();
+		gamePiece.setDefaultOption("Ball", GamePiece.Ball);
+		gamePiece.addOption("Hatch_Panel", GamePiece.Hatch_Panel);
+		SmartDashboard.putData("Select game piece:", gamePiece);
+	}
+
+	public static boolean getIsLeft(){
 		return isLeft;
 	}
 
@@ -90,10 +148,12 @@ public class Robot extends TimedRobot {
 		compressor.setClosedLoopControl(true);
 
 		SmartDashboard.putNumber("Ultrasonic Distance ", 0);		
+		initStartingPosition();
+		initTargetPosition();
+		initGamePiece();
 		// SmartDashboard.putNumber("kP Value" , pidValue.getkP() );
 		// SmartDashboard.putNumber("kI Value" , pidValue.getkI() );
 		// SmartDashboard.putNumber("kD Value" , pidValue.getkD() );
-
 	}
 
 	/**
@@ -155,8 +215,9 @@ public class Robot extends TimedRobot {
 
 		SmartDashboard.putString("Auto Step 1 Done", "No");
 
-
-
+		StartingPosition selectedStartingPosition = (StartingPosition) startingPosition.getSelected();
+		TargetPosition selectedTargetPosition = (TargetPosition) targetPosition.getSelected();
+		GamePiece selectedGamePiece = (GamePiece) gamePiece.getSelected();
 		//if(step1done == false){
 			//autoPID.step1();
 		//}

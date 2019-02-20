@@ -26,14 +26,8 @@ public class OI {
 	public boolean isSolenoidOnePressed = false;
 	public JoystickButton buttonOne;
 	public JoystickButton buttonTwo;
-	public JoystickButton onFloor;
-	public JoystickButton inRobot;
-	public JoystickButton placeHatch;
-	public boolean hatch = false;
-	public JoystickButton shootBall;
-	public JoystickButton intakeZero;
-	public JoystickButton driverSpeedButton;
-	public JoystickButton copilotSpeedButton;
+	public JoystickButton buttonSix;
+	public boolean isCamera1Active = true;
 
 	private int rumbleCount=0;
 
@@ -53,6 +47,8 @@ public class OI {
 	public OI() {
 		joystickLeft = new Joystick(1);
 		joystickRight = new Joystick(2);
+		buttonSix = new JoystickButton(gamepad1, 6);
+		buttonSix.toggleWhenPressed(new CameraToggle());
 		driverController = new Joystick(0);	// Driver
 		copilotController = new Joystick(3); // Copilot
 		driverSpeedButton = new JoystickButton(driverController, 5);	// right bumper
@@ -121,6 +117,10 @@ public class OI {
 		return driverController.getRawAxis(3);
 	}
 	
+	public boolean gamePadXButtonPressed(){
+        return gamepad1.getRawButton(3);
+	}
+
 	public double xBoxLeftAxis() {
 		return copilotController.getRawAxis(1);
 	}

@@ -1,15 +1,17 @@
 package frc.robot.commands;
 import frc.robot.subsystems.Autonomous;
 import edu.wpi.first.wpilibj.command.Command;
-
+import frc.robot.Robot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 public class RunAutonomous extends Command {
 
+	public RunAutonomous(Robot.StartingPosition startingPosition, Robot.TargetPosition targetPosition, Robot.GamePiece gamePiece) {
+		SmartDashboard.putString("Starting Position", startingPosition.toString());
+		SmartDashboard.putString("Target Position", targetPosition.toString());
+		SmartDashboard.putString("Game Piece", gamePiece.toString());
 	private Autonomous auto = new Autonomous();
-
-	//Constructor for Run autonomous
-	public RunAutonomous() {
 	}
 	
 

@@ -23,14 +23,14 @@ public class Constants {
 	
 	/* Choose so that Talon does not report sensor out of phase */
 	public static boolean kLeftSensorPhase = true;
-	public static boolean kRightSensorPhase = false;
+	public static boolean kRightSensorPhase = true;
 
 	/**
 	 * Choose based on what direction you want to be positive,
 	 * this does not affect motor invert. 
 	 */
 	public static boolean kLeftInvert = false;
-	public static boolean kRightInvert = false;
+	public static boolean kRightInvert = true;
 
 	/**
 	 * Gains used in Positon Closed Loop, to be adjusted accordingly

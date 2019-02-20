@@ -30,16 +30,16 @@ public class RobotMap {
 	
 	public static void init() {
 		// Competition Robot
-		// robotLeftTalon = new TalonSRX(23);
-		// robotRightTalon = new TalonSRX(22);
-		// robotLeftVictor = new VictorSPX(20);
-		// robotRightVictor = new VictorSPX(21);
-
-		// demo robot
-		robotLeftTalon = new WPI_TalonSRX(22);
-		robotRightTalon = new WPI_TalonSRX(23);
+		robotLeftTalon = new WPI_TalonSRX(23);
+		robotRightTalon = new WPI_TalonSRX(22);
 		robotLeftVictor = new WPI_VictorSPX(20);
 		robotRightVictor = new WPI_VictorSPX(21);
+
+		// demo robot
+		// robotLeftTalon = new WPI_TalonSRX(22);
+		// robotRightTalon = new WPI_TalonSRX(23);
+		// robotLeftVictor = new WPI_VictorSPX(20);
+		// robotRightVictor = new WPI_VictorSPX(21);
 
 		robotRightTalon.configFactoryDefault();
 		robotRightVictor.configFactoryDefault();

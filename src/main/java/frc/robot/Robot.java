@@ -228,9 +228,9 @@ public class Robot extends TimedRobot {
 		// 	armMotor.stop();
 		// }
 
-		if (oi.xBoxController.getRawAxis(5) > 0.2) {
+		if (oi.copilotController.getRawAxis(5) > 0.2) {
 			armMotor.runDownward();
-		} else if (oi.xBoxController.getRawAxis(5) < -0.2) {
+		} else if (oi.copilotController.getRawAxis(5) < -0.2) {
 			armMotor.runUpward();
 		} else {
 			armMotor.stop();
@@ -242,7 +242,7 @@ public class Robot extends TimedRobot {
 		if (oi.getIntake()) {
 			if (ultrasonicanalog.getRange() < 3) {
 				RobotMap.intakeVictor.set(0);
-				oi.xBoxController.setRumble(RumbleType.kLeftRumble, 1);
+				oi.copilotController.setRumble(RumbleType.kLeftRumble, 1);
 				oi.incrementRumbleCount();
 			} else {
 				RobotMap.intakeVictor.set(0.5);
@@ -255,7 +255,7 @@ public class Robot extends TimedRobot {
 		int rumbleCount = oi.getRumbleCount();
 		if (rumbleCount > 0) {
 			if (rumbleCount > 100) {
-				oi.xBoxController.setRumble(RumbleType.kLeftRumble, 0);
+				oi.copilotController.setRumble(RumbleType.kLeftRumble, 0);
 				oi.setRumbleCount(0);
 			} else {
 				oi.incrementRumbleCount();

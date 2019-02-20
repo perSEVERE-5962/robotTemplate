@@ -19,6 +19,9 @@ public class ArmMotor extends Subsystem {
 	final double INTAKE_BALL_POSITION = 1479.1;// [_]
 	private static boolean isPIDRunning = false;
 
+	private boolean isReducedSpeed = false;
+
+
 	public void moveToStartPosition() {
 		isPIDRunning = true;
 		RobotMap.armTalon.set(ControlMode.Position, START_POSITION);
@@ -59,18 +62,33 @@ public class ArmMotor extends Subsystem {
 	}
 
 	public void runUpward() {
+		double speed = 0.3;
+		if (isReducedSpeed) {
+			speed = 0.4;
+		}
 		isPIDRunning = false;	// disable PID if running
-		RobotMap.armTalon.set(ControlMode.PercentOutput, Robot.oi.xBoxController.getRawAxis(5));
+		RobotMap.armTalon.set(ControlMode.PercentOutput, speed*Robot.oi.copilotController.getRawAxis(5));
 	}
 
 	public void runDownward() {
+		double speed = 0.3;
+		if (isReducedSpeed) {
+			speed = 0.4;
+		}
 		isPIDRunning = false; 	// disable PID if running
-		RobotMap.armTalon.set(ControlMode.PercentOutput, Robot.oi.xBoxController.getRawAxis(5));
+		RobotMap.armTalon.set(ControlMode.PercentOutput, speed*Robot.oi.copilotController.getRawAxis(5));
 	}
 
 	public void stop() {
 		isPIDRunning = false;
 		RobotMap.armTalon.set(ControlMode.PercentOutput, 0);
+	}
+
+	public void setIsReducedSpeed(boolean value) {
+		isReducedSpeed = value;
+	}
+	public boolean getIsReducedSpeed() {
+		return isReducedSpeed;
 	}
 
 	public void initDefaultCommand() {

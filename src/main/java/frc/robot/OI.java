@@ -18,11 +18,10 @@ import frc.robot.subsystems.*;
 
  
 public class OI {
-	public ArmMotor armMotor = new ArmMotor();
 	public Joystick joystickLeft;
 	public Joystick joystickRight;
-	public Joystick gamepad1;
-	public Joystick xBoxController;
+	public Joystick driverController;
+	public Joystick copilotController;
 	public boolean isSolenoidZeroPressed = false;
 	public boolean isSolenoidOnePressed = false;
 	public JoystickButton buttonOne;
@@ -33,7 +32,8 @@ public class OI {
 	public boolean hatch = false;
 	public JoystickButton shootBall;
 	public JoystickButton intakeZero;
-	public JoystickButton speedButton;
+	public JoystickButton driverSpeedButton;
+	public JoystickButton copilotSpeedButton;
 
 	private int rumbleCount=0;
 
@@ -53,15 +53,17 @@ public class OI {
 	public OI() {
 		joystickLeft = new Joystick(1);
 		joystickRight = new Joystick(2);
-		gamepad1 = new Joystick(0);	// Driver
-		xBoxController = new Joystick(3); // Copilot
-		speedButton = new JoystickButton(gamepad1, 3);	// X
-		speedButton.toggleWhenPressed(new SpeedControl());
-		buttonOne = new JoystickButton(xBoxController, 5);
-		buttonTwo = new JoystickButton(xBoxController, 6);
+		driverController = new Joystick(0);	// Driver
+		copilotController = new Joystick(3); // Copilot
+		driverSpeedButton = new JoystickButton(driverController, 5);	// right bumper
+		driverSpeedButton.toggleWhenPressed(new DriverSpeedControl());
+		buttonOne = new JoystickButton(copilotController, 5);
+		buttonTwo = new JoystickButton(copilotController, 6);
 		buttonOne.whenPressed(activateLeft);
 		buttonTwo.whenPressed(activateRight);
-		xBoxController.setRumble(RumbleType.kLeftRumble, 0);
+		copilotController.setRumble(RumbleType.kLeftRumble, 0);
+		copilotSpeedButton = new JoystickButton(copilotController, 3);	// X 
+		copilotSpeedButton.toggleWhenPressed(new ArmSpeedControl());
 		// onFloor = new JoystickButton(xBoxController, 1);
 		// onFloor.whenPressed(new onFloor());
 		// shootBall = new JoystickButton(xBoxController , 2);
@@ -74,11 +76,11 @@ public class OI {
 
 	}
 	public boolean getIntake() {
-		 double value = xBoxController.getRawAxis(3);
+		 double value = copilotController.getRawAxis(3);
 		return value > 0.1;
 	}
 	public boolean getOuttake() {
-		double value = xBoxController.getRawAxis(2);
+		double value = copilotController.getRawAxis(2);
 	   return value > 0.1;
 	}
 	public void startDriveCommand() {
@@ -105,33 +107,33 @@ public class OI {
 	}
 	
 	public double gamepadLeftAxis() {
-		return gamepad1.getRawAxis(1);
+		return driverController.getRawAxis(1);
 	}
 	public double gamepadRightAxis() {
-		return gamepad1.getRawAxis(5);
+		return driverController.getRawAxis(5);
 	}
 	
 	public double gamePadLeftTrigger() {
-		return gamepad1.getRawAxis(2);
+		return driverController.getRawAxis(2);
 	}
 	
 	public double gamePadRightTrigger() {
-		return gamepad1.getRawAxis(3);
+		return driverController.getRawAxis(3);
 	}
 	
 	public double xBoxLeftAxis() {
-		return xBoxController.getRawAxis(1);
+		return copilotController.getRawAxis(1);
 	}
 	
 	public double xBoxRightAxis() {
-		return xBoxController.getRawAxis(5);
+		return copilotController.getRawAxis(5);
 	}
 	
 	public double xBoxLeftTrigger() {
-		return xBoxController.getRawAxis(2);
+		return copilotController.getRawAxis(2);
 	}
 
 	public double xBoxRightTrigger() {
-		return xBoxController.getRawAxis(3);
+		return copilotController.getRawAxis(3);
 	}
 }

@@ -13,9 +13,9 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.RobotMap;
 import frc.robot.Robot;
 
-public class SpeedControl extends Command {
+public class DriverSpeedControl extends Command {
 
-  public SpeedControl() {
+  public DriverSpeedControl() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }

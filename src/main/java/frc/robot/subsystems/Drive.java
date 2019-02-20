@@ -36,8 +36,8 @@ public class Drive extends Subsystem {
 		if (isReducedSpeed) {
 			speed = 0.5;
 		}
-		RobotMap.robotLeftTalon.set(ControlMode.PercentOutput, speed*Robot.oi.gamepad1.getRawAxis(1));
-		RobotMap.robotRightTalon.set(ControlMode.PercentOutput, speed*Robot.oi.gamepad1.getRawAxis(5));
+		RobotMap.robotLeftTalon.set(ControlMode.PercentOutput, -speed*Robot.oi.driverController.getRawAxis(1));
+		RobotMap.robotRightTalon.set(ControlMode.PercentOutput, -speed*Robot.oi.driverController.getRawAxis(5));
 	}
 
 	@Override

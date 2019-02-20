@@ -139,7 +139,8 @@ public class Robot extends TimedRobot {
 	 */
 	public void robotInit() {
 		RobotMap.init();
-		// gyro.resetGyro();
+
+		gyro.resetGyro();
 		oi = new OI();
 
 		armMotor = new ArmMotor();
@@ -238,13 +239,19 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
+		// if(Step1_done == false){
+			
+        //     RobotMap.robotLeftTalon.set(ControlMode.Position, 7475.2);
+		// 	RobotMap.robotRightTalon.set(ControlMode.Position,7475.2);
+			
+		// }
 
 		// logger.putNumber("Gyro Value", gyro.getGyroAngle());
-		// RobotMap.robotLeftTalon.clearStickyFaults(30);
 		// RobotMap.robotRightTalon.clearStickyFaults(30);
-
+		// RobotMap.robotLeftTalon.clearStickyFaults(30);
 		// logger.putNumber("Left Error", (double) RobotMap.robotLeftTalon.getClosedLoopError(0));
 		// logger.putNumber("Right Error", (double) RobotMap.robotRightTalon.getClosedLoopError(0));
+		SmartDashboard.putNumber("Gyro Value" , gyro.getGyroAngle());
 
 		// logger.putNumber("Left Distance ", RobotMap.robotLeftTalon.getSelectedSensorPosition());
 		// logger.putNumber("Right Distance ", RobotMap.robotRightTalon.getSelectedSensorPosition());
@@ -257,7 +264,37 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Left Position", leftPos);
 		double rightPos = RobotMap.robotRightTalon.getSensorCollection().getPulseWidthPosition();
 		SmartDashboard.putNumber("Right Position", rightPos);
+		
+		SmartDashboard.putNumber("LEFT POSITION", RobotMap.robotLeftTalon.getSelectedSensorPosition(0));
+		SmartDashboard.putNumber("RIGHT POSITION", RobotMap.robotRightTalon.getSelectedSensorPosition(0));
+		//ato.runSteps();
+		//ato.Step1();
+		// if(count == 0){
+		// 	SmartDashboard.putString("Step1 Done", "no");
+		// if(ato.isStep1Done() == false){
+		//ato.Step1();
+		// }
+		// else if (ato.isStep1Done() == true && ato.isStep2Done() == false){
+		// 	ato.Step2();
+		// }
+		if(ato.isStep1Done() == false){
 		ato.Step1();
+		SmartDashboard.putString("Step1_done", "NO");
+		}
+		if(ato.isStep1Done() == true && ato.isStep3Done() == false){	
+			SmartDashboard.putString("Step1_done", "YES");
+
+			ato.Step3();
+		}
+		// else if(ato.isStep3Done() == true && ato.isStep4Done() == false){
+		// 	ato.Step4();
+		// }
+		// 	++count;
+		// }
+		// if(ato.isStep1Done() == true){
+		// 	SmartDashboard.putString("Step1 Done2", "yes");
+		// 	ato.stopDrive();		
+		// }
 
 
 	}

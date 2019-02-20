@@ -65,7 +65,7 @@ public class Robot extends TimedRobot {
 	public void robotInit() {
 		RobotMap.init();
 
-		// gyro.resetGyro();
+		gyro.resetGyro();
 		oi = new OI();
 		//magEncoder.init();
 		//magEncoder.reset();
@@ -166,7 +166,7 @@ public class Robot extends TimedRobot {
 		// SmartDashboard.putString("Encoder Left Value ", "" + magEncoder.getLeftDistance());
 		// SmartDashboard.putString("Encoder Right Value ", "" + magEncoder.getRightDistance());
 		// SmartDashboard.putString("Encoder Value ", "" + magEncoder.getDistance());
-		//SmartDashboard.putNumber("Gyro Value" , gyro.getGyroAngle());
+		SmartDashboard.putNumber("Gyro Value" , gyro.getGyroAngle());
 		// RobotMap.robotLeftTalon.clearStickyFaults(pidValue.getkTimeoutMS());
 		// RobotMap.robotRightTalon.clearStickyFaults(pidValue.getkTimeoutMS());
 
@@ -203,14 +203,26 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("LEFT POSITION", RobotMap.robotLeftTalon.getSelectedSensorPosition(0));
 		SmartDashboard.putNumber("RIGHT POSITION", RobotMap.robotRightTalon.getSelectedSensorPosition(0));
 		//ato.runSteps();
-		ato.Step1();
+		//ato.Step1();
 		// if(count == 0){
 		// 	SmartDashboard.putString("Step1 Done", "no");
 		// if(ato.isStep1Done() == false){
-		// 	ato.Step1();
+		//ato.Step1();
 		// }
-		// else if (ato.isStep2Done() == false){
+		// else if (ato.isStep1Done() == true && ato.isStep2Done() == false){
 		// 	ato.Step2();
+		// }
+		if(ato.isStep1Done() == false){
+		ato.Step1();
+		SmartDashboard.putString("Step1_done", "NO");
+		}
+		if(ato.isStep1Done() == true && ato.isStep3Done() == false){	
+			SmartDashboard.putString("Step1_done", "YES");
+
+			ato.Step3();
+		}
+		// else if(ato.isStep3Done() == true && ato.isStep4Done() == false){
+		// 	ato.Step4();
 		// }
 		// 	++count;
 		// }

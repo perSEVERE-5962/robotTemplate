@@ -59,10 +59,11 @@ public class Autonomous{
       }
       public void turnRight(double speed){
         RobotMap.robotLeftTalon.set(ControlMode.PercentOutput, -speed);
-        RobotMap.robotRightTalon.set(ControlMode.PercentOutput, speed);      }
+        RobotMap.robotRightTalon.set(ControlMode.PercentOutput, speed);      
+    }
     private static int i=0;
 
-    final double diameter = 7.5;
+    final double diameter = 3.0;
     final double circumferance = Math.PI*diameter;
     final double ticksPerRotation = 4096;
 
@@ -104,16 +105,18 @@ public class Autonomous{
             
             RobotMap.robotLeftTalon.getSensorCollection().setPulseWidthPosition(0, 30);
             RobotMap.robotRightTalon.getSensorCollection().setPulseWidthPosition(0, 30);
+            SmartDashboard.putString("STEP1_inProgress", "GREG");
             Step1_Started = true;
         }
         else if (Step1_inProgress == false){
-            RobotMap.robotLeftTalon.set(ControlMode.Position, goStraight(48));
+            RobotMap.robotLeftTalon.set(ControlMode.Position,goStraight(48));
             RobotMap.robotRightTalon.set(ControlMode.Position,goStraight(48));
+            SmartDashboard.putString("STEP1_inProgress", "YES");
             Step1_inProgress = true;
         }
         else if(onTarget()&&Step1_inProgress == true && Step1_done == false){
             //Step1_inProgress = false;
-            SmartDashboard.putString("Step1 onTarget", "yes");
+            SmartDashboard.putString("Step1 onTarget", "YES");
             Step1_done = true;
         } 
         
@@ -127,8 +130,8 @@ public class Autonomous{
             Step2_Started = true;
         }
         else if(Step2_Started == true && Step2_inProgress == false){
-            RobotMap.robotLeftTalon.set(ControlMode.Position, goStraight(59));
-            RobotMap.robotRightTalon.set(ControlMode.Position,goStraight(59 ));
+            RobotMap.robotLeftTalon.set(ControlMode.Position, goStraight(107));
+            RobotMap.robotRightTalon.set(ControlMode.Position,goStraight(107));
             Step2_inProgress = true;
         }
 
@@ -149,23 +152,25 @@ public class Autonomous{
     // }
     public void Step3(){
         angle = Robot.gyro.getGyroAngle();
-        if(angle >=17.3532){//Should turn 67.29 degrees towards right
+        if(angle >=17.3532 ){//Should turn 67.29 degrees towards right
           //Robot.gyro.reset();
+          stopDrive();
           Step3_done = true;      
         }
         else{
-          if(Robot.getIsRight() == true){
-            turnRight(0.5);
-          }
-          else if(Robot.getIsLeft() == true){
-            turnLeft(0.5);
-          }
+        //   if(Robot.getIsRight() == true){
+        //     turnRight(1);
+        //   }
+        //   else if(Robot.getIsLeft() == true){
+        //     turnLeft(1);
+        //   }
+        turnRight(-0.25);
         }
     }
     public void Step4(){
         if(Step4_Started == false){
-            RobotMap.robotLeftTalon.set(ControlMode.Position, goStraight(161.134));
-            RobotMap.robotRightTalon.set(ControlMode.Position,goStraight(161.134)); 
+            RobotMap.robotLeftTalon.set(ControlMode.Position, goStraight(48));
+            RobotMap.robotRightTalon.set(ControlMode.Position,goStraight(48)); 
             Step4_Started = true;
         }
         else if(onTarget()){

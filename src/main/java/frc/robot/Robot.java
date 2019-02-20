@@ -46,7 +46,6 @@ public class Robot extends TimedRobot {
 	private static Faults rightFaults = new Faults();
 	int counter = 0;
 	Compressor compressor = new Compressor(0);
-	Camera camera = new Camera();
 
 	public static enum StartingPosition{
 		Left_Lvl_2,
@@ -337,11 +336,6 @@ public class Robot extends TimedRobot {
 		}
 		Scheduler.getInstance().run();
 		SmartDashboard.putNumber("Gyro Value", Robot.gyro.getGyroAngle());
-
-		
-		if (oi.gamePadXButtonPressed()){
-        camera.SwitchCams();
-		}
 	}
 	
 

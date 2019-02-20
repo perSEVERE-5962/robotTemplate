@@ -25,8 +25,10 @@ public class OI {
 	public boolean isSolenoidOnePressed = false;
 	public JoystickButton buttonOne;
 	public JoystickButton buttonTwo;
+	public JoystickButton buttonSix;
 	ActivateLeft activateZero = new ActivateLeft();
 	ActivateRight activateOne = new ActivateRight();
+	public boolean isCamera1Active = true;
 
 	public OI() {
 		joystickLeft = new Joystick(1);
@@ -35,8 +37,10 @@ public class OI {
 		xBoxController = new Joystick(3);
 		buttonOne = new JoystickButton(xBoxController, 5);
 		buttonTwo = new JoystickButton(xBoxController, 6);
+		buttonSix = new JoystickButton(gamepad1, 6);
 		buttonOne.whenPressed(activateZero);
 		buttonTwo.whenPressed(activateOne);
+		buttonSix.toggleWhenPressed(new CameraToggle());
 		xBoxController.setRumble(RumbleType.kLeftRumble, 0);
 	}
 	public boolean getIntake() {

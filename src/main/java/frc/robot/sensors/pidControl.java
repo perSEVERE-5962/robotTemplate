@@ -36,16 +36,16 @@ public class pidControl {
 
 
 		/* Ensure sensor is positive when output is positive */
-		RobotMap.robotRightTalon.setSensorPhase(false);//false
+		RobotMap.robotRightTalon.setSensorPhase(true);//true
 		RobotMap.robotLeftTalon.setSensorPhase(true);//true
 		/**
 		 * Set based on what direction you want forward/positive to be.
 		 * This does not affect sensor phase. 
 		 */ 
-        RobotMap.robotRightTalon.setInverted(false);//all four true
-        RobotMap.robotRightVictor.setInverted(false);
-        RobotMap.robotLeftTalon.setInverted(false);
-        RobotMap.robotLeftVictor.setInverted(false);
+        RobotMap.robotRightTalon.setInverted(true);//true
+        RobotMap.robotRightVictor.setInverted(true);//true
+        RobotMap.robotLeftTalon.setInverted(false);//false
+        RobotMap.robotLeftVictor.setInverted(false);//false
 
 		/* Config the peak and nominal outputs, 12V means full */
         //RobotMap.robotLeftTalp8uy76tr54e3w2q1w2e3r5tyt-iuyte4r5t54687on.configNominalOutputForward(0, Constants.kTimeoutMs);

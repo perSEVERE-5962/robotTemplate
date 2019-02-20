@@ -13,7 +13,7 @@ public class Drive extends Subsystem {
 	}
 
 	public void joystickTank() {
-		RobotMap.myRobot.tankDrive(Robot.oi.joystickLeftAxis(), Robot.oi.joystickRightAxis());
+		//RobotMap.myRobot.tankDrive(Robot.oi.joystickLeftAxis(), Robot.oi.joystickRightAxis());
 	}
 
 	public void gameTank() {

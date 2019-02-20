@@ -199,16 +199,19 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Left Position", leftPos);
 		double rightPos = RobotMap.robotRightTalon.getSensorCollection().getPulseWidthPosition();
 		SmartDashboard.putNumber("Right Position", rightPos);
+		
+		SmartDashboard.putNumber("LEFT POSITION", RobotMap.robotLeftTalon.getSelectedSensorPosition(0));
+		SmartDashboard.putNumber("RIGHT POSITION", RobotMap.robotRightTalon.getSelectedSensorPosition(0));
 		//ato.runSteps();
-		//ato.Step1();
+		ato.Step1();
 		// if(count == 0){
 		// 	SmartDashboard.putString("Step1 Done", "no");
-		if(ato.isStep1Done() == false){
-			ato.Step1();
-		}
-		else if (ato.isStep2Done() == false){
-			ato.Step2();
-		}
+		// if(ato.isStep1Done() == false){
+		// 	ato.Step1();
+		// }
+		// else if (ato.isStep2Done() == false){
+		// 	ato.Step2();
+		// }
 		// 	++count;
 		// }
 		// if(ato.isStep1Done() == true){
@@ -247,14 +250,14 @@ public class Robot extends TimedRobot {
 		if (oi.getIntake()) {
 			SmartDashboard.putString("value ", "" + GetDistance());
 			if (GetDistance() < 0.1) {
-				RobotMap.IntakeVictor.set(0);
+				RobotMap.intakeVictor.set(0);
 			} else {
-				RobotMap.IntakeVictor.set(1);
+				RobotMap.intakeVictor.set(1);
 			}
 		} else if (oi.getOuttake()) {
-			RobotMap.IntakeVictor.set(-1);
+			RobotMap.intakeVictor.set(-1);
 		} else {
-			RobotMap.IntakeVictor.set(0);
+			RobotMap.intakeVictor.set(0);
 		}
 		Scheduler.getInstance().run();
 		SmartDashboard.putNumber("Gyro Value", Robot.gyro.getGyroAngle());

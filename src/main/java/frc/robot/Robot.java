@@ -47,7 +47,7 @@ public class Robot extends TimedRobot {
 	public static DigitalInput bottomStop = new DigitalInput(1);
 
 	// commands
-	private static RunAutonomous autonomous = new RunAutonomous();
+	private static RunAutonomous autonomous;
 	private Autonomous ato = new Autonomous();
 
 	// utils
@@ -197,19 +197,14 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		// autonomousCommand = new RunAutonomous();
 		gyro.resetGyro();
 
-		/** if (autonomousCommand != null) {
-			autonomousCommand.start();		
-		}*/
 		//magEncoder.reset();
 		//intakeEncoder.reset();
 		// pidValue.setkP(SmartDashboard.getNumber("kP Value" , pidValue.getkP()));
 		// pidValue.setkI(SmartDashboard.getNumber("kI Value" , pidValue.getkI()));
 		// pidValue.setkD(SmartDashboard.getNumber("kD Value" , pidValue.getkD()));
 
-		autonomous.run();
 		// RobotMap.robotRightTalon.setSelectedSensorPosition(0, 0, pidValue.getkTimeoutMS());
 		// RobotMap.robotLeftTalon.setSelectedSensorPosition(0, 0, pidValue.getkTimeoutMS());
 
@@ -218,6 +213,13 @@ public class Robot extends TimedRobot {
 		StartingPosition selectedStartingPosition = (StartingPosition) startingPosition.getSelected();
 		TargetPosition selectedTargetPosition = (TargetPosition) targetPosition.getSelected();
 		GamePiece selectedGamePiece = (GamePiece) gamePiece.getSelected();
+
+		// autonomousCommand = new RunAutonomous();
+		/** if (autonomousCommand != null) {
+			autonomousCommand.start();		
+		}*/
+		//autonomous.run();
+
 		//if(step1done == false){
 			//autoPID.step1();
 		//}

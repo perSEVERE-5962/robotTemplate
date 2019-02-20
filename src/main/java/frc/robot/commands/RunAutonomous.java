@@ -6,12 +6,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 public class RunAutonomous extends Command {
+	private Autonomous auto = new Autonomous();
 
 	public RunAutonomous(Robot.StartingPosition startingPosition, Robot.TargetPosition targetPosition, Robot.GamePiece gamePiece) {
 		SmartDashboard.putString("Starting Position", startingPosition.toString());
 		SmartDashboard.putString("Target Position", targetPosition.toString());
 		SmartDashboard.putString("Game Piece", gamePiece.toString());
-	private Autonomous auto = new Autonomous();
 	}
 	
 

@@ -28,7 +28,8 @@ public class OI {
 	public JoystickButton buttonTwo;
 	public JoystickButton buttonSix;
 	public boolean isCamera1Active = true;
-
+	public JoystickButton driverSpeedButton;
+	public JoystickButton copilotSpeedButton;
 	private int rumbleCount=0;
 
 	ActivateLeft activateLeft = new ActivateLeft();
@@ -47,7 +48,7 @@ public class OI {
 	public OI() {
 		joystickLeft = new Joystick(1);
 		joystickRight = new Joystick(2);
-		buttonSix = new JoystickButton(gamepad1, 6);
+		buttonSix = new JoystickButton(driverController, 6);
 		buttonSix.toggleWhenPressed(new CameraToggle());
 		driverController = new Joystick(0);	// Driver
 		copilotController = new Joystick(3); // Copilot
@@ -118,7 +119,7 @@ public class OI {
 	}
 	
 	public boolean gamePadXButtonPressed(){
-        return gamepad1.getRawButton(3);
+        return driverController.getRawButton(3);
 	}
 
 	public double xBoxLeftAxis() {

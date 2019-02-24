@@ -23,7 +23,7 @@ public class Constants {
 	
 	/* Choose so that Talon does not report sensor out of phase */
 	public static boolean kLeftSensorPhase = true;
-	public static boolean kRightSensorPhase = true;
+	public static boolean kRightSensorPhase = false; // true on comp robot
 
 	/**
 	 * Choose based on what direction you want to be positive,

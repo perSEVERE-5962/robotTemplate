@@ -86,8 +86,8 @@ public class pidControl {
 	    RobotMap.robotRightTalon.config_kD(Constants.kPIDLoopIdx, Constants.kGains.kD, Constants.kTimeoutMs);
 
 		// reset the position
-		RobotMap.robotLeftTalon.getSensorCollection().setPulseWidthPosition(0, Constants.kTimeoutMs);
-		RobotMap.robotRightTalon.getSensorCollection().setPulseWidthPosition(0, Constants.kTimeoutMs);
+		// RobotMap.robotLeftTalon.getSensorCollection().setPulseWidthPosition(0, Constants.kTimeoutMs);
+		// RobotMap.robotRightTalon.getSensorCollection().setPulseWidthPosition(0, Constants.kTimeoutMs);
 
 		/**
 		 * Grab the 360 degree position of the MagEncoder's absolute
@@ -95,25 +95,25 @@ public class pidControl {
 		 */
 
 		 //resetting ENC
-		 RobotMap.robotLeftTalon.getSensorCollection().setPulseWidthPosition(0, Constants.kTimeoutMs);
-		 RobotMap.robotRightTalon.getSensorCollection().setPulseWidthPosition(0, Constants.kTimeoutMs);
+		//  RobotMap.robotLeftTalon.getSensorCollection().setPulseWidthPosition(0, Constants.kTimeoutMs);
+		//  RobotMap.robotRightTalon.getSensorCollection().setPulseWidthPosition(0, Constants.kTimeoutMs);
 
 
-		int absolutePositionLeft = RobotMap.robotLeftTalon.getSensorCollection().getPulseWidthPosition();
-		int absolutePositionRight = RobotMap.robotRightTalon.getSensorCollection().getPulseWidthPosition();
+		// int absolutePositionLeft = RobotMap.robotLeftTalon.getSensorCollection().getPulseWidthPosition();
+		// int absolutePositionRight = RobotMap.robotRightTalon.getSensorCollection().getPulseWidthPosition();
 
-		/* Mask out overflows, keep bottom 12 bits */
-        absolutePositionLeft &= 0xFFF;
-        absolutePositionRight &= 0xFFF;
-		if (Constants.kLeftSensorPhase) { absolutePositionLeft *= -1; }
-		if (Constants.kRightSensorPhase) { absolutePositionRight *= -1; }
-        if (Constants.kLeftInvert) { absolutePositionLeft *= -1; }
-        if (Constants.kRightInvert) { absolutePositionRight *= -1; }
+		// /* Mask out overflows, keep bottom 12 bits */
+        // absolutePositionLeft &= 0xFFF;
+        // absolutePositionRight &= 0xFFF;
+		// if (Constants.kLeftSensorPhase) { absolutePositionLeft *= -1; }
+		// if (Constants.kRightSensorPhase) { absolutePositionRight *= -1; }
+        // if (Constants.kLeftInvert) { absolutePositionLeft *= -1; }
+        // if (Constants.kRightInvert) { absolutePositionRight *= -1; }
 
 		
-		/* Set the quadrature (relative) sensor to match absolute */
-		RobotMap.robotLeftTalon.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
-		RobotMap.robotRightTalon.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+		// /* Set the quadrature (relative) sensor to match absolute */
+		// RobotMap.robotLeftTalon.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+		// RobotMap.robotRightTalon.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
 
     }
 }

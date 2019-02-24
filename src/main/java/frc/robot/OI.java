@@ -48,8 +48,6 @@ public class OI {
 	public OI() {
 		joystickLeft = new Joystick(1);
 		joystickRight = new Joystick(2);
-		buttonSix = new JoystickButton(driverController, 6);
-		buttonSix.toggleWhenPressed(new CameraToggle());
 		driverController = new Joystick(0);	// Driver
 		copilotController = new Joystick(3); // Copilot
 		driverSpeedButton = new JoystickButton(driverController, 5);	// right bumper
@@ -58,6 +56,8 @@ public class OI {
 		buttonTwo = new JoystickButton(copilotController, 6);
 		buttonOne.whenPressed(activateLeft);
 		buttonTwo.whenPressed(activateRight);
+		buttonSix = new JoystickButton(driverController, 6);
+		buttonSix.toggleWhenPressed(new CameraToggle());
 		copilotController.setRumble(RumbleType.kLeftRumble, 0);
 		copilotSpeedButton = new JoystickButton(copilotController, 3);	// X 
 		copilotSpeedButton.toggleWhenPressed(new ArmSpeedControl());

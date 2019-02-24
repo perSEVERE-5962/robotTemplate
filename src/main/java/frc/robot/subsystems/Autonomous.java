@@ -164,7 +164,7 @@ public class Autonomous{
         //   else if(Robot.getIsLeft() == true){
         //     turnLeft(1);
         //   }
-        turnRight(-0.25);
+        turnRight(-0.2);//-0.25 actual bot
         }
     }
     public void Step4(){

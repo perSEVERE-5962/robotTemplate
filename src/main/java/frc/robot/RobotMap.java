@@ -117,11 +117,11 @@ public class RobotMap {
 		robotLeftVictor.configFactoryDefault();		
 
 		Robot.pidValue.configTalons();
-
-		robotLeftTalon.setSelectedSensorPosition(0,0,0);
-		robotRightTalon.setSelectedSensorPosition(0,0,0);
+		//robotLeftTalon.setSelectedSensorPosition(0);
+		robotRightTalon.setSelectedSensorPosition(0);
 		robotRightTalon.getSensorCollection().setPulseWidthPosition(0, 10);
-		robotLeftTalon.getSensorCollection().setPulseWidthPosition(0,10);
+		// robotLeftTalon.getSensorCollection().setPulseWidthPosition(0, 10);
+		robotLeftTalon.setSelectedSensorPosition(0, 0, 0);
 		SmartDashboard.putNumber("LEFT START", robotLeftTalon.getSelectedSensorPosition(0));
 		SmartDashboard.putNumber("RIGHT START", robotRightTalon.getSelectedSensorPosition(0));
 		SmartDashboard.putNumber("LEFT START2", robotLeftTalon.getSensorCollection().getPulseWidthPosition());

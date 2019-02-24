@@ -36,34 +36,26 @@ public class pidControl {
 
 
 		/* Ensure sensor is positive when output is positive */
-		RobotMap.robotRightTalon.setSensorPhase(Constants.kRightSensorPhase);//false
-		RobotMap.robotLeftTalon.setSensorPhase(Constants.kLeftSensorPhase);//true
+		RobotMap.robotRightTalon.setSensorPhase(true);//true
+		RobotMap.robotLeftTalon.setSensorPhase(true);//true
 		/**
 		 * Set based on what direction you want forward/positive to be.
 		 * This does not affect sensor phase. 
 		 */ 
-        RobotMap.robotRightTalon.setInverted(Constants.kRightInvert);
-        RobotMap.robotRightVictor.setInverted(Constants.kRightInvert);
-        RobotMap.robotLeftTalon.setInverted(Constants.kLeftInvert);
-        RobotMap.robotLeftVictor.setInverted(Constants.kLeftInvert);
-
-		// RobotMap.robotLeftTalon.setInverted(true);
-		// RobotMap.robotLeftVictor.setInverted(true);
-		// RobotMap.robotRightTalon.setInverted(false);		
-        // RobotMap.robotRightVictor.setInverted(false);
-        
-        // RobotMap.robotLeftTalon.setSensorPhase(true);
-		// RobotMap.robotRightTalon.setSensorPhase(true);
+        RobotMap.robotRightTalon.setInverted(true);//true
+        RobotMap.robotRightVictor.setInverted(true);//true
+        RobotMap.robotLeftTalon.setInverted(false);//false
+        RobotMap.robotLeftVictor.setInverted(false);//false
 
 		/* Config the peak and nominal outputs, 12V means full */
         //RobotMap.robotLeftTalp8uy76tr54e3w2q1w2e3r5tyt-iuyte4r5t54687on.configNominalOutputForward(0, Constants.kTimeoutMs);
         RobotMap.robotRightTalon.configNominalOutputForward(0, Constants.kTimeoutMs);
         RobotMap.robotLeftTalon.configNominalOutputReverse(0, Constants.kTimeoutMs);
 		RobotMap.robotRightTalon.configNominalOutputReverse(0, Constants.kTimeoutMs);
-        RobotMap.robotLeftTalon.configPeakOutputForward(1, Constants.kTimeoutMs);
-        RobotMap.robotRightTalon.configPeakOutputForward(1, Constants.kTimeoutMs);
-        RobotMap.robotLeftTalon.configPeakOutputReverse(-1, Constants.kTimeoutMs);
-        RobotMap.robotRightTalon.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+        RobotMap.robotLeftTalon.configPeakOutputForward(0.5, Constants.kTimeoutMs);
+        RobotMap.robotRightTalon.configPeakOutputForward(0.5, Constants.kTimeoutMs);
+        RobotMap.robotLeftTalon.configPeakOutputReverse(-0.5, Constants.kTimeoutMs);
+        RobotMap.robotRightTalon.configPeakOutputReverse(-0.5, Constants.kTimeoutMs);
 
 		/**
 		 * Config the allowable closed-loop error, Closed-Loop output will be
@@ -84,36 +76,32 @@ public class pidControl {
 		RobotMap.robotRightTalon.config_kP(Constants.kPIDLoopIdx, Constants.kGains.kP, Constants.kTimeoutMs);
 		RobotMap.robotRightTalon.config_kI(Constants.kPIDLoopIdx, Constants.kGains.kI, Constants.kTimeoutMs);
 	    RobotMap.robotRightTalon.config_kD(Constants.kPIDLoopIdx, Constants.kGains.kD, Constants.kTimeoutMs);
-
-		// reset the position
-		// RobotMap.robotLeftTalon.getSensorCollection().setPulseWidthPosition(0, Constants.kTimeoutMs);
-		// RobotMap.robotRightTalon.getSensorCollection().setPulseWidthPosition(0, Constants.kTimeoutMs);
-
+    
 		/**
 		 * Grab the 360 degree position of the MagEncoder's absolute
 		 * position, and intitally set the relative sensor to match.
 		 */
 
 		 //resetting ENC
-		//  RobotMap.robotLeftTalon.getSensorCollection().setPulseWidthPosition(0, Constants.kTimeoutMs);
-		//  RobotMap.robotRightTalon.getSensorCollection().setPulseWidthPosition(0, Constants.kTimeoutMs);
+		 RobotMap.robotLeftTalon.getSensorCollection().setPulseWidthPosition(0, Constants.kTimeoutMs);
+		 RobotMap.robotRightTalon.getSensorCollection().setPulseWidthPosition(0, Constants.kTimeoutMs);
 
 
-		// int absolutePositionLeft = RobotMap.robotLeftTalon.getSensorCollection().getPulseWidthPosition();
-		// int absolutePositionRight = RobotMap.robotRightTalon.getSensorCollection().getPulseWidthPosition();
+		int absolutePositionLeft = RobotMap.robotLeftTalon.getSensorCollection().getPulseWidthPosition();
+		int absolutePositionRight = RobotMap.robotRightTalon.getSensorCollection().getPulseWidthPosition();
 
-		// /* Mask out overflows, keep bottom 12 bits */
-        // absolutePositionLeft &= 0xFFF;
-        // absolutePositionRight &= 0xFFF;
-		// if (Constants.kLeftSensorPhase) { absolutePositionLeft *= -1; }
-		// if (Constants.kRightSensorPhase) { absolutePositionRight *= -1; }
-        // if (Constants.kLeftInvert) { absolutePositionLeft *= -1; }
-        // if (Constants.kRightInvert) { absolutePositionRight *= -1; }
+		/* Mask out overflows, keep bottom 12 bits */
+        absolutePositionLeft &= 0xFFF;
+        absolutePositionRight &= 0xFFF;
+		if (Constants.kSensorPhase) { absolutePositionLeft *= -1; }
+		if (Constants.kSensorPhase) { absolutePositionRight *= -1; }
+        if (Constants.kMotorInvert) { absolutePositionLeft *= -1; }
+        if (Constants.kMotorInvert) { absolutePositionRight *= -1; }
 
 		
-		// /* Set the quadrature (relative) sensor to match absolute */
-		// RobotMap.robotLeftTalon.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
-		// RobotMap.robotRightTalon.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+		/* Set the quadrature (relative) sensor to match absolute */
+		RobotMap.robotLeftTalon.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+		RobotMap.robotRightTalon.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
 
     }
 }

@@ -216,9 +216,12 @@ public class Robot extends TimedRobot {
 		ato.Step1();
 		SmartDashboard.putString("Step1_done", "NO");
 		}
-		else if(ato.isStep1Done() == true && ato.isStep2Done() == false){	
+		 if(ato.isStep1Done() == true && ato.isStep2Done() == false){	
 			SmartDashboard.putString("Step1_done", "YES");
 			ato.Step2();
+		}
+		 if(ato.isStep2Done() == true && ato.isStep3Done()== false ){
+		 ato.Step3();
 		}
 		// else if(ato.isStep3Done() == true && ato.isStep4Done() == false){
 		// 	ato.Step4();

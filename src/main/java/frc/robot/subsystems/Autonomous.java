@@ -32,6 +32,7 @@ public class Autonomous{
     public boolean isStep4Done(){
         return Step4_done;
     }
+    public boolean Step4_inProgress = false;
     public boolean Step4_Started = false;
     private static boolean Step5_done = false;
     public boolean isStep5Done(){
@@ -42,11 +43,13 @@ public class Autonomous{
     public boolean isStep6Done(){
         return Step6_done;
     }
+    public static boolean Step6_inProgress = false;
     public boolean Step6_Started = false;
     private static boolean Step7_done = false;
     public boolean isStep7Done(){
         return Step7_done;
     }
+    public static boolean Step7_inProgress = false;
     public boolean Step7_Started = false;
     private static boolean Step8_done = false;//game piece placement
 
@@ -63,7 +66,7 @@ public class Autonomous{
     }
     private static int i=0;
 
-    final double diameter = 3.0;
+    final double diameter = 7.5;//3.0 actual bot
     final double circumferance = Math.PI*diameter;
     final double ticksPerRotation = 4096;
 
@@ -169,11 +172,18 @@ public class Autonomous{
     }
     public void Step4(){
         if(Step4_Started == false){
-            RobotMap.robotLeftTalon.set(ControlMode.Position, goStraight(48));
-            RobotMap.robotRightTalon.set(ControlMode.Position,goStraight(48)); 
+            
+            RobotMap.robotLeftTalon.getSensorCollection().setPulseWidthPosition(0, 30);
+            RobotMap.robotRightTalon.getSensorCollection().setPulseWidthPosition(0, 30);
             Step4_Started = true;
         }
-        else if(onTarget()){
+        else if(Step4_inProgress == false && Step4_Started == true){
+
+            RobotMap.robotLeftTalon.set(ControlMode.Position, goStraight(161));
+            RobotMap.robotRightTalon.set(ControlMode.Position,goStraight(161)); 
+            Step4_inProgress = true;
+        }
+        else if(onTarget() && Step4_inProgress == true && Step4_done == false){
             stopDrive();
             Step4_done = true;
         }
@@ -186,31 +196,41 @@ public class Autonomous{
         }       
         else{
             if(Robot.getIsRight() == true){
-                turnLeft(0.5);
+                turnLeft(-0.5);
                }
             else if(Robot.getIsLeft() == true){
-                turnRight(0.5);
+                turnRight(-0.5);
             }
         }
     }
     public void Step6(){
         if(Step6_Started == false){
-            RobotMap.robotLeftTalon.set(ControlMode.Position, goStraight(48.06));
-            RobotMap.robotRightTalon.set(ControlMode.Position,goStraight(48.06)); 
+            RobotMap.robotLeftTalon.getSensorCollection().setPulseWidthPosition(0, 30);
+            RobotMap.robotRightTalon.getSensorCollection().setPulseWidthPosition(0, 30);    
             Step6_Started = true;
         }
-        else if(onTarget()){
+        else if(Step6_Started == true && Step6_inProgress == false){
+            RobotMap.robotLeftTalon.set(ControlMode.Position, goStraight(48.06));
+            RobotMap.robotRightTalon.set(ControlMode.Position,goStraight(48.06)); 
+            Step6_inProgress = true;
+        }
+        else if(onTarget() && Step6_inProgress == true && Step6_done == false){
             stopDrive();
             Step6_done = true;
         }
     }
     public void Step7(){
-        if(Step7_Started == false){
+        if(Step7_Started == false){            
+            RobotMap.robotLeftTalon.getSensorCollection().setPulseWidthPosition(0, 30);
+            RobotMap.robotRightTalon.getSensorCollection().setPulseWidthPosition(0, 30);    
+            Step7_Started  = true;
+        }
+        else if(Step7_Started == true && Step7_inProgress == false){
             RobotMap.robotLeftTalon.set(ControlMode.Position, goStraight(21.75));
             RobotMap.robotRightTalon.set(ControlMode.Position,goStraight(21.75)); 
-            Step7_Started = true;
+            Step7_inProgress = true;
         }
-        else{
+        else if(onTarget() && Step7_inProgress == true && Step7_done == false){
             stopDrive();
             Step7_done = true;
         }

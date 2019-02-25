@@ -277,20 +277,20 @@ public class Robot extends TimedRobot {
 		// else if (ato.isStep1Done() == true && ato.isStep2Done() == false){
 		// 	ato.Step2();
 		// }
-		if(ato.isStep1Done() == false){
-		ato.Step1();
-		SmartDashboard.putString("Step1_done", "NO");
-		}
-		 if(ato.isStep1Done() == true && ato.isStep2Done() == false){	
-			SmartDashboard.putString("Step1_done", "YES");
-			ato.Step2();
-		}
-		 if(ato.isStep2Done() == true && ato.isStep3Done()== false ){
+		// if(ato.isStep1Done() == false){
+		// ato.Step1();
+		// SmartDashboard.putString("Step1_done", "NO");
+		// }
+		// else if(ato.isStep1Done() == true && ato.isStep2Done() == false){	
+		// 	SmartDashboard.putString("Step1_done", "YES");
+		// ato.Step2();
+		// }
+		if(ato.isStep3Done()== false ){
 		 ato.Step3();
 		}
-		// else if(ato.isStep3Done() == true && ato.isStep4Done() == false){
-		// 	ato.Step4();
-		// }
+		else if(ato.isStep3Done() == true && ato.isStep4Done() == false){
+			ato.Step4();
+		}
 		// 	++count;
 		// }
 		// if(ato.isStep1Done() == true){

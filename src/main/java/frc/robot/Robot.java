@@ -29,6 +29,7 @@ import frc.robot.utils.Logger;
  * functions corresponding to each mode, as described in the TimedRobot
  * documentation. If you change the name of this class or the package after
  * creating this project, you must also update the build.gradle file in the
+ * 
  * project.
  */
 public class Robot extends TimedRobot {
@@ -281,15 +282,18 @@ public class Robot extends TimedRobot {
 		// ato.Step1();
 		// SmartDashboard.putString("Step1_done", "NO");
 		// }
-		// else if(ato.isStep1Done() == true && ato.isStep2Done() == false){	
-		// 	SmartDashboard.putString("Step1_done", "YES");
-		// ato.Step2();
-		// }
-		if(ato.isStep3Done()== false ){
+		if(ato.isStep2Done() == false){	
+			
+		ato.Step2();
+		}
+		else if(ato.isStep2Done() == true && ato.isStep3Done()== false ){
 		 ato.Step3();
 		}
-		else if(ato.isStep3Done() == true && ato.isStep4Done() == false){
+		 else  if(ato.isStep3Done() == true && ato.isStep4Done() == false){
 			ato.Step4();
+		}
+		else if(ato.isStep4Done() == true && ato.isStep5Done() == false){
+			 ato.Step5();
 		}
 		// 	++count;
 		// }

@@ -32,6 +32,7 @@ public class Autonomous{
     public boolean isStep4Done(){
         return Step4_done;
     }
+    public boolean Step4_inProgress = false;
     public boolean Step4_Started = false;
     private static boolean Step5_done = false;
     public boolean isStep5Done(){
@@ -42,11 +43,13 @@ public class Autonomous{
     public boolean isStep6Done(){
         return Step6_done;
     }
+    public static boolean Step6_inProgress = false;
     public boolean Step6_Started = false;
     private static boolean Step7_done = false;
     public boolean isStep7Done(){
         return Step7_done;
     }
+    public static boolean Step7_inProgress = false;
     public boolean Step7_Started = false;
     private static boolean Step8_done = false;//game piece placement
 
@@ -63,7 +66,7 @@ public class Autonomous{
     }
     private static int i=0;
 
-    final double diameter = 3.0;
+    final double diameter = 7.5;//3.0 actual bot
     final double circumferance = Math.PI*diameter;
     final double ticksPerRotation = 4096;
 
@@ -123,15 +126,15 @@ public class Autonomous{
     }
     public void Step2(){
         if(Step2_Started == false){
-        //     RobotMap.robotLeftTalon.setSelectedSensorPosition(0);
-        //     RobotMap.robotRightTalon.setSelectedSensorPosition(0);
+            RobotMap.robotLeftTalon.setSelectedSensorPosition(0);
+            RobotMap.robotRightTalon.setSelectedSensorPosition(0);
             RobotMap.robotLeftTalon.getSensorCollection().setPulseWidthPosition(0, 30);
             RobotMap.robotRightTalon.getSensorCollection().setPulseWidthPosition(0, 30);
             Step2_Started = true;
         }
         else if(Step2_Started == true && Step2_inProgress == false){
-            RobotMap.robotLeftTalon.set(ControlMode.Position, goStraight(107));
-            RobotMap.robotRightTalon.set(ControlMode.Position,goStraight(107));
+            RobotMap.robotLeftTalon.set(ControlMode.Position, goStraight(141));//107
+            RobotMap.robotRightTalon.set(ControlMode.Position,goStraight(141));
             Step2_inProgress = true;
         }
 
@@ -152,9 +155,15 @@ public class Autonomous{
     // }
     public void Step3(){
         angle = Robot.gyro.getGyroAngle();
-        if(angle >=17.3532 ){//Should turn 67.29 degrees towards right
-          //Robot.gyro.reset();
+        if(angle <=-90 ){//Should turn 67.29 degrees towards right (17.3532)
+          //Robot.gyro.resetGyro();
           stopDrive();
+          
+          RobotMap.robotLeftTalon.configPeakOutputForward(0.5, Constants.kTimeoutMs);
+          RobotMap.robotRightTalon.configPeakOutputForward(0.5, Constants.kTimeoutMs);
+          RobotMap.robotLeftTalon.configPeakOutputReverse(-0.5, Constants.kTimeoutMs);
+          RobotMap.robotRightTalon.configPeakOutputReverse(-0.5, Constants.kTimeoutMs);
+
           Step3_done = true;      
         }
         else{
@@ -164,53 +173,81 @@ public class Autonomous{
         //   else if(Robot.getIsLeft() == true){
         //     turnLeft(1);
         //   }
-        turnRight(-0.2);//-0.25 actual bot
+        turnLeft(-0.2);//-0.25 actual bot
         }
     }
     public void Step4(){
         if(Step4_Started == false){
-            RobotMap.robotLeftTalon.set(ControlMode.Position, goStraight(48));
-            RobotMap.robotRightTalon.set(ControlMode.Position,goStraight(48)); 
+        RobotMap.robotLeftTalon.setSelectedSensorPosition(0);
+		RobotMap.robotRightTalon.setSelectedSensorPosition(0);
+		
+            
+            RobotMap.robotLeftTalon.getSensorCollection().setPulseWidthPosition(0, 30);
+            RobotMap.robotRightTalon.getSensorCollection().setPulseWidthPosition(0, 30);
+
             Step4_Started = true;
         }
-        else if(onTarget()){
-            stopDrive();
+        else if(Step4_inProgress == false && Step4_Started == true){
+
+            RobotMap.robotLeftTalon.set(ControlMode.Position, goStraight(141));//161
+            RobotMap.robotRightTalon.set(ControlMode.Position,goStraight(141)); 
+            Step4_inProgress = true;
+        }
+        else if(onTarget() && Step4_inProgress == true && Step4_done == false){
+            //stopDrive();
             Step4_done = true;
         }
     }
     public void Step5(){
         angle = Robot.gyro.getGyroAngle();
-        if(angle >=-90){
+        if(angle <=-180){
+          //Robot.gyro.resetGyro();
+          stopDrive();
+          RobotMap.robotLeftTalon.configPeakOutputForward(0.5, Constants.kTimeoutMs);
+          RobotMap.robotRightTalon.configPeakOutputForward(0.5, Constants.kTimeoutMs);
+          RobotMap.robotLeftTalon.configPeakOutputReverse(-0.5, Constants.kTimeoutMs);
+          RobotMap.robotRightTalon.configPeakOutputReverse(-0.5, Constants.kTimeoutMs);
+
           Step5_done = true;
 
         }       
         else{
-            if(Robot.getIsRight() == true){
-                turnLeft(0.5);
-               }
-            else if(Robot.getIsLeft() == true){
-                turnRight(0.5);
-            }
+            //if(Robot.getIsRight() == true){
+                turnLeft(-0.2);
+               //}
+            // else if(Robot.getIsLeft() == true){
+            //     turnRight(-0.5);
+            // }
         }
     }
     public void Step6(){
         if(Step6_Started == false){
-            RobotMap.robotLeftTalon.set(ControlMode.Position, goStraight(48.06));
-            RobotMap.robotRightTalon.set(ControlMode.Position,goStraight(48.06)); 
+            RobotMap.robotLeftTalon.getSensorCollection().setPulseWidthPosition(0, 30);
+            RobotMap.robotRightTalon.getSensorCollection().setPulseWidthPosition(0, 30);    
             Step6_Started = true;
         }
-        else if(onTarget()){
+        else if(Step6_Started == true && Step6_inProgress == false){
+            RobotMap.robotLeftTalon.set(ControlMode.Position, goStraight(48.06));
+            RobotMap.robotRightTalon.set(ControlMode.Position,goStraight(48.06)); 
+            Step6_inProgress = true;
+        }
+        else if(onTarget() && Step6_inProgress == true && Step6_done == false){
             stopDrive();
             Step6_done = true;
         }
     }
     public void Step7(){
-        if(Step7_Started == false){
+        if(Step7_Started == false){            
+            RobotMap.robotLeftTalon.getSensorCollection().setPulseWidthPosition(0, 30);
+            RobotMap.robotRightTalon.getSensorCollection().setPulseWidthPosition(0, 30);    
+            Step7_Started  = true;
+        }
+        else if(Step7_Started == true && Step7_inProgress == false){
             RobotMap.robotLeftTalon.set(ControlMode.Position, goStraight(21.75));
             RobotMap.robotRightTalon.set(ControlMode.Position,goStraight(21.75)); 
-            Step7_Started = true;
+            Step7_inProgress = true;
         }
-        else{
+        else if(onTarget() && Step7_inProgress == true && Step7_done == false){
             stopDrive();
             Step7_done = true;
         }

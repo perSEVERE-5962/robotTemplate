@@ -287,13 +287,17 @@ public class Robot extends TimedRobot {
 		ato.Step2();
 		}
 		else if(ato.isStep2Done() == true && ato.isStep3Done()== false ){
-		 ato.Step3();
+		ato.Step3();
 		}
-		 else  if(ato.isStep3Done() == true && ato.isStep4Done() == false){
+		else if(ato.isStep3Done() == true && ato.isStep4Done() == false){
 			ato.Step4();
 		}
+		//chum reap soure
 		else if(ato.isStep4Done() == true && ato.isStep5Done() == false){
-			 ato.Step5();
+			ato.Step5();
+		}
+		else if (ato.isStep5Done() == true && ato.isStep6Done() == false){
+			ato.Step6();
 		}
 		// 	++count;
 		// }

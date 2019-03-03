@@ -141,6 +141,7 @@ public class Robot extends TimedRobot {
 		RobotMap.init();
 
 		gyro.resetGyro();
+
 		oi = new OI();
 
 		armMotor = new ArmMotor();
@@ -169,7 +170,6 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotPeriodic() {
 	}
-
 	/**
 	 * This function is called once each time the robot enters Disabled mode. You
 	 * can use it to reset any subsystem information you want to clear when the
@@ -304,7 +304,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopInit() {
 		oi.startDriveCommand();
-		gyro.resetGyro();
+		//gyro.resetGyro();
 	}
 
 	/**

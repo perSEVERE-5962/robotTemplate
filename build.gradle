@@ -1,11 +1,10 @@
 plugins {
     id "java"
-    id "edu.wpi.first.GradleRIO" version "2019.2.1"
+    id "edu.wpi.first.GradleRIO" version "2019.4.1"
 }
 
 sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
-
 
 def ROBOT_MAIN_CLASS = "frc.robot.Main"
 
@@ -44,8 +43,6 @@ def includeDesktopSupport = false
 // Maven central needed for JUnit
 repositories {
     mavenCentral()
-    
-    
 }
 
 // Defining my dependencies. In this case, WPILib (+ friends), and vendor libraries.
@@ -55,7 +52,6 @@ dependencies {
     compile wpi.deps.vendor.java()
     nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
     nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
-   // compile 'com.github.juchong:ADIS16470-RoboRIO-Driver:master-SNAPSHOT'    
     testCompile 'junit:junit:4.12'
 }
 

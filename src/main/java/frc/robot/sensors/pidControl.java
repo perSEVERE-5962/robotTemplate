@@ -93,10 +93,10 @@ public class pidControl {
 		/* Mask out overflows, keep bottom 12 bits */
         absolutePositionLeft &= 0xFFF;
         absolutePositionRight &= 0xFFF;
-		if (Constants.kSensorPhase) { absolutePositionLeft *= -1; }
-		if (Constants.kSensorPhase) { absolutePositionRight *= -1; }
-        if (Constants.kMotorInvert) { absolutePositionLeft *= -1; }
-        if (Constants.kMotorInvert) { absolutePositionRight *= -1; }
+		if (Constants.kLeftSensorPhase) { absolutePositionLeft *= -1; }
+		if (Constants.kRightSensorPhase) { absolutePositionRight *= -1; }
+        if (Constants.kLeftInvert) { absolutePositionLeft *= -1; }
+        if (Constants.kRightInvert) { absolutePositionRight *= -1; }
 
 		
 		/* Set the quadrature (relative) sensor to match absolute */

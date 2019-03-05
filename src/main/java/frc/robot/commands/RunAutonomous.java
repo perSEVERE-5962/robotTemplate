@@ -8,12 +8,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class RunAutonomous extends Command {
 	private Autonomous auto = new Autonomous();
 
-	public RunAutonomous(Robot.StartingPosition startingPosition, Robot.TargetPosition targetPosition, Robot.GamePiece gamePiece) {
-		SmartDashboard.putString("Starting Position", startingPosition.toString());
-		SmartDashboard.putString("Target Position", targetPosition.toString());
-		SmartDashboard.putString("Game Piece", gamePiece.toString());
-	}
-	
+	// public RunAutonomous(Robot.StartingPosition startingPosition, Robot.TargetPosition targetPosition, Robot.GamePiece gamePiece) {
+	// 	SmartDashboard.putString("Starting Position", startingPosition.toString());
+	// 	SmartDashboard.putString("Target Position", targetPosition.toString());
+	// 	SmartDashboard.putString("Game Piece", gamePiece.toString());
+	// }
+	public RunAutonomous() {
+
+	}	
 
 	//Initializes the timer, switch location
 	protected void initialize(){
@@ -28,24 +30,31 @@ public class RunAutonomous extends Command {
 	protected void excute() 
 	{	
 		if(auto.isStep1Done() == false){
+			Robot.logger.putMessage("Running autonomous step #1");
 			auto.Step1();
 		}
 		else if(auto.isStep2Done() == false){
+			Robot.logger.putMessage("Running autonomous step #2");
 			auto.Step2();
 		}
 		else if(auto.isStep3Done() == false){
+			Robot.logger.putMessage("Running autonomous step #3");
 			auto.Step3();
 		}
 		else if(auto.isStep4Done() == false){
+			Robot.logger.putMessage("Running autonomous step #4");
 			auto.Step4();
 		}
 		else if(auto.isStep5Done() == false){
+			Robot.logger.putMessage("Running autonomous step #5");
 			auto.Step5();
 		}
 		else if(auto.isStep6Done() == false){
+			Robot.logger.putMessage("Running autonomous step #6");
 			auto.Step6();
 		}				
 		else if(auto.isStep7Done() == false){
+			Robot.logger.putMessage("Running autonomous step #7");
 			auto.Step7();
 		}
 		/*

@@ -1,4 +1,3 @@
-
 package frc.robot.utils;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -7,6 +6,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Date;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.io.File;
+import java.util.Locale;
 
 public class Logger {
     File file;
@@ -16,18 +18,15 @@ public class Logger {
 
     public Logger() {
         try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd@HH-mm-ss", Locale.US);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.US);
             String logFilePath = "/u/robotlog_" + dateFormat.format(new Date()) + ".log";
-            file = new File(logFilePath);
-            if(!f.exists()){
-                f.createNewFile();
-            }
-            fw = new FileWriter(f);
+            //String logFilePath = "/Users/dlemasurier/Team5962/git/LogTest/robotlog_" + dateFormat.format(new Date()) + ".log";
+            fileWriter = new FileWriter(logFilePath);
+            bufferedWriter = new BufferedWriter(fileWriter);
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        bw = new BufferedWriter(fw);
     }
 
     private String getCurrentTime() {
@@ -47,7 +46,7 @@ public class Logger {
 
     public void putBoolean(String key, boolean value) {
         SmartDashboard.putBoolean(key, value);
-        String valueString;
+        String valueString = "";
         try {
             valueString = Boolean.toString(value);
         } catch (NullPointerException npe) {
@@ -59,10 +58,13 @@ public class Logger {
     }
     
     public void putMessage(String message) {
+        String test = getCurrentTime() + " " + message + newLine;
         try {
-            bufferedWriter.append(getCurrentTime() + " " + message + newLine);
+            bufferedWriter.write(test);
+            bufferedWriter.flush();
         } catch (IOException ioe) {
-
+       	    ioe.printStackTrace();
+            System.out.println("putMessage: " + test);
         }
     }
 
@@ -71,3 +73,4 @@ public class Logger {
     }
 
 }
+

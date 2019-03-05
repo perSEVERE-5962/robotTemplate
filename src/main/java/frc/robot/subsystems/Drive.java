@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class Drive extends Subsystem {
 	
 	private boolean isReducedSpeed = false;
+	private final double FULL_SPEED = 1.0;
+	private final double HALF_SPEED = 0.5;
 
 	public void setIsReducedSpeed(boolean value) {
 		isReducedSpeed = value;
@@ -23,18 +25,18 @@ public class Drive extends Subsystem {
 	}
 
 	public void joystickTank() {
-		double speed = 1.0;
+		double speed = FULL_SPEED;
 		if (isReducedSpeed) {
-			speed = 0.5;
+			speed = HALF_SPEED;
 		}
 		RobotMap.robotLeftTalon.set(ControlMode.PercentOutput, speed*Robot.oi.joystickLeftAxis());
 		RobotMap.robotRightTalon.set(ControlMode.PercentOutput, speed*Robot.oi.joystickRightAxis());
 	}
 
 	public void gameTank() {
-		double speed = 1.0;
+		double speed = FULL_SPEED;
 		if (isReducedSpeed) {
-			speed = 0.5;
+			speed = HALF_SPEED;
 		}
 		RobotMap.robotLeftTalon.set(ControlMode.PercentOutput, -speed*Robot.oi.driverController.getRawAxis(1));
 		RobotMap.robotRightTalon.set(ControlMode.PercentOutput, -speed*Robot.oi.driverController.getRawAxis(5));

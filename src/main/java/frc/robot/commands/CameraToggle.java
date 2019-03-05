@@ -36,12 +36,14 @@ public class CameraToggle extends Command {
       myEntry = table.getEntry("CameraSelection");
       myEntry.setString("camera1");
       Robot.oi.isCamera1Active = true;
-  } else if (Robot.oi.isCamera1Active){
+      Robot.logger.putMessage("Activating Camera 1")
+    } else if (Robot.oi.isCamera1Active){
       System.out.printf("Setting Camera 0\n");
       myEntry = table.getEntry("CameraSelection");
       myEntry.setString("camera0");
       Robot.oi.isCamera1Active = false;
-  }
+      Robot.logger.putMessage("Activating Camera 0")
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()

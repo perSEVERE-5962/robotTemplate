@@ -150,13 +150,13 @@ public class Robot extends TimedRobot {
 		solenoidSubsystem.activateRight();
 		compressor.setClosedLoopControl(true);
 
-		SmartDashboard.putNumber("Ultrasonic Distance ", 0);		
+		logger.putNumber("Ultrasonic Distance ", 0);		
 		initStartingPosition();
 		initTargetPosition();
 		initGamePiece();
-		// SmartDashboard.putNumber("kP Value" , pidValue.getkP() );
-		// SmartDashboard.putNumber("kI Value" , pidValue.getkI() );
-		// SmartDashboard.putNumber("kD Value" , pidValue.getkD() );
+		// logger.putNumber("kP Value" , pidValue.getkP() );
+		// logger.putNumber("kI Value" , pidValue.getkI() );
+		// logger.putNumber("kD Value" , pidValue.getkD() );
 	}
 
 	/**
@@ -210,11 +210,15 @@ public class Robot extends TimedRobot {
 		// RobotMap.robotRightTalon.setSelectedSensorPosition(0, 0, pidValue.getkTimeoutMS());
 		// RobotMap.robotLeftTalon.setSelectedSensorPosition(0, 0, pidValue.getkTimeoutMS());
 
-		SmartDashboard.putString("Auto Step 1 Done", "No");
+		logger.putString("Auto Step 1 Done", "No");
 
 		StartingPosition selectedStartingPosition = (StartingPosition) startingPosition.getSelected();
 		TargetPosition selectedTargetPosition = (TargetPosition) targetPosition.getSelected();
 		GamePiece selectedGamePiece = (GamePiece) gamePiece.getSelected();
+
+		logger.putMessage("Selected starting position: " + selectedStartingPosition.name());
+		logger.putMessage("Selected target position: " + selectedTargetPosition.name());
+		logger.putMessage("Selected game piece: " + selectedGamePiece.name());
 
 		// autonomousCommand = new RunAutonomous();
 		/** if (autonomousCommand != null) {
@@ -252,7 +256,7 @@ public class Robot extends TimedRobot {
 		// RobotMap.robotLeftTalon.clearStickyFaults(30);
 		// logger.putNumber("Left Error", (double) RobotMap.robotLeftTalon.getClosedLoopError(0));
 		// logger.putNumber("Right Error", (double) RobotMap.robotRightTalon.getClosedLoopError(0));
-		SmartDashboard.putNumber("Gyro Value" , gyro.getGyroAngle());
+		logger.putNumber("Gyro Value" , gyro.getGyroAngle());
 
 		// logger.putNumber("Left Distance ", RobotMap.robotLeftTalon.getSelectedSensorPosition());
 		// logger.putNumber("Right Distance ", RobotMap.robotRightTalon.getSelectedSensorPosition());
@@ -262,16 +266,16 @@ public class Robot extends TimedRobot {
 		// logger.putBoolean("Right Out of Phase ", rightFaults.SensorOutOfPhase);
 
 		double leftPos = RobotMap.robotLeftTalon.getSensorCollection().getPulseWidthPosition();
-		SmartDashboard.putNumber("Left Position", leftPos);
+		logger.putNumber("Left Position", leftPos);
 		double rightPos = RobotMap.robotRightTalon.getSensorCollection().getPulseWidthPosition();
-		SmartDashboard.putNumber("Right Position", rightPos);
+		logger.putNumber("Right Position", rightPos);
 		
-		SmartDashboard.putNumber("LEFT POSITION", RobotMap.robotLeftTalon.getSelectedSensorPosition(0));
-		SmartDashboard.putNumber("RIGHT POSITION", RobotMap.robotRightTalon.getSelectedSensorPosition(0));
+		logger.putNumber("LEFT POSITION", RobotMap.robotLeftTalon.getSelectedSensorPosition(0));
+		logger.putNumber("RIGHT POSITION", RobotMap.robotRightTalon.getSelectedSensorPosition(0));
 		//ato.runSteps();
 		//ato.Step1();
 		// if(count == 0){
-		// 	SmartDashboard.putString("Step1 Done", "no");
+		// 	logger.putString("Step1 Done", "no");
 		// if(ato.isStep1Done() == false){
 		//ato.Step1();
 		// }
@@ -280,7 +284,7 @@ public class Robot extends TimedRobot {
 		// }
 		// if(ato.isStep1Done() == false){
 		// ato.Step1();
-		// SmartDashboard.putString("Step1_done", "NO");
+		// logger.putString("Step1_done", "NO");
 		// }
 		if(ato.isStep2Done() == false){	
 			
@@ -302,7 +306,7 @@ public class Robot extends TimedRobot {
 		// 	++count;
 		// }
 		// if(ato.isStep1Done() == true){
-		// 	SmartDashboard.putString("Step1 Done2", "yes");
+		// 	logger.putString("Step1 Done2", "yes");
 		// 	ato.stopDrive();		
 		// }
 
@@ -313,6 +317,12 @@ public class Robot extends TimedRobot {
 	public void teleopInit() {
 		oi.startDriveCommand();
 		//gyro.resetGyro();
+
+		// set the motor controllers back to full speed
+        RobotMap.robotLeftTalon.configPeakOutputForward(1.0, Constants.kTimeoutMs);
+        RobotMap.robotRightTalon.configPeakOutputForward(1.0, Constants.kTimeoutMs);
+        RobotMap.robotLeftTalon.configPeakOutputReverse(-1.0, Constants.kTimeoutMs);
+		RobotMap.robotRightTalon.configPeakOutputReverse(-1.0, Constants.kTimeoutMs);	
 	}
 
 	/**
@@ -340,10 +350,13 @@ public class Robot extends TimedRobot {
 
 		if (oi.copilotController.getRawAxis(5) > 0.2) {
 			armMotor.runDownward();
+			logger.putMessage("Arm moving down");
 		} else if (oi.copilotController.getRawAxis(5) < -0.2) {
 			armMotor.runUpward();
+			logger.putMessage("Arm moving up");
 		} else {
 			armMotor.stop();
+			logger.putMessage("Arm not moving");
 		}
 
 		// run intake
@@ -354,25 +367,30 @@ public class Robot extends TimedRobot {
 				RobotMap.intakeVictor.set(0);
 				oi.copilotController.setRumble(RumbleType.kLeftRumble, 1);
 				oi.incrementRumbleCount();
+				logger.putMessage("Ball found in Intake - starting rumble");
 			} else {
 				RobotMap.intakeVictor.set(0.5);
+				logger.putMessage("Intaking ball");
 			}
 		} else if (oi.getOuttake()) {
 			RobotMap.intakeVictor.set(-1);
+			logger.putMessage("Shooting ball");
 		} else {
 			RobotMap.intakeVictor.set(0);
+			logger.putMessage("Intake not running");
 		}
 		int rumbleCount = oi.getRumbleCount();
 		if (rumbleCount > 0) {
 			if (rumbleCount > 100) {
 				oi.copilotController.setRumble(RumbleType.kLeftRumble, 0);
 				oi.setRumbleCount(0);
+				logger.putMessage("Turning off rumble");
 			} else {
 				oi.incrementRumbleCount();
 			}
 		}
 
-		SmartDashboard.putNumber("Arm current Position", RobotMap.armTalon.getSensorCollection().getPulseWidthPosition());
+		logger.putNumber("Arm current Position", RobotMap.armTalon.getSensorCollection().getPulseWidthPosition());
 	}
 
 	/**

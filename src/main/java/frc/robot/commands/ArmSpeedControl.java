@@ -27,12 +27,12 @@ public class ArmSpeedControl extends Command {
     if (Robot.armMotor.getIsMaxSpeed()) {
       // set to max speed
       Robot.armMotor.setIsMaxSpeed(false);
-      Robot.logger.putMessage("Setting the Arm to the max speed")
+      Robot.logger.putMessage("Setting the Arm to the max speed");
 
     } else {
       // set to default speed
       Robot.armMotor.setIsMaxSpeed(true);
-      Robot.logger.putMessage("Setting the Arm to the default speed")
+      Robot.logger.putMessage("Setting the Arm to the default speed");
     }  
   }
 

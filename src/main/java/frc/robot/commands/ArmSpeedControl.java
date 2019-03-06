@@ -24,12 +24,15 @@ public class ArmSpeedControl extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if (Robot.armMotor.getIsReducedSpeed()) {
-      // set to full speed
-      Robot.armMotor.setIsReducedSpeed(false);
+    if (Robot.armMotor.getIsMaxSpeed()) {
+      // set to max speed
+      Robot.armMotor.setIsMaxSpeed(false);
+      Robot.logger.putMessage("Setting the Arm to the max speed");
+
     } else {
-      // set to half speed
-      Robot.armMotor.setIsReducedSpeed(true);
+      // set to default speed
+      Robot.armMotor.setIsMaxSpeed(true);
+      Robot.logger.putMessage("Setting the Arm to the default speed");
     }  
   }
 

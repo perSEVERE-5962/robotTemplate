@@ -31,9 +31,11 @@ public class DriverSpeedControl extends Command {
     if (Robot.drive.getIsReducedSpeed()) {
       // set to full speed
       Robot.drive.setIsReducedSpeed(false);
+      Robot.logger.putMessage("Setting the drive to full speed");
     } else {
       // set to half speed
       Robot.drive.setIsReducedSpeed(true);
+      Robot.logger.putMessage("Setting the drive to half speed");
     }
   }
 

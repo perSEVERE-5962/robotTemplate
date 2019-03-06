@@ -19,7 +19,9 @@ public class ArmMotor extends Subsystem {
 	final double INTAKE_BALL_POSITION = 1479.1;// [_]
 	private static boolean isPIDRunning = false;
 
-	private boolean isReducedSpeed = false;
+	private boolean isMaxSpeed = false;
+	private final double MAX_SPEED = 1.0;
+	private final double DEFAULT_SPEED = 0.4;
 
 
 	public void moveToStartPosition() {
@@ -62,18 +64,18 @@ public class ArmMotor extends Subsystem {
 	}
 
 	public void runUpward() {
-		double speed = 0.3;
-		if (isReducedSpeed) {
-			speed = 0.4;
+		double speed = DEFAULT_SPEED;
+		if (isMaxSpeed == false) {
+			speed = MAX_SPEED;
 		}
 		isPIDRunning = false;	// disable PID if running
 		RobotMap.armTalon.set(ControlMode.PercentOutput, speed*Robot.oi.copilotController.getRawAxis(5));
 	}
 
 	public void runDownward() {
-		double speed = 0.3;
-		if (isReducedSpeed) {
-			speed = 0.4;
+		double speed = DEFAULT_SPEED;
+		if (isMaxSpeed) {
+			speed = MAX_SPEED;
 		}
 		isPIDRunning = false; 	// disable PID if running
 		RobotMap.armTalon.set(ControlMode.PercentOutput, speed*Robot.oi.copilotController.getRawAxis(5));
@@ -84,11 +86,11 @@ public class ArmMotor extends Subsystem {
 		RobotMap.armTalon.set(ControlMode.PercentOutput, 0);
 	}
 
-	public void setIsReducedSpeed(boolean value) {
-		isReducedSpeed = value;
+	public void setIsMaxSpeed(boolean value) {
+		isMaxSpeed = value;
 	}
-	public boolean getIsReducedSpeed() {
-		return isReducedSpeed;
+	public boolean getIsMaxSpeed() {
+		return isMaxSpeed;
 	}
 
 	public void initDefaultCommand() {

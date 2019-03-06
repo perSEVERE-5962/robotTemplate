@@ -1,4 +1,3 @@
-
 package frc.robot.utils;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -7,56 +6,71 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Date;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.io.File;
+import java.util.Locale;
 
 public class Logger {
-    BufferedWriter writer;
+    File file;
+    BufferedWriter bufferedWriter;
+    FileWriter fileWriter;
+    String newLine = System.lineSeparator();
 
     public Logger() {
-//         try {
-//             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-//            writer = new BufferedWriter(new FileWriter("file" + timestamp + ".txt"));
-//         } catch (IOException E) {
-//         }
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.US);
+            String logFilePath = "/u/robotlog_" + dateFormat.format(new Date()) + ".log";
+            //String logFilePath = "/Users/dlemasurier/Team5962/git/LogTest/robotlog_" + dateFormat.format(new Date()) + ".log";
+            fileWriter = new FileWriter(logFilePath);
+            bufferedWriter = new BufferedWriter(fileWriter);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    private String getCurrentTime() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd@HH-mm-ss", Locale.US);
+        return dateFormat.format(new Date());
     }
 
     public void putNumber(String key, double value) {
         SmartDashboard.putNumber(key, value);
-//         try {
-//             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-//             writer.append(key + ", " + value + " " + timestamp);
-//         } catch (IOException ioe) {
-
-//         }            
-    }
-
-    public double getNumber(String key, double value)  {
-//         try {
-//             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-//             writer.append(key + ", " + value + " " + timestamp);
-//         } catch (IOException ioe) {
-
-//         } 
-        return SmartDashboard.getNumber(key, value);
+        writeKeyValue(key, value+"");
     }
 
     public void putString(String key, String value)  {
         SmartDashboard.putString(key, value);
-//         try {
-//             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-//             writer.append(key + ", " + value + " " + timestamp);
-//         } catch (IOException ioe) {
-
-//         }
+        writeKeyValue(key, value);
     }
 
-    public void putBoolean(String key, Boolean value) {
+    public void putBoolean(String key, boolean value) {
         SmartDashboard.putBoolean(key, value);
-//         try {
-//             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-//             writer.append(key + ", " + value + " " + timestamp);
-//         } catch (IOException ioe) {
+        String valueString = "";
+        try {
+            valueString = Boolean.toString(value);
+        } catch (NullPointerException npe) {
+            valueString = "Unknown";
+        } finally {
+            writeKeyValue(key, valueString);
+        }
 
-//         }
+    }
+    
+    public void putMessage(String message) {
+        String test = getCurrentTime() + " " + message + newLine;
+        try {
+            bufferedWriter.write(test);
+            bufferedWriter.flush();
+        } catch (IOException ioe) {
+       	    ioe.printStackTrace();
+            System.out.println("putMessage: " + test);
+        }
+    }
+
+    private void writeKeyValue(String key, String value) {
+        putMessage(key + ", " + value);
     }
 
 }
+

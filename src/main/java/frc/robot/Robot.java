@@ -179,6 +179,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void disabledInit() {
+		logger.putMessage("Robot has been disabled");
 	}
 
 	@Override
@@ -200,6 +201,9 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
+
+		logger.putMessage("Starting autonomous");
+
 		gyro.resetGyro();
 
 		//magEncoder.reset();
@@ -316,6 +320,9 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void teleopInit() {
+
+		logger.putMessage("Starting teleop");
+
 		oi.startDriveCommand();
 		//gyro.resetGyro();
 
@@ -351,10 +358,12 @@ public class Robot extends TimedRobot {
 
 		if (oi.copilotController.getRawAxis(5) > 0.2) {
 			armMotor.runDownward();
-			logger.putMessage("Arm moving down");
+			//logger.putMessage("Arm moving down");
+			logger.putNumber("Arm current Position", RobotMap.armTalon.getSensorCollection().getPulseWidthPosition());
 		} else if (oi.copilotController.getRawAxis(5) < -0.2) {
 			armMotor.runUpward();
-			logger.putMessage("Arm moving up");
+			//logger.putMessage("Arm moving up");
+			logger.putNumber("Arm current Position", RobotMap.armTalon.getSensorCollection().getPulseWidthPosition());
 		} else {
 			armMotor.stop();
 			logger.putMessage("Arm not moving");
@@ -362,7 +371,7 @@ public class Robot extends TimedRobot {
 
 		// run intake
 		double range = ultrasonicanalog.getRange();
-		logger.putNumber("Ultrasonic Value", range);
+		logger.putNumber("Ball Ultrasonic Value", range);
 		if (oi.getIntake()) {
 			if (ultrasonicanalog.getRange() < 3) {
 				RobotMap.intakeVictor.set(0);
@@ -378,7 +387,7 @@ public class Robot extends TimedRobot {
 			logger.putMessage("Shooting ball");
 		} else {
 			RobotMap.intakeVictor.set(0);
-			logger.putMessage("Intake not running");
+			//logger.putMessage("Intake not running");
 		}
 		int rumbleCount = oi.getRumbleCount();
 		if (rumbleCount > 0) {
@@ -391,7 +400,6 @@ public class Robot extends TimedRobot {
 			}
 		}
 
-		logger.putNumber("Arm current Position", RobotMap.armTalon.getSensorCollection().getPulseWidthPosition());
 	}
 
 	/**

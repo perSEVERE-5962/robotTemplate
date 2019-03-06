@@ -46,6 +46,7 @@ public class Robot extends TimedRobot {
 	public static UltrasonicAnalog ultrasonicanalog = new UltrasonicAnalog(1);
 	public static DigitalInput topStop = new DigitalInput(0);
 	public static DigitalInput bottomStop = new DigitalInput(1);
+	public static RemoteHCSR04 remoteHCSR04 = new RemoteHCSR04();
 
 	// commands
 	private static RunAutonomous autonomous;

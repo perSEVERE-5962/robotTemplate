@@ -39,6 +39,7 @@ public class Robot extends TimedRobot {
 	public static Drive drive = new Drive();
 	public static SolenoidSubsystem solenoidSubsystem;
 	public static ArmMotor armMotor;
+	public static ColorLED colorLED;
 	private Compressor compressor = new Compressor(0);
 
 	// Sensors
@@ -150,6 +151,7 @@ public class Robot extends TimedRobot {
 		solenoidSubsystem = new SolenoidSubsystem();
 		solenoidSubsystem.activateRight();
 		compressor.setClosedLoopControl(true);
+		colorLED = new ColorLED();
 
 		logger.putNumber("Ultrasonic Distance ", 0);		
 		initStartingPosition();

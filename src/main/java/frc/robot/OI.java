@@ -26,6 +26,8 @@ public class OI {
 	public boolean isSolenoidOnePressed = false;
 	public JoystickButton buttonOne;
 	public JoystickButton buttonTwo;
+	public JoystickButton greenLEDButton;
+	public JoystickButton orangeLEDButton;
 	public JoystickButton buttonSix;
 	public boolean isCamera1Active = true;
 	public JoystickButton driverSpeedButton;
@@ -34,6 +36,10 @@ public class OI {
 
 	ActivateLeft activateLeft = new ActivateLeft();
 	ActivateRight activateRight = new ActivateRight();
+	SwitchOnGreen switchOnGreen = new SwitchOnGreen();
+	SwitchOffGreen switchOffGreen = new SwitchOffGreen();
+	SwitchOnOrange switchOnOrange = new SwitchOnOrange();
+	SwitchOffOrange switchOffOrange = new SwitchOffOrange(); 
 
 	public void incrementRumbleCount() {
 		++rumbleCount;
@@ -56,6 +62,10 @@ public class OI {
 		buttonTwo = new JoystickButton(copilotController, 6);
 		buttonOne.whenPressed(activateLeft);
 		buttonTwo.whenPressed(activateRight);
+		greenLEDButton = new JoystickButton(driverController, 1);
+		orangeLEDButton = new JoystickButton(driverController, 4);
+		greenLEDButton.toggleWhenPressed(switchOnGreen);
+		orangeLEDButton.toggleWhenPressed(switchOnOrange);
 		buttonSix = new JoystickButton(driverController, 6);
 		buttonSix.toggleWhenPressed(new CameraToggle());
 		copilotController.setRumble(RumbleType.kLeftRumble, 0);

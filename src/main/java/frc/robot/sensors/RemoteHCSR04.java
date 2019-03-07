@@ -30,5 +30,8 @@ public class RemoteHCSR04 {
     public double getRightRange(){
         return (table.getEntry("Right Distance").getDouble(0));
     }
+    public double getRange(){
+        return (getLeftRange() + getRightRange())/2;
+    }
 }
 

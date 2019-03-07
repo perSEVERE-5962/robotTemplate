@@ -67,17 +67,18 @@ public class Robot extends TimedRobot {
 		Right_Lvl_1,
 		Right_Lvl_2,
 	}
+	public static StartingPosition starting_postion = StartingPosition.Right_Lvl_2;
 	private static boolean isLeft = false;
 
 	public static enum TargetPosition{
 		Left_Bay_1,
-		Left_Bay_2,
-		Left_Bay_3,
+		// Left_Bay_2,
+		// Left_Bay_3,
 		Middle_Bay_1,
 		Middle_Bay_2,
 		Right_Bay_1,
-		Right_Bay_2,
-		Right_Bay_3,
+		// Right_Bay_2,
+		// Right_Bay_3,
 	}
 
 	public static enum GamePiece{
@@ -102,13 +103,13 @@ public class Robot extends TimedRobot {
 	private void initTargetPosition(){
 		targetPosition = new SendableChooser<TargetPosition>();
 		targetPosition.setDefaultOption("Left_Bay_1", TargetPosition.Left_Bay_1);
-		targetPosition.addOption("Left_Bay_2", TargetPosition.Left_Bay_2);
-		targetPosition.addOption("Left_Bay_3", TargetPosition.Left_Bay_3);
+		// targetPosition.addOption("Left_Bay_2", TargetPosition.Left_Bay_2);
+		// targetPosition.addOption("Left_Bay_3", TargetPosition.Left_Bay_3);
 		targetPosition.addOption("Middle_Bay_1", TargetPosition.Middle_Bay_1);
 		targetPosition.addOption("Middle_Bay_2", TargetPosition.Middle_Bay_2);
 		targetPosition.addOption("Right_Bay_1", TargetPosition.Right_Bay_1);
-		targetPosition.addOption("Right_Bay_2", TargetPosition.Right_Bay_2);
-		targetPosition.addOption("Right_Bay_3", TargetPosition.Right_Bay_3);
+		// targetPosition.addOption("Right_Bay_2", TargetPosition.Right_Bay_2);
+		// targetPosition.addOption("Right_Bay_3", TargetPosition.Right_Bay_3);
 		SmartDashboard.putData("Select target position:", targetPosition);
 	}
 
@@ -120,8 +121,12 @@ public class Robot extends TimedRobot {
 	}
 
 	public static boolean getIsLeft(){
-		return isLeft;
+		if(starting_postion == StartingPosition.Left_Lvl_2){
+			return true;
+		}
+		return false;
 	}
+	
 
 	private static boolean isMiddle = false;
 
@@ -132,7 +137,10 @@ public class Robot extends TimedRobot {
 	private static boolean isRight = false;
 
 	public static boolean getIsRight() {
-		return isRight;
+		if(starting_postion == StartingPosition.Right_Lvl_2){
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -229,7 +237,7 @@ public class Robot extends TimedRobot {
 		/** if (autonomousCommand != null) {
 			autonomousCommand.start();		
 		}*/
-		//autonomous.run();
+		autonomous.run();
 
 		//if(step1done == false){
 			//autoPID.step1();

@@ -19,8 +19,9 @@ public class ArmMotor extends Subsystem {
 	final double INTAKE_BALL_POSITION = 1479.1;// [_]
 	private  boolean isPIDRunning = false;
 
+
 	private boolean isMaxSpeed = false;
-	private final double MAX_SPEED = 1.0;
+	private final double MAX_SPEED = 0.7;
 	private final double DEFAULT_SPEED = 0.4;
 
 
@@ -70,24 +71,26 @@ public class ArmMotor extends Subsystem {
 		//return false;
 	}
 
-	public void runUpward() {
+	public void moveOutOfRobot() {
+
 		SmartDashboard.putString("RunUpward", "yes");
 		double speed = DEFAULT_SPEED;
-		if (isMaxSpeed == false) {
+		if (isMaxSpeed) {
 			speed = MAX_SPEED;
 		}
 		isPIDRunning = false;	// disable PID if running
-		RobotMap.armTalon.set(ControlMode.PercentOutput, speed*Robot.oi.copilotController.getRawAxis(5));
+		RobotMap.armTalon.set(ControlMode.PercentOutput, -speed*Robot.oi.copilotController.getRawAxis(5));
 	}
 
-	public void runDownward() {
+	public void moveIntoRobot() {
+
 		SmartDashboard.putString("RunDownward", "yes");
 		double speed = DEFAULT_SPEED;
 		if (isMaxSpeed) {
 			speed = MAX_SPEED;
 		}
 		isPIDRunning = false; 	// disable PID if running
-		RobotMap.armTalon.set(ControlMode.PercentOutput, speed*Robot.oi.copilotController.getRawAxis(5));
+		RobotMap.armTalon.set(ControlMode.PercentOutput, -speed*Robot.oi.copilotController.getRawAxis(5));
 	}
 
 	public void stop() {

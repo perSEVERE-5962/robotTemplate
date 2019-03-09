@@ -29,11 +29,11 @@ public class RunAutonomous extends Command {
 	//public boolean Step1_done;
 	protected void excute() 
 	{	
-		if(auto.isStep1Done() == false){
-			Robot.logger.putMessage("Running autonomous step #1");
-			auto.Step1();
-		}
-		else if(auto.isStep2Done() == false){
+		// if(auto.isStep1Done() == false){
+		// 	Robot.logger.putMessage("Running autonomous step #1");
+		// 	auto.Step1();
+		// }else
+		 if(auto.isStep2Done() == false){
 			Robot.logger.putMessage("Running autonomous step #2");
 			auto.Step2();
 		}
@@ -51,11 +51,11 @@ public class RunAutonomous extends Command {
 		}
 		else if(auto.isStep6Done() == false){
 			Robot.logger.putMessage("Running autonomous step #6");
-			auto.Step6();
+			auto.driveToHatch();
 		}				
 		else if(auto.isStep7Done() == false){
 			Robot.logger.putMessage("Running autonomous step #7");
-			auto.Step7();
+			auto.placeHatch();
 		}
 		/*
 			STEP8 = place the game piece

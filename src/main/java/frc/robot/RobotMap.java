@@ -123,10 +123,10 @@ public class RobotMap {
 
 		robotRightTalon.getSensorCollection().setPulseWidthPosition(0, 10);
 		//robotLeftTalon.setSelectedSensorPosition(0);
-		SmartDashboard.putNumber("LEFT START", robotLeftTalon.getSelectedSensorPosition(0));
-		SmartDashboard.putNumber("RIGHT START", robotRightTalon.getSelectedSensorPosition(0));
-		SmartDashboard.putNumber("LEFT START2", robotLeftTalon.getSensorCollection().getPulseWidthPosition());
-		SmartDashboard.putNumber("RIGHT START2", robotRightTalon.getSensorCollection().getPulseWidthPosition());
+		// SmartDashboard.putNumber("LEFT START", robotLeftTalon.getSelectedSensorPosition(0));
+		// SmartDashboard.putNumber("RIGHT START", robotRightTalon.getSelectedSensorPosition(0));
+		// SmartDashboard.putNumber("LEFT START2", robotLeftTalon.getSensorCollection().getPulseWidthPosition());
+		// SmartDashboard.putNumber("RIGHT START2", robotRightTalon.getSensorCollection().getPulseWidthPosition());
 
 		armTalon = new WPI_TalonSRX(11);
 		intakeVictor = new WPI_VictorSPX(12);
@@ -134,8 +134,8 @@ public class RobotMap {
 		Robot.armPID.init();	
 		armTalon.setSelectedSensorPosition(0);
 		armTalon.getSensorCollection().setPulseWidthPosition(0, 10);
-		SmartDashboard.putNumber("ARM START", armTalon.getSelectedSensorPosition(0));
-		SmartDashboard.putNumber("ARM START2", armTalon.getSensorCollection().getPulseWidthPosition());
+		// SmartDashboard.putNumber("ARM START", armTalon.getSelectedSensorPosition(0));
+		// SmartDashboard.putNumber("ARM START2", armTalon.getSensorCollection().getPulseWidthPosition());
 			
 	}
 }

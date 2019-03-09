@@ -34,7 +34,7 @@ public class placeHatch extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     @Override
-    protected void execute() {
+    protected void execute(){
         if (Robot.armMotor.isPIDRunning() == false) {
             Robot.armMotor.moveToPlaceHatch();
         }
@@ -42,10 +42,22 @@ public class placeHatch extends Command {
     }
 
     protected boolean isFinished() {
+
         if (Robot.armMotor.isOnTarget() == true && Robot.armMotor.isPIDRunning() == true) {
             return true;
         } else {
             return false;
         }
     }
+      // Called once after isFinished returns true
+  @Override
+  protected void end() {
+  }
+
+  // Called when another command which requires one or more of the same
+  // subsystems is scheduled to run
+  @Override
+  protected void interrupted() {
+      end();
+  }
 }

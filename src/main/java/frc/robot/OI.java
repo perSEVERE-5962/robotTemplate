@@ -79,7 +79,7 @@ public class OI {
 		// inRobot = new JoystickButton(xBoxController, 3);
 		// inRobot.whenPressed(new inRobot());
 		placeHatch = new JoystickButton(copilotController , 4);
-		placeHatch.whenPressed(new placeHatch());
+		placeHatch.toggleWhenPressed(new placeHatch());
 
 
 	}

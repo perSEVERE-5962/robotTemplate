@@ -63,9 +63,9 @@ public class Robot extends TimedRobot {
 
 	public static enum StartingPosition{
 		Left_Lvl_2,
-		Left_Lvl_1,
-		Middle_Lvl_1,
-		Right_Lvl_1,
+		//Left_Lvl_1,
+		//Middle_Lvl_1,
+		//Right_Lvl_1,
 		Right_Lvl_2,
 	}
 	public static StartingPosition starting_postion = StartingPosition.Right_Lvl_2;
@@ -75,8 +75,8 @@ public class Robot extends TimedRobot {
 		Left_Bay_1,
 		// Left_Bay_2,
 		// Left_Bay_3,
-		Middle_Bay_1,
-		Middle_Bay_2,
+		//Middle_Bay_1,
+		//Middle_Bay_2,
 		Right_Bay_1,
 		// Right_Bay_2,
 		// Right_Bay_3,
@@ -94,9 +94,9 @@ public class Robot extends TimedRobot {
 	private void initStartingPosition(){
 		startingPosition = new SendableChooser<StartingPosition>();
 		startingPosition.setDefaultOption("Left_Lvl_2", StartingPosition.Left_Lvl_2);
-		startingPosition.addOption("Left_Lvl_1", StartingPosition.Left_Lvl_1);
-		startingPosition.addOption("Middle_Lvl_1", StartingPosition.Middle_Lvl_1);
-		startingPosition.addOption("Right_Lvl_1", StartingPosition.Right_Lvl_1);
+		//startingPosition.addOption("Left_Lvl_1", StartingPosition.Left_Lvl_1);
+		//startingPosition.addOption("Middle_Lvl_1", StartingPosition.Middle_Lvl_1);
+		//startingPosition.addOption("Right_Lvl_1", StartingPosition.Right_Lvl_1);
 		startingPosition.addOption("Right_Lvl_2", StartingPosition.Right_Lvl_2);
 		SmartDashboard.putData("Select starting position:", startingPosition);
 	}
@@ -106,8 +106,8 @@ public class Robot extends TimedRobot {
 		targetPosition.setDefaultOption("Left_Bay_1", TargetPosition.Left_Bay_1);
 		// targetPosition.addOption("Left_Bay_2", TargetPosition.Left_Bay_2);
 		// targetPosition.addOption("Left_Bay_3", TargetPosition.Left_Bay_3);
-		targetPosition.addOption("Middle_Bay_1", TargetPosition.Middle_Bay_1);
-		targetPosition.addOption("Middle_Bay_2", TargetPosition.Middle_Bay_2);
+		//targetPosition.addOption("Middle_Bay_1", TargetPosition.Middle_Bay_1);
+		//targetPosition.addOption("Middle_Bay_2", TargetPosition.Middle_Bay_2);
 		targetPosition.addOption("Right_Bay_1", TargetPosition.Right_Bay_1);
 		// targetPosition.addOption("Right_Bay_2", TargetPosition.Right_Bay_2);
 		// targetPosition.addOption("Right_Bay_3", TargetPosition.Right_Bay_3);
@@ -116,8 +116,8 @@ public class Robot extends TimedRobot {
 
 	private void initGamePiece(){
 		gamePiece = new SendableChooser<GamePiece>();
-		gamePiece.setDefaultOption("Ball", GamePiece.Ball);
-		gamePiece.addOption("Hatch_Panel", GamePiece.Hatch_Panel);
+		gamePiece.setDefaultOption("Hatch_Panel", GamePiece.Hatch_Panel);
+		//gamePiece.addOption("Ball", GamePiece.Ball);
 		SmartDashboard.putData("Select game piece:", gamePiece);
 	}
 
@@ -227,19 +227,28 @@ public class Robot extends TimedRobot {
 
 		logger.putString("Auto Step 1 Done", "No");
 
-		StartingPosition selectedStartingPosition = (StartingPosition) startingPosition.getSelected();
+		starting_postion = (StartingPosition) startingPosition.getSelected();
 		TargetPosition selectedTargetPosition = (TargetPosition) targetPosition.getSelected();
 		GamePiece selectedGamePiece = (GamePiece) gamePiece.getSelected();
 
-		logger.putMessage("Selected starting position: " + selectedStartingPosition.name());
+		logger.putMessage("Selected starting position: " + starting_postion.name());
 		logger.putMessage("Selected target position: " + selectedTargetPosition.name());
 		logger.putMessage("Selected game piece: " + selectedGamePiece.name());
+
+		RobotMap.robotLeftTalon.set(ControlMode.Disabled, 0);
+        RobotMap.robotRightTalon.set(ControlMode.Disabled, 0);
+        RobotMap.robotLeftTalon.setSelectedSensorPosition(0);
+        RobotMap.robotRightTalon.setSelectedSensorPosition(0);
+        RobotMap.robotLeftTalon.configPeakOutputForward(Constants.kSpeed, Constants.kTimeoutMs);
+        RobotMap.robotRightTalon.configPeakOutputForward(Constants.kSpeed, Constants.kTimeoutMs);
+        RobotMap.robotLeftTalon.configPeakOutputReverse(-Constants.kSpeed, Constants.kTimeoutMs);
+        RobotMap.robotRightTalon.configPeakOutputReverse(-Constants.kSpeed, Constants.kTimeoutMs);
 
 		// autonomousCommand = new RunAutonomous();
 		/** if (autonomousCommand != null) {
 			autonomousCommand.start();		
 		}*/
-		autonomous.run();
+		//autonomous.run();
 
 		//if(step1done == false){
 			//autoPID.step1();
@@ -315,9 +324,9 @@ public class Robot extends TimedRobot {
 		else if(ato.isStep4Done() == true && ato.isStep5Done() == false){
 			ato.Step5();
 		}
-		else if (ato.isStep5Done() == true && ato.isStep6Done() == false){
-			ato.Step6();
-		}
+		// else if (ato.isStep5Done() == true && ato.isStep6Done() == false){
+		// 	ato.Step6();
+		// }
 		// 	++count;
 		// }
 		// if(ato.isStep1Done() == true){
@@ -365,10 +374,10 @@ public class Robot extends TimedRobot {
 		// } else if (armMotor.isPIDRunning() == false) {
 		// 	armMotor.stop();
 		// }
-
+logger.putNumber("Arm Joystick Raw Axis", oi.copilotController.getRawAxis(5));
 		if (oi.copilotController.getRawAxis(5) > 0.2) {
 			if(RobotMap.armTalon.getSelectedSensorPosition() >=200){
-				armMotor.runDownward();
+				armMotor.moveIntoRobot();
 			}
 			
 			else{
@@ -378,12 +387,15 @@ public class Robot extends TimedRobot {
 
 			}
 			//logger.putMessage("Arm moving down");
-			logger.putNumber("Arm current Position", RobotMap.armTalon.getSensorCollection().getPulseWidthPosition());
+			//logger.putNumber("Arm current Position", RobotMap.armTalon.getSelectedSensorPosition());
 		} else if (oi.copilotController.getRawAxis(5) < -0.2) {
-			armMotor.runUpward();
+			armMotor.moveOutOfRobot();
 			//logger.putMessage("Arm moving up");
-			logger.putNumber("Arm current Position", RobotMap.armTalon.getSensorCollection().getPulseWidthPosition());
+			//logger.putNumber("Arm current Position", RobotMap.armTalon.getSelectedSensorPosition());
 		} else {
+			if (armMotor.isPIDRunning() == false) {
+				armMotor.stop();
+			}
 			// armMotor.stop();
 			// logger.putMessage("Arm not moving");
 			// RobotMap.armTalon.setSelectedSensorPosition(0);

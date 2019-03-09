@@ -367,7 +367,16 @@ public class Robot extends TimedRobot {
 		// }
 
 		if (oi.copilotController.getRawAxis(5) > 0.2) {
-			armMotor.runDownward();
+			if(RobotMap.armTalon.getSelectedSensorPosition() >=200){
+				armMotor.runDownward();
+			}
+			
+			else{
+				armMotor.stop();
+				RobotMap.armTalon.setSelectedSensorPosition(0);
+				RobotMap.armTalon.getSensorCollection().setPulseWidthPosition(0, 10);
+
+			}
 			//logger.putMessage("Arm moving down");
 			logger.putNumber("Arm current Position", RobotMap.armTalon.getSensorCollection().getPulseWidthPosition());
 		} else if (oi.copilotController.getRawAxis(5) < -0.2) {
@@ -375,8 +384,10 @@ public class Robot extends TimedRobot {
 			//logger.putMessage("Arm moving up");
 			logger.putNumber("Arm current Position", RobotMap.armTalon.getSensorCollection().getPulseWidthPosition());
 		} else {
-			armMotor.stop();
-			logger.putMessage("Arm not moving");
+			// armMotor.stop();
+			// logger.putMessage("Arm not moving");
+			// RobotMap.armTalon.setSelectedSensorPosition(0);
+			// RobotMap.armTalon.getSensorCollection().setPulseWidthPosition(0, 10);
 		}
 
 		// run intake
@@ -409,6 +420,7 @@ public class Robot extends TimedRobot {
 				oi.incrementRumbleCount();
 			}
 		}
+		logger.putNumber("Arm Values" , RobotMap.armTalon.getSelectedSensorPosition());
 
 	}
 

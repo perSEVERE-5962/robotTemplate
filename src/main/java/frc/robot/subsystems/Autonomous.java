@@ -281,7 +281,6 @@ public class Autonomous{
         }        
     }
     public void placeHatch(){
-        if(){
-        }
+
     }
 }

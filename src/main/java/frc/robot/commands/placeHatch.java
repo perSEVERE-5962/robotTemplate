@@ -29,7 +29,7 @@ public class placeHatch extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        // moveToPlaceHatch();
+        // Robot.armMotor.moveToPlaceHatch();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -42,7 +42,7 @@ public class placeHatch extends Command {
     }
 
     protected boolean isFinished() {
-        if (Robot.armMotor.isOnTarget() == true) {
+        if (Robot.armMotor.isOnTarget() == true && Robot.armMotor.isPIDRunning() == true) {
             return true;
         } else {
             return false;

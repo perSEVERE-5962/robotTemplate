@@ -14,10 +14,10 @@ public class ArmMotor extends Subsystem {
 	// here. Call these from Commands.
 
 	final double START_POSITION = 0; // [\]
-	final double PLACE_HATCH_POSITION = 682.6; // [|]
+	final double PLACE_HATCH_POSITION = 525; // [|]
 	final double SHOOT_BALL_POSITION = 853.06; // [/]
 	final double INTAKE_BALL_POSITION = 1479.1;// [_]
-	private static boolean isPIDRunning = false;
+	private  boolean isPIDRunning = false;
 
 	private boolean isMaxSpeed = false;
 	private final double MAX_SPEED = 1.0;
@@ -30,9 +30,14 @@ public class ArmMotor extends Subsystem {
 		SmartDashboard.putNumber("Target Position", START_POSITION);
 	}
 
+	
 	public void moveToPlaceHatch() {
-		isPIDRunning = true;
+		Robot.logger.putString("moveToPlaceHatch", "yes");
+		RobotMap.armTalon.configPeakOutputForward(0.4, 30);
+		RobotMap.armTalon.configPeakOutputReverse(-0.4, 30);
 		RobotMap.armTalon.set(ControlMode.Position, PLACE_HATCH_POSITION);
+		isPIDRunning = true;
+		
 		SmartDashboard.putNumber("Target Position", PLACE_HATCH_POSITION);
 	}
 
@@ -49,21 +54,24 @@ public class ArmMotor extends Subsystem {
 	}
 
 	public boolean isOnTarget() {
-		boolean isOnTarget = RobotMap.armTalon.getClosedLoopError(0) < 3;
+		//boolean isOnTarget = RobotMap.armTalon.getClosedLoopError() < 3;
+		SmartDashboard.putNumber("Arm Sensor Position", RobotMap.armTalon.getSelectedSensorPosition());
+		boolean isOnTarget = RobotMap.armTalon.getSelectedSensorPosition() > 520;
 		if (isOnTarget == true) {
 			isPIDRunning = false;
-			SmartDashboard.putBoolean("isOnTarget", isOnTarget);
 		}
+		SmartDashboard.putBoolean("Arm isOnTarget", isOnTarget);
 		return isOnTarget;
 	}
 
 	public boolean isPIDRunning() {
 		SmartDashboard.putBoolean("isPIDRunning", isPIDRunning);
-		//return isPIDRunning;
-		return false;
+		return isPIDRunning;
+		//return false;
 	}
 
 	public void runUpward() {
+		SmartDashboard.putString("RunUpward", "yes");
 		double speed = DEFAULT_SPEED;
 		if (isMaxSpeed == false) {
 			speed = MAX_SPEED;
@@ -73,6 +81,7 @@ public class ArmMotor extends Subsystem {
 	}
 
 	public void runDownward() {
+		SmartDashboard.putString("RunDownward", "yes");
 		double speed = DEFAULT_SPEED;
 		if (isMaxSpeed) {
 			speed = MAX_SPEED;

@@ -29,6 +29,7 @@ public class OI {
 	public JoystickButton greenLEDButton;
 	public JoystickButton orangeLEDButton;
 	public JoystickButton buttonSix;
+	public JoystickButton placeHatch;
 	public boolean isCamera1Active = true;
 	public JoystickButton driverSpeedButton;
 	public JoystickButton copilotSpeedButton;
@@ -77,8 +78,8 @@ public class OI {
 		// shootBall.whenPressed(new shootBall());
 		// inRobot = new JoystickButton(xBoxController, 3);
 		// inRobot.whenPressed(new inRobot());
-		// placeHatch = new JoystickButton(xBoxController , 4);
-		// placeHatch.whenPressed(new placeHatch());
+		placeHatch = new JoystickButton(copilotController , 4);
+		placeHatch.whenPressed(new placeHatch());
 
 
 	}

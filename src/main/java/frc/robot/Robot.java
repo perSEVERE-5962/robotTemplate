@@ -50,8 +50,8 @@ public class Robot extends TimedRobot {
 	public static RemoteHCSR04 remoteHCSR04 = new RemoteHCSR04();
 
 	// commands
-	private static RunAutonomous autonomous;
-	private Autonomous ato = new Autonomous();
+	private static RunAutonomous autonomousCommand;
+	public static Autonomous ato = new Autonomous();
 
 	// utils
 	public static pidControl pidValue = new pidControl();
@@ -159,9 +159,9 @@ public class Robot extends TimedRobot {
 		solenoidSubsystem = new SolenoidSubsystem();
 		solenoidSubsystem.activateRight();
 		compressor.setClosedLoopControl(true);
-		colorLED = new ColorLED();
+	//	colorLED = new ColorLED();
 
-		logger.putNumber("Ultrasonic Distance ", 0);		
+		//logger.putNumber("Ultrasonic Distance ", 0);		
 		initStartingPosition();
 		initTargetPosition();
 		initGamePiece();
@@ -211,44 +211,56 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
+		// RobotMap.robotLeftTalon.set(ControlMode.PercentOutput, 0);
+		// RobotMap.robotRightTalon.set(ControlMode.PercentOutput, 0);
 
-		logger.putMessage("Starting autonomous");
+		RobotMap.robotRightTalon.configFactoryDefault();
+		RobotMap.robotRightVictor.configFactoryDefault();
+		RobotMap.robotLeftTalon.configFactoryDefault();
+		RobotMap.robotLeftVictor.configFactoryDefault();		
 
-		gyro.resetGyro();
+		Robot.pidValue.configTalons();
+		// RobotMap.robotLeftTalon.setSelectedSensorPosition(0);
+		// RobotMap.robotRightTalon.setSelectedSensorPosition(0);
+		RobotMap.robotLeftTalon.getSensorCollection().setPulseWidthPosition(0, 10);
+		RobotMap.robotRightTalon.getSensorCollection().setPulseWidthPosition(0, 10);
 
-		//magEncoder.reset();
-		//intakeEncoder.reset();
-		// pidValue.setkP(SmartDashboard.getNumber("kP Value" , pidValue.getkP()));
-		// pidValue.setkI(SmartDashboard.getNumber("kI Value" , pidValue.getkI()));
-		// pidValue.setkD(SmartDashboard.getNumber("kD Value" , pidValue.getkD()));
+		// logger.putMessage("Starting autonomous");
 
-		// RobotMap.robotRightTalon.setSelectedSensorPosition(0, 0, pidValue.getkTimeoutMS());
-		// RobotMap.robotLeftTalon.setSelectedSensorPosition(0, 0, pidValue.getkTimeoutMS());
+		// //gyro.resetGyro();
 
-		logger.putString("Auto Step 1 Done", "No");
+		// //magEncoder.reset();
+		// //intakeEncoder.reset();
+		// // pidValue.setkP(SmartDashboard.getNumber("kP Value" , pidValue.getkP()));
+		// // pidValue.setkI(SmartDashboard.getNumber("kI Value" , pidValue.getkI()));
+		// // pidValue.setkD(SmartDashboard.getNumber("kD Value" , pidValue.getkD()));
 
-		starting_postion = (StartingPosition) startingPosition.getSelected();
-		TargetPosition selectedTargetPosition = (TargetPosition) targetPosition.getSelected();
-		GamePiece selectedGamePiece = (GamePiece) gamePiece.getSelected();
+		// // RobotMap.robotRightTalon.setSelectedSensorPosition(0, 0, pidValue.getkTimeoutMS());
+		// // RobotMap.robotLeftTalon.setSelectedSensorPosition(0, 0, pidValue.getkTimeoutMS());
 
-		logger.putMessage("Selected starting position: " + starting_postion.name());
-		logger.putMessage("Selected target position: " + selectedTargetPosition.name());
-		logger.putMessage("Selected game piece: " + selectedGamePiece.name());
+		// logger.putString("Auto Step 1 Done", "No");
 
-		RobotMap.robotLeftTalon.set(ControlMode.Disabled, 0);
-        RobotMap.robotRightTalon.set(ControlMode.Disabled, 0);
-        RobotMap.robotLeftTalon.setSelectedSensorPosition(0);
-        RobotMap.robotRightTalon.setSelectedSensorPosition(0);
-        RobotMap.robotLeftTalon.configPeakOutputForward(Constants.kSpeed, Constants.kTimeoutMs);
-        RobotMap.robotRightTalon.configPeakOutputForward(Constants.kSpeed, Constants.kTimeoutMs);
-        RobotMap.robotLeftTalon.configPeakOutputReverse(-Constants.kSpeed, Constants.kTimeoutMs);
-        RobotMap.robotRightTalon.configPeakOutputReverse(-Constants.kSpeed, Constants.kTimeoutMs);
+		// starting_postion = (StartingPosition) startingPosition.getSelected();
+		// TargetPosition selectedTargetPosition = (TargetPosition) targetPosition.getSelected();
+		// GamePiece selectedGamePiece = (GamePiece) gamePiece.getSelected();
+
+		// logger.putMessage("Selected starting position: " + starting_postion.name());
+		// logger.putMessage("Selected target position: " + selectedTargetPosition.name());
+		// logger.putMessage("Selected game piece: " + selectedGamePiece.name());
+
+		// // RobotMap.robotLeftTalon.set(ControlMode.Disabled, 0);
+        // // RobotMap.robotRightTalon.set(ControlMode.Disabled, 0);
+        // // RobotMap.robotLeftTalon.setSelectedSensorPosition(0);
+        // // RobotMap.robotRightTalon.setSelectedSensorPosition(0);
+        // RobotMap.robotLeftTalon.configPeakOutputForward(Constants.kSpeed, Constants.kTimeoutMs);
+        // RobotMap.robotRightTalon.configPeakOutputForward(Constants.kSpeed, Constants.kTimeoutMs);
+        // RobotMap.robotLeftTalon.configPeakOutputReverse(-Constants.kSpeed, Constants.kTimeoutMs);
+        // RobotMap.robotRightTalon.configPeakOutputReverse(-Constants.kSpeed, Constants.kTimeoutMs);
 
 		// autonomousCommand = new RunAutonomous();
-		/** if (autonomousCommand != null) {
-			autonomousCommand.start();		
-		}*/
-		//autonomous.run();
+		// if (autonomousCommand != null) {
+		// 	autonomousCommand.start();		
+		// }
 
 		//if(step1done == false){
 			//autoPID.step1();
@@ -261,7 +273,7 @@ public class Robot extends TimedRobot {
 	/**
 	 * This function is called periodically during autonomous
 	 */
-	int count = 0;
+	//int count = 0;
 
 
 
@@ -289,13 +301,17 @@ public class Robot extends TimedRobot {
 		// logger.putBoolean("Left Out of Phase ", leftFaults.SensorOutOfPhase);
 		// logger.putBoolean("Right Out of Phase ", rightFaults.SensorOutOfPhase);
 
-		double leftPos = RobotMap.robotLeftTalon.getSensorCollection().getPulseWidthPosition();
-		logger.putNumber("Left Position", leftPos);
-		double rightPos = RobotMap.robotRightTalon.getSensorCollection().getPulseWidthPosition();
-		logger.putNumber("Right Position", rightPos);
+		// double leftPos = RobotMap.robotLeftTalon.getSensorCollection().getPulseWidthPosition();
+		// logger.putNumber("Left Position", leftPos);
+		// double rightPos = RobotMap.robotRightTalon.getSensorCollection().getPulseWidthPosition();
+		// logger.putNumber("Right Position", rightPos);
 		
-		logger.putNumber("LEFT POSITION", RobotMap.robotLeftTalon.getSelectedSensorPosition(0));
-		logger.putNumber("RIGHT POSITION", RobotMap.robotRightTalon.getSelectedSensorPosition(0));
+		// logger.putNumber("LEFT POSITION", RobotMap.robotLeftTalon.getSelectedSensorPosition(0));
+		// logger.putNumber("RIGHT POSITION", RobotMap.robotRightTalon.getSelectedSensorPosition(0));
+		//autonomousCommand = new RunAutonomous();
+		// if (autonomousCommand != null) {
+		// 	autonomousCommand.start();		
+		// }
 		//ato.runSteps();
 		//ato.Step1();
 		// if(count == 0){
@@ -324,6 +340,12 @@ public class Robot extends TimedRobot {
 		else if(ato.isStep4Done() == true && ato.isStep5Done() == false){
 			ato.Step5();
 		}
+		else if(ato.isStep5Done() == true &&  ato.isStep6Done() == false){
+			ato.driveToHatch();
+		}
+		//else {
+		// 	ato.stopDrive();
+		// }
 		// else if (ato.isStep5Done() == true && ato.isStep6Done() == false){
 		// 	ato.Step6();
 		// }
@@ -346,10 +368,10 @@ public class Robot extends TimedRobot {
 		//gyro.resetGyro();
 
 		// set the motor controllers back to full speed
-        RobotMap.robotLeftTalon.configPeakOutputForward(1.0, Constants.kTimeoutMs);
-        RobotMap.robotRightTalon.configPeakOutputForward(1.0, Constants.kTimeoutMs);
-        RobotMap.robotLeftTalon.configPeakOutputReverse(-1.0, Constants.kTimeoutMs);
-		RobotMap.robotRightTalon.configPeakOutputReverse(-1.0, Constants.kTimeoutMs);	
+        RobotMap.robotLeftTalon.configPeakOutputForward(1, Constants.kTimeoutMs);
+        RobotMap.robotRightTalon.configPeakOutputForward(1, Constants.kTimeoutMs);
+        RobotMap.robotLeftTalon.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+		RobotMap.robotRightTalon.configPeakOutputReverse(-1, Constants.kTimeoutMs);	
 	}
 
 	/**
@@ -406,7 +428,7 @@ logger.putNumber("Arm Joystick Raw Axis", oi.copilotController.getRawAxis(5));
 		double range = ultrasonicanalog.getRange();
 		logger.putNumber("Ball Ultrasonic Value", range);
 		if (oi.getIntake()) {
-			if (ultrasonicanalog.getRange() < 3) {
+			if (ultrasonicanalog.getRange() < 6) {
 				RobotMap.intakeVictor.set(0);
 				oi.copilotController.setRumble(RumbleType.kLeftRumble, 1);
 				oi.incrementRumbleCount();

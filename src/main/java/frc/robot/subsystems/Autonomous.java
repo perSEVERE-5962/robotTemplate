@@ -141,16 +141,22 @@ public class Autonomous{
             RobotMap.robotRightTalon.setSelectedSensorPosition(0);
             RobotMap.robotLeftTalon.getSensorCollection().setPulseWidthPosition(0, 30);
             RobotMap.robotRightTalon.getSensorCollection().setPulseWidthPosition(0, 30);
+            SmartDashboard.putString("Step 2" , "Started");
+
             Step2_Started = true;
         }
         else if(Step2_Started == true && Step2_inProgress == false){
             RobotMap.robotLeftTalon.set(ControlMode.Position, goStraight(107));//107
             RobotMap.robotRightTalon.set(ControlMode.Position,goStraight(107));
+            SmartDashboard.putString("Step 2" , "in Progess");
+
             Step2_inProgress = true;
         }
 
         else if(onTarget()&& Step2_inProgress == true && Step2_done == false){
-            SmartDashboard.putString("Step2 onTarget", "yes");
+            //SmartDashboard.putString("Step2 onTarget", "yes");
+            SmartDashboard.putString("Step 2" , "Done!!");
+
             //stopDrive();
             Step2_done = true;
         }
@@ -166,20 +172,30 @@ public class Autonomous{
     // }
     public void Step3(){
         angle = Robot.gyro.getGyroAngle();
-        if(Robot.getIsLeft() == true && angle <=-90){
+        if(Robot.getIsLeft() == true && angle <=-17.35){
             stopDrive();
+            //Robot.gyro.resetGyro();
+            SmartDashboard.putString("Step 3" , "Done!!");
+
             Step3_done = true;
         }
-       else if(Robot.getIsRight() == true && angle>=90){  
+       else if(Robot.getIsRight() == true && angle>=17.35){  
             stopDrive();
+            Robot.gyro.resetGyro();
+            SmartDashboard.putString("Step 3" , "Done!!");
+
             Step3_done = true;
        }
         else{
           if(Robot.getIsRight() == true){
-            turnRight(0.25);
+            turnRight(0.2);
+            SmartDashboard.putString("Step 3" , "in Progress");
+
           }
           else if(Robot.getIsLeft() == true){
-            turnLeft(0.25);
+            SmartDashboard.putString("Step 3" , " in Progeses");
+
+            turnLeft(0.2);
           }
          //   turnRight(-0.4);//-0.25 actual bot
         }
@@ -190,24 +206,27 @@ public class Autonomous{
 		    RobotMap.robotRightTalon.setSelectedSensorPosition(0);    
             RobotMap.robotLeftTalon.getSensorCollection().setPulseWidthPosition(0, 30);
             RobotMap.robotRightTalon.getSensorCollection().setPulseWidthPosition(0, 30);
-
+            SmartDashboard.putString("Step 4" , "started");
             Step4_Started = true;
         }
         else if(Step4_inProgress == false && Step4_Started == true){
 
-            RobotMap.robotLeftTalon.set(ControlMode.Position, goStraight(15));//161
-            RobotMap.robotRightTalon.set(ControlMode.Position,goStraight(15)); 
+            RobotMap.robotLeftTalon.set(ControlMode.Position, goStraight(162));//161
+            RobotMap.robotRightTalon.set(ControlMode.Position,goStraight(162));
+            SmartDashboard.putString("Step 4" , "in Progess");
+ 
             Step4_inProgress = true;
         }
         else if(onTarget() && Step4_inProgress == true && Step4_done == false){
             //stopDrive();
+            SmartDashboard.putString("Step 4" , "Done!!");
             Step4_done = true;
         }
     }
     public void Step5(){
         angle = Robot.gyro.getGyroAngle();
         //Robot.getIsLeft() == true && 
-        if(angle <=-180){
+        if(angle <=-110){
             stopDrive();
             Step5_done = true;
         }
@@ -221,7 +240,7 @@ public class Autonomous{
             //    turnLeft(-0.25);
             // }
             // else if(Robot.getIsLeft() == true){
-              turnLeft(0.25);
+              turnLeft(0.2);
             // }
         }
     }
@@ -270,10 +289,11 @@ public class Autonomous{
             Step6_Started = true;           
         }
         else if(Step6_Started == true && Step6_inProgress == false){
-            goStraight(-0.5);
+            RobotMap.robotLeftTalon.set(ControlMode.PercentOutput , 0.15);
+            RobotMap.robotRightTalon.set(ControlMode.PercentOutput , 0.15);;
             Step6_inProgress = true;
         }
-        else if(range <=10 && Step6_inProgress == true && Step6_done == false){
+        else if(range <=15 && Step6_inProgress == true && Step6_done == false){
             stopDrive();
             Step6_done = true;            
         }        

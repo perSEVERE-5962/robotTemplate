@@ -130,6 +130,7 @@ public class RobotMap {
 
 		armTalon = new WPI_TalonSRX(11);
 		intakeVictor = new WPI_VictorSPX(12);
+		//intakeVictor.set(0.75);
 		armTalon.configFactoryDefault();
 		Robot.armPID.init();	
 		armTalon.setSelectedSensorPosition(0);

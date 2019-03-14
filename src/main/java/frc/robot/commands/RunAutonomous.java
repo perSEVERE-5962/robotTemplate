@@ -6,8 +6,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 public class RunAutonomous extends Command {
-	//private Autonomous auto = new Autonomous();
-	private Autonomous auto = Robot.ato;
+	private Autonomous auto = new Autonomous();
+	//private Autonomous auto = Robot.ato;
 	private boolean isFinished = false;
 	// public RunAutonomous(Robot.StartingPosition startingPosition, Robot.TargetPosition targetPosition, Robot.GamePiece gamePiece) {
 	// 	SmartDashboard.putString("Starting Position", startingPosition.toString());
@@ -28,14 +28,14 @@ public class RunAutonomous extends Command {
 
 	//Runs until we reach our end goal
 	//public boolean Step1_done;
-	protected void excute() 
+	protected void execute() 
 	{	
 		// if(auto.isStep1Done() == false){
 		// 	Robot.logger.putMessage("Running autonomous step #1");
 		// 	auto.Step1();
 		// }else
 		 if(auto.isStep2Done() == false){
-			Robot.logger.putMessage("Running autonomous step #2");
+			Robot.logger.putString("Running autonomous step #2", "yes");
 			auto.Step2();
 		}
 		else if(auto.isStep2Done() == true && auto.isStep3Done() == false){

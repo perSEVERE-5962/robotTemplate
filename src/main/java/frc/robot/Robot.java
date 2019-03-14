@@ -257,10 +257,10 @@ public class Robot extends TimedRobot {
         // RobotMap.robotLeftTalon.configPeakOutputReverse(-Constants.kSpeed, Constants.kTimeoutMs);
         // RobotMap.robotRightTalon.configPeakOutputReverse(-Constants.kSpeed, Constants.kTimeoutMs);
 
-		// autonomousCommand = new RunAutonomous();
-		// if (autonomousCommand != null) {
-		// 	autonomousCommand.start();		
-		// }
+		autonomousCommand = new RunAutonomous();
+		if (autonomousCommand != null) {
+		autonomousCommand.start();		
+		}
 
 		//if(step1done == false){
 			//autoPID.step1();
@@ -326,24 +326,24 @@ public class Robot extends TimedRobot {
 		// ato.Step1();
 		// logger.putString("Step1_done", "NO");
 		// }
-		if(ato.isStep2Done() == false){	
+		// if(ato.isStep2Done() == false){	
 			
-		ato.Step2();
-		}
-		else if(ato.isStep2Done() == true && ato.isStep3Done()== false ){
-		ato.Step3();
-		}
-		else if(ato.isStep3Done() == true && ato.isStep4Done() == false){
-			ato.Step4();
-		}
-		//chum reap soure
-		else if(ato.isStep4Done() == true && ato.isStep5Done() == false){
-			ato.Step5();
-		}
-		else if(ato.isStep5Done() == true &&  ato.isStep6Done() == false){
-			ato.driveToHatch();
-		}
-		//else {
+		// ato.Step2();
+		// }
+		// else if(ato.isStep2Done() == true && ato.isStep3Done()== false ){
+		// ato.Step3();
+		// }
+		// else if(ato.isStep3Done() == true && ato.isStep4Done() == false){
+		// 	ato.Step4();
+		// }
+		// //chum reap soure
+		// else if(ato.isStep4Done() == true && ato.isStep5Done() == false){
+		// 	ato.Step5();
+		// }
+		// else if(ato.isStep5Done() == true &&  ato.isStep6Done() == false){
+		// 	ato.driveToHatch();
+		// }
+		// else {
 		// 	ato.stopDrive();
 		// }
 		// else if (ato.isStep5Done() == true && ato.isStep6Done() == false){

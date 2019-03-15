@@ -7,8 +7,8 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.buttons.Trigger;
-import frc.robot.commands.ActivateRight;
-import frc.robot.commands.ActivateLeft;
+import frc.robot.commands.RetractHatch;
+import frc.robot.commands.DeployHatch;
 import frc.robot.subsystems.*;
 
 /**
@@ -24,8 +24,8 @@ public class OI {
 	public Joystick copilotController;
 	public boolean isSolenoidZeroPressed = false;
 	public boolean isSolenoidOnePressed = false;
-	public JoystickButton buttonOne;
-	public JoystickButton buttonTwo;
+	public JoystickButton deployHatchButton;
+	public JoystickButton retractHatchButton;
 	public JoystickButton greenLEDButton;
 	public JoystickButton orangeLEDButton;
 	public JoystickButton buttonSix;
@@ -35,8 +35,8 @@ public class OI {
 	public JoystickButton copilotSpeedButton;
 	private int rumbleCount=0;
 
-	ActivateLeft activateLeft = new ActivateLeft();
-	ActivateRight activateRight = new ActivateRight();
+	DeployHatch deployHatch = new DeployHatch();
+	RetractHatch retractHatch = new RetractHatch();
 	SwitchOnGreen switchOnGreen = new SwitchOnGreen();
 	SwitchOffGreen switchOffGreen = new SwitchOffGreen();
 	SwitchOnOrange switchOnOrange = new SwitchOnOrange();
@@ -59,10 +59,10 @@ public class OI {
 		copilotController = new Joystick(3); // Copilot
 		driverSpeedButton = new JoystickButton(driverController, 5);	// right bumper
 		driverSpeedButton.toggleWhenPressed(new DriverSpeedControl());
-		buttonOne = new JoystickButton(copilotController, 5);
-		buttonTwo = new JoystickButton(copilotController, 6);
-		buttonOne.whenPressed(activateLeft);
-		buttonTwo.whenPressed(activateRight);
+		deployHatchButton = new JoystickButton(copilotController, 5);
+		retractHatchButton = new JoystickButton(copilotController, 6);
+		deployHatchButton.whenPressed(deployHatch);
+		retractHatchButton.whenPressed(retractHatch);
 		greenLEDButton = new JoystickButton(driverController, 1);
 		orangeLEDButton = new JoystickButton(driverController, 4);
 		greenLEDButton.toggleWhenPressed(switchOnGreen);

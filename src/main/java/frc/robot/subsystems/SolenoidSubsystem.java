@@ -17,12 +17,12 @@ public class SolenoidSubsystem extends Subsystem {
 
     }
 
-    public void activateLeft() {
+    public void deployHatch() {
         ds1.set(DoubleSolenoid.Value.kReverse);
         ds2.set(DoubleSolenoid.Value.kReverse);
     }
 
-    public void activateRight() {
+    public void retractHatch() {
         ds1.set(DoubleSolenoid.Value.kForward);
         ds2.set(DoubleSolenoid.Value.kForward);
    }

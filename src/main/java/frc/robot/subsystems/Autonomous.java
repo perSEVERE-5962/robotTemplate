@@ -53,11 +53,17 @@ public class Autonomous extends Subsystem{
     }
     public static boolean Step7_inProgress = false;
     public boolean Step7_Started = false;
-    private static boolean Step9_done = false;//game piece placement
+
+    public static boolean Step8_inProgress = false;
+    public boolean Step8_Started = false;
+    private static boolean Step8_done = false;
+
     private double step2LeftTarget = goStraight(107);
     private double step2RightTarget = goStraight(107);
     private double step4LeftTarget = goStraight(162);
     private double step4RightTarget = goStraight(162);
+    private double backupLeftTarget = goStraight(-30);
+    private double backupRightTarget = goStraight(-30);
 
     
     public double angle=0;
@@ -74,7 +80,7 @@ public class Autonomous extends Subsystem{
     }
     private static int i=0;
 
-    final double diameter = 7.5;//3.0 actual bot
+    final double diameter = 3.0;//7.5 test bot
     final double circumferance = Math.PI*diameter;
     final double ticksPerRotation = 4096;
 
@@ -130,12 +136,12 @@ public class Autonomous extends Subsystem{
         else if (Step1_inProgress == false){
             RobotMap.robotLeftTalon.set(ControlMode.Position,goStraight(48));
             RobotMap.robotRightTalon.set(ControlMode.Position,goStraight(48));
-            SmartDashboard.putString("STEP1_inProgress", "YES");
+            //Robot.logger.putString("STEP1_inProgress", "YES");
             Step1_inProgress = true;
         }
         else if(onTarget()&&Step1_inProgress == true && Step1_done == false){
             //Step1_inProgress = false;
-            SmartDashboard.putString("Step1 onTarget", "YES");
+            //SmartDashboard.putString("Step1 onTarget", "YES");
             Step1_done = true;
         } 
         
@@ -154,16 +160,16 @@ public class Autonomous extends Subsystem{
             Step2_Started = true;
         }
         else if(Step2_Started == true && Step2_inProgress == false){
-            RobotMap.robotLeftTalon.set(ControlMode.Position, goStraight(107));//107
-            RobotMap.robotRightTalon.set(ControlMode.Position,goStraight(107));
-            SmartDashboard.putString("Step 2" , "in Progess");
+            RobotMap.robotLeftTalon.set(ControlMode.Position, goStraight(step2LeftTarget));//107
+            RobotMap.robotRightTalon.set(ControlMode.Position,goStraight(step2RightTarget));
+            Robot.logger.putMessage("Step 2 in Progess");
 
             Step2_inProgress = true;
         }
 
         else if(onTarget()&& Step2_inProgress == true && Step2_done == false){
-            //SmartDashboard.putString("Step2 onTarget", "yes");
-            SmartDashboard.putString("Step 2" , "Done!!");
+            //SmartDashoard.putString("Step2 onTarget", "yes");
+            Robot.logger.putMessage("Step 2 Done!!");
 
             //stopDrive();
             Step2_done = true;
@@ -183,25 +189,25 @@ public class Autonomous extends Subsystem{
         if(Robot.getIsLeft() == true && angle <=-17.35){
             stopDrive();
             //Robot.gyro.resetGyro();
-            SmartDashboard.putString("Step 3" , "Done!!");
+            Robot.logger.putMessage("Step 3 Done!!");
 
             Step3_done = true;
         }
        else if(Robot.getIsRight() == true && angle>=17.35){  
             stopDrive();
             Robot.gyro.resetGyro();
-            SmartDashboard.putString("Step 3" , "Done!!");
+            Robot.logger.putMessage("Step 3 Done!!");
 
             Step3_done = true;
        }
         else{
           if(Robot.getIsRight() == true){
             turnRight(0.25);
-            SmartDashboard.putString("Step 3" , "in Progress");
+            Robot.logger.putMessage("Step 3 in Progress");
 
           }
           else if(Robot.getIsLeft() == true){
-            SmartDashboard.putString("Step 3" , " in Progeses");
+            Robot.logger.putMessage("Step 3 in Progeses");
 
             turnLeft(0.25);
           }
@@ -221,41 +227,73 @@ public class Autonomous extends Subsystem{
             step4LeftTarget = goStraight(162)+ RobotMap.robotLeftTalon.getSelectedSensorPosition();
             step4RightTarget = goStraight(162)+ RobotMap.robotRightTalon.getSelectedSensorPosition();
 
-            SmartDashboard.putString("Step 4" , "started");
+            RobotMap.robotLeftTalon.configPeakOutputForward(1, Constants.kTimeoutMs);
+            RobotMap.robotRightTalon.configPeakOutputForward(1, Constants.kTimeoutMs);
+            RobotMap.robotLeftTalon.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+            RobotMap.robotRightTalon.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+            
+            Robot.logger.putMessage("Step 4 started");
             Step4_Started = true;
         }
         else if(Step4_inProgress == false && Step4_Started == true){
             RobotMap.robotLeftTalon.set(ControlMode.Position, step4LeftTarget);//161
             RobotMap.robotRightTalon.set(ControlMode.Position,step4RightTarget);
-            SmartDashboard.putString("Step 4" , "in Progess");
+            Robot.logger.putMessage("Step 4 in Progess");
  
             Step4_inProgress = true;
         }
         else if(onTarget() && Step4_inProgress == true && Step4_done == false){
             //stopDrive();
-            SmartDashboard.putString("Step 4" , "Done!!");
+            Robot.logger.putMessage("Step 4 Done!!");
             Step4_done = true;
         }
     }
     public void Step5(){
-        angle = Robot.gyro.getGyroAngle();
-        //Robot.getIsLeft() == true && 
-        if(angle <=-110){
-            stopDrive();
-            Step5_done = true;
-        }
+        // angle = Robot.gyro.getGyroAngle();
+        // //Robot.getIsLeft() == true && 
+        // if(angle <=-110){
+        //     stopDrive();
+        //     Step5_done = true;
+        // }
     //    else if(Robot.getIsRight() == true && angle>=90){  
     //         stopDrive();
     //         Step5_done = true;
-    //    }
-   
+    //    }    
+        // else{
+        //     if(Robot.getIsRight() == true){
+        //         turnLeft(0.25);
+        //     }
+        //     else if(Robot.getIsLeft() == true){
+        //         turnRight(0.25);
+        //     }
+        // }
+
+
+        angle = Robot.gyro.getGyroAngle();
+        if(Robot.getIsLeft() == true && angle <=110){
+            stopDrive();
+            //Robot.gyro.resetGyro();
+            Robot.logger.putMessage("Step 5 Done!!");
+
+            Step5_done = true;
+        }
+        else if(Robot.getIsRight() == true && angle>=-110){  
+            stopDrive();
+            Robot.gyro.resetGyro();
+            Robot.logger.putMessage("Step 5 Done!!");
+
+            Step5_done = true;
+        }
         else{
-            // if(Robot.getIsRight() == true){
-            //    turnLeft(-0.25);
-            // }
-            // else if(Robot.getIsLeft() == true){
-              turnLeft(0.25);
-            // }
+          if(Robot.getIsRight() == true){
+            turnLeft(0.25);
+            Robot.logger.putMessage("Step 5 in Progress");
+
+          }
+          else if(Robot.getIsLeft() == true){
+            Robot.logger.putMessage("Step 5 in Progeses");
+            turnRight(0.25);
+          }
         }
     }
     // public void Step6(){
@@ -296,15 +334,15 @@ public class Autonomous extends Subsystem{
     public void driveToHatch(){
         range = uValue.getRange();
         if(Step6_Started == false){            
-            RobotMap.robotLeftTalon.setSelectedSensorPosition(0);
-            RobotMap.robotRightTalon.setSelectedSensorPosition(0);
-            RobotMap.robotLeftTalon.getSensorCollection().setPulseWidthPosition(0, 30);
-            RobotMap.robotRightTalon.getSensorCollection().setPulseWidthPosition(0, 30);  
+            // RobotMap.robotLeftTalon.setSelectedSensorPosition(0);
+            // RobotMap.robotRightTalon.setSelectedSensorPosition(0);
+            // RobotMap.robotLeftTalon.getSensorCollection().setPulseWidthPosition(0, 30);
+            // RobotMap.robotRightTalon.getSensorCollection().setPulseWidthPosition(0, 30);  
             Step6_Started = true;           
         }
         else if(Step6_Started == true && Step6_inProgress == false){
             RobotMap.robotLeftTalon.set(ControlMode.PercentOutput , 0.15);
-            RobotMap.robotRightTalon.set(ControlMode.PercentOutput , 0.15);;
+            RobotMap.robotRightTalon.set(ControlMode.PercentOutput , 0.15);
             Step6_inProgress = true;
         }
         else if(range <=15 && Step6_inProgress == true && Step6_done == false){
@@ -312,10 +350,42 @@ public class Autonomous extends Subsystem{
             Step6_done = true;            
         }        
     }
-    public void placeHatch(){
-    //step7
+
+    public void placeHatch() {
+        if (Step7_Started == false) {
+            Robot.logger.putMessage("Starting Auto Step PlaceHatch");
+            Step7_Started = true;
+        } else if (Step7_Started == true && Step7_inProgress == false) {
+            Robot.armMotor.moveToPlaceHatch();
+            Step7_inProgress = true;
+        } else if (Robot.armMotor.isOnTarget() && Step7_inProgress == true && Step7_done == false) {
+            Robot.logger.putMessage("Auto Step PlaceHatch Finished - final position = " +  RobotMap.armTalon.getSelectedSensorPosition());
+            // deploy the pneumatics
+            Robot.solenoidSubsystem.deployHatch();
+            Step7_done = true;
+        } else {
+        }
     }
-    //   
+
+    public void backup() {
+        if (Step8_Started == false) {
+            Robot.logger.putMessage("Starting Auto Step Backup");
+            Robot.solenoidSubsystem.retractHatch();
+            backupLeftTarget = goStraight(-30)+ RobotMap.robotLeftTalon.getSelectedSensorPosition();
+            backupRightTarget = goStraight(-30)+ RobotMap.robotRightTalon.getSelectedSensorPosition();
+            Step8_Started = true;
+        } else if (Step8_Started == true && Step8_inProgress == false) {
+            RobotMap.robotLeftTalon.set(ControlMode.Position, backupLeftTarget);
+            RobotMap.robotRightTalon.set(ControlMode.Position, backupRightTarget);
+            Step8_inProgress = true;
+        } else if (onTarget() && Step8_inProgress == true && Step8_done == false) {
+            Robot.logger.putMessage("Auto Step Backup Finished");
+           Step8_done = true;
+        } else {
+        }
+        
+    }
+  
     @Override
     protected void initDefaultCommand() {
 

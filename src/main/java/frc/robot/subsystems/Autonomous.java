@@ -48,11 +48,14 @@ public class Autonomous extends Subsystem{
     public static boolean Step6_inProgress = false;
     public boolean Step6_Started = false;
     private static boolean Step7_done = false;
-    public boolean isStep7Done(){
+    public static boolean isStep7Done(){
         return Step7_done;
     }
     public static boolean Step7_inProgress = false;
     public boolean Step7_Started = false;
+    public static boolean isStep8Done(){
+        return Step8_done;
+    }
 
     public static boolean Step8_inProgress = false;
     public boolean Step8_Started = false;
@@ -270,14 +273,14 @@ public class Autonomous extends Subsystem{
 
 
         angle = Robot.gyro.getGyroAngle();
-        if(Robot.getIsLeft() == true && angle <=110){
+        if(Robot.getIsLeft() == true && angle >=110){
             stopDrive();
             //Robot.gyro.resetGyro();
             Robot.logger.putMessage("Step 5 Done!!");
 
             Step5_done = true;
         }
-        else if(Robot.getIsRight() == true && angle>=-110){  
+        else if(Robot.getIsRight() == true && angle<=-110){  
             stopDrive();
             Robot.gyro.resetGyro();
             Robot.logger.putMessage("Step 5 Done!!");

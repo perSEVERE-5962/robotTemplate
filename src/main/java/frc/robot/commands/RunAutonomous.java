@@ -54,6 +54,14 @@ public class RunAutonomous extends Command {
 			Robot.logger.putMessage("Running autonomous step #6");
 			auto.driveToHatch();
 		 }	
+		 else if(auto.isStep6Done() == true && auto.isStep7Done() == false){
+			 Robot.logger.putMessage("Running autonomous step for placing the hatch");
+			auto.placeHatch();
+		 }
+		 else if(auto.isStep7Done() == true && auto.isStep8Done() == false){
+			Robot.logger.putMessage("Running final autonomous step backup!!");
+			 auto.backup();
+		 }
 		 else{
 			 isFinished =true;
 		 }			

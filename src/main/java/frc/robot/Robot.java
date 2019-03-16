@@ -35,6 +35,8 @@ import frc.robot.utils.Logger;
 public class Robot extends TimedRobot {
 	public static OI oi;
 
+	private boolean autonomousStopped = true;	// set as stopped by default
+
 	// subsystems
 	public static Drive drive = new Drive();
 	public static SolenoidSubsystem solenoidSubsystem;
@@ -45,21 +47,21 @@ public class Robot extends TimedRobot {
 	// Sensors
 	public static RobotGyro gyro = new RobotGyro();
 	public static UltrasonicAnalog ultrasonicanalog = new UltrasonicAnalog(1);
-	public static DigitalInput topStop = new DigitalInput(0);
-	public static DigitalInput bottomStop = new DigitalInput(1);
+	// public static DigitalInput topStop = new DigitalInput(0);
+	// public static DigitalInput bottomStop = new DigitalInput(1);
 	//public static RemoteHCSR04 remoteHCSR04 = new RemoteHCSR04();
 
 	// commands
 	private static RunAutonomous autonomousCommand;
-	public static Autonomous auto = new Autonomous();
+	//public static Autonomous auto = new Autonomous();
 
 	// utils
 	public static pidControl pidValue = new pidControl();
 	public static ArmPID armPID = new ArmPID();
 	public static Logger logger = new Logger();
 
-	private static Faults leftFaults = new Faults();
-	private static Faults rightFaults = new Faults();
+	// private static Faults leftFaults = new Faults();
+	// private static Faults rightFaults = new Faults();
 
 	public static enum StartingPosition{
 		Left_Lvl_2,
@@ -69,7 +71,7 @@ public class Robot extends TimedRobot {
 		Right_Lvl_2,
 	}
 	public static StartingPosition starting_postion = StartingPosition.Right_Lvl_2;
-	private static boolean isLeft = false;
+	//private static boolean isLeft = false;
 
 	public static enum TargetPosition{
 		Left_Bay_1,
@@ -135,7 +137,7 @@ public class Robot extends TimedRobot {
 		return isMiddle;
 	}
 
-	private static boolean isRight = false;
+	//private static boolean isRight = false;
 
 	public static boolean getIsRight() {
 		if(starting_postion == StartingPosition.Right_Lvl_2){
@@ -259,7 +261,8 @@ public class Robot extends TimedRobot {
 
 		autonomousCommand = new RunAutonomous();
 		if (autonomousCommand != null) {
-		autonomousCommand.start();		
+			autonomousCommand.start();		
+			autonomousStopped = false;
 		}
 
 		//if(step1done == false){
@@ -276,6 +279,7 @@ public class Robot extends TimedRobot {
 	//int count = 0;
 
 
+	boolean driverOverride = false;
 
 	@Override
 	public void autonomousPeriodic() {
@@ -298,34 +302,34 @@ public class Robot extends TimedRobot {
 		logger.putNumber("Right Distance ", RobotMap.robotRightTalon.getSelectedSensorPosition());
 
 
-		if(auto.isStep2Done() == false){
-			Robot.logger.putString("Running autonomous step #2", "yes");
-			auto.Step2();
-		}
-		else if(auto.isStep2Done() == true && auto.isStep3Done() == false){
-			Robot.logger.putMessage("Running autonomous step #3");
-			auto.Step3();
-		}
-		else if(auto.isStep3Done() == true && auto.isStep4Done() == false){
-			Robot.logger.putMessage("Running autonomous step #4");
-			auto.Step4();
-		}
-		else if(auto.isStep4Done() == true && auto.isStep5Done() == false){
-			Robot.logger.putMessage("Running autonomous step #5");
-			auto.Step5();
-		}
-		else if(auto.isStep5Done() == true && auto.isStep6Done() == false){
-			Robot.logger.putMessage("Running autonomous step #6");
-			auto.driveToHatch();
-		 }	
-		 else if(auto.isStep6Done() == true && auto.isStep7Done() == false){
-			 Robot.logger.putMessage("Running autonomous step for placing the hatch");
-			auto.placeHatch();
-		 }
-		 else if(auto.isStep7Done() == true && auto.isStep8Done() == false){
-			Robot.logger.putMessage("Running final autonomous step backup!!");
-			 auto.backup();
-		 }
+		// if(auto.isStep2Done() == false){
+		// 	Robot.logger.putString("Running autonomous step #2", "yes");
+		// 	auto.Step2();
+		// }
+		// else if(auto.isStep2Done() == true && auto.isStep3Done() == false){
+		// 	Robot.logger.putMessage("Running autonomous step #3");
+		// 	auto.Step3();
+		// }
+		// else if(auto.isStep3Done() == true && auto.isStep4Done() == false){
+		// 	Robot.logger.putMessage("Running autonomous step #4");
+		// 	auto.Step4();
+		// }
+		// else if(auto.isStep4Done() == true && auto.isStep5Done() == false){
+		// 	Robot.logger.putMessage("Running autonomous step #5");
+		// 	auto.Step5();
+		// }
+		// else if(auto.isStep5Done() == true && auto.isStep6Done() == false){
+		// 	Robot.logger.putMessage("Running autonomous step #6");
+		// 	auto.driveToHatch();
+		//  }	
+		//  else if(auto.isStep6Done() == true && auto.isStep7Done() == false){
+		// 	 Robot.logger.putMessage("Running autonomous step for placing the hatch");
+		// 	auto.placeHatch();
+		//  }
+		//  else if(auto.isStep7Done() == true && auto.isStep8Done() == false){
+		// 	Robot.logger.putMessage("Running final autonomous step backup!!");
+		// 	 auto.backup();
+		//  }
 		// RobotMap.robotRightTalon.getFaults(rightFaults);
 		// RobotMap.robotLeftTalon.getFaults(leftFaults);
 		// logger.putBoolean("Left Out of Phase ", leftFaults.SensorOutOfPhase);
@@ -340,13 +344,26 @@ public class Robot extends TimedRobot {
 		// logger.putNumber("RIGHT POSITION", RobotMap.robotRightTalon.getSelectedSensorPosition(0));
 
 
+		// check for driver override
+		// if (driverOverride == false && (oi.driverController.getRawAxis(1) > 0.2 ||
+		// 	oi.driverController.getRawAxis(1) < -0.2 ||
+		// 	oi.driverController.getRawAxis(5) > 0.2 ||
+		// 	oi.driverController.getRawAxis(5) < -0.2)) {
+		// 		logger.putMessage("Driver override detected in autonomous - switching to teleop");
+		// 		stopAutonomous();
+		// 		oi.startDriveCommand();
+		// 		driverOverride = true;
+		// }
+
+		// if (driverOverride == true ) {
+		// 	runArm();
+		// 	runIntake();			
+		// }
 	}
 
 	@Override
 	public void teleopInit() {	
-		if (autonomousCommand != null) {
-			autonomousCommand.cancel();		
-		}
+		stopAutonomous();
 		
 		logger.putMessage("Starting teleop");
 
@@ -382,7 +399,23 @@ public class Robot extends TimedRobot {
 		// } else if (armMotor.isPIDRunning() == false) {
 		// 	armMotor.stop();
 		// }
-logger.putNumber("Arm Joystick Raw Axis", oi.copilotController.getRawAxis(5));
+		runArm();
+
+		// run intake
+		runIntake();
+
+	}
+
+	private void stopAutonomous() {
+		if (autonomousCommand != null && autonomousStopped == false) {
+			logger.putMessage("Stopping Autonomous");
+			autonomousStopped = true;
+			autonomousCommand.cancel();		
+		}		
+	}
+
+	private void runArm() {
+		logger.putNumber("Arm Joystick Raw Axis", oi.copilotController.getRawAxis(5));
 		if (oi.copilotController.getRawAxis(5) > 0.2) {
 			if(RobotMap.armTalon.getSelectedSensorPosition() >=200){
 				armMotor.moveIntoRobot();
@@ -409,8 +442,11 @@ logger.putNumber("Arm Joystick Raw Axis", oi.copilotController.getRawAxis(5));
 			// RobotMap.armTalon.setSelectedSensorPosition(0);
 			// RobotMap.armTalon.getSensorCollection().setPulseWidthPosition(0, 10);
 		}
+		logger.putNumber("Arm Values" , RobotMap.armTalon.getSelectedSensorPosition());
 
-		// run intake
+	}
+
+	private void runIntake() {
 		double range = ultrasonicanalog.getRange();
 		logger.putNumber("Ball Ultrasonic Value", range);
 		if (oi.getIntake()) {
@@ -440,8 +476,6 @@ logger.putNumber("Arm Joystick Raw Axis", oi.copilotController.getRawAxis(5));
 				oi.incrementRumbleCount();
 			}
 		}
-		logger.putNumber("Arm Values" , RobotMap.armTalon.getSelectedSensorPosition());
-
 	}
 
 	/**

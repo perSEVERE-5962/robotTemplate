@@ -34,8 +34,8 @@ public class RunAutonomous extends Command {
 		// 	Robot.logger.putMessage("Running autonomous step #1");
 		// 	auto.Step1();
 		// }else
-		 if(auto.isStep2Done() == false){
-			Robot.logger.putString("Running autonomous step #2", "yes");
+		if(auto.isStep2Done() == false){
+			Robot.logger.putMessage("Running autonomous step #2");
 			auto.Step2();
 		}
 		else if(auto.isStep2Done() == true && auto.isStep3Done() == false){
@@ -65,25 +65,6 @@ public class RunAutonomous extends Command {
 		 else{
 			 isFinished =true;
 		 }			
-		// else if(auto.isStep7Done() == false){
-		// 	Robot.logger.putMessage("Running autonomous step #7");
-		// 	auto.placeHatch();
-		// }
-		/*
-			STEP8 = place the game piece
-		*/
-		// else if(auto.isStep9Done() == false){
-		// 	auto.step9();
-		// }	
-		// else if(auto.isStep10Done() == false){
-		// 	auto.Step10();
-		// }		
-		// else if(auto.isStep11Done() == false){
-		// 	auto.step11();
-		// }	
-
-	//	auto.elapsedTime();
-	
 		
 	}
 

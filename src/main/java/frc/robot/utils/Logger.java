@@ -23,7 +23,7 @@ public class Logger {
             //String logFilePath = "/Users/dlemasurier/Team5962/git/LogTest/robotlog_" + dateFormat.format(new Date()) + ".log";
             fileWriter = new FileWriter(logFilePath);
             bufferedWriter = new BufferedWriter(fileWriter);
-        } catch (IOException e) {
+        } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
@@ -58,13 +58,13 @@ public class Logger {
     }
     
     public void putMessage(String message) {
-        String test = getCurrentTime() + " " + message + newLine;
+        String logString = getCurrentTime() + " " + message + newLine;
         try {
-            bufferedWriter.write(test);
+            bufferedWriter.write(logString);
             bufferedWriter.flush();
-        } catch (Exception ioe) {
-       	    ioe.printStackTrace();
-            System.out.println("putMessage: " + test);
+        } catch (Exception e) {
+       	    e.printStackTrace();
+            System.out.println("putMessage: " + logString);
         }
     }
 

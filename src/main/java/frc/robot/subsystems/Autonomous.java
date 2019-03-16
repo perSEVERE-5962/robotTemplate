@@ -12,54 +12,63 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 
 public class Autonomous extends Subsystem{
-    public RemoteHCSR04 uValue = new RemoteHCSR04();
-    private static boolean Step1_done = false;
-    public boolean isStep1Done(){
+    private RemoteHCSR04 uValue = new RemoteHCSR04();
+
+    private boolean Step1_inProgress = false;
+    private boolean Step1_Started = false;
+    private boolean Step1_done = false;
+    private boolean isStep1Done(){
         return Step1_done;
     }
-    public static boolean Step1_inProgress = false;
-    public static boolean Step1_Started = false;
-    private static boolean Step2_done = false;
+
+    private boolean Step2_inProgress = false;
+    private boolean Step2_Started = false;
+    private boolean Step2_done = false;
     public boolean isStep2Done(){
         return Step2_done;
     }
-    public static boolean Step2_inProgress = false;
-    public boolean Step2_Started = false;
-    private static boolean Step3_done = false;
+
+    private boolean Step3_done = false;
+    private boolean Step3_Started = false;
     public boolean isStep3Done(){
         return Step3_done;
     }
-    public boolean Step3_Started = false;
-    private static boolean Step4_done = false;
+
+    private boolean Step4_done = false;
+    private boolean Step4_inProgress = false;
+    private boolean Step4_Started = false;
     public boolean isStep4Done(){
         return Step4_done;
     }
-    public boolean Step4_inProgress = false;
-    public boolean Step4_Started = false;
-    private static boolean Step5_done = false;
+
+    private boolean Step5_done = false;
+    private boolean Step5_Started = false;
     public boolean isStep5Done(){
         return Step5_done;
     }    
-    public boolean Step5_Started = false;
-    private static boolean Step6_done = false;
+
+    private boolean Step6_inProgress = false;
+    private boolean Step6_Started = false;    
+    private boolean Step6_done = false;
     public boolean isStep6Done(){
         return Step6_done;
     }
-    public static boolean Step6_inProgress = false;
-    public boolean Step6_Started = false;
-    private static boolean Step7_done = false;
-    public static boolean isStep7Done(){
+
+    private boolean Step7_done = false;
+    private boolean Step7_inProgress = false;
+    private boolean Step7_Started = false;
+    public boolean isStep7Done(){
         return Step7_done;
     }
-    public static boolean Step7_inProgress = false;
-    public boolean Step7_Started = false;
-    public static boolean isStep8Done(){
+
+    private boolean Step8_inProgress = false;
+    private boolean Step8_Started = false;
+    private boolean Step8_done = false;
+    public boolean isStep8Done(){
         return Step8_done;
     }
 
-    public static boolean Step8_inProgress = false;
-    public boolean Step8_Started = false;
-    private static boolean Step8_done = false;
+
 
     private double step2LeftTarget = goStraight(107);
     private double step2RightTarget = goStraight(107);
@@ -81,7 +90,7 @@ public class Autonomous extends Subsystem{
         RobotMap.robotLeftTalon.set(ControlMode.PercentOutput, speed);
         RobotMap.robotRightTalon.set(ControlMode.PercentOutput, -speed);      
     }
-    private static int i=0;
+    //private static int i=0;
 
     final double diameter = 3.0;//7.5 test bot
     final double circumferance = Math.PI*diameter;
@@ -102,7 +111,11 @@ public class Autonomous extends Subsystem{
         return (inches*(4096.0/circumferance));
     }
     public boolean onTarget(){
-        if(Math.abs(RobotMap.robotLeftTalon.getClosedLoopError())<10 && Math.abs(RobotMap.robotRightTalon.getClosedLoopError())<10){
+        Robot.logger.putMessage("Left Closed Loop Error = " + RobotMap.robotLeftTalon.getClosedLoopError());
+        Robot.logger.putMessage("Right Closed Loop Error = " + RobotMap.robotRightTalon.getClosedLoopError());
+       
+        if(Math.abs(RobotMap.robotLeftTalon.getClosedLoopError())<100 && 
+                Math.abs(RobotMap.robotRightTalon.getClosedLoopError())<100){
             return true;
         }
         return false;
@@ -155,15 +168,16 @@ public class Autonomous extends Subsystem{
             // RobotMap.robotRightTalon.setSelectedSensorPosition(0);
             // RobotMap.robotLeftTalon.getSensorCollection().setPulseWidthPosition(0, 30);
             // RobotMap.robotRightTalon.getSensorCollection().setPulseWidthPosition(0, 30);
-            SmartDashboard.putString("Step 2" , "Started");
+
+            //SmartDashboard.putString("Step 2" , "Started");
 
             step2LeftTarget = goStraight(107) + RobotMap.robotLeftTalon.getSelectedSensorPosition();
             step2RightTarget = goStraight(107)+ RobotMap.robotRightTalon.getSelectedSensorPosition();
 
-            RobotMap.robotLeftTalon.configPeakOutputForward(0.7, Constants.kTimeoutMs);
-            RobotMap.robotRightTalon.configPeakOutputForward(0.7, Constants.kTimeoutMs);
-            RobotMap.robotLeftTalon.configPeakOutputReverse(-0.7, Constants.kTimeoutMs);
-            RobotMap.robotRightTalon.configPeakOutputReverse(-0.7, Constants.kTimeoutMs);
+            // RobotMap.robotLeftTalon.configPeakOutputForward(0.7, Constants.kTimeoutMs);
+            // RobotMap.robotRightTalon.configPeakOutputForward(0.7, Constants.kTimeoutMs);
+            // RobotMap.robotLeftTalon.configPeakOutputReverse(-0.7, Constants.kTimeoutMs);
+            // RobotMap.robotRightTalon.configPeakOutputReverse(-0.7, Constants.kTimeoutMs);
             Step2_Started = true;
         }
         else if(Step2_Started == true && Step2_inProgress == false){
@@ -174,8 +188,8 @@ public class Autonomous extends Subsystem{
             Step2_inProgress = true;
         }
 
-        else if(onTarget()&& Step2_inProgress == true && Step2_done == false){
-         SmartDashboard.putString("Step2 onTarget", "yes");
+        else if(onTarget() && Step2_inProgress == true && Step2_done == false){
+            SmartDashboard.putString("Step2 onTarget", "yes");
             Robot.logger.putMessage("Step 2 Done!!");
 
             //stopDrive();
@@ -183,14 +197,7 @@ public class Autonomous extends Subsystem{
         }
         else{}
     }
-    // public void runSteps(){
-    //     if(Step1_done == false){
-    //         Step1();
-    //     }
-    //     else if(Step1_done == true){
-    //         Step2();
-    //     }
-    // }
+
     public void Step3(){
         angle = Robot.gyro.getGyroAngle();
         if(Robot.getIsLeft() == true && angle <=-17.35){
@@ -256,30 +263,10 @@ public class Autonomous extends Subsystem{
         }
     }
     public void Step5(){
-        // angle = Robot.gyro.getGyroAngle();
-        // //Robot.getIsLeft() == true && 
-        // if(angle <=-110){
-        //     stopDrive();
-        //     Step5_done = true;
-        // }
-    //    else if(Robot.getIsRight() == true && angle>=90){  
-    //         stopDrive();
-    //         Step5_done = true;
-    //    }    
-        // else{
-        //     if(Robot.getIsRight() == true){
-        //         turnLeft(0.25);
-        //     }
-        //     else if(Robot.getIsLeft() == true){
-        //         turnRight(0.25);
-        //     }
-        // }
-
-
         angle = Robot.gyro.getGyroAngle();
         if(Robot.getIsLeft() == true && angle >=110){
             stopDrive();
-            //Robot.gyro.resetGyro();
+            Robot.gyro.resetGyro();
             Robot.logger.putMessage("Step 5 Done!!");
 
             Step5_done = true;

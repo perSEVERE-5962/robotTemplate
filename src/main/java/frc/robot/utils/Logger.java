@@ -62,7 +62,7 @@ public class Logger {
         try {
             bufferedWriter.write(test);
             bufferedWriter.flush();
-        } catch (IOException ioe) {
+        } catch (Exception ioe) {
        	    ioe.printStackTrace();
             System.out.println("putMessage: " + test);
         }

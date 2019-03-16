@@ -51,7 +51,7 @@ public class Robot extends TimedRobot {
 
 	// commands
 	private static RunAutonomous autonomousCommand;
-	public static Autonomous ato = new Autonomous();
+	public static Autonomous auto = new Autonomous();
 
 	// utils
 	public static pidControl pidValue = new pidControl();
@@ -214,16 +214,16 @@ public class Robot extends TimedRobot {
 		// RobotMap.robotLeftTalon.set(ControlMode.PercentOutput, 0);
 		// RobotMap.robotRightTalon.set(ControlMode.PercentOutput, 0);
 
-		RobotMap.robotRightTalon.configFactoryDefault();
-		RobotMap.robotRightVictor.configFactoryDefault();
-		RobotMap.robotLeftTalon.configFactoryDefault();
-		RobotMap.robotLeftVictor.configFactoryDefault();		
+		// RobotMap.robotRightTalon.configFactoryDefault();
+		// RobotMap.robotRightVictor.configFactoryDefault();
+		// RobotMap.robotLeftTalon.configFactoryDefault();
+		// RobotMap.robotLeftVictor.configFactoryDefault();		
 
-		Robot.pidValue.configTalons();
+		// Robot.pidValue.configTalons();
 		// RobotMap.robotLeftTalon.setSelectedSensorPosition(0);
 		// RobotMap.robotRightTalon.setSelectedSensorPosition(0);
-		RobotMap.robotLeftTalon.getSensorCollection().setPulseWidthPosition(0, 10);
-		RobotMap.robotRightTalon.getSensorCollection().setPulseWidthPosition(0, 10);
+		// RobotMap.robotLeftTalon.getSensorCollection().setPulseWidthPosition(0, 10);
+		// RobotMap.robotRightTalon.getSensorCollection().setPulseWidthPosition(0, 10);
 
 		// logger.putMessage("Starting autonomous");
 
@@ -294,8 +294,38 @@ public class Robot extends TimedRobot {
 		// logger.putNumber("Right Error", (double) RobotMap.robotRightTalon.getClosedLoopError(0));
 		logger.putNumber("Gyro Value" , gyro.getGyroAngle());
 
-		// logger.putNumber("Left Distance ", RobotMap.robotLeftTalon.getSelectedSensorPosition());
-		// logger.putNumber("Right Distance ", RobotMap.robotRightTalon.getSelectedSensorPosition());
+		logger.putNumber("Left Distance ", RobotMap.robotLeftTalon.getSelectedSensorPosition());
+		logger.putNumber("Right Distance ", RobotMap.robotRightTalon.getSelectedSensorPosition());
+
+
+		if(auto.isStep2Done() == false){
+			Robot.logger.putString("Running autonomous step #2", "yes");
+			auto.Step2();
+		}
+		else if(auto.isStep2Done() == true && auto.isStep3Done() == false){
+			Robot.logger.putMessage("Running autonomous step #3");
+			auto.Step3();
+		}
+		else if(auto.isStep3Done() == true && auto.isStep4Done() == false){
+			Robot.logger.putMessage("Running autonomous step #4");
+			auto.Step4();
+		}
+		else if(auto.isStep4Done() == true && auto.isStep5Done() == false){
+			Robot.logger.putMessage("Running autonomous step #5");
+			auto.Step5();
+		}
+		else if(auto.isStep5Done() == true && auto.isStep6Done() == false){
+			Robot.logger.putMessage("Running autonomous step #6");
+			auto.driveToHatch();
+		 }	
+		 else if(auto.isStep6Done() == true && auto.isStep7Done() == false){
+			 Robot.logger.putMessage("Running autonomous step for placing the hatch");
+			auto.placeHatch();
+		 }
+		 else if(auto.isStep7Done() == true && auto.isStep8Done() == false){
+			Robot.logger.putMessage("Running final autonomous step backup!!");
+			 auto.backup();
+		 }
 		// RobotMap.robotRightTalon.getFaults(rightFaults);
 		// RobotMap.robotLeftTalon.getFaults(leftFaults);
 		// logger.putBoolean("Left Out of Phase ", leftFaults.SensorOutOfPhase);

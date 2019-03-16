@@ -59,8 +59,8 @@ public class OI {
 		copilotController = new Joystick(3); // Copilot
 		driverSpeedButton = new JoystickButton(driverController, 5);	// right bumper
 		driverSpeedButton.toggleWhenPressed(new DriverSpeedControl());
-		deployHatchButton = new JoystickButton(copilotController, 5);
-		retractHatchButton = new JoystickButton(copilotController, 6);
+		deployHatchButton = new JoystickButton(copilotController, 6);
+		retractHatchButton = new JoystickButton(copilotController, 5);
 		deployHatchButton.whenPressed(deployHatch);
 		retractHatchButton.whenPressed(retractHatch);
 		greenLEDButton = new JoystickButton(driverController, 1);

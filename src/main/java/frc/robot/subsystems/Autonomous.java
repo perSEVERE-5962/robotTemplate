@@ -102,7 +102,7 @@ public class Autonomous extends Subsystem{
         return (inches*(4096.0/circumferance));
     }
     public boolean onTarget(){
-        if(Math.abs(RobotMap.robotLeftTalon.getClosedLoopError())<100 && Math.abs(RobotMap.robotRightTalon.getClosedLoopError())<100){
+        if(Math.abs(RobotMap.robotLeftTalon.getClosedLoopError())<10 && Math.abs(RobotMap.robotRightTalon.getClosedLoopError())<10){
             return true;
         }
         return false;
@@ -155,23 +155,27 @@ public class Autonomous extends Subsystem{
             // RobotMap.robotRightTalon.setSelectedSensorPosition(0);
             // RobotMap.robotLeftTalon.getSensorCollection().setPulseWidthPosition(0, 30);
             // RobotMap.robotRightTalon.getSensorCollection().setPulseWidthPosition(0, 30);
-            // SmartDashboard.putString("Step 2" , "Started");
+            SmartDashboard.putString("Step 2" , "Started");
 
             step2LeftTarget = goStraight(107) + RobotMap.robotLeftTalon.getSelectedSensorPosition();
             step2RightTarget = goStraight(107)+ RobotMap.robotRightTalon.getSelectedSensorPosition();
 
+            RobotMap.robotLeftTalon.configPeakOutputForward(0.7, Constants.kTimeoutMs);
+            RobotMap.robotRightTalon.configPeakOutputForward(0.7, Constants.kTimeoutMs);
+            RobotMap.robotLeftTalon.configPeakOutputReverse(-0.7, Constants.kTimeoutMs);
+            RobotMap.robotRightTalon.configPeakOutputReverse(-0.7, Constants.kTimeoutMs);
             Step2_Started = true;
         }
         else if(Step2_Started == true && Step2_inProgress == false){
-            RobotMap.robotLeftTalon.set(ControlMode.Position, goStraight(step2LeftTarget));//107
-            RobotMap.robotRightTalon.set(ControlMode.Position,goStraight(step2RightTarget));
+            RobotMap.robotLeftTalon.set(ControlMode.Position, step2LeftTarget);//107
+            RobotMap.robotRightTalon.set(ControlMode.Position,step2RightTarget);
             Robot.logger.putMessage("Step 2 in Progess");
 
             Step2_inProgress = true;
         }
 
         else if(onTarget()&& Step2_inProgress == true && Step2_done == false){
-            //SmartDashoard.putString("Step2 onTarget", "yes");
+         SmartDashboard.putString("Step2 onTarget", "yes");
             Robot.logger.putMessage("Step 2 Done!!");
 
             //stopDrive();
@@ -191,7 +195,7 @@ public class Autonomous extends Subsystem{
         angle = Robot.gyro.getGyroAngle();
         if(Robot.getIsLeft() == true && angle <=-17.35){
             stopDrive();
-            //Robot.gyro.resetGyro();
+            Robot.gyro.resetGyro();
             Robot.logger.putMessage("Step 3 Done!!");
 
             Step3_done = true;
@@ -344,8 +348,8 @@ public class Autonomous extends Subsystem{
             Step6_Started = true;           
         }
         else if(Step6_Started == true && Step6_inProgress == false){
-            RobotMap.robotLeftTalon.set(ControlMode.PercentOutput , 0.15);
-            RobotMap.robotRightTalon.set(ControlMode.PercentOutput , 0.15);
+            RobotMap.robotLeftTalon.set(ControlMode.PercentOutput , 0.5);
+            RobotMap.robotRightTalon.set(ControlMode.PercentOutput , 0.5);
             Step6_inProgress = true;
         }
         else if(range <=15 && Step6_inProgress == true && Step6_done == false){

@@ -357,6 +357,7 @@ public class Robot extends TimedRobot {
 
 		if (driverOverride == true ) {
 			runArm();
+			runBackupArm();
 			runIntake();			
 		}
 	}
@@ -400,6 +401,7 @@ public class Robot extends TimedRobot {
 		// 	armMotor.stop();
 		// }
 		runArm();
+		runBackupArm();
 
 		// run intake
 		runIntake();
@@ -445,7 +447,22 @@ public class Robot extends TimedRobot {
 		logger.putNumber("Arm Values" , RobotMap.armTalon.getSelectedSensorPosition());
 
 	}
+	private void runBackupArm() {
+		logger.putNumber("Arm Joystick Raw Axis", oi.copilotController.getRawAxis(5));
+		if (oi.copilotController.getRawAxis(1) > 0.2) {
+			// if(RobotMap.armTalon.getSelectedSensorPosition() >=200){
+				armMotor.moveIntoRobot();
+			// }
+			//logger.putMessage("Arm moving down");
+			//logger.putNumber("Arm current Position", RobotMap.armTalon.getSelectedSensorPosition());
+		} else if (oi.copilotController.getRawAxis(1) < -0.2) {
+			armMotor.moveOutOfRobot();
+			//logger.putMessage("Arm moving up");
+			//logger.putNumber("Arm current Position", RobotMap.armTalon.getSelectedSensorPosition());
+		} 
+		logger.putNumber("Arm Values" , RobotMap.armTalon.getSelectedSensorPosition());
 
+	}
 	private void runIntake() {
 		double range = ultrasonicanalog.getRange();
 		logger.putNumber("Ball Ultrasonic Value", range);

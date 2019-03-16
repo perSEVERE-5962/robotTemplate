@@ -230,10 +230,10 @@ public class Autonomous extends Subsystem{
     }
     public void Step4(){
         if(Step4_Started == false){
-        // RobotMap.robotLeftTalon.setSelectedSensorPosition(0);
-		//     RobotMap.robotRightTalon.setSelectedSensorPosition(0);    
-        //     RobotMap.robotLeftTalon.getSensorCollection().setPulseWidthPosition(0, 10);
-        //     RobotMap.robotRightTalon.getSensorCollection().setPulseWidthPosition(0, 10);
+        RobotMap.robotLeftTalon.setSelectedSensorPosition(0);
+		    RobotMap.robotRightTalon.setSelectedSensorPosition(0);    
+            RobotMap.robotLeftTalon.getSensorCollection().setPulseWidthPosition(0, 10);
+            RobotMap.robotRightTalon.getSensorCollection().setPulseWidthPosition(0, 10);
         //     SmartDashboard.putNumber("LEFT START 4", RobotMap.robotLeftTalon.getSelectedSensorPosition(0));
         //     SmartDashboard.putNumber("RIGHT START 4", RobotMap.robotRightTalon.getSelectedSensorPosition(0));
         //     SmartDashboard.putNumber("LEFT START2 4", RobotMap.robotLeftTalon.getSensorCollection().getPulseWidthPosition());
@@ -241,10 +241,10 @@ public class Autonomous extends Subsystem{
             step4LeftTarget = goStraight(162)+ RobotMap.robotLeftTalon.getSelectedSensorPosition();
             step4RightTarget = goStraight(162)+ RobotMap.robotRightTalon.getSelectedSensorPosition();
 
-            RobotMap.robotLeftTalon.configPeakOutputForward(1, Constants.kTimeoutMs);
-            RobotMap.robotRightTalon.configPeakOutputForward(1, Constants.kTimeoutMs);
-            RobotMap.robotLeftTalon.configPeakOutputReverse(-1, Constants.kTimeoutMs);
-            RobotMap.robotRightTalon.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+            // RobotMap.robotalon.configPeakOutputForward(1, Constants.kTimeoutMs);
+            // RobotMap.robotRightTalon.configPeakOutputForward(1, Constants.kTimeoutMs);
+            // RobotMap.robotLeftTalon.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+            // RobotMap.robotRightTalon.configPeakOutputReverse(-1, Constants.kTimeoutMs);LeftT
             
             Robot.logger.putMessage("Step 4 started");
             Step4_Started = true;

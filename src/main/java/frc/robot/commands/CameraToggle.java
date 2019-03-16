@@ -26,6 +26,9 @@ public class CameraToggle extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+      myEntry = table.getEntry("CameraSelection");
+      myEntry.setString("camera1");
+      Robot.oi.isCamera1Active = true;
   }
 
   // Called repeatedly when this Command is scheduled to run

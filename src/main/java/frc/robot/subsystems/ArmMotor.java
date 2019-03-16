@@ -81,6 +81,16 @@ public class ArmMotor extends Subsystem {
 		isPIDRunning = false;	// disable PID if running
 		RobotMap.armTalon.set(ControlMode.PercentOutput, -speed*Robot.oi.copilotController.getRawAxis(5));
 	}
+	public void moveOutOfRobotBackup() {
+
+		SmartDashboard.putString("RunUpward", "yes");
+		double speed = DEFAULT_SPEED;
+		if (isMaxSpeed) {
+			speed = MAX_SPEED;
+		}
+		//isPIDRunning = false;	// disable PID if running
+		RobotMap.armTalon.set(ControlMode.PercentOutput, -speed*Robot.oi.copilotController.getRawAxis(1));
+	}
 
 	public void moveIntoRobot() {
 
@@ -91,6 +101,16 @@ public class ArmMotor extends Subsystem {
 		}
 		isPIDRunning = false; 	// disable PID if running
 		RobotMap.armTalon.set(ControlMode.PercentOutput, -speed*Robot.oi.copilotController.getRawAxis(5));
+	}
+	public void moveIntoRobotBackup() {
+
+		SmartDashboard.putString("RunDownward", "yes");
+		double speed = DEFAULT_SPEED;
+		if (isMaxSpeed) {
+			speed = MAX_SPEED;
+		}
+		//isPIDRunning = false; 	// disable PID if running
+		RobotMap.armTalon.set(ControlMode.PercentOutput, -speed*Robot.oi.copilotController.getRawAxis(1));
 	}
 
 	public void stop() {

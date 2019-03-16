@@ -30,7 +30,7 @@ public class OI {
 	public JoystickButton orangeLEDButton;
 	public JoystickButton buttonSix;
 	public JoystickButton placeHatch;
-	public boolean isCamera1Active = true;
+	public boolean isCamera1Active = false;
 	public JoystickButton driverSpeedButton;
 	public JoystickButton copilotSpeedButton;
 	private int rumbleCount=0;

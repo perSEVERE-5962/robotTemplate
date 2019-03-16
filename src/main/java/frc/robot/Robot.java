@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Compressor;
 import frc.robot.subsystems.Drive;
 import frc.robot.commands.RunAutonomous;
+import frc.robot.commands.placeHatch;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.*;
 import frc.robot.sensors.*;
@@ -58,7 +59,7 @@ public class Robot extends TimedRobot {
 	// utils
 	public static pidControl pidValue = new pidControl();
 	public static ArmPID armPID = new ArmPID();
-	public static Logger logger = new Logger();
+	public static Logger logger;
 
 	// private static Faults leftFaults = new Faults();
 	// private static Faults rightFaults = new Faults();
@@ -152,7 +153,7 @@ public class Robot extends TimedRobot {
 	 */
 	public void robotInit() {
 		RobotMap.init();
-
+		logger = new Logger();
 		gyro.resetGyro();
 
 		oi = new OI();
@@ -357,6 +358,7 @@ public class Robot extends TimedRobot {
 
 		if (driverOverride == true ) {
 			runArm();
+			
 			runBackupArm();
 			runIntake();			
 		}
@@ -401,7 +403,7 @@ public class Robot extends TimedRobot {
 		// 	armMotor.stop();
 		// }
 		runArm();
-		runBackupArm();
+		//runBackupArm();
 
 		// run intake
 		runIntake();
@@ -448,19 +450,21 @@ public class Robot extends TimedRobot {
 
 	}
 	private void runBackupArm() {
-		logger.putNumber("Arm Joystick Raw Axis", oi.copilotController.getRawAxis(5));
+		logger.putNumber("Backup Arm Joystick Raw Axis", oi.copilotController.getRawAxis(1));
 		if (oi.copilotController.getRawAxis(1) > 0.2) {
 			// if(RobotMap.armTalon.getSelectedSensorPosition() >=200){
-				armMotor.moveIntoRobot();
+				armMotor.stop();
+				armMotor.moveIntoRobotBackup();
 			// }
 			//logger.putMessage("Arm moving down");
 			//logger.putNumber("Arm current Position", RobotMap.armTalon.getSelectedSensorPosition());
 		} else if (oi.copilotController.getRawAxis(1) < -0.2) {
-			armMotor.moveOutOfRobot();
+			armMotor.stop();
+			armMotor.moveOutOfRobotBackup();
 			//logger.putMessage("Arm moving up");
 			//logger.putNumber("Arm current Position", RobotMap.armTalon.getSelectedSensorPosition());
 		} 
-		logger.putNumber("Arm Values" , RobotMap.armTalon.getSelectedSensorPosition());
+		logger.putNumber("Backup Arm Values" , RobotMap.armTalon.getSelectedSensorPosition());
 
 	}
 	private void runIntake() {

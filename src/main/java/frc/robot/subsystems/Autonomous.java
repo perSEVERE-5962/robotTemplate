@@ -127,8 +127,10 @@ public class Autonomous extends Subsystem{
         Robot.logger.putMessage("Stopping the drive");
         RobotMap.robotLeftTalon.set(ControlMode.PercentOutput, 0);
         RobotMap.robotRightTalon.set(ControlMode.PercentOutput, 0);
-        // RobotMap.robotLeftTalon.setSelectedSensorPosition(0);
-        // RobotMap.robotRightTalon.setSelectedSensorPosition(0);
+        RobotMap.robotLeftTalon.setSelectedSensorPosition(0);
+        RobotMap.robotRightTalon.setSelectedSensorPosition(0);
+        RobotMap.robotLeftTalon.getSensorCollection().setPulseWidthPosition(0, 10);
+        RobotMap.robotRightTalon.getSensorCollection().setPulseWidthPosition(0, 10);
         // RobotMap.robotLeftTalon.configPeakOutputForward(Constants.kSpeed, Constants.kTimeoutMs);
         // RobotMap.robotRightTalon.configPeakOutputForward(Constants.kSpeed, Constants.kTimeoutMs);
         // RobotMap.robotLeftTalon.configPeakOutputReverse(-Constants.kSpeed, Constants.kTimeoutMs);
@@ -238,8 +240,8 @@ public class Autonomous extends Subsystem{
         //     SmartDashboard.putNumber("RIGHT START 4", RobotMap.robotRightTalon.getSelectedSensorPosition(0));
         //     SmartDashboard.putNumber("LEFT START2 4", RobotMap.robotLeftTalon.getSensorCollection().getPulseWidthPosition());
         //     SmartDashboard.putNumber("RIGHT START2 4",RobotMap.robotRightTalon.getSensorCollection().getPulseWidthPosition());
-            step4LeftTarget = goStraight(162)+ RobotMap.robotLeftTalon.getSelectedSensorPosition();
-            step4RightTarget = goStraight(162)+ RobotMap.robotRightTalon.getSelectedSensorPosition();
+            // step4LeftTarget = goStraight(162)+ RobotMap.robotLeftTalon.getSelectedSensorPosition();
+            // step4RightTarget = goStraight(162)+ RobotMap.robotRightTalon.getSelectedSensorPosition();
 
             // RobotMap.robotalon.configPeakOutputForward(1, Constants.kTimeoutMs);
             // RobotMap.robotRightTalon.configPeakOutputForward(1, Constants.kTimeoutMs);
@@ -250,14 +252,14 @@ public class Autonomous extends Subsystem{
             Step4_Started = true;
         }
         else if(Step4_inProgress == false && Step4_Started == true){
-            RobotMap.robotLeftTalon.set(ControlMode.Position, step4LeftTarget);//161
-            RobotMap.robotRightTalon.set(ControlMode.Position,step4RightTarget);
+            RobotMap.robotLeftTalon.set(ControlMode.Position, goStraight(161.5));//161
+            RobotMap.robotRightTalon.set(ControlMode.Position,goStraight(161.5));
             Robot.logger.putMessage("Step 4 in Progess");
  
             Step4_inProgress = true;
         }
         else if(onTarget() && Step4_inProgress == true && Step4_done == false){
-            //stopDrive();
+           // stopDrive();
             Robot.logger.putMessage("Step 4 Done!!");
             Step4_done = true;
         }

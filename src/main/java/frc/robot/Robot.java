@@ -345,20 +345,20 @@ public class Robot extends TimedRobot {
 
 
 		// check for driver override
-		// if (driverOverride == false && (oi.driverController.getRawAxis(1) > 0.2 ||
-		// 	oi.driverController.getRawAxis(1) < -0.2 ||
-		// 	oi.driverController.getRawAxis(5) > 0.2 ||
-		// 	oi.driverController.getRawAxis(5) < -0.2)) {
-		// 		logger.putMessage("Driver override detected in autonomous - switching to teleop");
-		// 		stopAutonomous();
-		// 		oi.startDriveCommand();
-		// 		driverOverride = true;
-		// }
+		if (driverOverride == false && (oi.driverController.getRawAxis(1) > 0.2 ||
+			oi.driverController.getRawAxis(1) < -0.2 ||
+			oi.driverController.getRawAxis(5) > 0.2 ||
+			oi.driverController.getRawAxis(5) < -0.2)) {
+				logger.putMessage("Driver override detected in autonomous - switching to teleop");
+				stopAutonomous();
+				oi.startDriveCommand();
+				driverOverride = true;
+		}
 
-		// if (driverOverride == true ) {
-		// 	runArm();
-		// 	runIntake();			
-		// }
+		if (driverOverride == true ) {
+			runArm();
+			runIntake();			
+		}
 	}
 
 	@Override

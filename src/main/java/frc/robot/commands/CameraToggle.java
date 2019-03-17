@@ -35,13 +35,13 @@ public class CameraToggle extends Command {
   @Override
   protected void execute() {
     if (!Robot.oi.isCamera1Active){
-      System.out.printf("Setting Camera 1\n");
+      //System.out.printf("Setting Camera 1\n");
       myEntry = table.getEntry("CameraSelection");
       myEntry.setString("camera1");
       Robot.oi.isCamera1Active = true;
       Robot.logger.putMessage("Activating Camera 1");
     } else if (Robot.oi.isCamera1Active){
-      System.out.printf("Setting Camera 0\n");
+      //System.out.printf("Setting Camera 0\n");
       myEntry = table.getEntry("CameraSelection");
       myEntry.setString("camera0");
       Robot.oi.isCamera1Active = false;

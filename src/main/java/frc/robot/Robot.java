@@ -197,17 +197,18 @@ public class Robot extends TimedRobot {
 	public void robotPeriodic() {
 		logger.putMessage("Current Battery Voltage = " + RobotController.getBatteryVoltage());
 		logger.putMessage("Aproximate Remaining Match Time = " + driverStation.getMatchTime());
-		logger.putMessage("pdp_0 current = " + pdp.getCurrent(0) + " amps");
-		logger.putMessage("pdp_1 current = " + pdp.getCurrent(1) + " amps");
-		logger.putMessage("pdp_2 current = " + pdp.getCurrent(2) + " amps");
-		logger.putMessage("pdp_13 current = " + pdp.getCurrent(13) + " amps");
-		logger.putMessage("pdp_14 current = " + pdp.getCurrent(14) + " amps");
-		logger.putMessage("pdp_15 current = " + pdp.getCurrent(15) + " amps");
+		logger.putMessage("pdp_0 (left victor) current = " + pdp.getCurrent(0) + " amps");
+		logger.putMessage("pdp_1 (left talon) current = " + pdp.getCurrent(1) + " amps");
+		logger.putMessage("pdp_2 (intake) current = " + pdp.getCurrent(2) + " amps");
+		logger.putMessage("pdp_13 (arm) current = " + pdp.getCurrent(13) + " amps");
+		logger.putMessage("pdp_14 (right victor) current = " + pdp.getCurrent(14) + " amps");
+		logger.putMessage("pdp_15 (right talon) current = " + pdp.getCurrent(15) + " amps");
 		logger.putMessage("pdp total current = " + pdp.getTotalCurrent() + " amps");
-		logger.putMessage("pdp total energy = " + pdp.getTotalEnergy() + " joles");
+		logger.putMessage("pdp total energy = " + pdp.getTotalEnergy() + " joules");
 		logger.putMessage("pdp total power = " + pdp.getTotalPower() + " watts");
 
 	}
+	
 	/**
 	 * This function is called once each time the robot enters Disabled mode. You
 	 * can use it to reset any subsystem information you want to clear when the

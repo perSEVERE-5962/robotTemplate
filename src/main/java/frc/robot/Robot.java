@@ -323,12 +323,7 @@ public class Robot extends TimedRobot {
 		// 	Robot.logger.putMessage("Running autonomous step #6");
 		// 	auto.driveToHatch();
 		//  }	
-		//  else if(auto.isStep6Done() == true && auto.isStep7Done() == false){
-		// 	 Robot.logger.putMessage("Running autonomous step for placing the hatch");
-		// 	auto.placeHatch();
-		//  }
-		//  else if(auto.isStep7Done() == true && auto.isStep8Done() == false){
-		// 	Robot.logger.putMessage("Running final autonomous step backup!!");
+		//  else if(auto.isStep6Done() == true && au.utonomous step backup!!");
 		// 	 auto.backup();
 		//  }
 		// RobotMap.robotRightTalon.getFaults(rightFaults);
@@ -468,18 +463,18 @@ public class Robot extends TimedRobot {
 
 	}
 	private void runIntake() {
-		double range = ultrasonicanalog.getRange();
-		logger.putNumber("Ball Ultrasonic Value", range);
+		//double range = ultrasonicanalog.getRange();
+		//logger.putNumber("Ball Ultrasonic Value", range);
 		if (oi.getIntake()) {
-			if (ultrasonicanalog.getRange() < 6) {
-				RobotMap.intakeVictor.set(0);
-				oi.copilotController.setRumble(RumbleType.kLeftRumble, 1);
-				oi.incrementRumbleCount();
-				logger.putMessage("Ball found in Intake - starting rumble");
-			} else {
+			// if (ultrasonicanalog.getRange() < 6) {
+			// 	RobotMap.intakeVictor.set(0);
+			// 	oi.copilotController.setRumble(RumbleType.kLeftRumble, 1);
+			// 	oi.incrementRumbleCount();
+			// 	logger.putMessage("Ball found in Intake - starting rumble");
+			// } else {
 				RobotMap.intakeVictor.set(0.5);
 				logger.putMessage("Intaking ball");
-			}
+			// }
 		} else if (oi.getOuttake()) {
 			RobotMap.intakeVictor.set(-1);
 			logger.putMessage("Shooting ball");

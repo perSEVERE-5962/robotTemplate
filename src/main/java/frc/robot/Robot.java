@@ -40,6 +40,7 @@ public class Robot extends TimedRobot {
 	public static OI oi;
 
 	private boolean autonomousStopped = true;	// set as stopped by default
+	public static boolean overrideArm = false;
 
 	// subsystems
 	public static Drive drive = new Drive();
@@ -445,11 +446,13 @@ public class Robot extends TimedRobot {
 	private void runArm() {
 		//logger.putNumber("Arm Joystick Raw Axis", oi.copilotController.getRawAxis(5));
 		if (oi.copilotController.getRawAxis(5) > 0.2) {
-			if(RobotMap.armTalon.getSelectedSensorPosition() >=200){
+			logger.putNumber("Arm Values" , RobotMap.armTalon.getSelectedSensorPosition());
+			if(RobotMap.armTalon.getSelectedSensorPosition() >=200 || overrideArm == true){
 				armMotor.moveIntoRobot();
 			}
 			
 			else{
+				logger.putMessage("stopping arm");
 				armMotor.stop();
 				RobotMap.armTalon.setSelectedSensorPosition(0);
 				RobotMap.armTalon.getSensorCollection().setPulseWidthPosition(0, 10);

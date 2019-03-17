@@ -7,8 +7,6 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.buttons.Trigger;
-import frc.robot.commands.RetractHatch;
-import frc.robot.commands.DeployHatch;
 import frc.robot.subsystems.*;
 
 /**
@@ -30,6 +28,7 @@ public class OI {
 	public JoystickButton orangeLEDButton;
 	public JoystickButton buttonSix;
 	public JoystickButton placeHatch;
+	public JoystickButton armOverride;
 	public boolean isCamera1Active = false;
 	public JoystickButton driverSpeedButton;
 	public JoystickButton copilotSpeedButton;
@@ -80,6 +79,8 @@ public class OI {
 		// inRobot.whenPressed(new inRobot());
 		// placeHatch = new JoystickButton(copilotController , 4);
 		// placeHatch.toggleWhenPressed(new placeHatch());
+		armOverride = new JoystickButton(copilotController , 4);
+		armOverride.whenPressed(new OverrideArmPID());
 
 
 	}

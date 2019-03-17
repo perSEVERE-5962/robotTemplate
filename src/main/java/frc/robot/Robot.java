@@ -23,7 +23,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.utils.ArmPID;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import frc.robot.utils.Logger;
+import edu.wpi.first.wpilibj.RobotController;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -37,6 +40,7 @@ public class Robot extends TimedRobot {
 	public static OI oi;
 
 	private boolean autonomousStopped = true;	// set as stopped by default
+	public static boolean overrideArm = false;
 
 	// subsystems
 	public static Drive drive = new Drive();
@@ -63,6 +67,14 @@ public class Robot extends TimedRobot {
 
 	// private static Faults leftFaults = new Faults();
 	// private static Faults rightFaults = new Faults();
+
+	private static DriverStation driverStation = DriverStation.getInstance();
+	private static int matchNumber = driverStation.getMatchNumber();
+	public static int getMatchNumber() {
+		return matchNumber;
+	}
+
+	private PowerDistributionPanel pdp = new PowerDistributionPanel();
 
 	public static enum StartingPosition{
 		Left_Lvl_2,
@@ -184,7 +196,20 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotPeriodic() {
+		logger.putMessage("Current Battery Voltage = " + RobotController.getBatteryVoltage());
+		logger.putMessage("Aproximate Remaining Match Time = " + driverStation.getMatchTime());
+		logger.putMessage("pdp_0 (left victor) current = " + pdp.getCurrent(0) + " amps");
+		logger.putMessage("pdp_1 (left talon) current = " + pdp.getCurrent(1) + " amps");
+		logger.putMessage("pdp_2 (intake) current = " + pdp.getCurrent(2) + " amps");
+		logger.putMessage("pdp_13 (arm) current = " + pdp.getCurrent(13) + " amps");
+		logger.putMessage("pdp_14 (right victor) current = " + pdp.getCurrent(14) + " amps");
+		logger.putMessage("pdp_15 (right talon) current = " + pdp.getCurrent(15) + " amps");
+		logger.putMessage("pdp total current = " + pdp.getTotalCurrent() + " amps");
+		logger.putMessage("pdp total energy = " + pdp.getTotalEnergy() + " joules");
+		logger.putMessage("pdp total power = " + pdp.getTotalPower() + " watts");
+
 	}
+	
 	/**
 	 * This function is called once each time the robot enters Disabled mode. You
 	 * can use it to reset any subsystem information you want to clear when the
@@ -354,7 +379,7 @@ public class Robot extends TimedRobot {
 		if (driverOverride == true ) {
 			runArm();
 			
-			runBackupArm();
+			//runBackupArm();
 			runIntake();			
 		}
 	}
@@ -414,13 +439,15 @@ public class Robot extends TimedRobot {
 	}
 
 	private void runArm() {
-		logger.putNumber("Arm Joystick Raw Axis", oi.copilotController.getRawAxis(5));
+		//logger.putNumber("Arm Joystick Raw Axis", oi.copilotController.getRawAxis(5));
 		if (oi.copilotController.getRawAxis(5) > 0.2) {
-			if(RobotMap.armTalon.getSelectedSensorPosition() >=200){
+			logger.putNumber("Arm Values" , RobotMap.armTalon.getSelectedSensorPosition());
+			if(RobotMap.armTalon.getSelectedSensorPosition() >=200 || overrideArm == true){
 				armMotor.moveIntoRobot();
 			}
 			
 			else{
+				logger.putMessage("stopping arm");
 				armMotor.stop();
 				RobotMap.armTalon.setSelectedSensorPosition(0);
 				RobotMap.armTalon.getSensorCollection().setPulseWidthPosition(0, 10);
@@ -441,27 +468,27 @@ public class Robot extends TimedRobot {
 			// RobotMap.armTalon.setSelectedSensorPosition(0);
 			// RobotMap.armTalon.getSensorCollection().setPulseWidthPosition(0, 10);
 		}
-		logger.putNumber("Arm Values" , RobotMap.armTalon.getSelectedSensorPosition());
+		//logger.putNumber("Arm Values" , RobotMap.armTalon.getSelectedSensorPosition());
 
 	}
-	private void runBackupArm() {
-		logger.putNumber("Backup Arm Joystick Raw Axis", oi.copilotController.getRawAxis(1));
-		if (oi.copilotController.getRawAxis(1) > 0.2) {
-			// if(RobotMap.armTalon.getSelectedSensorPosition() >=200){
-				armMotor.stop();
-				armMotor.moveIntoRobotBackup();
-			// }
-			//logger.putMessage("Arm moving down");
-			//logger.putNumber("Arm current Position", RobotMap.armTalon.getSelectedSensorPosition());
-		} else if (oi.copilotController.getRawAxis(1) < -0.2) {
-			armMotor.stop();
-			armMotor.moveOutOfRobotBackup();
-			//logger.putMessage("Arm moving up");
-			//logger.putNumber("Arm current Position", RobotMap.armTalon.getSelectedSensorPosition());
-		} 
-		logger.putNumber("Backup Arm Values" , RobotMap.armTalon.getSelectedSensorPosition());
+	// private void runBackupArm() {
+	// 	//logger.putNumber("Backup Arm Joystick Raw Axis", oi.copilotController.getRawAxis(1));
+	// 	if (oi.copilotController.getRawAxis(1) > 0.2) {
+	// 		// if(RobotMap.armTalon.getSelectedSensorPosition() >=200){
+	// 			armMotor.stop();
+	// 			armMotor.moveIntoRobotBackup();
+	// 		// }
+	// 		//logger.putMessage("Arm moving down");
+	// 		//logger.putNumber("Arm current Position", RobotMap.armTalon.getSelectedSensorPosition());
+	// 	} else if (oi.copilotController.getRawAxis(1) < -0.2) {
+	// 		armMotor.stop();
+	// 		armMotor.moveOutOfRobotBackup();
+	// 		//logger.putMessage("Arm moving up");
+	// 		//logger.putNumber("Arm current Position", RobotMap.armTalon.getSelectedSensorPosition());
+	// 	} 
+	// 	//logger.putNumber("Backup Arm Values" , RobotMap.armTalon.getSelectedSensorPosition());
 
-	}
+	// }
 	private void runIntake() {
 		//double range = ultrasonicanalog.getRange();
 		//logger.putNumber("Ball Ultrasonic Value", range);

@@ -1,6 +1,8 @@
 package frc.robot.utils;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Robot;
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -18,8 +20,10 @@ public class Logger {
 
     public Logger() {
         try {
+            double matchNumber = Robot.getMatchNumber();
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.US);
-            String logFilePath = "/u/robotlog_" + dateFormat.format(new Date()) + ".log";
+            // String logFilePath = "/u/robotlog_" + dateFormat.format(new Date()) + ".log";
+            String logFilePath = "/u/robotlog_" + dateFormat.format(new Date()) + "_" + matchNumber + ".log";
             //String logFilePath = "/Users/dlemasurier/Team5962/git/LogTest/robotlog_" + dateFormat.format(new Date()) + ".log";
             fileWriter = new FileWriter(logFilePath);
             bufferedWriter = new BufferedWriter(fileWriter);

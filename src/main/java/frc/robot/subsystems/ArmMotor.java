@@ -28,7 +28,7 @@ public class ArmMotor extends Subsystem {
 	public void moveToStartPosition() {
 		isPIDRunning = true;
 		RobotMap.armTalon.set(ControlMode.Position, START_POSITION);
-		SmartDashboard.putNumber("Target Position", START_POSITION);
+		Robot.logger.putNumber("Target Position", START_POSITION);
 	}
 
 	
@@ -39,41 +39,41 @@ public class ArmMotor extends Subsystem {
 		RobotMap.armTalon.set(ControlMode.Position, PLACE_HATCH_POSITION);
 		isPIDRunning = true;
 		
-		SmartDashboard.putNumber("Target Position", PLACE_HATCH_POSITION);
+		Robot.logger.putNumber("Target Position", PLACE_HATCH_POSITION);
 	}
 
 	public void moveToShootBall() {
 		isPIDRunning = true;
 		RobotMap.armTalon.set(ControlMode.Position, SHOOT_BALL_POSITION);
-		SmartDashboard.putNumber("Target Position", SHOOT_BALL_POSITION);
+		Robot.logger.putNumber("Target Position", SHOOT_BALL_POSITION);
 	}
 
 	public void moveToIntakeBall() {
 		isPIDRunning = true;
 		RobotMap.armTalon.set(ControlMode.Position, INTAKE_BALL_POSITION);
-		SmartDashboard.putNumber("Target Position", INTAKE_BALL_POSITION);
+		Robot.logger.putNumber("Target Position", INTAKE_BALL_POSITION);
 	}
 
 	public boolean isOnTarget() {
 		//boolean isOnTarget = RobotMap.armTalon.getClosedLoopError() < 3;
-		SmartDashboard.putNumber("Arm Sensor Position", RobotMap.armTalon.getSelectedSensorPosition());
+		Robot.logger.putNumber("Arm Sensor Position", RobotMap.armTalon.getSelectedSensorPosition());
 		boolean isOnTarget = RobotMap.armTalon.getSelectedSensorPosition() > 520;
 		if (isOnTarget == true) {
 			isPIDRunning = false;
 		}
-		SmartDashboard.putBoolean("Arm isOnTarget", isOnTarget);
+		Robot.logger.putBoolean("Arm isOnTarget", isOnTarget);
 		return isOnTarget;
 	}
 
 	public boolean isPIDRunning() {
-		SmartDashboard.putBoolean("isPIDRunning", isPIDRunning);
+		Robot.logger.putBoolean("isPIDRunning", isPIDRunning);
 		return isPIDRunning;
 		//return false;
 	}
 
 	public void moveOutOfRobot() {
 
-		SmartDashboard.putString("RunUpward", "yes");
+		Robot.logger.putMessage("Moving arm out of robot");
 		double speed = DEFAULT_SPEED;
 		if (isMaxSpeed) {
 			speed = MAX_SPEED;
@@ -81,20 +81,20 @@ public class ArmMotor extends Subsystem {
 		isPIDRunning = false;	// disable PID if running
 		RobotMap.armTalon.set(ControlMode.PercentOutput, -speed*Robot.oi.copilotController.getRawAxis(5));
 	}
-	public void moveOutOfRobotBackup() {
+	// public void moveOutOfRobotBackup() {
 
-		SmartDashboard.putString("RunUpward", "yes");
-		double speed = DEFAULT_SPEED;
-		if (isMaxSpeed) {
-			speed = MAX_SPEED;
-		}
-		//isPIDRunning = false;	// disable PID if running
-		RobotMap.armTalon.set(ControlMode.PercentOutput, -speed*Robot.oi.copilotController.getRawAxis(1));
-	}
+	// 	Robot.logger.putMessage("Moving arm out of robot");
+	// 	double speed = DEFAULT_SPEED;
+	// 	if (isMaxSpeed) {
+	// 		speed = MAX_SPEED;
+	// 	}
+	// 	//isPIDRunning = false;	// disable PID if running
+	// 	RobotMap.armTalon.set(ControlMode.PercentOutput, -speed*Robot.oi.copilotController.getRawAxis(1));
+	// }
 
 	public void moveIntoRobot() {
 
-		SmartDashboard.putString("RunDownward", "yes");
+		Robot.logger.putMessage("Moving arm into robot");
 		double speed = DEFAULT_SPEED;
 		if (isMaxSpeed) {
 			speed = MAX_SPEED;
@@ -102,16 +102,16 @@ public class ArmMotor extends Subsystem {
 		isPIDRunning = false; 	// disable PID if running
 		RobotMap.armTalon.set(ControlMode.PercentOutput, -speed*Robot.oi.copilotController.getRawAxis(5));
 	}
-	public void moveIntoRobotBackup() {
+	// public void moveIntoRobotBackup() {
 
-		SmartDashboard.putString("RunDownward", "yes");
-		double speed = DEFAULT_SPEED;
-		if (isMaxSpeed) {
-			speed = MAX_SPEED;
-		}
-		//isPIDRunning = false; 	// disable PID if running
-		RobotMap.armTalon.set(ControlMode.PercentOutput, -speed*Robot.oi.copilotController.getRawAxis(1));
-	}
+	// 	Robot.logger.putString("RunDownward", "yes");
+	// 	double speed = DEFAULT_SPEED;
+	// 	if (isMaxSpeed) {
+	// 		speed = MAX_SPEED;
+	// 	}
+	// 	//isPIDRunning = false; 	// disable PID if running
+	// 	RobotMap.armTalon.set(ControlMode.PercentOutput, -speed*Robot.oi.copilotController.getRawAxis(1));
+	// }
 
 	public void stop() {
 		isPIDRunning = false;

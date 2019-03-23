@@ -35,6 +35,7 @@ public class OI {
 	public JoystickButton driverSpeedButton;
 	public JoystickButton copilotSpeedButton;
 	private int rumbleCount=0;
+	public JoystickButton stopArmButton;
 
 	DeployHatch deployHatch = new DeployHatch();
 	RetractHatch retractHatch = new RetractHatch();
@@ -78,6 +79,7 @@ public class OI {
 		driveOriginal = new JoystickButton(driverController, 8);
 		driveOriginal.whenPressed(new driveOriginal());
 		// onFloor = new JoystickButton(xBoxController, 1);
+		stopArmButton.toggleWhenPressed(new StopArmCommand());		// onFloor = new JoystickButton(xBoxController, 1);
 		// onFloor.whenPressed(new onFloor());
 		// shootBall = new JoystickButton(xBoxController , 2);
 		// shootBall.whenPressed(new shootBall());

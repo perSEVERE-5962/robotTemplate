@@ -5,8 +5,8 @@ import edu.wpi.first.wpilibj.Solenoid;
 
 public class ColorLED extends Subsystem{
 
-    Solenoid s4 = new Solenoid(4); //Green
-    Solenoid s5 = new Solenoid(5); //Orange
+    Solenoid s4 = new Solenoid(1,4); //Green
+    Solenoid s5 = new Solenoid(1,5); //Orange
 
     public void initDefaultCommand(){
         

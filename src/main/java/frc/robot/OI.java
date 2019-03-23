@@ -33,6 +33,7 @@ public class OI {
 	public JoystickButton driverSpeedButton;
 	public JoystickButton copilotSpeedButton;
 	private int rumbleCount=0;
+	public JoystickButton stopArmButton;
 
 	ActivateLeft activateLeft = new ActivateLeft();
 	ActivateRight activateRight = new ActivateRight();
@@ -71,7 +72,7 @@ public class OI {
 		copilotController.setRumble(RumbleType.kLeftRumble, 0);
 		copilotSpeedButton = new JoystickButton(copilotController, 3);	// X 
 		copilotSpeedButton.toggleWhenPressed(new ArmSpeedControl());
-		// onFloor = new JoystickButton(xBoxController, 1);
+		stopArmButton.toggleWhenPressed(new StopArmCommand());		// onFloor = new JoystickButton(xBoxController, 1);
 		// onFloor.whenPressed(new onFloor());
 		// shootBall = new JoystickButton(xBoxController , 2);
 		// shootBall.whenPressed(new shootBall());

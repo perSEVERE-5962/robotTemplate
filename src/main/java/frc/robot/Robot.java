@@ -41,6 +41,7 @@ public class Robot extends TimedRobot {
 	public static ArmMotor armMotor;
 	public static ColorLED colorLED;
 	private Compressor compressor = new Compressor(0);
+	public static StopArm stopArm;
 
 	// Sensors
 	public static RobotGyro gyro = new RobotGyro();
@@ -152,6 +153,8 @@ public class Robot extends TimedRobot {
 		solenoidSubsystem.activateRight();
 		compressor.setClosedLoopControl(true);
 		colorLED = new ColorLED();
+		stopArm = new StopArm();
+		
 
 		logger.putNumber("Ultrasonic Distance ", 0);		
 		initStartingPosition();
@@ -324,6 +327,8 @@ public class Robot extends TimedRobot {
 	public void teleopInit() {
 
 		logger.putMessage("Starting teleop");
+		
+       // colorLED = new ColorLED();
 
 		oi.startDriveCommand();
 		//gyro.resetGyro();
@@ -342,7 +347,6 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-
 
 		// run arm with joystick
 		/*if (topStop.get()) {

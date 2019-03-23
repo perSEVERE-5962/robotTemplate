@@ -18,13 +18,13 @@ public class SolenoidSubsystem extends Subsystem {
 
     }
 
-    public void activateLeft() {
+    public void deployHatch() {
         // ds1.set(DoubleSolenoid.Value.kReverse);
         Robot.logger.putMessage("Deploying Hatch");
         ds2.set(DoubleSolenoid.Value.kReverse);
     }
 
-    public void activateRight() {
+    public void retractHatch() {
         // ds1.set(DoubleSolenoid.Value.kForward);
         Robot.logger.putMessage("Retracting Hatch");
         ds2.set(DoubleSolenoid.Value.kForward);

@@ -39,10 +39,10 @@ public class OI {
 
 	DeployHatch deployHatch = new DeployHatch();
 	RetractHatch retractHatch = new RetractHatch();
-	SwitchOnGreen switchOnGreen = new SwitchOnGreen();
-	SwitchOffGreen switchOffGreen = new SwitchOffGreen();
-	SwitchOnOrange switchOnOrange = new SwitchOnOrange();
-	SwitchOffOrange switchOffOrange = new SwitchOffOrange(); 
+	// SwitchOnGreen switchOnGreen = new SwitchOnGreen();
+	// SwitchOffGreen switchOffGreen = new SwitchOffGreen();
+	// SwitchOnOrange switchOnOrange = new SwitchOnOrange();
+	// SwitchOffOrange switchOffOrange = new SwitchOffOrange(); 
 
 	public void incrementRumbleCount() {
 		++rumbleCount;
@@ -65,12 +65,12 @@ public class OI {
 		retractHatchButton = new JoystickButton(copilotController, 5);
 		deployHatchButton.whenPressed(deployHatch);
 		retractHatchButton.whenPressed(retractHatch);
-		greenLEDButton = new JoystickButton(driverController, 1);
-		orangeLEDButton = new JoystickButton(driverController, 4);
-		greenLEDButton.toggleWhenPressed(switchOnGreen);
-		orangeLEDButton.toggleWhenPressed(switchOnOrange);
-		buttonSix = new JoystickButton(driverController, 6);
-		buttonSix.toggleWhenPressed(new CameraToggle());
+		// greenLEDButton = new JoystickButton(driverController, 1);
+		// orangeLEDButton = new JoystickButton(driverController, 4);
+		// greenLEDButton.toggleWhenPressed(switchOnGreen);
+		// orangeLEDButton.toggleWhenPressed(switchOnOrange);
+		// buttonSix = new JoystickButton(driverController, 6);
+		// buttonSix.toggleWhenPressed(new CameraToggle());
 		copilotController.setRumble(RumbleType.kLeftRumble, 0);
 		copilotSpeedButton = new JoystickButton(copilotController, 3);	// X 
 		copilotSpeedButton.toggleWhenPressed(new ArmSpeedControl());
@@ -78,8 +78,10 @@ public class OI {
 		invertMotors.toggleWhenPressed(new invertMotors());
 		driveOriginal = new JoystickButton(driverController, 8);
 		driveOriginal.whenPressed(new driveOriginal());
+		stopArmButton = new JoystickButton(copilotController, 1);
+		stopArmButton.toggleWhenPressed(new StopArmCommand());		
 		// onFloor = new JoystickButton(xBoxController, 1);
-		stopArmButton.toggleWhenPressed(new StopArmCommand());		// onFloor = new JoystickButton(xBoxController, 1);
+		// onFloor = new JoystickButton(xBoxController, 1);
 		// onFloor.whenPressed(new onFloor());
 		// shootBall = new JoystickButton(xBoxController , 2);
 		// shootBall.whenPressed(new shootBall());

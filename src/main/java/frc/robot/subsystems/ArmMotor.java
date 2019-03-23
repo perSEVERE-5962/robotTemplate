@@ -28,30 +28,30 @@ public class ArmMotor extends Subsystem {
 	public void moveToStartPosition() {
 		isPIDRunning = true;
 		RobotMap.armTalon.set(ControlMode.Position, START_POSITION);
-		Robot.logger.putNumber("Target Position", START_POSITION);
+		Robot.logger.putNumber("Arm Target Position", START_POSITION);
 	}
 
 	
 	public void moveToPlaceHatch() {
-		Robot.logger.putString("moveToPlaceHatch", "yes");
+		Robot.logger.putMessage("moving arm to place hatch");
 		RobotMap.armTalon.configPeakOutputForward(0.4, 30);
 		RobotMap.armTalon.configPeakOutputReverse(-0.4, 30);
 		RobotMap.armTalon.set(ControlMode.Position, PLACE_HATCH_POSITION);
 		isPIDRunning = true;
 		
-		Robot.logger.putNumber("Target Position", PLACE_HATCH_POSITION);
+		Robot.logger.putNumber("Arm Target Position", PLACE_HATCH_POSITION);
 	}
 
 	public void moveToShootBall() {
 		isPIDRunning = true;
 		RobotMap.armTalon.set(ControlMode.Position, SHOOT_BALL_POSITION);
-		Robot.logger.putNumber("Target Position", SHOOT_BALL_POSITION);
+		Robot.logger.putNumber("Arm Target Position", SHOOT_BALL_POSITION);
 	}
 
 	public void moveToIntakeBall() {
 		isPIDRunning = true;
 		RobotMap.armTalon.set(ControlMode.Position, INTAKE_BALL_POSITION);
-		Robot.logger.putNumber("Target Position", INTAKE_BALL_POSITION);
+		Robot.logger.putNumber("Arm Target Position", INTAKE_BALL_POSITION);
 	}
 
 	public boolean isOnTarget() {
@@ -59,14 +59,14 @@ public class ArmMotor extends Subsystem {
 		Robot.logger.putNumber("Arm Sensor Position", RobotMap.armTalon.getSelectedSensorPosition());
 		boolean isOnTarget = RobotMap.armTalon.getSelectedSensorPosition() > 520;
 		if (isOnTarget == true) {
+			Robot.logger.putMessage("Arm isOnTarget");
 			isPIDRunning = false;
 		}
-		Robot.logger.putBoolean("Arm isOnTarget", isOnTarget);
 		return isOnTarget;
 	}
 
 	public boolean isPIDRunning() {
-		Robot.logger.putBoolean("isPIDRunning", isPIDRunning);
+		//Robot.logger.putBoolean("isPIDRunning", isPIDRunning);
 		return isPIDRunning;
 		//return false;
 	}

@@ -38,8 +38,8 @@ public class rocketAutonomous extends Subsystem {
   final double circumferance = Math.PI*diameter;
   final double ticksPerRotation = 4096;
   public boolean onTarget(){
-    Robot.logger.putMessage("Left Closed Loop Error = " + RobotMap.robotLeftTalon.getClosedLoopError());
-    Robot.logger.putMessage("Right Closed Loop Error = " + RobotMap.robotRightTalon.getClosedLoopError());
+    // Robot.logger.putMessage("Left Closed Loop Error = " + RobotMap.robotLeftTalon.getClosedLoopError());
+    // Robot.logger.putMessage("Right Closed Loop Error = " + RobotMap.robotRightTalon.getClosedLoopError());
    
     if(Math.abs(RobotMap.robotLeftTalon.getClosedLoopError())<100 && 
             Math.abs(RobotMap.robotRightTalon.getClosedLoopError())<100){
@@ -65,6 +65,7 @@ public class rocketAutonomous extends Subsystem {
       crossingInProgress = true;
     }
     else if(onTarget() && crossingInProgress == true && isCrossed == false){
+      Robot.logger.putMessage("Crossed the hab line");
       isCrossed = true;
     }
 
@@ -116,6 +117,7 @@ public class rocketAutonomous extends Subsystem {
       movingStarted = true;
     }
     else if(movingStarted == true && isMoved == false && range<=20){
+      Robot.logger.putMessage("At the rocket");
       RobotMap.robotLeftTalon.set(ControlMode.PercentOutput, 0);
       RobotMap.robotRightTalon.set(ControlMode.PercentOutput, 0);
       isMoved = true;

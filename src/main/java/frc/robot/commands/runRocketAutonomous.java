@@ -34,7 +34,7 @@ public class runRocketAutonomous extends Command {
     else if(auto.isCrossed == true && auto.isTurned == false){
       auto.turn90();
     }
-    else if(auto.isTurned == false && auto.isMoved ==false){
+    else if(auto.isTurned == true && auto.isMoved ==false){
       auto.goToTheRocket();
     }
     else{
@@ -45,7 +45,7 @@ public class runRocketAutonomous extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return isFinished();
+    return isFinished;
   }
 
   // Called once after isFinished returns true

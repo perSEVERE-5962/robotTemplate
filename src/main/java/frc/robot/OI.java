@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.buttons.Trigger;
 import frc.robot.subsystems.*;
-
+import frc.robot.RobotMap;
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
@@ -22,6 +22,8 @@ public class OI {
 	public Joystick copilotController;
 	public boolean isSolenoidZeroPressed = false;
 	public boolean isSolenoidOnePressed = false;
+	public JoystickButton invertMotors;
+	public JoystickButton driveOriginal;
 	public JoystickButton deployHatchButton;
 	public JoystickButton retractHatchButton;
 	public JoystickButton greenLEDButton;
@@ -71,6 +73,10 @@ public class OI {
 		copilotController.setRumble(RumbleType.kLeftRumble, 0);
 		copilotSpeedButton = new JoystickButton(copilotController, 3);	// X 
 		copilotSpeedButton.toggleWhenPressed(new ArmSpeedControl());
+		invertMotors = new JoystickButton(driverController, 7);
+		invertMotors.toggleWhenPressed(new invertMotors());
+		driveOriginal = new JoystickButton(driverController, 8);
+		driveOriginal.whenPressed(new driveOriginal());
 		// onFloor = new JoystickButton(xBoxController, 1);
 		// onFloor.whenPressed(new onFloor());
 		// shootBall = new JoystickButton(xBoxController , 2);

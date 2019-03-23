@@ -34,7 +34,7 @@ public class rocketAutonomous extends Subsystem {
   public static boolean movingStarted = false;
   public static boolean movingInProgress = false;
   public static boolean isMoved = false;
-  final double diameter = 3.0;//7.5 test bot
+  final double diameter = 7.5;//7.5 test bot
   final double circumferance = Math.PI*diameter;
   final double ticksPerRotation = 4096;
   public boolean onTarget(){
@@ -71,7 +71,7 @@ public class rocketAutonomous extends Subsystem {
   } 
   public void turn90(){
     angle = Robot.gyro.getGyroAngle();
-    if(angle >= 90 && turningStarted == false){
+    if(Robot.getIsRight() == true && angle>= 90){
       Robot.logger.putMessage("Stopping the drive");
       RobotMap.robotLeftTalon.set(ControlMode.PercentOutput, 0);
       RobotMap.robotRightTalon.set(ControlMode.PercentOutput, 0);
@@ -79,19 +79,37 @@ public class rocketAutonomous extends Subsystem {
       RobotMap.robotRightTalon.setSelectedSensorPosition(0);
       RobotMap.robotLeftTalon.getSensorCollection().setPulseWidthPosition(0, 10);
       RobotMap.robotRightTalon.getSensorCollection().setPulseWidthPosition(0, 10);
-      turningStarted = true;
+      isTurned = true;
     }
-    else if(turningStarted == true && isTurned == false){
+    else if(Robot.getIsLeft() == true && angle<=-90){
+      Robot.logger.putMessage("Stopping the drive");
+      RobotMap.robotLeftTalon.set(ControlMode.PercentOutput, 0);
+      RobotMap.robotRightTalon.set(ControlMode.PercentOutput, 0);
+      RobotMap.robotLeftTalon.setSelectedSensorPosition(0);
+      RobotMap.robotRightTalon.setSelectedSensorPosition(0);
+      RobotMap.robotLeftTalon.getSensorCollection().setPulseWidthPosition(0, 10);
+      RobotMap.robotRightTalon.getSensorCollection().setPulseWidthPosition(0, 10);
+      isTurned = true;
+    }
+    else{
+     if(Robot.getIsRight() == true){ 
       Robot.logger.putNumber("Turning Right", Robot.gyro.getGyroAngle());
       RobotMap.robotLeftTalon.set(ControlMode.PercentOutput, 0.25);
       RobotMap.robotRightTalon.set(ControlMode.PercentOutput, -0.25); 
-      isTurned = true;
+      
     }
+    else if(Robot.getIsLeft() == true){ 
+      Robot.logger.putNumber("Turning Left", Robot.gyro.getGyroAngle());
+      RobotMap.robotLeftTalon.set(ControlMode.PercentOutput, -0.25);
+      RobotMap.robotRightTalon.set(ControlMode.PercentOutput, 0.25); 
+      
+    }
+  }
 
 
   } 
   public void goToTheRocket(){
-    range = uValue.getRightRange();
+    range = uValue.getLeftRange();
     if(movingStarted == false){
       RobotMap.robotLeftTalon.set(ControlMode.PercentOutput , 0.5);
       RobotMap.robotRightTalon.set(ControlMode.PercentOutput , 0.5);

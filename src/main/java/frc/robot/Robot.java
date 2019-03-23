@@ -6,6 +6,7 @@ import com.analog.adis16470.frc.ADIS16470_IMU;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.Faults;
 import java.io.IOException;
+import frc.robot.commands.*;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -57,7 +58,7 @@ public class Robot extends TimedRobot {
 	//public static RemoteHCSR04 remoteHCSR04 = new RemoteHCSR04();
 
 	// commands
-	private static RunAutonomous autonomousCommand;
+	private static runRocketAutonomous autonomousCommand;
 	//public static Autonomous auto = new Autonomous();
 
 	// utils
@@ -108,7 +109,7 @@ public class Robot extends TimedRobot {
 
 	private void initStartingPosition(){
 		startingPosition = new SendableChooser<StartingPosition>();
-		startingPosition.setDefaultOption("Left_Lvl_2", StartingPosition.Left_Lvl_2);
+		startingPosition.addOption("Left_Lvl_2", StartingPosition.Left_Lvl_2);
 		//startingPosition.addOption("Left_Lvl_1", StartingPosition.Left_Lvl_1);
 		//startingPosition.addOption("Middle_Lvl_1", StartingPosition.Middle_Lvl_1);
 		//startingPosition.addOption("Right_Lvl_1", StartingPosition.Right_Lvl_1);
@@ -268,7 +269,7 @@ public class Robot extends TimedRobot {
 
 		// logger.putString("Auto Step 1 Done", "No");
 
-		// starting_postion = (StartingPosition) startingPosition.getSelected();
+		starting_postion = (StartingPosition) startingPosition.getSelected();
 		// TargetPosition selectedTargetPosition = (TargetPosition) targetPosition.getSelected();
 		// GamePiece selectedGamePiece = (GamePiece) gamePiece.getSelected();
 
@@ -285,7 +286,7 @@ public class Robot extends TimedRobot {
         // RobotMap.robotLeftTalon.configPeakOutputReverse(-Constants.kSpeed, Constants.kTimeoutMs);
         // RobotMap.robotRightTalon.configPeakOutputReverse(-Constants.kSpeed, Constants.kTimeoutMs);
 
-		autonomousCommand = new RunAutonomous();
+		autonomousCommand = new runRocketAutonomous();
 		if (autonomousCommand != null) {
 			autonomousCommand.start();		
 			autonomousStopped = false;

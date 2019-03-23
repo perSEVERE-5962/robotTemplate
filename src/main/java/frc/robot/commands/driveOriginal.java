@@ -1,4 +1,3 @@
-
 /*----------------------------------------------------------------------------*/
 /* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
@@ -7,19 +6,11 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot.commands;
-
+import frc.robot.*;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.networktables.NetworkTable;
-import frc.robot.Robot;
 
-public class CameraToggle extends Command {
- 
-  NetworkTableInstance inst = NetworkTableInstance.getDefault();
-  NetworkTable table = inst.getTable("");
-  NetworkTableEntry myEntry;
-  public CameraToggle() {
+public class driveOriginal extends Command {
+  public driveOriginal() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
@@ -27,33 +18,23 @@ public class CameraToggle extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-      myEntry = table.getEntry("CameraSelection");
-      myEntry.setString("camera1");
-      Robot.oi.isCamera1Active = true;
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if (!Robot.oi.isCamera1Active){
-      //System.out.printf("Setting Camera 1\n");
-      myEntry = table.getEntry("CameraSelection");
-      myEntry.setString("camera1");
-      Robot.oi.isCamera1Active = true;
-      Robot.logger.putMessage("Activating Camera 1");
-    } else if (Robot.oi.isCamera1Active){
-      //System.out.printf("Setting Camera 0\n");
-      myEntry = table.getEntry("CameraSelection");
-      myEntry.setString("camera0");
-      Robot.oi.isCamera1Active = false;
-      Robot.logger.putMessage("Activating Camera 0");
-    }
+    RobotMap.robotLeftVictor.follow(RobotMap.robotLeftTalon);
+    RobotMap.robotRightVictor.follow(RobotMap.robotRightTalon);
+    RobotMap.robotRightTalon.setInverted(true);
+    RobotMap.robotLeftTalon.setInverted(false);
+    RobotMap.robotRightVictor.setInverted(true);//false
+    RobotMap.robotLeftVictor.setInverted(false);//false
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return true;
+    return false;
   }
 
   // Called once after isFinished returns true

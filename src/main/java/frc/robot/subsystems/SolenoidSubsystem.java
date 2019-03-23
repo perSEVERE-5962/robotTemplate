@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import frc.robot.Robot;
 
 public class SolenoidSubsystem extends Subsystem {
     // final int SOL_TOP_R = 0;    //Blue
@@ -19,11 +20,13 @@ public class SolenoidSubsystem extends Subsystem {
 
     public void activateLeft() {
         // ds1.set(DoubleSolenoid.Value.kReverse);
+        Robot.logger.putMessage("Deploying Hatch");
         ds2.set(DoubleSolenoid.Value.kReverse);
     }
 
     public void activateRight() {
         // ds1.set(DoubleSolenoid.Value.kForward);
+        Robot.logger.putMessage("Retracting Hatch");
         ds2.set(DoubleSolenoid.Value.kForward);
    }
 

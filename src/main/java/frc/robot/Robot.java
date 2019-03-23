@@ -6,6 +6,7 @@ import com.analog.adis16470.frc.ADIS16470_IMU;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.Faults;
 import java.io.IOException;
+import frc.robot.commands.*;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -14,6 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Compressor;
 import frc.robot.subsystems.Drive;
 import frc.robot.commands.RunAutonomous;
+import frc.robot.commands.placeHatch;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.*;
 import frc.robot.sensors.*;
@@ -22,7 +24,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.utils.ArmPID;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import frc.robot.utils.Logger;
+import edu.wpi.first.wpilibj.RobotController;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -35,6 +40,9 @@ import frc.robot.utils.Logger;
 public class Robot extends TimedRobot {
 	public static OI oi;
 
+	private boolean autonomousStopped = true;	// set as stopped by default
+	public static boolean overrideArm = false;
+
 	// subsystems
 	public static Drive drive = new Drive();
 	public static SolenoidSubsystem solenoidSubsystem;
@@ -46,40 +54,49 @@ public class Robot extends TimedRobot {
 	// Sensors
 	public static RobotGyro gyro = new RobotGyro();
 	public static UltrasonicAnalog ultrasonicanalog = new UltrasonicAnalog(1);
-	public static DigitalInput topStop = new DigitalInput(0);
-	public static DigitalInput bottomStop = new DigitalInput(1);
-	public static RemoteHCSR04 remoteHCSR04 = new RemoteHCSR04();
+	// public static DigitalInput topStop = new DigitalInput(0);
+	// public static DigitalInput bottomStop = new DigitalInput(1);
+	//public static RemoteHCSR04 remoteHCSR04 = new RemoteHCSR04();
 
 	// commands
-	private static RunAutonomous autonomous;
-	private Autonomous ato = new Autonomous();
+	private static runRocketAutonomous autonomousCommand;
+	//public static Autonomous auto = new Autonomous();
 
 	// utils
 	public static pidControl pidValue = new pidControl();
 	public static ArmPID armPID = new ArmPID();
-	public static Logger logger = new Logger();
+	public static Logger logger;
 
-	private static Faults leftFaults = new Faults();
-	private static Faults rightFaults = new Faults();
+	// private static Faults leftFaults = new Faults();
+	// private static Faults rightFaults = new Faults();
+
+	private static DriverStation driverStation = DriverStation.getInstance();
+	private static int matchNumber = driverStation.getMatchNumber();
+	public static int getMatchNumber() {
+		return matchNumber;
+	}
+
+	//private PowerDistributionPanel pdp = new PowerDistributionPanel();
 
 	public static enum StartingPosition{
 		Left_Lvl_2,
-		Left_Lvl_1,
-		Middle_Lvl_1,
-		Right_Lvl_1,
+		//Left_Lvl_1,
+		//Middle_Lvl_1,
+		//Right_Lvl_1,
 		Right_Lvl_2,
 	}
-	private static boolean isLeft = false;
+	public static StartingPosition starting_postion = StartingPosition.Right_Lvl_2;
+	//private static boolean isLeft = false;
 
 	public static enum TargetPosition{
 		Left_Bay_1,
-		Left_Bay_2,
-		Left_Bay_3,
-		Middle_Bay_1,
-		Middle_Bay_2,
+		// Left_Bay_2,
+		// Left_Bay_3,
+		//Middle_Bay_1,
+		//Middle_Bay_2,
 		Right_Bay_1,
-		Right_Bay_2,
-		Right_Bay_3,
+		// Right_Bay_2,
+		// Right_Bay_3,
 	}
 
 	public static enum GamePiece{
@@ -93,10 +110,10 @@ public class Robot extends TimedRobot {
 
 	private void initStartingPosition(){
 		startingPosition = new SendableChooser<StartingPosition>();
-		startingPosition.setDefaultOption("Left_Lvl_2", StartingPosition.Left_Lvl_2);
-		startingPosition.addOption("Left_Lvl_1", StartingPosition.Left_Lvl_1);
-		startingPosition.addOption("Middle_Lvl_1", StartingPosition.Middle_Lvl_1);
-		startingPosition.addOption("Right_Lvl_1", StartingPosition.Right_Lvl_1);
+		startingPosition.addOption("Left_Lvl_2", StartingPosition.Left_Lvl_2);
+		//startingPosition.addOption("Left_Lvl_1", StartingPosition.Left_Lvl_1);
+		//startingPosition.addOption("Middle_Lvl_1", StartingPosition.Middle_Lvl_1);
+		//startingPosition.addOption("Right_Lvl_1", StartingPosition.Right_Lvl_1);
 		startingPosition.addOption("Right_Lvl_2", StartingPosition.Right_Lvl_2);
 		SmartDashboard.putData("Select starting position:", startingPosition);
 	}
@@ -104,26 +121,30 @@ public class Robot extends TimedRobot {
 	private void initTargetPosition(){
 		targetPosition = new SendableChooser<TargetPosition>();
 		targetPosition.setDefaultOption("Left_Bay_1", TargetPosition.Left_Bay_1);
-		targetPosition.addOption("Left_Bay_2", TargetPosition.Left_Bay_2);
-		targetPosition.addOption("Left_Bay_3", TargetPosition.Left_Bay_3);
-		targetPosition.addOption("Middle_Bay_1", TargetPosition.Middle_Bay_1);
-		targetPosition.addOption("Middle_Bay_2", TargetPosition.Middle_Bay_2);
+		// targetPosition.addOption("Left_Bay_2", TargetPosition.Left_Bay_2);
+		// targetPosition.addOption("Left_Bay_3", TargetPosition.Left_Bay_3);
+		//targetPosition.addOption("Middle_Bay_1", TargetPosition.Middle_Bay_1);
+		//targetPosition.addOption("Middle_Bay_2", TargetPosition.Middle_Bay_2);
 		targetPosition.addOption("Right_Bay_1", TargetPosition.Right_Bay_1);
-		targetPosition.addOption("Right_Bay_2", TargetPosition.Right_Bay_2);
-		targetPosition.addOption("Right_Bay_3", TargetPosition.Right_Bay_3);
+		// targetPosition.addOption("Right_Bay_2", TargetPosition.Right_Bay_2);
+		// targetPosition.addOption("Right_Bay_3", TargetPosition.Right_Bay_3);
 		SmartDashboard.putData("Select target position:", targetPosition);
 	}
 
 	private void initGamePiece(){
 		gamePiece = new SendableChooser<GamePiece>();
-		gamePiece.setDefaultOption("Ball", GamePiece.Ball);
-		gamePiece.addOption("Hatch_Panel", GamePiece.Hatch_Panel);
+		gamePiece.setDefaultOption("Hatch_Panel", GamePiece.Hatch_Panel);
+		//gamePiece.addOption("Ball", GamePiece.Ball);
 		SmartDashboard.putData("Select game piece:", gamePiece);
 	}
 
 	public static boolean getIsLeft(){
-		return isLeft;
+		if(starting_postion == StartingPosition.Left_Lvl_2){
+			return true;
+		}
+		return false;
 	}
+	
 
 	private static boolean isMiddle = false;
 
@@ -131,10 +152,13 @@ public class Robot extends TimedRobot {
 		return isMiddle;
 	}
 
-	private static boolean isRight = false;
+	//private static boolean isRight = false;
 
 	public static boolean getIsRight() {
-		return isRight;
+		if(starting_postion == StartingPosition.Right_Lvl_2){
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -143,20 +167,19 @@ public class Robot extends TimedRobot {
 	 */
 	public void robotInit() {
 		RobotMap.init();
-
+		logger = new Logger();
 		gyro.resetGyro();
 
 		oi = new OI();
 
 		armMotor = new ArmMotor();
 		solenoidSubsystem = new SolenoidSubsystem();
-		solenoidSubsystem.activateRight();
+		solenoidSubsystem.retractHatch();
 		compressor.setClosedLoopControl(true);
-		colorLED = new ColorLED();
+	//	colorLED = new ColorLED();
 		stopArm = new StopArm();
-		
 
-		logger.putNumber("Ultrasonic Distance ", 0);		
+		//logger.putNumber("Ultrasonic Distance ", 0);		
 		initStartingPosition();
 		initTargetPosition();
 		initGamePiece();
@@ -176,7 +199,20 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotPeriodic() {
+		// logger.putMessage("Current Battery Voltage = " + RobotController.getBatteryVoltage());
+		// logger.putMessage("Aproximate Remaining Match Time = " + driverStation.getMatchTime());
+		// logger.putMessage("pdp_0 (left victor) current = " + pdp.getCurrent(0) + " amps");
+		// logger.putMessage("pdp_1 (left talon) current = " + pdp.getCurrent(1) + " amps");
+		// logger.putMessage("pdp_2 (intake) current = " + pdp.getCurrent(2) + " amps");
+		// logger.putMessage("pdp_13 (arm) current = " + pdp.getCurrent(13) + " amps");
+		// logger.putMessage("pdp_14 (right victor) current = " + pdp.getCurrent(14) + " amps");
+		// logger.putMessage("pdp_15 (right talon) current = " + pdp.getCurrent(15) + " amps");
+		// logger.putMessage("pdp total current = " + pdp.getTotalCurrent() + " amps");
+		// logger.putMessage("pdp total energy = " + pdp.getTotalEnergy() + " joules");
+		// logger.putMessage("pdp total power = " + pdp.getTotalPower() + " watts");
+
 	}
+	
 	/**
 	 * This function is called once each time the robot enters Disabled mode. You
 	 * can use it to reset any subsystem information you want to clear when the
@@ -206,35 +242,57 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
+		// RobotMap.robotLeftTalon.set(ControlMode.PercentOutput, 0);
+		// RobotMap.robotRightTalon.set(ControlMode.PercentOutput, 0);
 
-		logger.putMessage("Starting autonomous");
+		// RobotMap.robotRightTalon.configFactoryDefault();
+		// RobotMap.robotRightVictor.configFactoryDefault();
+		// RobotMap.robotLeftTalon.configFactoryDefault();
+		// RobotMap.robotLeftVictor.configFactoryDefault();		
 
-		gyro.resetGyro();
+		// Robot.pidValue.configTalons();
+		// RobotMap.robotLeftTalon.setSelectedSensorPosition(0);
+		// RobotMap.robotRightTalon.setSelectedSensorPosition(0);
+		// RobotMap.robotLeftTalon.getSensorCollection().setPulseWidthPosition(0, 10);
+		// RobotMap.robotRightTalon.getSensorCollection().setPulseWidthPosition(0, 10);
 
-		//magEncoder.reset();
-		//intakeEncoder.reset();
-		// pidValue.setkP(SmartDashboard.getNumber("kP Value" , pidValue.getkP()));
-		// pidValue.setkI(SmartDashboard.getNumber("kI Value" , pidValue.getkI()));
-		// pidValue.setkD(SmartDashboard.getNumber("kD Value" , pidValue.getkD()));
+		// logger.putMessage("Starting autonomous");
 
-		// RobotMap.robotRightTalon.setSelectedSensorPosition(0, 0, pidValue.getkTimeoutMS());
-		// RobotMap.robotLeftTalon.setSelectedSensorPosition(0, 0, pidValue.getkTimeoutMS());
+		// //gyro.resetGyro();
 
-		logger.putString("Auto Step 1 Done", "No");
+		// //magEncoder.reset();
+		// //intakeEncoder.reset();
+		// // pidValue.setkP(SmartDashboard.getNumber("kP Value" , pidValue.getkP()));
+		// // pidValue.setkI(SmartDashboard.getNumber("kI Value" , pidValue.getkI()));
+		// // pidValue.setkD(SmartDashboard.getNumber("kD Value" , pidValue.getkD()));
 
-		StartingPosition selectedStartingPosition = (StartingPosition) startingPosition.getSelected();
-		TargetPosition selectedTargetPosition = (TargetPosition) targetPosition.getSelected();
-		GamePiece selectedGamePiece = (GamePiece) gamePiece.getSelected();
+		// // RobotMap.robotRightTalon.setSelectedSensorPosition(0, 0, pidValue.getkTimeoutMS());
+		// // RobotMap.robotLeftTalon.setSelectedSensorPosition(0, 0, pidValue.getkTimeoutMS());
 
-		logger.putMessage("Selected starting position: " + selectedStartingPosition.name());
-		logger.putMessage("Selected target position: " + selectedTargetPosition.name());
-		logger.putMessage("Selected game piece: " + selectedGamePiece.name());
+		// logger.putString("Auto Step 1 Done", "No");
 
-		// autonomousCommand = new RunAutonomous();
-		/** if (autonomousCommand != null) {
+		starting_postion = (StartingPosition) startingPosition.getSelected();
+		// TargetPosition selectedTargetPosition = (TargetPosition) targetPosition.getSelected();
+		// GamePiece selectedGamePiece = (GamePiece) gamePiece.getSelected();
+
+		// logger.putMessage("Selected starting position: " + starting_postion.name());
+		// logger.putMessage("Selected target position: " + selectedTargetPosition.name());
+		// logger.putMessage("Selected game piece: " + selectedGamePiece.name());
+
+		// // RobotMap.robotLeftTalon.set(ControlMode.Disabled, 0);
+        // // RobotMap.robotRightTalon.set(ControlMode.Disabled, 0);
+        // // RobotMap.robotLeftTalon.setSelectedSensorPosition(0);
+        // // RobotMap.robotRightTalon.setSelectedSensorPosition(0);
+        // RobotMap.robotLeftTalon.configPeakOutputForward(Constants.kSpeed, Constants.kTimeoutMs);
+        // RobotMap.robotRightTalon.configPeakOutputForward(Constants.kSpeed, Constants.kTimeoutMs);
+        // RobotMap.robotLeftTalon.configPeakOutputReverse(-Constants.kSpeed, Constants.kTimeoutMs);
+        // RobotMap.robotRightTalon.configPeakOutputReverse(-Constants.kSpeed, Constants.kTimeoutMs);
+
+		autonomousCommand = new runRocketAutonomous();
+		if (autonomousCommand != null) {
 			autonomousCommand.start();		
-		}*/
-		//autonomous.run();
+			autonomousStopped = false;
+		}
 
 		//if(step1done == false){
 			//autoPID.step1();
@@ -247,9 +305,10 @@ public class Robot extends TimedRobot {
 	/**
 	 * This function is called periodically during autonomous
 	 */
-	int count = 0;
+	//int count = 0;
 
 
+	boolean driverOverride = false;
 
 	@Override
 	public void autonomousPeriodic() {
@@ -268,64 +327,70 @@ public class Robot extends TimedRobot {
 		// logger.putNumber("Right Error", (double) RobotMap.robotRightTalon.getClosedLoopError(0));
 		logger.putNumber("Gyro Value" , gyro.getGyroAngle());
 
-		// logger.putNumber("Left Distance ", RobotMap.robotLeftTalon.getSelectedSensorPosition());
-		// logger.putNumber("Right Distance ", RobotMap.robotRightTalon.getSelectedSensorPosition());
+		logger.putNumber("Left Distance ", RobotMap.robotLeftTalon.getSelectedSensorPosition());
+		logger.putNumber("Right Distance ", RobotMap.robotRightTalon.getSelectedSensorPosition());
+
+
+		// if(auto.isStep2Done() == false){
+		// 	Robot.logger.putString("Running autonomous step #2", "yes");
+		// 	auto.Step2();
+		// }
+		// else if(auto.isStep2Done() == true && auto.isStep3Done() == false){
+		// 	Robot.logger.putMessage("Running autonomous step #3");
+		// 	auto.Step3();
+		// }
+		// else if(auto.isStep3Done() == true && auto.isStep4Done() == false){
+		// 	Robot.logger.putMessage("Running autonomous step #4");
+		// 	auto.Step4();
+		// }
+		// else if(auto.isStep4Done() == true && auto.isStep5Done() == false){
+		// 	Robot.logger.putMessage("Running autonomous step #5");
+		// 	auto.Step5();
+		// }
+		// else if(auto.isStep5Done() == true && auto.isStep6Done() == false){
+		// 	Robot.logger.putMessage("Running autonomous step #6");
+		// 	auto.driveToHatch();
+		//  }	
+		//  else if(auto.isStep6Done() == true && au.utonomous step backup!!");
+		// 	 auto.backup();
+		//  }
 		// RobotMap.robotRightTalon.getFaults(rightFaults);
 		// RobotMap.robotLeftTalon.getFaults(leftFaults);
 		// logger.putBoolean("Left Out of Phase ", leftFaults.SensorOutOfPhase);
 		// logger.putBoolean("Right Out of Phase ", rightFaults.SensorOutOfPhase);
 
-		double leftPos = RobotMap.robotLeftTalon.getSensorCollection().getPulseWidthPosition();
-		logger.putNumber("Left Position", leftPos);
-		double rightPos = RobotMap.robotRightTalon.getSensorCollection().getPulseWidthPosition();
-		logger.putNumber("Right Position", rightPos);
+		// double leftPos = RobotMap.robotLeftTalon.getSensorCollection().getPulseWidthPosition();
+		// logger.putNumber("Left Position", leftPos);
+		// double rightPos = RobotMap.robotRightTalon.getSensorCollection().getPulseWidthPosition();
+		// logger.putNumber("Right Position", rightPos);
 		
-		logger.putNumber("LEFT POSITION", RobotMap.robotLeftTalon.getSelectedSensorPosition(0));
-		logger.putNumber("RIGHT POSITION", RobotMap.robotRightTalon.getSelectedSensorPosition(0));
-		//ato.runSteps();
-		//ato.Step1();
-		// if(count == 0){
-		// 	logger.putString("Step1 Done", "no");
-		// if(ato.isStep1Done() == false){
-		//ato.Step1();
-		// }
-		// else if (ato.isStep1Done() == true && ato.isStep2Done() == false){
-		// 	ato.Step2();
-		// }
-		// if(ato.isStep1Done() == false){
-		// ato.Step1();
-		// logger.putString("Step1_done", "NO");
-		// }
-		if(ato.isStep2Done() == false){	
+		// logger.putNumber("LEFT POSITION", RobotMap.robotLeftTalon.getSelectedSensorPosition(0));
+		// logger.putNumber("RIGHT POSITION", RobotMap.robotRightTalon.getSelectedSensorPosition(0));
+
+
+		// check for driver override
+		if (driverOverride == false && (oi.driverController.getRawAxis(1) > 0.2 ||
+			oi.driverController.getRawAxis(1) < -0.2 ||
+			oi.driverController.getRawAxis(5) > 0.2 ||
+			oi.driverController.getRawAxis(5) < -0.2)) {
+				logger.putMessage("Driver override detected in autonomous - switching to teleop");
+				stopAutonomous();
+				oi.startDriveCommand();
+				driverOverride = true;
+		}
+
+		if (driverOverride == true ) {
+			runArm();
 			
-		ato.Step2();
+			//runBackupArm();
+			runIntake();			
 		}
-		else if(ato.isStep2Done() == true && ato.isStep3Done()== false ){
-		ato.Step3();
-		}
-		else if(ato.isStep3Done() == true && ato.isStep4Done() == false){
-			ato.Step4();
-		}
-		//chum reap soure
-		else if(ato.isStep4Done() == true && ato.isStep5Done() == false){
-			ato.Step5();
-		}
-		else if (ato.isStep5Done() == true && ato.isStep6Done() == false){
-			ato.Step6();
-		}
-		// 	++count;
-		// }
-		// if(ato.isStep1Done() == true){
-		// 	logger.putString("Step1 Done2", "yes");
-		// 	ato.stopDrive();		
-		// }
-
-
 	}
 
 	@Override
-	public void teleopInit() {
-
+	public void teleopInit() {	
+		stopAutonomous();
+		
 		logger.putMessage("Starting teleop");
 		
        // colorLED = new ColorLED();
@@ -334,10 +399,10 @@ public class Robot extends TimedRobot {
 		//gyro.resetGyro();
 
 		// set the motor controllers back to full speed
-        RobotMap.robotLeftTalon.configPeakOutputForward(1.0, Constants.kTimeoutMs);
-        RobotMap.robotRightTalon.configPeakOutputForward(1.0, Constants.kTimeoutMs);
-        RobotMap.robotLeftTalon.configPeakOutputReverse(-1.0, Constants.kTimeoutMs);
-		RobotMap.robotRightTalon.configPeakOutputReverse(-1.0, Constants.kTimeoutMs);	
+        RobotMap.robotLeftTalon.configPeakOutputForward(1, Constants.kTimeoutMs);
+        RobotMap.robotRightTalon.configPeakOutputForward(1, Constants.kTimeoutMs);
+        RobotMap.robotLeftTalon.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+		RobotMap.robotRightTalon.configPeakOutputReverse(-1, Constants.kTimeoutMs);	
 	}
 
 	/**
@@ -361,33 +426,86 @@ public class Robot extends TimedRobot {
 		// } else if (armMotor.isPIDRunning() == false) {
 		// 	armMotor.stop();
 		// }
-
-		if (oi.copilotController.getRawAxis(5) > 0.2) {
-			armMotor.runDownward();
-			//logger.putMessage("Arm moving down");
-			logger.putNumber("Arm current Position", RobotMap.armTalon.getSensorCollection().getPulseWidthPosition());
-		} else if (oi.copilotController.getRawAxis(5) < -0.2) {
-			armMotor.runUpward();
-			//logger.putMessage("Arm moving up");
-			logger.putNumber("Arm current Position", RobotMap.armTalon.getSensorCollection().getPulseWidthPosition());
-		} else {
-			armMotor.stop();
-			logger.putMessage("Arm not moving");
-		}
+		runArm();
+		//runBackupArm();
 
 		// run intake
-		double range = ultrasonicanalog.getRange();
-		logger.putNumber("Ball Ultrasonic Value", range);
+		runIntake();
+
+	}
+
+	private void stopAutonomous() {
+		if (autonomousCommand != null && autonomousStopped == false) {
+			logger.putMessage("Stopping Autonomous");
+			autonomousStopped = true;
+			autonomousCommand.cancel();		
+		}		
+	}
+
+	private void runArm() {
+		//logger.putNumber("Arm Joystick Raw Axis", oi.copilotController.getRawAxis(5));
+		if (oi.copilotController.getRawAxis(5) > 0.2) {
+			logger.putNumber("Arm Values" , RobotMap.armTalon.getSelectedSensorPosition());
+			if(RobotMap.armTalon.getSelectedSensorPosition() >=200 || overrideArm == true){
+				armMotor.moveIntoRobot();
+			}
+			
+			else{
+				logger.putMessage("stopping arm");
+				armMotor.stop();
+				RobotMap.armTalon.setSelectedSensorPosition(0);
+				RobotMap.armTalon.getSensorCollection().setPulseWidthPosition(0, 10);
+
+			}
+			//logger.putMessage("Arm moving down");
+			//logger.putNumber("Arm current Position", RobotMap.armTalon.getSelectedSensorPosition());
+		} else if (oi.copilotController.getRawAxis(5) < -0.2) {
+			armMotor.moveOutOfRobot();
+			//logger.putMessage("Arm moving up");
+			//logger.putNumber("Arm current Position", RobotMap.armTalon.getSelectedSensorPosition());
+		} else {
+			if (armMotor.isPIDRunning() == false) {
+				armMotor.stop();
+			}
+			// armMotor.stop();
+			// logger.putMessage("Arm not moving");
+			// RobotMap.armTalon.setSelectedSensorPosition(0);
+			// RobotMap.armTalon.getSensorCollection().setPulseWidthPosition(0, 10);
+		}
+		//logger.putNumber("Arm Values" , RobotMap.armTalon.getSelectedSensorPosition());
+
+	}
+	// private void runBackupArm() {
+	// 	//logger.putNumber("Backup Arm Joystick Raw Axis", oi.copilotController.getRawAxis(1));
+	// 	if (oi.copilotController.getRawAxis(1) > 0.2) {
+	// 		// if(RobotMap.armTalon.getSelectedSensorPosition() >=200){
+	// 			armMotor.stop();
+	// 			armMotor.moveIntoRobotBackup();
+	// 		// }
+	// 		//logger.putMessage("Arm moving down");
+	// 		//logger.putNumber("Arm current Position", RobotMap.armTalon.getSelectedSensorPosition());
+	// 	} else if (oi.copilotController.getRawAxis(1) < -0.2) {
+	// 		armMotor.stop();
+	// 		armMotor.moveOutOfRobotBackup();
+	// 		//logger.putMessage("Arm moving up");
+	// 		//logger.putNumber("Arm current Position", RobotMap.armTalon.getSelectedSensorPosition());
+	// 	} 
+	// 	//logger.putNumber("Backup Arm Values" , RobotMap.armTalon.getSelectedSensorPosition());
+
+	// }
+	private void runIntake() {
+		//double range = ultrasonicanalog.getRange();
+		//logger.putNumber("Ball Ultrasonic Value", range);
 		if (oi.getIntake()) {
-			if (ultrasonicanalog.getRange() < 3) {
-				RobotMap.intakeVictor.set(0);
-				oi.copilotController.setRumble(RumbleType.kLeftRumble, 1);
-				oi.incrementRumbleCount();
-				logger.putMessage("Ball found in Intake - starting rumble");
-			} else {
+			// if (ultrasonicanalog.getRange() < 6) {
+			// 	RobotMap.intakeVictor.set(0);
+			// 	oi.copilotController.setRumble(RumbleType.kLeftRumble, 1);
+			// 	oi.incrementRumbleCount();
+			// 	logger.putMessage("Ball found in Intake - starting rumble");
+			// } else {
 				RobotMap.intakeVictor.set(0.5);
 				logger.putMessage("Intaking ball");
-			}
+			// }
 		} else if (oi.getOuttake()) {
 			RobotMap.intakeVictor.set(-1);
 			logger.putMessage("Shooting ball");
@@ -405,7 +523,6 @@ public class Robot extends TimedRobot {
 				oi.incrementRumbleCount();
 			}
 		}
-
 	}
 
 	/**

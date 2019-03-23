@@ -8,35 +8,44 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.Robot;
+import frc.robot.subsystems.Autonomous;
+import frc.robot.subsystems.rocketAutonomous;
 
-public class ActivateLeft extends Command {
+public class runRocketAutonomous extends Command {
+  private rocketAutonomous auto = new rocketAutonomous();
+  public boolean isFinished = false;
+  public runRocketAutonomous() {
 
-  public ActivateLeft() {
+    // Use requires() here to declare subsystem dependencies
+    // eg. requires(chassis);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.solenoidSubsystem.activateLeft();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    // Robot.oi.isSolenoidZeroPressed = true;
-    // Robot.oi.isSolenoidOnePressed = false;
+    if(auto.isCrossed == false){
+      auto.crossTheHabLine();
+    }
+    else if(auto.isCrossed == true && auto.isTurned == false){
+      auto.turn90();
+    }
+    else if(auto.isTurned == true && auto.isMoved ==false){
+      auto.goToTheRocket();
+    }
+    else{
+      isFinished = true;
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    // if (Robot.oi.isSolenoidZeroPressed == true){
-    //   return false;
-    // } else {
-    //   return true;
-    // }
-    return true;
+    return isFinished;
   }
 
   // Called once after isFinished returns true

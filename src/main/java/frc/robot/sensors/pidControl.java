@@ -52,10 +52,10 @@ public class pidControl {
         RobotMap.robotRightTalon.configNominalOutputForward(0, Constants.kTimeoutMs);
         RobotMap.robotLeftTalon.configNominalOutputReverse(0, Constants.kTimeoutMs);
 		RobotMap.robotRightTalon.configNominalOutputReverse(0, Constants.kTimeoutMs);
-        RobotMap.robotLeftTalon.configPeakOutputForward(0.5, Constants.kTimeoutMs);
-        RobotMap.robotRightTalon.configPeakOutputForward(0.5, Constants.kTimeoutMs);
-        RobotMap.robotLeftTalon.configPeakOutputReverse(-0.5, Constants.kTimeoutMs);
-        RobotMap.robotRightTalon.configPeakOutputReverse(-0.5, Constants.kTimeoutMs);
+        RobotMap.robotLeftTalon.configPeakOutputForward(Constants.kSpeed, Constants.kTimeoutMs);
+        RobotMap.robotRightTalon.configPeakOutputForward(Constants.kSpeed, Constants.kTimeoutMs);
+        RobotMap.robotLeftTalon.configPeakOutputReverse(-Constants.kSpeed, Constants.kTimeoutMs);
+        RobotMap.robotRightTalon.configPeakOutputReverse(-Constants.kSpeed, Constants.kTimeoutMs);
 
 		/**
 		 * Config the allowable closed-loop error, Closed-Loop output will be

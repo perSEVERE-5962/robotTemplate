@@ -7,10 +7,8 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.buttons.Trigger;
-import frc.robot.commands.ActivateRight;
-import frc.robot.commands.ActivateLeft;
 import frc.robot.subsystems.*;
-
+import frc.robot.RobotMap;
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
@@ -24,19 +22,23 @@ public class OI {
 	public Joystick copilotController;
 	public boolean isSolenoidZeroPressed = false;
 	public boolean isSolenoidOnePressed = false;
-	public JoystickButton buttonOne;
-	public JoystickButton buttonTwo;
+	public JoystickButton invertMotors;
+	public JoystickButton driveOriginal;
+	public JoystickButton deployHatchButton;
+	public JoystickButton retractHatchButton;
 	public JoystickButton greenLEDButton;
 	public JoystickButton orangeLEDButton;
 	public JoystickButton buttonSix;
-	public boolean isCamera1Active = true;
+	public JoystickButton placeHatch;
+	public JoystickButton armOverride;
+	public boolean isCamera1Active = false;
 	public JoystickButton driverSpeedButton;
 	public JoystickButton copilotSpeedButton;
 	private int rumbleCount=0;
 	public JoystickButton stopArmButton;
 
-	ActivateLeft activateLeft = new ActivateLeft();
-	ActivateRight activateRight = new ActivateRight();
+	DeployHatch deployHatch = new DeployHatch();
+	RetractHatch retractHatch = new RetractHatch();
 	SwitchOnGreen switchOnGreen = new SwitchOnGreen();
 	SwitchOffGreen switchOffGreen = new SwitchOffGreen();
 	SwitchOnOrange switchOnOrange = new SwitchOnOrange();
@@ -59,10 +61,10 @@ public class OI {
 		copilotController = new Joystick(3); // Copilot
 		driverSpeedButton = new JoystickButton(driverController, 5);	// right bumper
 		driverSpeedButton.toggleWhenPressed(new DriverSpeedControl());
-		buttonOne = new JoystickButton(copilotController, 5);
-		buttonTwo = new JoystickButton(copilotController, 6);
-		buttonOne.whenPressed(activateLeft);
-		buttonTwo.whenPressed(activateRight);
+		deployHatchButton = new JoystickButton(copilotController, 6);
+		retractHatchButton = new JoystickButton(copilotController, 5);
+		deployHatchButton.whenPressed(deployHatch);
+		retractHatchButton.whenPressed(retractHatch);
 		greenLEDButton = new JoystickButton(driverController, 1);
 		orangeLEDButton = new JoystickButton(driverController, 4);
 		greenLEDButton.toggleWhenPressed(switchOnGreen);
@@ -72,14 +74,21 @@ public class OI {
 		copilotController.setRumble(RumbleType.kLeftRumble, 0);
 		copilotSpeedButton = new JoystickButton(copilotController, 3);	// X 
 		copilotSpeedButton.toggleWhenPressed(new ArmSpeedControl());
+		invertMotors = new JoystickButton(driverController, 7);
+		invertMotors.toggleWhenPressed(new invertMotors());
+		driveOriginal = new JoystickButton(driverController, 8);
+		driveOriginal.whenPressed(new driveOriginal());
+		// onFloor = new JoystickButton(xBoxController, 1);
 		stopArmButton.toggleWhenPressed(new StopArmCommand());		// onFloor = new JoystickButton(xBoxController, 1);
 		// onFloor.whenPressed(new onFloor());
 		// shootBall = new JoystickButton(xBoxController , 2);
 		// shootBall.whenPressed(new shootBall());
 		// inRobot = new JoystickButton(xBoxController, 3);
 		// inRobot.whenPressed(new inRobot());
-		// placeHatch = new JoystickButton(xBoxController , 4);
-		// placeHatch.whenPressed(new placeHatch());
+		// placeHatch = new JoystickButton(copilotController , 4);
+		// placeHatch.toggleWhenPressed(new placeHatch());
+		armOverride = new JoystickButton(copilotController , 4);
+		armOverride.whenPressed(new OverrideArmPID());
 
 
 	}

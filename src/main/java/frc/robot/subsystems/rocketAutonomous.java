@@ -34,9 +34,20 @@ public class rocketAutonomous extends Subsystem {
   public static boolean movingStarted = false;
   public static boolean movingInProgress = false;
   public static boolean isMoved = false;
+  public static boolean placeHatch_started = false;
+  public static boolean placeHatch_inProgress = false;
+  public static boolean placeHatch_done = false;
+  public static boolean backup_started = false;
+  public static boolean backup_inProgress = false;
+  public static boolean backup_done = false;  
   final double diameter = 3.0;//7.5 test bot
   final double circumferance = Math.PI*diameter;
   final double ticksPerRotation = 4096;
+  public double backupLeftTarget;
+  public double backupRightTarget;
+  public double goStraight(double distance){
+    return (distance/circumferance)*ticksPerRotation;
+}
   public boolean onTarget(){
     // Robot.logger.putMessage("Left Closed Loop Error = " + RobotMap.robotLeftTalon.getClosedLoopError());
     // Robot.logger.putMessage("Right Closed Loop Error = " + RobotMap.robotRightTalon.getClosedLoopError());
@@ -50,7 +61,7 @@ public class rocketAutonomous extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
   public void crossTheHabLine(){
-    targetPos = (228.28/circumferance)*ticksPerRotation;
+    targetPos = (210/circumferance)*ticksPerRotation;//228.28
 
     if(crossingStarted == false){
       RobotMap.robotLeftTalon.setSelectedSensorPosition(0);
@@ -128,6 +139,40 @@ public class rocketAutonomous extends Subsystem {
     }
 
   }
+  public void placeHatch() {
+    if (placeHatch_started == false) {
+        Robot.logger.putMessage("Starting Auto Step PlaceHatch");
+        placeHatch_started = true;
+    } else if (placeHatch_started == true && placeHatch_inProgress == false) {
+        Robot.armMotor.moveToPlaceHatch();
+        placeHatch_inProgress = true;
+    } else if (Robot.armMotor.isOnTarget() && placeHatch_inProgress == true && placeHatch_done == false) {
+        Robot.logger.putMessage("Auto Step PlaceHatch Finished - final position = " +  RobotMap.armTalon.getSelectedSensorPosition());
+        // deploy the pneumatics
+        Robot.solenoidSubsystem.deployHatch();
+        placeHatch_done = true;
+    } else {
+    }
+}
+
+public void backup() {
+    if (backup_started == false) {
+        Robot.logger.putMessage("Starting Auto Step Backup");
+        Robot.solenoidSubsystem.retractHatch();
+        backupLeftTarget = goStraight(-30)+ RobotMap.robotLeftTalon.getSelectedSensorPosition();
+        backupRightTarget = goStraight(-30)+ RobotMap.robotRightTalon.getSelectedSensorPosition();
+        backup_started = true;
+    } else if (backup_started == true && backup_inProgress == false) {
+        RobotMap.robotLeftTalon.set(ControlMode.Position, backupLeftTarget);
+        RobotMap.robotRightTalon.set(ControlMode.Position, backupRightTarget);
+        backup_inProgress = true;
+    } else if (onTarget() && backup_inProgress == true && backup_done == false) {
+        Robot.logger.putMessage("Auto Step Backup Finished");
+       backup_done = true;
+    } else {
+    }
+    
+}
 
   @Override
   public void initDefaultCommand() {

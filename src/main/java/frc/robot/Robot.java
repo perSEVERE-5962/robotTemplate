@@ -110,7 +110,7 @@ public class Robot extends TimedRobot {
 
 	private void initStartingPosition(){
 		startingPosition = new SendableChooser<StartingPosition>();
-		startingPosition.addOption("Left_Lvl_2", StartingPosition.Left_Lvl_2);
+		startingPosition.setDefaultOption("Left_Lvl_2", StartingPosition.Left_Lvl_2);
 		//startingPosition.addOption("Left_Lvl_1", StartingPosition.Left_Lvl_1);
 		//startingPosition.addOption("Middle_Lvl_1", StartingPosition.Middle_Lvl_1);
 		//startingPosition.addOption("Right_Lvl_1", StartingPosition.Right_Lvl_1);
@@ -214,6 +214,7 @@ public class Robot extends TimedRobot {
 	}
 	
 	/**
+	 * 
 	 * This function is called once each time the robot enters Disabled mode. You
 	 * can use it to reset any subsystem information you want to clear when the
 	 * robot is disabled.

@@ -49,6 +49,7 @@ public class Robot extends TimedRobot {
 	public static ArmMotor armMotor;
 	public static ColorLED colorLED;
 	private Compressor compressor = new Compressor(0);
+	public static StopArm stopArm;
 
 	// Sensors
 	public static RobotGyro gyro = new RobotGyro();
@@ -176,6 +177,7 @@ public class Robot extends TimedRobot {
 		solenoidSubsystem.retractHatch();
 		compressor.setClosedLoopControl(true);
 	//	colorLED = new ColorLED();
+		stopArm = new StopArm();
 
 		//logger.putNumber("Ultrasonic Distance ", 0);		
 		initStartingPosition();
@@ -390,6 +392,8 @@ public class Robot extends TimedRobot {
 		stopAutonomous();
 		
 		logger.putMessage("Starting teleop");
+		
+       // colorLED = new ColorLED();
 
 		oi.startDriveCommand();
 		//gyro.resetGyro();
@@ -500,12 +504,12 @@ public class Robot extends TimedRobot {
 		//double range = ultrasonicanalog.getRange();
 		//logger.putNumber("Ball Ultrasonic Value", range);
 		if (oi.getIntake()) {
-			// if (ultrasonicanalog.getRange() < 6) {
+			if (ultrasonicanalog.getRange() < 6) {
 			// 	RobotMap.intakeVictor.set(0);
 			// 	oi.copilotController.setRumble(RumbleType.kLeftRumble, 1);
 			// 	oi.incrementRumbleCount();
-			// 	logger.putMessage("Ball found in Intake - starting rumble");
-			// } else {
+			 	logger.putMessage("Ball found in Intake - starting rumble");
+			} //else {
 				RobotMap.intakeVictor.set(0.5);
 				logger.putMessage("Intaking ball");
 			// }

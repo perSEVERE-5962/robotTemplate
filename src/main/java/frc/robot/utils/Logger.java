@@ -13,24 +13,24 @@ import java.io.File;
 import java.util.Locale;
 
 public class Logger {
-    File file;
-    BufferedWriter bufferedWriter;
-    FileWriter fileWriter;
+    // File file;
+    // BufferedWriter bufferedWriter;
+    // FileWriter fileWriter;
     String newLine = System.lineSeparator();
 
     public Logger() {
-        try {
-            double matchNumber = Robot.getMatchNumber();
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.US);
-            // String logFilePath = "/u/robotlog_" + dateFormat.format(new Date()) + ".log";
-            String logFilePath = "/u/robotlog_" + dateFormat.format(new Date()) + "_" + matchNumber + ".log";
-            //String logFilePath = "/Users/dlemasurier/Team5962/git/LogTest/robotlog_" + dateFormat.format(new Date()) + ".log";
-            fileWriter = new FileWriter(logFilePath);
-            bufferedWriter = new BufferedWriter(fileWriter);
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        // try {
+        //     double matchNumber = Robot.getMatchNumber();
+        //     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.US);
+        //     // String logFilePath = "/u/robotlog_" + dateFormat.format(new Date()) + ".log";
+        //     String logFilePath = "/u/robotlog_" + dateFormat.format(new Date()) + "_" + matchNumber + ".log";
+        //     //String logFilePath = "/Users/dlemasurier/Team5962/git/LogTest/robotlog_" + dateFormat.format(new Date()) + ".log";
+        //     fileWriter = new FileWriter(logFilePath);
+        //     bufferedWriter = new BufferedWriter(fileWriter);
+        // } catch (Exception e) {
+        //     // TODO Auto-generated catch block
+        //     e.printStackTrace();
+        // }
     }
 
     private String getCurrentTime() {
@@ -63,13 +63,14 @@ public class Logger {
     
     public void putMessage(String message) {
         String logString = getCurrentTime() + " " + message + newLine;
-        try {
-            bufferedWriter.write(logString);
-            bufferedWriter.flush();
-        } catch (Exception e) {
-       	    e.printStackTrace();
-            System.out.println("putMessage: " + logString);
-        }
+        System.out.println(logString);
+        // try {
+        //     bufferedWriter.write(logString);
+        //     bufferedWriter.flush();
+        // } catch (Exception e) {
+       	//     e.printStackTrace();
+        //     System.out.println("putMessage: " + logString);
+        // }
     }
 
     private void writeKeyValue(String key, String value) {

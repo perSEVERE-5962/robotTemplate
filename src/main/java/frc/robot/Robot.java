@@ -409,7 +409,13 @@ public class Robot extends TimedRobot {
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 
-
+		if ((oi.driverController.getRawAxis(1) > 0.2 ||
+		oi.driverController.getRawAxis(1) < -0.2 ||
+		oi.driverController.getRawAxis(5) > 0.2 ||
+		oi.driverController.getRawAxis(5) < -0.2)) {
+			oi.holdIt.cancel();
+			oi.startDriveCommand();
+	}
 		// run arm with joystick
 		/*if (topStop.get()) {
 			armMotor.stop();

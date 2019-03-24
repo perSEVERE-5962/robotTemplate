@@ -22,6 +22,7 @@ public class OI {
 	public Joystick copilotController;
 	public boolean isSolenoidZeroPressed = false;
 	public boolean isSolenoidOnePressed = false;
+	public JoystickButton defenseHold;
 	public JoystickButton invertMotors;
 	public JoystickButton driveOriginal;
 	public JoystickButton deployHatchButton;
@@ -42,7 +43,7 @@ public class OI {
 	SwitchOffGreen switchOffGreen = new SwitchOffGreen();
 	SwitchOnOrange switchOnOrange = new SwitchOnOrange();
 	SwitchOffOrange switchOffOrange = new SwitchOffOrange(); 
-
+	DefenseHold holdIt = new DefenseHold();
 	public void incrementRumbleCount() {
 		++rumbleCount;
 	}
@@ -68,7 +69,7 @@ public class OI {
 		orangeLEDButton = new JoystickButton(driverController, 4);
 		greenLEDButton.toggleWhenPressed(switchOnGreen);
 		orangeLEDButton.toggleWhenPressed(switchOnOrange);
-		buttonSix = new JoystickButton(driverController, 6);
+		buttonSix = new JoystickButton(driverController, 99);
 		buttonSix.toggleWhenPressed(new CameraToggle());
 		copilotController.setRumble(RumbleType.kLeftRumble, 0);
 		copilotSpeedButton = new JoystickButton(copilotController, 3);	// X 
@@ -77,6 +78,8 @@ public class OI {
 		invertMotors.toggleWhenPressed(new invertMotors());
 		driveOriginal = new JoystickButton(driverController, 8);
 		driveOriginal.whenPressed(new driveOriginal());
+		defenseHold = new JoystickButton(driverController, 6);
+		defenseHold.whenPressed(holdIt);
 		// onFloor = new JoystickButton(xBoxController, 1);
 		// onFloor.whenPressed(new onFloor());
 		// shootBall = new JoystickButton(xBoxController , 2);

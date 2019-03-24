@@ -21,8 +21,8 @@ public class DefenseHold extends Command{
   @Override
   protected void execute() {
     if(check == false){
-    leftPos = RobotMap.robotLeftTalon.getSelectedSensorPosition() + 5;
-    rightPos = RobotMap.robotRightTalon.getSelectedSensorPosition() + 5;
+    leftPos = RobotMap.robotLeftTalon.getSelectedSensorPosition() + 81.9;
+    rightPos = RobotMap.robotRightTalon.getSelectedSensorPosition() + 81.9;
     
     RobotMap.robotLeftTalon.set(ControlMode.Position, leftPos);
     RobotMap.robotRightTalon.set(ControlMode.Position , rightPos);

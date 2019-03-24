@@ -5,8 +5,9 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 public class StopArm extends Subsystem{
 
-    final int SOL_TOP_R = 0; //Blue
-    final int SOL_TOP_L = 1; //Green
+    final int SOL_TOP_R = 0; //Blue0
+    final int SOL_TOP_L = 1; //Green1
+
 
     DoubleSolenoid ds1 = new DoubleSolenoid(1, SOL_TOP_R, SOL_TOP_L);
 

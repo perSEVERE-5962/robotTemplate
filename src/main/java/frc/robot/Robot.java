@@ -501,14 +501,15 @@ public class Robot extends TimedRobot {
 
 	// }
 	private void runIntake() {
-		//double range = ultrasonicanalog.getRange();
-		//logger.putNumber("Ball Ultrasonic Value", range);
+		double range = ultrasonicanalog.getRange();
 		if (oi.getIntake()) {
 			if (ultrasonicanalog.getRange() < 6) {
 			// 	RobotMap.intakeVictor.set(0);
 			// 	oi.copilotController.setRumble(RumbleType.kLeftRumble, 1);
 			// 	oi.incrementRumbleCount();
-			 	logger.putMessage("Ball found in Intake - starting rumble");
+				 logger.putMessage("Ball found in Intake - starting rumble");
+				 logger.putNumber("Ball Ultrasonic Value", range);
+
 			} //else {
 				RobotMap.intakeVictor.set(0.5);
 				logger.putMessage("Intaking ball");

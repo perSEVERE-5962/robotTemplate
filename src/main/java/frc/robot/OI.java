@@ -67,12 +67,6 @@ public class OI {
 		retractHatchButton = new JoystickButton(copilotController, 5);
 		deployHatchButton.whenPressed(deployHatch);
 		retractHatchButton.whenPressed(retractHatch);
-		// greenLEDButton = new JoystickButton(driverController, 1);
-		// orangeLEDButton = new JoystickButton(driverController, 4);
-		// greenLEDButton.toggleWhenPressed(switchOnGreen);
-		// orangeLEDButton.toggleWhenPressed(switchOnOrange);
-		// buttonSix = new JoystickButton(driverController, 6);
-		// buttonSix.toggleWhenPressed(new CameraToggle());
 		copilotController.setRumble(RumbleType.kLeftRumble, 0);
 		copilotSpeedButton = new JoystickButton(copilotController, 3);	// X 
 		copilotSpeedButton.toggleWhenPressed(new ArmSpeedControl());
@@ -83,7 +77,13 @@ public class OI {
 		defenseHold = new JoystickButton(driverController, 6);
 		defenseHold.whenPressed(holdIt);
 		stopArmButton = new JoystickButton(copilotController, 1);
-		stopArmButton.toggleWhenPressed(new StopArmCommand());		
+		stopArmButton.toggleWhenPressed(new StopArmCommand());	
+		// greenLEDButton = new JoystickButton(driverController, 1);
+		// orangeLEDButton = new JoystickButton(driverController, 4);
+		// greenLEDButton.toggleWhenPressed(switchOnGreen);
+		// orangeLEDButton.toggleWhenPressed(switchOnOrange);
+		// buttonSix = new JoystickButton(driverController, 6);
+		// buttonSix.toggleWhenPressed(new CameraToggle());	
 		// onFloor = new JoystickButton(xBoxController, 1);
 		// onFloor = new JoystickButton(xBoxController, 1);
 		// onFloor.whenPressed(new onFloor());

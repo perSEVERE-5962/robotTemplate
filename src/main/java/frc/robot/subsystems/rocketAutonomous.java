@@ -34,7 +34,7 @@ public class rocketAutonomous extends Subsystem {
   public static boolean movingStarted = false;
   public static boolean movingInProgress = false;
   public static boolean isMoved = false;
-  final double diameter = 7.5;//7.5 test bot
+  final double diameter = 3.0;//7.5 test bot
   final double circumferance = Math.PI*diameter;
   final double ticksPerRotation = 4096;
   public boolean onTarget(){
@@ -60,7 +60,7 @@ public class rocketAutonomous extends Subsystem {
       crossingStarted = true;
     }
     else if(crossingStarted == true && crossingInProgress == false){
-      RobotMap.robotLeftTalon.set(ControlMode.Position, targetPos);
+      RobotMap.robotLeftTalon.set(ControlMode.Position,targetPos);
       RobotMap.robotRightTalon.set(ControlMode.Position, targetPos);
       crossingInProgress = true;
     }

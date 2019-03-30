@@ -34,13 +34,16 @@ public class runRocketAutonomous extends Command {
     else if(auto.isCrossed == true && auto.isTurned == false){
       auto.turn90();
     }
-    // else if(auto.isTurned == true && auto.isMoved ==false){
-    //   auto.goToTheRocket();
-    // }
     else if(auto.isTurned == true && auto.placeHatch_done == false){
       auto.placeHatch();
     }
-    else if(auto.placeHatch_done == true && auto.backup_done == false){
+    else if(auto.placeHatch_done == true && auto.isMoved ==false){
+      auto.goToTheRocket();
+    }
+    else if (auto.isMoved == true && auto.deployHatch == false){
+      auto.deployHatch();
+    }
+    else if(auto.deployHatch == true && auto.backup_done == false){
       auto.backup();
     }
     else{

@@ -21,7 +21,7 @@ public class ArmMotor extends Subsystem {
 
 
 	private boolean isMaxSpeed = false;
-	private final double MAX_SPEED = 0.7;
+	private final double MAX_SPEED = 1;
 	private final double DEFAULT_SPEED = 0.4;
 
 

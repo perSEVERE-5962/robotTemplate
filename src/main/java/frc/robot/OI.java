@@ -32,6 +32,7 @@ public class OI {
 	public JoystickButton buttonSix;
 	public JoystickButton placeHatch;
 	public JoystickButton armOverride;
+	public JoystickButton stopArmOff;
 	public boolean isCamera1Active = false;
 	public JoystickButton driverSpeedButton;
 	public JoystickButton copilotSpeedButton;
@@ -78,6 +79,8 @@ public class OI {
 		defenseHold.whenPressed(holdIt);
 		stopArmButton = new JoystickButton(copilotController, 1);
 		stopArmButton.toggleWhenPressed(new StopArmCommand());	
+		stopArmOff = new JoystickButton(copilotController, 2);
+		stopArmOff.whenPressed(new StopArmOff());
 		// greenLEDButton = new JoystickButton(driverController, 1);
 		// orangeLEDButton = new JoystickButton(driverController, 4);
 		// greenLEDButton.toggleWhenPressed(switchOnGreen);
@@ -93,6 +96,7 @@ public class OI {
 		// inRobot.whenPressed(new inRobot());
 		// placeHatch = new JoystickButton(copilotController , 4);
 		// placeHatch.toggleWhenPressed(new placeHatch());
+
 		armOverride = new JoystickButton(copilotController , 4);
 		armOverride.whenPressed(new OverrideArmPID());
 

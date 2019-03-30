@@ -14,7 +14,7 @@ public class ArmMotor extends Subsystem {
 	// here. Call these from Commands.
 
 	final double START_POSITION = 0; // [\]
-	final double PLACE_HATCH_POSITION = 361; // [|]
+	final double PLACE_HATCH_POSITION = 500; // [|]
 	final double SHOOT_BALL_POSITION = 853.06; // [/]
 	final double INTAKE_BALL_POSITION = 1479.1;// [_]
 	private  boolean isPIDRunning = false;

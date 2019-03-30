@@ -137,13 +137,14 @@ public class rocketAutonomous extends Subsystem {
 }
 public void goToTheRocket(){
   range = uValue.getLeftRange();
+  SmartDashboard.putNumber("uValue" ,  range);
   if(movingStarted == false){
     RobotMap.robotLeftTalon.set(ControlMode.PercentOutput , 0.5);
     RobotMap.robotRightTalon.set(ControlMode.PercentOutput , 0.5);
     movingStarted = true;
   }
   else if(movingStarted == true && isMoved == false && range<=20){
-    Robot.logger.putMessage("At the rocket");
+    Robot.logger.putString("At the rocket" , "done");
     RobotMap.robotLeftTalon.set(ControlMode.PercentOutput, 0);
     RobotMap.robotRightTalon.set(ControlMode.PercentOutput, 0);
     isMoved = true;

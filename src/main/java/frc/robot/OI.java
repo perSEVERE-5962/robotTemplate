@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.buttons.Trigger;
 import frc.robot.subsystems.*;
-
+import frc.robot.RobotMap;
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
@@ -22,6 +22,9 @@ public class OI {
 	public Joystick copilotController;
 	public boolean isSolenoidZeroPressed = false;
 	public boolean isSolenoidOnePressed = false;
+	public JoystickButton defenseHold;
+	public JoystickButton invertMotors;
+	public JoystickButton driveOriginal;
 	public JoystickButton deployHatchButton;
 	public JoystickButton retractHatchButton;
 	public JoystickButton greenLEDButton;
@@ -29,18 +32,21 @@ public class OI {
 	public JoystickButton buttonSix;
 	public JoystickButton placeHatch;
 	public JoystickButton armOverride;
+	public JoystickButton stopArmOff;
 	public boolean isCamera1Active = false;
 	public JoystickButton driverSpeedButton;
 	public JoystickButton copilotSpeedButton;
 	private int rumbleCount=0;
+	public JoystickButton stopArmButton;
 
 	DeployHatch deployHatch = new DeployHatch();
 	RetractHatch retractHatch = new RetractHatch();
-	SwitchOnGreen switchOnGreen = new SwitchOnGreen();
-	SwitchOffGreen switchOffGreen = new SwitchOffGreen();
-	SwitchOnOrange switchOnOrange = new SwitchOnOrange();
-	SwitchOffOrange switchOffOrange = new SwitchOffOrange(); 
+	// SwitchOnGreen switchOnGreen = new SwitchOnGreen();
+	// SwitchOffGreen switchOffGreen = new SwitchOffGreen();
+	// SwitchOnOrange switchOnOrange = new SwitchOnOrange();
+	// SwitchOffOrange switchOffOrange = new SwitchOffOrange(); 
 
+	DefenseHold holdIt = new DefenseHold();
 	public void incrementRumbleCount() {
 		++rumbleCount;
 	}
@@ -62,15 +68,26 @@ public class OI {
 		retractHatchButton = new JoystickButton(copilotController, 5);
 		deployHatchButton.whenPressed(deployHatch);
 		retractHatchButton.whenPressed(retractHatch);
-		greenLEDButton = new JoystickButton(driverController, 1);
-		orangeLEDButton = new JoystickButton(driverController, 4);
-		greenLEDButton.toggleWhenPressed(switchOnGreen);
-		orangeLEDButton.toggleWhenPressed(switchOnOrange);
-		buttonSix = new JoystickButton(driverController, 6);
-		buttonSix.toggleWhenPressed(new CameraToggle());
 		copilotController.setRumble(RumbleType.kLeftRumble, 0);
 		copilotSpeedButton = new JoystickButton(copilotController, 3);	// X 
 		copilotSpeedButton.toggleWhenPressed(new ArmSpeedControl());
+		invertMotors = new JoystickButton(driverController, 7);
+		invertMotors.toggleWhenPressed(new invertMotors());
+		driveOriginal = new JoystickButton(driverController, 8);
+		driveOriginal.whenPressed(new driveOriginal());
+		defenseHold = new JoystickButton(driverController, 6);
+		defenseHold.whenPressed(holdIt);
+		stopArmButton = new JoystickButton(copilotController, 1);
+		stopArmButton.toggleWhenPressed(new StopArmCommand());	
+		stopArmOff = new JoystickButton(copilotController, 2);
+		stopArmOff.whenPressed(new StopArmOff());
+		// greenLEDButton = new JoystickButton(driverController, 1);
+		// orangeLEDButton = new JoystickButton(driverController, 4);
+		// greenLEDButton.toggleWhenPressed(switchOnGreen);
+		// orangeLEDButton.toggleWhenPressed(switchOnOrange);
+		// buttonSix = new JoystickButton(driverController, 6);
+		// buttonSix.toggleWhenPressed(new CameraToggle());	
+		// onFloor = new JoystickButton(xBoxController, 1);
 		// onFloor = new JoystickButton(xBoxController, 1);
 		// onFloor.whenPressed(new onFloor());
 		// shootBall = new JoystickButton(xBoxController , 2);
@@ -79,6 +96,7 @@ public class OI {
 		// inRobot.whenPressed(new inRobot());
 		// placeHatch = new JoystickButton(copilotController , 4);
 		// placeHatch.toggleWhenPressed(new placeHatch());
+
 		armOverride = new JoystickButton(copilotController , 4);
 		armOverride.whenPressed(new OverrideArmPID());
 

@@ -97,6 +97,12 @@ public class RobotMap {
 	public static WPI_VictorSPX robotRightVictor;
 	public static WPI_TalonSRX armTalon;
 	public static WPI_VictorSPX intakeVictor;
+	public static void invertMotors(){
+		robotLeftVictor.follow(robotLeftTalon);
+		robotRightVictor.follow(robotRightTalon);
+		robotLeftTalon.setInverted(true);
+		robotRightTalon.setInverted(false);
+	}
 	
 	public static void init() {
 		// Competition Robot

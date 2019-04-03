@@ -8,14 +8,11 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.subsystems.Autonomous;
-import frc.robot.subsystems.rocketAutonomous;
+import frc.robot.Robot;
 
-public class runRocketAutonomous extends Command {
-  private rocketAutonomous auto = new rocketAutonomous();
+public class StopArmOff extends Command {
   public boolean isFinished = false;
-  public runRocketAutonomous() {
-
+  public StopArmOff() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
@@ -28,33 +25,14 @@ public class runRocketAutonomous extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if(auto.isCrossed == false){
-      auto.crossTheHabLine();
-    }
-    else if(auto.isCrossed == true && auto.isTurned == false){
-      auto.turn90();
-    }
-    else if(auto.isTurned == true && auto.placeHatch_done == false){
-      auto.placeHatch();
-    }
-    else if(auto.placeHatch_done == true && auto.isMoved ==false){
-      auto.goToTheRocket();
-    }
-    else if (auto.isMoved == true && auto.deployHatch == false){
-      auto.deployHatch();
-    }
-    else if(auto.deployHatch == true && auto.backup_done == false){
-      auto.backup();
-    }
-    else{
-      isFinished = true;
-    }
+    Robot.stopArm.stopArmOff();
+
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return isFinished;
+    return true;
   }
 
   // Called once after isFinished returns true

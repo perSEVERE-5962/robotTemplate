@@ -8,14 +8,13 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.subsystems.Autonomous;
-import frc.robot.subsystems.rocketAutonomous;
+import frc.robot.Robot;
 
-public class runRocketAutonomous extends Command {
-  private rocketAutonomous auto = new rocketAutonomous();
-  public boolean isFinished = false;
-  public runRocketAutonomous() {
+public class StopArmCommand extends Command {
 
+  private boolean isFinished = false;
+
+  public StopArmCommand() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
@@ -23,32 +22,12 @@ public class runRocketAutonomous extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    Robot.stopArm.stopArmOn();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if(auto.isCrossed == false){
-      auto.crossTheHabLine();
-    }
-    else if(auto.isCrossed == true && auto.isTurned == false){
-      auto.turn90();
-    }
-    else if(auto.isTurned == true && auto.placeHatch_done == false){
-      auto.placeHatch();
-    }
-    else if(auto.placeHatch_done == true && auto.isMoved ==false){
-      auto.goToTheRocket();
-    }
-    else if (auto.isMoved == true && auto.deployHatch == false){
-      auto.deployHatch();
-    }
-    else if(auto.deployHatch == true && auto.backup_done == false){
-      auto.backup();
-    }
-    else{
-      isFinished = true;
-    }
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -64,7 +43,6 @@ public class runRocketAutonomous extends Command {
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
-  @Override
-  protected void interrupted() {
-  }
+  
+
 }

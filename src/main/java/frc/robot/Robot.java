@@ -6,6 +6,7 @@ import com.analog.adis16470.frc.ADIS16470_IMU;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.Faults;
 import java.io.IOException;
+import frc.robot.commands.*;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -48,6 +49,7 @@ public class Robot extends TimedRobot {
 	public static ArmMotor armMotor;
 	public static ColorLED colorLED;
 	private Compressor compressor = new Compressor(0);
+	public static StopArm stopArm;
 
 	// Sensors
 	public static RobotGyro gyro = new RobotGyro();
@@ -57,7 +59,7 @@ public class Robot extends TimedRobot {
 	//public static RemoteHCSR04 remoteHCSR04 = new RemoteHCSR04();
 
 	// commands
-	private static RunAutonomous autonomousCommand;
+	private static runRocketAutonomous autonomousCommand;
 	//public static Autonomous auto = new Autonomous();
 
 	// utils
@@ -175,6 +177,7 @@ public class Robot extends TimedRobot {
 		solenoidSubsystem.retractHatch();
 		compressor.setClosedLoopControl(true);
 	//	colorLED = new ColorLED();
+		stopArm = new StopArm();
 
 		//logger.putNumber("Ultrasonic Distance ", 0);		
 		initStartingPosition();
@@ -211,6 +214,7 @@ public class Robot extends TimedRobot {
 	}
 	
 	/**
+	 * 
 	 * This function is called once each time the robot enters Disabled mode. You
 	 * can use it to reset any subsystem information you want to clear when the
 	 * robot is disabled.
@@ -268,7 +272,7 @@ public class Robot extends TimedRobot {
 
 		// logger.putString("Auto Step 1 Done", "No");
 
-		// starting_postion = (StartingPosition) startingPosition.getSelected();
+		starting_postion = (StartingPosition) startingPosition.getSelected();
 		// TargetPosition selectedTargetPosition = (TargetPosition) targetPosition.getSelected();
 		// GamePiece selectedGamePiece = (GamePiece) gamePiece.getSelected();
 
@@ -285,7 +289,7 @@ public class Robot extends TimedRobot {
         // RobotMap.robotLeftTalon.configPeakOutputReverse(-Constants.kSpeed, Constants.kTimeoutMs);
         // RobotMap.robotRightTalon.configPeakOutputReverse(-Constants.kSpeed, Constants.kTimeoutMs);
 
-		autonomousCommand = new RunAutonomous();
+		autonomousCommand = new runRocketAutonomous();
 		if (autonomousCommand != null) {
 			autonomousCommand.start();		
 			autonomousStopped = false;
@@ -389,6 +393,8 @@ public class Robot extends TimedRobot {
 		stopAutonomous();
 		
 		logger.putMessage("Starting teleop");
+		
+       // colorLED = new ColorLED();
 
 		oi.startDriveCommand();
 		//gyro.resetGyro();
@@ -408,7 +414,13 @@ public class Robot extends TimedRobot {
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 
-
+		if ((oi.driverController.getRawAxis(1) > 0.2 ||
+		oi.driverController.getRawAxis(1) < -0.2 ||
+		oi.driverController.getRawAxis(5) > 0.2 ||
+		oi.driverController.getRawAxis(5) < -0.2)) {
+			oi.holdIt.cancel();
+			oi.startDriveCommand();
+	}
 		// run arm with joystick
 		/*if (topStop.get()) {
 			armMotor.stop();
@@ -490,15 +502,16 @@ public class Robot extends TimedRobot {
 
 	// }
 	private void runIntake() {
-		//double range = ultrasonicanalog.getRange();
-		//logger.putNumber("Ball Ultrasonic Value", range);
+		double range = ultrasonicanalog.getRange();
 		if (oi.getIntake()) {
-			// if (ultrasonicanalog.getRange() < 6) {
+			logger.putNumber("Ball Ultrasonic Value", range);
+			if (ultrasonicanalog.getRange() < 6) {
 			// 	RobotMap.intakeVictor.set(0);
 			// 	oi.copilotController.setRumble(RumbleType.kLeftRumble, 1);
 			// 	oi.incrementRumbleCount();
-			// 	logger.putMessage("Ball found in Intake - starting rumble");
-			// } else {
+				 logger.putMessage("Ball found in Intake - starting rumble");
+
+			} //else {
 				RobotMap.intakeVictor.set(0.5);
 				logger.putMessage("Intaking ball");
 			// }

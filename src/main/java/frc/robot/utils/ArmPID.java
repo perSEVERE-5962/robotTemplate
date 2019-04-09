@@ -20,7 +20,7 @@ public class ArmPID {
 	final int kSlotIdx = 0;
 	final int kPIDLoopIdx = 0;
 	final int kTimeoutMs = 30;
-	boolean kSensorPhase = true;
+	boolean kSensorPhase = false;// true on the ACTUAL ROBOT ""
 	boolean kMotorInvert = true;
 	public int absolutePosition = 0;
 	public double currentPosition = 0;
@@ -44,8 +44,8 @@ public class ArmPID {
 		/* Config the peak and nominal outputs, 12V means full */
 		RobotMap.armTalon.configNominalOutputForward(0, kTimeoutMs);
 		RobotMap.armTalon.configNominalOutputReverse(0, kTimeoutMs);
-		RobotMap.armTalon.configPeakOutputForward(0.3, kTimeoutMs);
-		RobotMap.armTalon.configPeakOutputReverse(-0.3, kTimeoutMs);
+		RobotMap.armTalon.configPeakOutputForward(0.4, kTimeoutMs);
+		RobotMap.armTalon.configPeakOutputReverse(-0.4, kTimeoutMs);
 
 		/**
 		 * Config the allowable closed-loop error, Closed-Loop output will be neutral

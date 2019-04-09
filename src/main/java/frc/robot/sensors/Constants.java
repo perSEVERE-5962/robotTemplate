@@ -20,7 +20,7 @@ public class Constants {
 	 */
 	public static final int kTimeoutMs = 30;
 
-	public static final double kSpeed = 0.7;
+	public static final double kSpeed = 0.5;
 
 	
 	/* Choose so that Talon does not report sensor out of phase */

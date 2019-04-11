@@ -20,7 +20,7 @@ public class ArmPID {
 	final int kSlotIdx = 0;
 	final int kPIDLoopIdx = 0;
 	final int kTimeoutMs = 30;
-	boolean kSensorPhase = false;// true on the ACTUAL ROBOT ""
+	boolean kSensorPhase = true;// true on the ACTUAL ROBOT ""
 	boolean kMotorInvert = true;
 	public int absolutePosition = 0;
 	public double currentPosition = 0;

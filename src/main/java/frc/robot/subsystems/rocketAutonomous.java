@@ -45,7 +45,7 @@ public class rocketAutonomous extends Subsystem {
   public boolean goLittle_started = false;
   public boolean goLittle_inProgress = false;
   public boolean goLittle_done = false;
-  final double diameter = 7.5;//7.5 test bot
+  final double diameter = 3.0;//7.5 test bot
   final double circumferance = Math.PI*diameter;
   final double ticksPerRotation = 4096;
   public double backupLeftTarget;
@@ -76,7 +76,7 @@ public class rocketAutonomous extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-  // public void goLittleLiterallyNothing(){
+  // public void goLittleLterallyNothing(){
   //   // if(goLittle_started == true && goLittle_inProgress == false){
   //     RobotMap.robotLeftTalon.set(ControlMode.Position,500);
   //     RobotMap.robotRightTalon.set(ControlMode.Position, 500);
@@ -89,8 +89,8 @@ public class rocketAutonomous extends Subsystem {
   // }
   public void crossTheHabLine(){
     if(crossingStarted == false){
-      leftTargetPos =  RobotMap.robotLeftTalon.getSelectedSensorPosition() +(105.28/circumferance)*ticksPerRotation;//228.28
-      rightTargetPos =  RobotMap.robotRightTalon.getSelectedSensorPosition() +(105.28/circumferance)*ticksPerRotation;//228.28
+      leftTargetPos =  RobotMap.robotLeftTalon.getSelectedSensorPosition() +(53/circumferance)*ticksPerRotation;//228.28
+      rightTargetPos =  RobotMap.robotRightTalon.getSelectedSensorPosition() +(53/circumferance)*ticksPerRotation;//228.28
   
       // RobotMap.robotLeftTalon.setSelectedSensorPosition(0);
       // RobotMap.robotRightTalon.setSelectedSensorPosition(0);
@@ -172,7 +172,7 @@ public void goToTheRocket(){
     RobotMap.robotRightTalon.set(ControlMode.PercentOutput , 0.5);
     movingStarted = true;
   }
-  else if(movingStarted == true && isMoved == false && range<=20){
+  else if(movingStarted == true && isMoved == false && range<=15.){
     Robot.logger.putString("At the rocket" , "done");
     RobotMap.robotLeftTalon.set(ControlMode.PercentOutput, 0);
     RobotMap.robotRightTalon.set(ControlMode.PercentOutput, 0);

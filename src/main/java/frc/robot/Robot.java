@@ -43,7 +43,7 @@ public class Robot extends TimedRobot {
 
 	private boolean autonomousStopped = true;	// set as stopped by default
 	public static boolean overrideArm = false;
-	private Solenoid ballUltrasonicPort = new Solenoid(1,7);
+	
 	// subsystems
 	public static Drive drive = new Drive();
 	public static SolenoidSubsystem solenoidSubsystem;
@@ -51,7 +51,7 @@ public class Robot extends TimedRobot {
 	public static ColorLED colorLED;
 	private Compressor compressor = new Compressor(0);
 	public static StopArm stopArm;
-	private Solenoid ballUltrasonic;
+	private Solenoid ballUltrasonic =new Solenoid(1,7);
 
 	// Sensors
 	public static RobotGyro gyro = new RobotGyro();
@@ -186,8 +186,7 @@ public class Robot extends TimedRobot {
 		initTargetPosition();
 		initGamePiece();
 
-		ballUltrasonicPort.set(true);
-
+		
 		// logger.putNumber("kP Value" , pidValue.getkP() );
 		// logger.putNumber("kI Value" , pidValue.getkI() );
 		// logger.putNumber("kD Value" , pidValue.getkD() );

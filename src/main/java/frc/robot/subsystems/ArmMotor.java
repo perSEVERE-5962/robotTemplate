@@ -58,7 +58,7 @@ public class ArmMotor extends Subsystem {
 	public boolean isOnTarget() {
 		//boolean isOnTarget = RobotMap.armTalon.getClosedLoopError() < 3;
 		Robot.logger.putNumber("Arm Sensor Position", RobotMap.armTalon.getSelectedSensorPosition());
-		boolean isOnTarget = RobotMap.armTalon.getSelectedSensorPosition() > 490;
+		boolean isOnTarget = RobotMap.armTalon.getSelectedSensorPosition() > 450;
 		if (isOnTarget == true) {
 			Robot.logger.putMessage("Arm isOnTarget");
 			isPIDRunning = false;

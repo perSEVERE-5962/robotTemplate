@@ -401,7 +401,7 @@ public class Robot extends TimedRobot {
        // colorLED = new ColorLED();
 
 		oi.startDriveCommand();
-		//gyro.resetGyro();
+		gyro.resetGyro();
 
 		// set the motor controllers back to full speed
         RobotMap.robotLeftTalon.configPeakOutputForward(1, Constants.kTimeoutMs);
@@ -417,14 +417,14 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-
+		logger.putNumber("GYRO VALUE ", gyro.getGyroAngle());
 		if ((oi.driverController.getRawAxis(1) > 0.2 ||
 		oi.driverController.getRawAxis(1) < -0.2 ||
 		oi.driverController.getRawAxis(5) > 0.2 ||
 		oi.driverController.getRawAxis(5) < -0.2)) {
 			oi.holdIt.cancel();
 			oi.startDriveCommand();
-	}
+		}
 		// run arm with joystick
 		/*if (topStop.get()) {
 			armMotor.stop();

@@ -31,7 +31,7 @@ public class runRocketAutonomous extends Command {
     // if(auto.goLittle_done == false){
     //   auto.goLittleLiterallyNothing();
     // }
-     if(auto.isCrossed == false){
+    if(auto.isCrossed == false){
       auto.crossTheHabLine();
     }
     else if(auto.isCrossed == true && auto.isTurned == false){

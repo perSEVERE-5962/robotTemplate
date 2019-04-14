@@ -89,9 +89,13 @@ public class rocketAutonomous extends Subsystem {
   // }
   public void crossTheHabLine(){
     if(crossingStarted == false){
-      leftTargetPos =  RobotMap.robotLeftTalon.getSelectedSensorPosition() +(53/circumferance)*ticksPerRotation;//228.28
-      rightTargetPos =  RobotMap.robotRightTalon.getSelectedSensorPosition() +(53/circumferance)*ticksPerRotation;//228.28
-  
+      leftTargetPos =  RobotMap.robotLeftTalon.getSelectedSensorPosition() +(49/circumferance)*ticksPerRotation;//228.28
+      rightTargetPos =  RobotMap.robotRightTalon.getSelectedSensorPosition() +(49/circumferance)*ticksPerRotation;//228.28
+      
+      // RobotMap.robotLeftTalon.configPeakOutputForward(0.5, Constants.kTimeoutMs);
+      // RobotMap.robotRightTalon.configPeakOutputForward(0.5, Constants.kTimeoutMs);
+      // RobotMap.robotLeftTalon.configPeakOutputReverse(-0.5, Constants.kTimeoutMs);
+      // RobotMap.robotRightTalon.configPeakOutputReverse(-0.5, Constants.kTimeoutMs);
       // RobotMap.robotLeftTalon.setSelectedSensorPosition(0);
       // RobotMap.robotRightTalon.setSelectedSensorPosition(0);
       // RobotMap.robotLeftTalon.getSensorCollection().setPulseWidthPosition(0, 30);
@@ -101,10 +105,18 @@ public class rocketAutonomous extends Subsystem {
     else if(crossingStarted == true && crossingInProgress == false){
       RobotMap.robotLeftTalon.set(ControlMode.Position, leftTargetPos);
       RobotMap.robotRightTalon.set(ControlMode.Position, rightTargetPos);
+
       crossingInProgress = true;
     }
     else if(onTarget() && crossingInProgress == true && isCrossed == false){
       Robot.logger.putMessage("Crossed the hab line");
+      Robot.logger.putNumber("Left Enc", RobotMap.robotLeftTalon.getSelectedSensorPosition());
+      Robot.logger.putNumber("Right Enc", RobotMap.robotRightTalon.getSelectedSensorPosition());
+      
+      // RobotMap.robotLeftTalon.configPeakOutputForward(Constants.kSpeed, Constants.kTimeoutMs);
+      // RobotMap.robotRightTalon.configPeakOutputForward(Constants.kSpeed, Constants.kTimeoutMs);
+      // RobotMap.robotLeftTalon.configPeakOutputReverse(-Constants.kSpeed, Constants.kTimeoutMs);
+      // RobotMap.robotRightTalon.configPeakOutputReverse(-Constants.kSpeed, Constants.kTimeoutMs);
       isCrossed = true;
     }
  
@@ -112,7 +124,7 @@ public class rocketAutonomous extends Subsystem {
   } 
   public void turn37(){
     angle = Robot.gyro.getGyroAngle();
-    if(Robot.getIsRight() == true && angle>= 37){
+    if(Robot.getIsRight() == true && angle>= 31){
       Robot.logger.putMessage("Stopping the drive");
       RobotMap.robotLeftTalon.set(ControlMode.PercentOutput, 0);
       RobotMap.robotRightTalon.set(ControlMode.PercentOutput, 0);
@@ -122,7 +134,7 @@ public class rocketAutonomous extends Subsystem {
       RobotMap.robotRightTalon.getSensorCollection().setPulseWidthPosition(0, 10);
       isTurned = true;
     }
-    else if(Robot.getIsLeft() == true && angle<=-37){
+    else if(Robot.getIsLeft() == true && angle<=-31){
       Robot.logger.putMessage("Stopping the drive");
       RobotMap.robotLeftTalon.set(ControlMode.PercentOutput, 0);
       RobotMap.robotRightTalon.set(ControlMode.PercentOutput, 0);
@@ -166,13 +178,13 @@ public class rocketAutonomous extends Subsystem {
 }
 public void goToTheRocket(){
   range = uValue.getLeftRange();
-  SmartDashboard.putNumber("uValue" ,  range);
+  Robot.logger.putNumber("uValue" ,  range);
   if(movingStarted == false){
     RobotMap.robotLeftTalon.set(ControlMode.PercentOutput , 0.5);
     RobotMap.robotRightTalon.set(ControlMode.PercentOutput , 0.5);
     movingStarted = true;
   }
-  else if(movingStarted == true && isMoved == false && range<=15.){
+  else if(movingStarted == true && isMoved == false && range<=8){
     Robot.logger.putString("At the rocket" , "done");
     RobotMap.robotLeftTalon.set(ControlMode.PercentOutput, 0);
     RobotMap.robotRightTalon.set(ControlMode.PercentOutput, 0);

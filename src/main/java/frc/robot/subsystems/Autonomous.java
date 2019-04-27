@@ -92,7 +92,7 @@ public class Autonomous extends Subsystem{
     }
     //private static int i=0;
 
-    final double diameter = 3.0;//7.5 test bot
+    final double diameter = 7.5;//3.0 actual bot
     final double circumferance = Math.PI*diameter;
     final double ticksPerRotation = 4096;
 
@@ -348,6 +348,7 @@ public class Autonomous extends Subsystem{
     }
 
     public void placeHatch() {
+        SmartDashboard.putNumber("Arm Autonomous Value" , RobotMap.armTalon.getSelectedSensorPosition());
         if (Step7_Started == false) {
             Robot.logger.putMessage("Starting Auto Step PlaceHatch");
             Step7_Started = true;

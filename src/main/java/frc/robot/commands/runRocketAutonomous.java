@@ -28,11 +28,14 @@ public class runRocketAutonomous extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    // if(auto.goLittle_done == false){
+    //   auto.goLittleLiterallyNothing();
+    // }
     if(auto.isCrossed == false){
       auto.crossTheHabLine();
     }
     else if(auto.isCrossed == true && auto.isTurned == false){
-      auto.turn90();
+      auto.turn37();
     }
     else if(auto.isTurned == true && auto.placeHatch_done == false){
       auto.placeHatch();

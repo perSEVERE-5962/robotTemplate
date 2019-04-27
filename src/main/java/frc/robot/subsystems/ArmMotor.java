@@ -14,7 +14,8 @@ public class ArmMotor extends Subsystem {
 	// here. Call these from Commands.
 
 	final double START_POSITION = 0; // [\]
-	final double PLACE_HATCH_POSITION = 500; // [|]
+	final double PLACE_HATCH_POSITION = 525
+	; // [|]
 	final double SHOOT_BALL_POSITION = 853.06; // [/]
 	final double INTAKE_BALL_POSITION = 1479.1;// [_]
 	private  boolean isPIDRunning = false;
@@ -57,7 +58,7 @@ public class ArmMotor extends Subsystem {
 	public boolean isOnTarget() {
 		//boolean isOnTarget = RobotMap.armTalon.getClosedLoopError() < 3;
 		Robot.logger.putNumber("Arm Sensor Position", RobotMap.armTalon.getSelectedSensorPosition());
-		boolean isOnTarget = RobotMap.armTalon.getSelectedSensorPosition() > 520;
+		boolean isOnTarget = RobotMap.armTalon.getSelectedSensorPosition() > 450;
 		if (isOnTarget == true) {
 			Robot.logger.putMessage("Arm isOnTarget");
 			isPIDRunning = false;

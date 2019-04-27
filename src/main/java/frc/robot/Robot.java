@@ -28,6 +28,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import frc.robot.utils.Logger;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.Solenoid;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -42,7 +43,7 @@ public class Robot extends TimedRobot {
 
 	private boolean autonomousStopped = true;	// set as stopped by default
 	public static boolean overrideArm = false;
-
+	
 	// subsystems
 	public static Drive drive = new Drive();
 	public static SolenoidSubsystem solenoidSubsystem;
@@ -50,6 +51,7 @@ public class Robot extends TimedRobot {
 	public static ColorLED colorLED;
 	private Compressor compressor = new Compressor(0);
 	public static StopArm stopArm;
+	private Solenoid ballUltrasonic =new Solenoid(1,7);
 
 	// Sensors
 	public static RobotGyro gyro = new RobotGyro();
@@ -183,6 +185,8 @@ public class Robot extends TimedRobot {
 		initStartingPosition();
 		initTargetPosition();
 		initGamePiece();
+
+		
 		// logger.putNumber("kP Value" , pidValue.getkP() );
 		// logger.putNumber("kI Value" , pidValue.getkI() );
 		// logger.putNumber("kD Value" , pidValue.getkD() );
@@ -327,9 +331,9 @@ public class Robot extends TimedRobot {
 		// logger.putNumber("Left Error", (double) RobotMap.robotLeftTalon.getClosedLoopError(0));
 		// logger.putNumber("Right Error", (double) RobotMap.robotRightTalon.getClosedLoopError(0));
 		logger.putNumber("Gyro Value" , gyro.getGyroAngle());
-
-		logger.putNumber("Left Distance ", RobotMap.robotLeftTalon.getSelectedSensorPosition());
-		logger.putNumber("Right Distance ", RobotMap.robotRightTalon.getSelectedSensorPosition());
+		logger.putNumber("Arm Auto Value ", RobotMap.armTalon.getSelectedSensorPosition());
+		// logger.putNumber("Left Distance ", RobotMap.robotLeftTalon.getSelectedSensorPosition());
+		// logger.putNumber("Right Distance ", RobotMap.robotRightTalon.getSelectedSensorPosition());
 
 
 		// if(auto.isStep2Done() == false){
@@ -391,13 +395,13 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopInit() {	
 		stopAutonomous();
-		
+		ballUltrasonic.set(true);
 		logger.putMessage("Starting teleop");
 		
        // colorLED = new ColorLED();
 
 		oi.startDriveCommand();
-		//gyro.resetGyro();
+		gyro.resetGyro();
 
 		// set the motor controllers back to full speed
         RobotMap.robotLeftTalon.configPeakOutputForward(1, Constants.kTimeoutMs);
@@ -413,14 +417,14 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-
+		logger.putNumber("GYRO VALUE ", gyro.getGyroAngle());
 		if ((oi.driverController.getRawAxis(1) > 0.2 ||
 		oi.driverController.getRawAxis(1) < -0.2 ||
 		oi.driverController.getRawAxis(5) > 0.2 ||
 		oi.driverController.getRawAxis(5) < -0.2)) {
 			oi.holdIt.cancel();
 			oi.startDriveCommand();
-	}
+		}
 		// run arm with joystick
 		/*if (topStop.get()) {
 			armMotor.stop();
@@ -516,7 +520,7 @@ public class Robot extends TimedRobot {
 				logger.putMessage("Intaking ball");
 			// }
 		} else if (oi.getOuttake()) {
-			RobotMap.intakeVictor.set(-1);
+			RobotMap.intakeVictor.set(-0.9);
 			logger.putMessage("Shooting ball");
 		} else {
 			RobotMap.intakeVictor.set(0);

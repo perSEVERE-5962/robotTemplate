@@ -1,0 +1,12 @@
+...
+
+
+echo "Waiting 5 seconds..."
+sleep 5
+export PYTHONUNBUFFERED=1
+
+python3 /home/pi/Left_HC-SR04.py &
+python3 /home/pi/Right_HC-SR04.py &
+
+
+...

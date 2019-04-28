@@ -81,12 +81,12 @@ public class OI {
 		stopArmButton.toggleWhenPressed(new StopArmCommand());	
 		stopArmOff = new JoystickButton(copilotController, 2);
 		stopArmOff.whenPressed(new StopArmOff());
-		// greenLEDButton = new JoystickButton(driverController, 1);
-		// orangeLEDButton = new JoystickButton(driverController, 4);
+		greenLEDButton = new JoystickButton(driverController, 1);
+		orangeLEDButton = new JoystickButton(driverController, 4);
 		// greenLEDButton.toggleWhenPressed(switchOnGreen);
 		// orangeLEDButton.toggleWhenPressed(switchOnOrange);
-		// buttonSix = new JoystickButton(driverController, 6);
-		// buttonSix.toggleWhenPressed(new CameraToggle());	
+		buttonSix = new JoystickButton(driverController, 6);
+		buttonSix.toggleWhenPressed(new CameraToggle());	
 		// onFloor = new JoystickButton(xBoxController, 1);
 		// onFloor = new JoystickButton(xBoxController, 1);
 		// onFloor.whenPressed(new onFloor());
@@ -94,20 +94,20 @@ public class OI {
 		// shootBall.whenPressed(new shootBall());
 		// inRobot = new JoystickButton(xBoxController, 3);
 		// inRobot.whenPressed(new inRobot());
-		// placeHatch = new JoystickButton(copilotController , 4);
-		// placeHatch.toggleWhenPressed(new placeHatch());
+		placeHatch = new JoystickButton(copilotController , 4);
+		placeHatch.toggleWhenPressed(new placeHatch());
 
 		armOverride = new JoystickButton(copilotController , 4);
 		armOverride.whenPressed(new OverrideArmPID());
 
 
 	}
-	public boolean getIntake() {
-		 double value = copilotController.getRawAxis(3);
-		return value > 0.1;
-	}
+	// public boolean getIntake() {
+	// 	 double value = copilotController.getRawAxis(2);
+	// 	return value > 0.1;
+	// }
 	public boolean getOuttake() {
-		double value = copilotController.getRawAxis(2);
+		double value = driverController.getRawAxis(3);
 	   return value > 0.1;
 	}
 	public void startDriveCommand() {

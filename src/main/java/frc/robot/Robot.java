@@ -293,11 +293,11 @@ public class Robot extends TimedRobot {
         // RobotMap.robotLeftTalon.configPeakOutputReverse(-Constants.kSpeed, Constants.kTimeoutMs);
         // RobotMap.robotRightTalon.configPeakOutputReverse(-Constants.kSpeed, Constants.kTimeoutMs);
 
-		autonomousCommand = new runRocketAutonomous();
-		if (autonomousCommand != null) {
-			autonomousCommand.start();		
-			autonomousStopped = false;
-		}
+		// autonomousCommand = new runRocketAutonomous();
+		// if (autonomousCommand != null) {
+		// 	autonomousCommand.start();		
+		// 	autonomousStopped = false;
+		// }
 
 		//if(step1done == false){
 			//autoPID.step1();
@@ -404,10 +404,10 @@ public class Robot extends TimedRobot {
 		gyro.resetGyro();
 
 		// set the motor controllers back to full speed
-        RobotMap.robotLeftTalon.configPeakOutputForward(1, Constants.kTimeoutMs);
-        RobotMap.robotRightTalon.configPeakOutputForward(1, Constants.kTimeoutMs);
-        RobotMap.robotLeftTalon.configPeakOutputReverse(-1, Constants.kTimeoutMs);
-		RobotMap.robotRightTalon.configPeakOutputReverse(-1, Constants.kTimeoutMs);	
+        RobotMap.robotLeftTalon.configPeakOutputForward(0.3, Constants.kTimeoutMs);
+        RobotMap.robotRightTalon.configPeakOutputForward(0.3, Constants.kTimeoutMs);
+        RobotMap.robotLeftTalon.configPeakOutputReverse(-0.3, Constants.kTimeoutMs);
+		RobotMap.robotRightTalon.configPeakOutputReverse(-0.3, Constants.kTimeoutMs);	
 	}
 
 	/**
@@ -507,19 +507,20 @@ public class Robot extends TimedRobot {
 	// }
 	private void runIntake() {
 		double range = ultrasonicanalog.getRange();
-		if (oi.getIntake()) {
-			logger.putNumber("Ball Ultrasonic Value", range);
-			if (ultrasonicanalog.getRange() < 6) {
-			// 	RobotMap.intakeVictor.set(0);
-			// 	oi.copilotController.setRumble(RumbleType.kLeftRumble, 1);
-			// 	oi.incrementRumbleCount();
-				 logger.putMessage("Ball found in Intake - starting rumble");
+		// if (oi.getIntake()) {
+		// 	logger.putNumber("Ball Ultrasonic Value", range);
+		// 	if (ultrasonicanalog.getRange() < 6) {
+		// 	// 	RobotMap.intakeVictor.set(0);
+		// 	// 	oi.copilotController.setRumble(RumbleType.kLeftRumble, 1);
+		// 	// 	oi.incrementRumbleCount();
+		// 		 logger.putMessage("Ball found in Intake - starting rumble");
 
-			} //else {
-				RobotMap.intakeVictor.set(0.5);
-				logger.putMessage("Intaking ball");
-			// }
-		} else if (oi.getOuttake()) {
+		// 	} //else {
+		// 		RobotMap.intakeVictor.set(0.5);
+		// 		logger.putMessage("Intaking ball");
+		// 	// }
+		// } else 
+		if (oi.getOuttake()) {
 			RobotMap.intakeVictor.set(-0.9);
 			logger.putMessage("Shooting ball");
 		} else {

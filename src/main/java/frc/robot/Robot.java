@@ -404,10 +404,10 @@ public class Robot extends TimedRobot {
 		gyro.resetGyro();
 
 		// set the motor controllers back to full speed
-        RobotMap.robotLeftTalon.configPeakOutputForward(0.3, Constants.kTimeoutMs);
-        RobotMap.robotRightTalon.configPeakOutputForward(0.3, Constants.kTimeoutMs);
-        RobotMap.robotLeftTalon.configPeakOutputReverse(-0.3, Constants.kTimeoutMs);
-		RobotMap.robotRightTalon.configPeakOutputReverse(-0.3, Constants.kTimeoutMs);	
+        RobotMap.robotLeftTalon.configPeakOutputForward(0.4, Constants.kTimeoutMs);
+        RobotMap.robotRightTalon.configPeakOutputForward(0.4, Constants.kTimeoutMs);
+        RobotMap.robotLeftTalon.configPeakOutputReverse(-0.4, Constants.kTimeoutMs);
+		RobotMap.robotRightTalon.configPeakOutputReverse(-0.4, Constants.kTimeoutMs);	
 	}
 
 	/**
@@ -521,7 +521,7 @@ public class Robot extends TimedRobot {
 		// 	// }
 		// } else 
 		if (oi.getOuttake()) {
-			RobotMap.intakeVictor.set(-0.9);
+ 	RobotMap.intakeVictor.set(-0.9);
 			logger.putMessage("Shooting ball");
 		} else {
 			RobotMap.intakeVictor.set(0);
@@ -535,8 +535,8 @@ public class Robot extends TimedRobot {
 				logger.putMessage("Turning off rumble");
 			} else {
 				oi.incrementRumbleCount();
-			}
-		}
+			
+		}}
 	}
 
 	/**

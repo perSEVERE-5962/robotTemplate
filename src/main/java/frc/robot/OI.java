@@ -3,11 +3,7 @@ package frc.robot;
 
 import frc.robot.commands.*;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.buttons.Button;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.buttons.Trigger;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -19,6 +15,7 @@ public class OI {
 	public Joystick joystickRight;
 	public Joystick gamepad1;
 	public Joystick xBoxController;
+	private Command command;
 
 
 	public OI() {
@@ -29,7 +26,7 @@ public class OI {
 	}
 	
 	public void startDriveCommand() {
-		Command command = new RunJoystickTank();
+		command = new RunJoystickTank();
 		command.start();
 	}
 	

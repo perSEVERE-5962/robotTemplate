@@ -10,6 +10,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.AutoCommand;
 import frc.robot.commands.RunTankDrive;
 import frc.robot.subsystems.Drive;
@@ -28,8 +29,8 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Drive driveSubsystem = new Drive(driverController);
   private final AutoCommand autoCommand = new AutoCommand(driveSubsystem);
-  private final RunTankDrive driveCommand = new RunTankDrive(driveSubsystem);
-  
+  // private final RunTankDrive driveCommand = new RunTankDrive(driveSubsystem);
+  private final ArcadeDrive driveCommand = new ArcadeDrive(driveSubsystem);
   
 
   /**

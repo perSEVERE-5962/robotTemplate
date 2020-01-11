@@ -43,11 +43,12 @@ public class Drive extends SubsystemBase {
 
 
   public void tankDrive() {
-    myRobot.tankDrive(joystick.getRawAxis(1), joystick.getRawAxis(4));
-    SmartDashboard.putNumber("tankdrive left", joystick.getRawAxis(1));
-    SmartDashboard.putNumber("tankdrive right", joystick.getRawAxis(4));
+    myRobot.tankDrive(joystick.getRawAxis(1), joystick.getRawAxis(5));
+    
 	}
-
+  public void arcadeDrive() {
+    myRobot.arcadeDrive(joystick.getRawAxis(5), joystick.getRawAxis(4));
+  }
   public void autoDrive() {
     // placeholder
     SmartDashboard.putNumber("auto left", joystick.getRawAxis(1));

@@ -1,8 +1,15 @@
+#!/usr/bin/env python3
+
 import os
 import cv2
 import numpy as np
+import configparser
 from time import time
 from datetime import datetime
+
+##########
+# CONFIG #
+##########
 
 # directory to save images
 img_dir = 'img/'
@@ -12,6 +19,36 @@ webcam = cv2.VideoCapture(0)
 
 #####################################
 
+# create image dir if it doesn't exist
+if not os.path.exists(img_dir):
+    os.makedirs(img_dir)
+    print("[VISION]: Image directory created.")
+
+# read config file for HSV bounds
+if os.path.exists("vision_cfg.ini"):
+    print("[VISION]: Reading configuration file.")
+
+    config = configparser.ConfigParser()
+    config.read_file(open(r'vision_cfg.ini'))
+
+    h_l = int(config.get("HSV BOUNDS", "h_l"))
+    s_l = int(config.get("HSV BOUNDS", "s_l"))
+    v_l = int(config.get("HSV BOUNDS", "v_l"))
+    h_u = int(config.get("HSV BOUNDS", "h_u"))
+    s_u = int(config.get("HSV BOUNDS", "s_u"))
+    v_u = int(config.get("HSV BOUNDS", "v_u"))
+else:
+    print("[VISION]: Configuration file doesn't exist; using default settings.")
+    
+    h_l = 0
+    s_l = 0
+    v_l = 251
+    h_u = 177
+    s_u = 24
+    v_u = 255
+
+
+# vison processing
 last_recorded_time = time()
 
 while True:
@@ -37,8 +74,8 @@ while True:
     #cv2.imshow("Blur Image", blur_frame)
 
     # set lower and upper HSV bounds for mask
-    lower = np.array([0, 0, 251])
-    upper = np.array([177, 24, 255])
+    lower = np.array([h_l, s_l, v_l])
+    upper = np.array([h_u, s_u, v_u])
     mask = cv2.inRange(blur_frame, lower, upper)
     #cv2.imshow("Mask", mask)
 

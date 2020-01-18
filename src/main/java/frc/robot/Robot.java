@@ -7,7 +7,7 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.AnalogGyro;
+import com.analog.adis16448.frc.ADIS16448_IMU;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -25,7 +25,7 @@ public class Robot extends TimedRobot {
   private Command driveCommand;
 
   private RobotContainer m_robotContainer;
-  private Gyro gyro = new AnalogGyro(0);
+  private ADIS16448_IMU gyro = new ADIS16448_IMU();
 
   /**
    * This function is run when the robot is first started up and should be used for any

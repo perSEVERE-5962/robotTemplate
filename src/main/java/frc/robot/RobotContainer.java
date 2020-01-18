@@ -77,12 +77,6 @@ public class RobotContainer {
     return driveCommand;
   }
 
-  public Drive getDrive(){
-      return driveSubsystem;
-
-  }
-
-
   public Joystick getDriverJoystick() {
     return driverController;
   }

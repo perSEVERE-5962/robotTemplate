@@ -7,10 +7,12 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.subsystems.Drive;
 
 public class MoveUp extends SubsystemBase {
+  private static WPI_TalonSRX armTalon;
   /**
    * Creates a new moveUp.
    */
@@ -18,7 +20,7 @@ public class MoveUp extends SubsystemBase {
   private double measureAngle;
 
   public MoveUp() {
-  
+    armTalon = new WPI_TalonSRX(12);
   }
 
 private double setAngle(double angle){

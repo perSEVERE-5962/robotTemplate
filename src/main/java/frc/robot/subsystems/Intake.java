@@ -7,26 +7,32 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Robot;
+
 public class Intake extends SubsystemBase {
+  private static WPI_VictorSPX motorControl;
 
   /**
    * Creates a new Intake.
    */
-  
+  public Intake(){
+    motorControl = new WPI_VictorSPX(19);
+
+  }
   
 public void SpinPMotor(){
-  Robot.m_robotContainer.getDrive().getVictor().set(0.1);
+  motorControl.set(0.1);
 
 }
 
 public void SpinNMotor(){
-  Robot.m_robotContainer.getDrive().getVictor().set(-0.1);
+  motorControl.set(-0.1);
 }
 
 public void stop(){
-  Robot.m_robotContainer.getDrive().getVictor().set(0);
+  motorControl.set(0);
 }
 
   @Override

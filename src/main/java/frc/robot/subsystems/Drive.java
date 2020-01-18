@@ -23,18 +23,12 @@ public class Drive extends SubsystemBase {
 	private static WPI_VictorSPX robotLeftVictor;
 	private static WPI_TalonSRX robotRightTalon;
   private static WPI_VictorSPX robotRightVictor;
-  private static WPI_VictorSPX motorControl;
 	private static DifferentialDrive myRobot;
 	private static SpeedController leftDrive;
   private static SpeedController rightDrive;
   private Joystick joystick;
 
-  private static WPI_TalonSRX armTalon;
-  public WPI_TalonSRX armMotor(){
-
-    return armTalon;
-
-  }
+  
 
   public Drive(Joystick joystick) {
     robotLeftTalon = new WPI_TalonSRX(23);
@@ -46,14 +40,7 @@ public class Drive extends SubsystemBase {
 		leftDrive = new MultiSpeedController(robotLeftTalon, robotLeftTalon);
 		rightDrive = new MultiSpeedController(robotRightTalon, robotRightTalon);
     myRobot = new DifferentialDrive(leftDrive, rightDrive);
-    motorControl = new WPI_VictorSPX(19);
     this.joystick = joystick;
-  }
-
-  public WPI_VictorSPX getVictor(){
-
-    return motorControl;
-
   }
 
   public void tankDrive() {

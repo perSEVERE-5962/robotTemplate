@@ -8,11 +8,13 @@
 package frc.robot;
 
 import com.analog.adis16448.frc.ADIS16448_IMU;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.BallCommands;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -23,8 +25,11 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 public class Robot extends TimedRobot {
   private Command autonomousCommand;
   private Command driveCommand;
+  private Command motor;
 
-  private RobotContainer m_robotContainer;
+  public static RobotContainer m_robotContainer;
+
+
   private ADIS16448_IMU gyro = new ADIS16448_IMU();
 
   /**
@@ -36,6 +41,7 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    gyro.reset();
   }
 
   /**
@@ -94,6 +100,11 @@ public class Robot extends TimedRobot {
     // this line or comment it out.
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
+    }
+
+  motor = new BallCommands();
+    if  (motor != null){
+      motor.schedule();
     }
 
     driveCommand = m_robotContainer.getDriveCommand();

@@ -15,6 +15,7 @@ import frc.robot.commands.AutoCommand;
 import frc.robot.commands.RunTankDrive;
 import frc.robot.subsystems.Drive;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -25,6 +26,16 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class RobotContainer {
   private final Joystick driverController = new Joystick(0);
   private final Joystick copilotController = new Joystick(1);
+
+  public double getIntake(){
+    double ballIn = copilotController.getRawAxis(1);
+    return ballIn;
+  }
+
+  public double getOuttake(){
+    double ballOut = copilotController.getRawAxis(1);
+    return ballOut;
+  }
 
   // The robot's subsystems and commands are defined here...
   private final Drive driveSubsystem = new Drive(driverController);
@@ -65,6 +76,12 @@ public class RobotContainer {
   public Command getDriveCommand() {
     return driveCommand;
   }
+
+  public Drive getDrive(){
+      return driveSubsystem;
+
+  }
+
 
   public Joystick getDriverJoystick() {
     return driverController;

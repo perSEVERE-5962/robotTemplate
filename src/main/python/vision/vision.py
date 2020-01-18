@@ -6,6 +6,7 @@ import numpy as np
 import configparser
 from time import time
 from datetime import datetime
+from networktables import NetworkTablesInstance
 
 ##########
 # CONFIG #
@@ -18,6 +19,12 @@ img_dir = 'img/'
 webcam = cv2.VideoCapture(0)
 
 #####################################
+
+# set up network tables
+ntinst = NetworkTablesInstance.getDefault()
+ntinst.startClient("10.59.62.204")
+table = ntinst.getTable("Vision")
+entry = table.getEntry("Target")
 
 # create image dir if it doesn't exist
 if not os.path.exists(img_dir):
@@ -46,7 +53,6 @@ else:
     h_u = 177
     s_u = 24
     v_u = 255
-
 
 # vison processing
 last_recorded_time = time()
@@ -126,6 +132,6 @@ while True:
         file = img_dir + date + ".jpg"
 
         cv2.imwrite(file, frame)
-        print("saved image")
+        print("[VISION]: Image saved.")
 
         last_recorded_time = current_time

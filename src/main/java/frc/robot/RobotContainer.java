@@ -37,6 +37,16 @@ public class RobotContainer {
     return ballOut;
   }
 
+  public boolean armDown(){
+    boolean ArmDown = copilotController.getRawButtonPressed(1);
+    return ArmDown;
+  }
+
+  public boolean armUp(){
+    boolean ArmUp = copilotController.getRawButtonPressed(2);
+    return ArmUp;
+  }
+
   // The robot's subsystems and commands are defined here...
   private final Drive driveSubsystem = new Drive(driverController);
   private final AutoCommand autoCommand = new AutoCommand(driveSubsystem);

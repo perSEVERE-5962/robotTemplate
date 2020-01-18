@@ -11,7 +11,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class MoveUp extends SubsystemBase {
+public class MoveArm extends SubsystemBase {
   private static WPI_TalonSRX armTalon;
   /**
    * Creates a new moveUp.
@@ -19,11 +19,11 @@ public class MoveUp extends SubsystemBase {
   private int armPosition;
   private double measureAngle;
 
-  public MoveUp() {
+  public MoveArm() {
     armTalon = new WPI_TalonSRX(12);
   }
 
-private double setAngle(double angle){
+public double setAngle(double angle){
   measureAngle = 4096/360;
   double finalAngle = measureAngle*angle;
   return finalAngle;

@@ -9,36 +9,34 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.MoveArm;
 
-public class BallCommands extends CommandBase {
+public class MoveArmCommand extends CommandBase {
 
-  Intake subsytem;
-  
-  public boolean RunIntake() {
-    if (Robot.m_robotContainer.getIntake() >= 0.1)
+  MoveArm subsystem;
+  // CHANGE DOWN BELOW
+  public boolean RunArmDown() {
+    if (Robot.m_robotContainer.armUp() == true)
     return true;
     else
       return false;
   }
-
-  public boolean RunOuttake(){
-    if (Robot.m_robotContainer.getOuttake() <= -0.1)
+  
+  public boolean RunArmUp(){
+    if (Robot.m_robotContainer.armDown() == true)
     return true;
     else 
       return false;
   }
   
-  
-  /**
-   * Creates a new BallCommands.
-   */
-  public BallCommands() {
-    // Use addRequirements() here to declare subsystem dependencies.
-    subsytem = new Intake();
-  }
 
-  
+  /**
+   * Creates a new MoveArmCommand.
+   */
+  public MoveArmCommand() {
+    // Use addRequirements() here to declare subsystem dependencies.
+    subsystem = new MoveArm();
+  }
 
   // Called when the command is initially scheduled.
   @Override
@@ -48,15 +46,21 @@ public class BallCommands extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (RunIntake() == true)
-      subsytem.SpinPMotor();
+      if (RunArmDown() == true)
+        subsystem.setAngle(35);
+  
+      else if (RunArmUp() == true)
+        subsystem.setAngle(70);
+  
+      else 
+        subsystem.setAngle(0);
+    }
 
-    else if (RunOuttake() == true)
-      subsytem.SpinNMotor();
-
-    else 
-      subsytem.stop();
+  private boolean RunMoveArm() {
+    return false;
   }
+
+
 
   // Called once the command ends or is interrupted.
   @Override
@@ -69,3 +73,5 @@ public class BallCommands extends CommandBase {
     return false;
   }
 }
+
+

@@ -19,15 +19,22 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.MultiSpeedController;
 
 public class Drive extends SubsystemBase {
-	private static WPI_TalonSRX robotLeftTalon;
-	private static WPI_VictorSPX robotLeftVictor;
-	private static WPI_TalonSRX robotRightTalon;
-	private static WPI_VictorSPX robotRightVictor;
+	public static WPI_TalonSRX robotLeftTalon;
+	public static WPI_VictorSPX robotLeftVictor;
+	public static WPI_TalonSRX robotRightTalon;
+	public static WPI_VictorSPX robotRightVictor;
 	private static DifferentialDrive myRobot;
 	private static SpeedController leftDrive;
   private static SpeedController rightDrive;
   private Joystick joystick;
   
+  public static WPI_TalonSRX rightTalon(){
+    return robotRightTalon;
+  }
+  
+  public static WPI_TalonSRX leftTalon(){
+    return robotLeftTalon;
+  }
   public Drive(Joystick joystick) {
     robotLeftTalon = new WPI_TalonSRX(23);
 		robotLeftVictor = new WPI_VictorSPX(20);
@@ -35,23 +42,23 @@ public class Drive extends SubsystemBase {
 		robotRightTalon = new WPI_TalonSRX(22);
 		robotRightVictor = new WPI_VictorSPX(21);
 		robotRightVictor.follow(robotRightTalon,FollowerType.PercentOutput);
-		leftDrive = new MultiSpeedController(robotLeftTalon, robotLeftTalon);
-		rightDrive = new MultiSpeedController(robotRightTalon, robotRightTalon);
-    myRobot = new DifferentialDrive(leftDrive, rightDrive);
-    this.joystick = joystick;
+		// leftDrive = new MultiSpeedController(robotLeftTalon, robotLeftTalon);
+		// rightDrive = new MultiSpeedController(robotRightTalon, robotRightTalon);
+    // myRobot = new DifferentialDrive(leftDrive, rightDrive);
+    // this.joystick = joystick;
   }
 
 
   public void tankDrive() {
-    myRobot.tankDrive(joystick.getRawAxis(1), joystick.getRawAxis(4));
-    SmartDashboard.putNumber("tankdrive left", joystick.getRawAxis(1));
-    SmartDashboard.putNumber("tankdrive right", joystick.getRawAxis(4));
+    // myRobot.tankDrive(joystick.getRawAxis(1), joystick.getRawAxis(4));
+    // SmartDashboard.putNumber("tankdrive left", joystick.getRawAxis(1));
+    // SmartDashboard.putNumber("tankdrive right", joystick.getRawAxis(4));
 	}
-
+  
   public void autoDrive() {
     // placeholder
-    SmartDashboard.putNumber("auto left", joystick.getRawAxis(1));
-    SmartDashboard.putNumber("auto right", joystick.getRawAxis(4)); 
+    // SmartDashboard.putNumber("auto left", joystick.getRawAxis(1));
+    // SmartDashboard.putNumber("auto right", joystick.getRawAxis(4)); 
   }
 
   @Override

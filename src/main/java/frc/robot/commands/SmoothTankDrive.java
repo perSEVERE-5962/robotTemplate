@@ -6,10 +6,10 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 /**
  *
  */
-public class RunTankDrive extends CommandBase {
+public class SmoothTankDrive extends CommandBase {
     private final Drive subsystem;
 
-    public RunTankDrive(Drive subsystem) {
+    public SmoothTankDrive(Drive subsystem) {
         this.subsystem = subsystem;
         // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(subsystem);
@@ -21,7 +21,7 @@ public class RunTankDrive extends CommandBase {
 
     // Called repeatedly when this Command is scheduled to run
     public void execute() {
-    	subsystem.tankDrive();
+    	subsystem.smoothTankDrive();
     }
 
     // Make this return true when this Command no longer needs to run execute()

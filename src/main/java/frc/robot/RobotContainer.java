@@ -10,9 +10,14 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.AutoCommand;
+import frc.robot.commands.RunJamieDrive;
 import frc.robot.commands.RunTankDrive;
+import frc.robot.commands.SmoothArcadeDrive;
+import frc.robot.commands.SmoothTankDrive;
 import frc.robot.subsystems.Drive;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -25,12 +30,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class RobotContainer {
   private final Joystick driverController = new Joystick(0);
   private final Joystick copilotController = new Joystick(1);
-
+  private SendableChooser chooser= new SendableChooser<Command>();
   // The robot's subsystems and commands are defined here...
   private final Drive driveSubsystem = new Drive(driverController);
   private final AutoCommand autoCommand = new AutoCommand(driveSubsystem);
   // private final RunTankDrive driveCommand = new RunTankDrive(driveSubsystem);
-  private final ArcadeDrive driveCommand = new ArcadeDrive(driveSubsystem);
+  private Command driveCommand;
   
 
   /**
@@ -39,6 +44,13 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+    chooser.setDefaultOption("smooth tankdrive", new SmoothTankDrive(driveSubsystem));
+    chooser.addOption("smooth arcadedrive", new SmoothArcadeDrive(driveSubsystem));
+    chooser.addOption("tankdrive", new RunTankDrive(driveSubsystem));
+    chooser.addOption("arcadedrive", new ArcadeDrive(driveSubsystem));
+    chooser.addOption("JamieDrive", new RunJamieDrive(driveSubsystem));
+    SmartDashboard.putData("drivercontrol", chooser);
+    
   }
 
   /**
@@ -63,6 +75,7 @@ public class RobotContainer {
   }
 
   public Command getDriveCommand() {
+    driveCommand=(Command)chooser.getSelected();
     return driveCommand;
   }
 

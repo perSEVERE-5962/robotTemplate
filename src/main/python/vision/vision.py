@@ -5,7 +5,7 @@ import cv2
 from cscore import CameraServer
 import numpy as np
 import configparser
-from time import time
+from time import time as Time
 from datetime import datetime
 from networktables import NetworkTablesInstance
 
@@ -16,20 +16,45 @@ from networktables import NetworkTablesInstance
 # directory to save images
 img_dir = 'img/'
 
-# set up webcam capture source
-webcam = cv2.VideoCapture(0)
+# image capture interval (in seconds)
+image_capture_interval = 1.0
 
-#####################################
+################################################################################
+
+""" INIT CAMERA """
+
+# Init camera server
+cs = CameraServer.getInstance()
+cs.enableLogging()
+
+# Capture from the first USB Camera on the system
+camera = cs.startAutomaticCapture()
+camera.setResolution(320, 240)
+
+# Get a CvSink. This will capture images from the camera
+cvSink = cs.getVideo()
+
+# (optional) Setup a CvSource. This will send images back to the Dashboard
+outputStream = cs.putVideo("Processed Camera Feed", 320, 240)
+
+# Allocating new images is very expensive, always try to preallocate
+frame = np.zeros(shape=(240, 320, 3), dtype=np.uint8)
+
+""" INIT NETWORK TABLES """
 
 # set up network tables
 ntinst = NetworkTablesInstance.getDefault()
 ntinst.startClient("rei.local")
 table = ntinst.getTable("Vision")
 
+""" INIT IMAGE DIR """
+
 # create image dir if it doesn't exist
 if not os.path.exists(img_dir):
     os.makedirs(img_dir)
     print("[VISION]: Image directory created.")
+
+""" SET HSV BOUNDS """
 
 # read config file for HSV bounds
 if os.path.exists("vision_cfg.ini"):
@@ -54,21 +79,19 @@ else:
     s_u = 24
     v_u = 255
 
-# vison processing
-last_recorded_time = time()
+""" PROCESS CAMERA FEED """
+
+last_recorded_time = Time()
 
 while True:
-    # get current time
-    current_time = time()
-
-    # read captured frame
-    _, frame = webcam.read()
-    key = cv2.waitKey(1)
-
-    # quit program once q is entered
-    if key == ord('q'):
-        cv2.destroyAllWindows()
-        break
+    # Tell the CvSink to grab a frame from the camera and put it
+    # in the source image.  If there is an error notify the output.
+    time, frame = cvSink.grabFrame(frame)
+    if time == 0:
+        # Send the output the error.
+        outputStream.notifyError(cvSink.getError());
+        # skip the rest of the current iteration
+        continue
 
     # convert frame to hsv color space
     hsv_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
@@ -132,14 +155,15 @@ while True:
         cv2.drawContours(frame, c, -1, (0, 25, 0), 3)
     else:
         inrange_frame = frame
-    
-    # show processed image
-    # NOTE: disable this when running on rPi because no display server is being
-    # run
-    #cv2.imshow("Keypoints", frame)
 
-    # save image every second
-    if current_time - last_recorded_time >= 1.0:
+    # (optional) send some image back to the dashboard
+    outputStream.putFrame(frame)
+
+    # get current time
+    current_time = Time()
+
+    # save image every time interval
+    if (current_time - last_recorded_time) >= image_capture_interval:
         date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         file = img_dir + date + ".jpg"
 

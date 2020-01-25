@@ -79,7 +79,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    autonomousCommand = m_robotContainer.stopdrive();
+    autonomousCommand = m_robotContainer.getAutonomousCommand();
     // Command aum = m_robotContainer.getturnright();
     // if (aum!= null){
     //   aum.schedule();

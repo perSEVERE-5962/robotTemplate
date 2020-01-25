@@ -5,7 +5,7 @@ import cv2
 from cscore import CameraServer
 import numpy as np
 import configparser
-from time import time as Time
+from time import time as Time # prevents conflict w/ `time` variable
 from datetime import datetime
 from networktables import NetworkTablesInstance
 
@@ -34,11 +34,13 @@ camera.setResolution(320, 240)
 # Get a CvSink. This will capture images from the camera
 cvSink = cs.getVideo()
 
-# (optional) Setup a CvSource. This will send images back to the Dashboard
+# Setup a CvSource. This will send images back to the Dashboard
 outputStream = cs.putVideo("Processed Camera Feed", 320, 240)
 
 # Allocating new images is very expensive, always try to preallocate
 frame = np.zeros(shape=(240, 320, 3), dtype=np.uint8)
+
+print("[VISION]: Camera initialized.")
 
 """ INIT NETWORK TABLES """
 
@@ -46,6 +48,8 @@ frame = np.zeros(shape=(240, 320, 3), dtype=np.uint8)
 ntinst = NetworkTablesInstance.getDefault()
 ntinst.startClient("rei.local")
 table = ntinst.getTable("Vision")
+
+print("[VISION]: Network Tables initialized.")
 
 """ INIT IMAGE DIR """
 
@@ -71,7 +75,7 @@ if os.path.exists("vision_cfg.ini"):
     v_u = int(config.get("HSV BOUNDS", "v_u"))
 else:
     print("[VISION]: Configuration file doesn't exist; using default settings.")
-    
+
     h_l = 0
     s_l = 0
     v_l = 251
@@ -80,6 +84,8 @@ else:
     v_u = 255
 
 """ PROCESS CAMERA FEED """
+
+print("[VISION]: Vision processing initialized.")
 
 last_recorded_time = Time()
 
@@ -121,13 +127,13 @@ while True:
         x,y,w,h = cv2.boundingRect(c)
         x += w/2
         y += h/2
-        print("[VISION]: CENTROID X: " + str(x) + " Y: " + str(y))
+        #print("[VISION]: CENTROID X: " + str(x) + " Y: " + str(y))
         table.putNumber("Centroid X", x)
         table.putNumber("Centroid Y", y)
 
         # find area
         area = cv2.contourArea(c)
-        print("[VISION]: AREA: " + str(area))
+        #print("[VISION]: AREA: " + str(area))
         table.putNumber("Area", area)
 
         # get dimensions of image
@@ -141,13 +147,13 @@ while True:
 
         # make decision based on relative position of centroid to image center
         if (img_center_x - 5) <= x <= (img_center_x + 5):
-            print("[VISION]: ACTION: None")
+            #print("[VISION]: ACTION: None")
             table.putString("Action", "None")
         elif x < img_center_x:
-            print("[VISION]: ACTION: Left")
+            #print("[VISION]: ACTION: Left")
             table.putString("Action", "Left")
         elif x > img_center_x:
-            print("[VISION]: ACTION: Right")
+            #print("[VISION]: ACTION: Right")
             table.putString("Action", "Right")
 
         # create processed contour image
@@ -156,7 +162,7 @@ while True:
     else:
         inrange_frame = frame
 
-    # (optional) send some image back to the dashboard
+    # send some image back to the dashboard
     outputStream.putFrame(frame)
 
     # get current time
@@ -168,6 +174,6 @@ while True:
         file = img_dir + date + ".jpg"
 
         cv2.imwrite(file, frame)
-        print("[VISION]: Image saved.")
+        print("[VISION]: Image saved:" + file)
 
         last_recorded_time = current_time

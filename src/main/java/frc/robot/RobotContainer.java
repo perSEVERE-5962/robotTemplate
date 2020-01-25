@@ -12,8 +12,11 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.AutoCommand;
+import frc.robot.commands.MoveArmDownCommand;
+import frc.robot.commands.MoveArmUpCommand;
 import frc.robot.commands.RunTankDrive;
 import frc.robot.subsystems.Drive;
+import frc.robot.subsystems.MoveArm;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -26,6 +29,10 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 public class RobotContainer {
   private final Joystick driverController = new Joystick(0);
   private final Joystick copilotController = new Joystick(1);
+  private final  JoystickButton buttonA = new JoystickButton(copilotController, 1);
+  private final  JoystickButton buttonB = new JoystickButton(copilotController, 2);
+
+
 
   public double getIntake(){
     double ballIn = copilotController.getRawAxis(1);
@@ -50,8 +57,10 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Drive driveSubsystem = new Drive(driverController);
   private final AutoCommand autoCommand = new AutoCommand(driveSubsystem);
+  private final MoveArm armSub = new MoveArm();
   // private final RunTankDrive driveCommand = new RunTankDrive(driveSubsystem);
   private final ArcadeDrive driveCommand = new ArcadeDrive(driveSubsystem);
+  
   
 
   /**
@@ -60,6 +69,7 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+
   }
 
   /**
@@ -69,7 +79,8 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-
+    buttonA.whenPressed(new MoveArmDownCommand());
+    buttonB.whenPressed(new MoveArmUpCommand());
   }
 
 

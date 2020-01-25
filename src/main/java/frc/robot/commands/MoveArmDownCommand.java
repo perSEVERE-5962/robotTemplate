@@ -11,31 +11,18 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 import frc.robot.subsystems.MoveArm;
 
-public class MoveArmCommand extends CommandBase {
+public class MoveArmDownCommand extends CommandBase {
 
   MoveArm subsystem;
-  // CHANGE DOWN BELOW
-  public boolean RunArmDown() {
-    if (Robot.m_robotContainer.armUp() == true)
-    return true;
-    else
-      return false;
-  }
-  
-  public boolean RunArmUp(){
-    if (Robot.m_robotContainer.armDown() == true)
-    return true;
-    else 
-      return false;
-  }
-  
+
 
   /**
    * Creates a new MoveArmCommand.
    */
-  public MoveArmCommand() {
+  public MoveArmDownCommand() {
     // Use addRequirements() here to declare subsystem dependencies.
     subsystem = new MoveArm();
+    addRequirements(subsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -43,22 +30,21 @@ public class MoveArmCommand extends CommandBase {
   public void initialize() {
   }
 
+  public double getEncoderValues(){
+    return subsystem.getEncoderValues();
+  }
+
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      if (RunArmDown() == true)
-        subsystem.setAngle(35);
-  
-      else if (RunArmUp() == true)
-        subsystem.setAngle(70);
-  
-      else 
-        subsystem.setAngle(0);
-    }
+    subsystem.intakePosition();
+
+  }
 
   private boolean RunMoveArm() {
     return false;
   }
+
 
 
 
@@ -70,7 +56,7 @@ public class MoveArmCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }
 

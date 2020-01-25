@@ -10,12 +10,13 @@ package frc.robot;
 import com.analog.adis16448.frc.ADIS16448_IMU;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.BallCommands;
-
+import frc.robot.subsystems.MoveArm;
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
  * each mode, as described in the TimedRobot documentation. If you change the name of this class or
@@ -26,6 +27,7 @@ public class Robot extends TimedRobot {
   private Command autonomousCommand;
   private Command driveCommand;
   private Command motor;
+  private MoveArm arm = new MoveArm(); 
 
   public static RobotContainer m_robotContainer;
 
@@ -78,11 +80,11 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     autonomousCommand = m_robotContainer.getAutonomousCommand();
-
+   
     // // schedule the autonomous command (example)
     if (autonomousCommand != null) {
       autonomousCommand.schedule();
-    }
+    } 
   }
 
   /**
@@ -90,6 +92,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
+    
   }
 
   @Override
@@ -101,11 +104,12 @@ public class Robot extends TimedRobot {
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
     }
+  // motor = new BallCommands();
+  //   if  (motor != null){
+  //     motor.schedule();
+  //   }
 
-  motor = new BallCommands();
-    if  (motor != null){
-      motor.schedule();
-    }
+    
 
     driveCommand = m_robotContainer.getDriveCommand();
     if (driveCommand != null) {

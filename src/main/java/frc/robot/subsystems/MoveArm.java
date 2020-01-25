@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -16,9 +17,12 @@ public class MoveArm extends SubsystemBase {
   /**
    * Creates a new moveUp.
    */
+  private boolean isPIDRunning = false;
   private int armPosition;
   private double measureAngle;
-
+  public static WPI_TalonSRX armT(){
+    return armTalon;
+  }
   public MoveArm() {
     armTalon = new WPI_TalonSRX(12);
   }
@@ -27,6 +31,20 @@ public double setAngle(double angle){
   measureAngle = 4096/360;
   double finalAngle = measureAngle*angle;
   return finalAngle;
+}
+
+public void shootingPosition(){
+  isPIDRunning = true;
+  armTalon.set(ControlMode.Position, setAngle(70.0));
+}
+
+public void intakePosition(){
+  isPIDRunning = true;
+  armTalon.set(ControlMode.Position, setAngle(35.0));
+}
+
+public double getEncoderValues(){
+  return armTalon.getSelectedSensorPosition();
 }
 
 

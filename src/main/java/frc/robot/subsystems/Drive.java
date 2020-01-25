@@ -10,6 +10,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.FollowerType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SpeedController;
@@ -23,6 +24,7 @@ public class Drive extends SubsystemBase {
 	private static WPI_VictorSPX robotLeftVictor;
 	private static WPI_TalonSRX robotRightTalon;
   private static WPI_VictorSPX robotRightVictor;
+
 	private static DifferentialDrive myRobot;
 	private static SpeedController leftDrive;
   private static SpeedController rightDrive;
@@ -35,13 +37,14 @@ public class Drive extends SubsystemBase {
 		robotLeftVictor = new WPI_VictorSPX(20);
 		robotLeftVictor.follow(robotLeftTalon,FollowerType.PercentOutput);
 		robotRightTalon = new WPI_TalonSRX(22);
-		robotRightVictor = new WPI_VictorSPX(21);
+    robotRightVictor = new WPI_VictorSPX(21);
 		robotRightVictor.follow(robotRightTalon,FollowerType.PercentOutput);
 		leftDrive = new MultiSpeedController(robotLeftTalon, robotLeftTalon);
 		rightDrive = new MultiSpeedController(robotRightTalon, robotRightTalon);
     myRobot = new DifferentialDrive(leftDrive, rightDrive);
     this.joystick = joystick;
   }
+
 
   public void tankDrive() {
     myRobot.tankDrive(joystick.getRawAxis(1), joystick.getRawAxis(5));

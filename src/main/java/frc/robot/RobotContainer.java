@@ -14,10 +14,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.AutoCommand;
+import frc.robot.commands.DriveBackwards;
+import frc.robot.commands.DriveForward;
+import frc.robot.commands.DriveLeft;
+import frc.robot.commands.DriveRight;
 import frc.robot.commands.RunJamieDrive;
 import frc.robot.commands.RunTankDrive;
 import frc.robot.commands.SmoothArcadeDrive;
 import frc.robot.commands.SmoothTankDrive;
+import frc.robot.commands.StopDrive;
 import frc.robot.subsystems.Drive;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -36,8 +41,11 @@ public class RobotContainer {
   private final AutoCommand autoCommand = new AutoCommand(driveSubsystem);
   // private final RunTankDrive driveCommand = new RunTankDrive(driveSubsystem);
   private Command driveCommand;
-  
-
+  private DriveLeft left = new DriveLeft(driveSubsystem);
+  private DriveRight Right = new DriveRight(driveSubsystem);
+  private StopDrive Stop = new StopDrive(driveSubsystem);
+  private DriveForward getgoForward = new DriveForward(driveSubsystem);
+  private DriveBackwards getgoBackwards = new DriveBackwards(driveSubsystem);
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -79,6 +87,13 @@ public class RobotContainer {
     return driveCommand;
   }
 
+   public Command getturnleft () {
+     return left;
+   }
+
+  public Command getturnright () {
+    return Right;
+  }
   public Joystick getDriverJoystick() {
     return driverController;
   }
@@ -86,6 +101,54 @@ public class RobotContainer {
   public Joystick getCopilotJoystick() {
     return copilotController;
   }
+  public Command getgoforward () {
+    return getgoForward;
+  }
+  public Command getgobackwards () {
+    return getgoBackwards;
+  }
+
+public Command stopdrive() {
+  return Stop;
+}
+
+public Command DriveLeft() {
+	return null;
+}
 
   
+  
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

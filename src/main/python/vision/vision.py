@@ -7,14 +7,20 @@ import numpy as np
 import configparser
 from time import time as Time # prevents conflict w/ `time` variable
 from datetime import datetime
-from networktables import NetworkTablesInstance
+from networktables import NetworkTables
 
 ##########
 # CONFIG #
 ##########
 
+# directory of config file
+config_dir='/mnt/storage/config/'
+
 # directory to save images
-img_dir = 'img/'
+img_dir = '/mnt/storage/images/'
+
+# network table server
+nt_server = "rei.local"
 
 # image capture interval (in seconds)
 image_capture_interval = 1.0
@@ -45,9 +51,8 @@ print("[VISION]: Camera initialized.")
 """ INIT NETWORK TABLES """
 
 # set up network tables
-ntinst = NetworkTablesInstance.getDefault()
-ntinst.startClient("rei.local")
-table = ntinst.getTable("Vision")
+NetworkTables.initialize(server=nt_server)
+table = NetworkTables.getTable("Vision")
 
 print("[VISION]: Network Tables initialized.")
 
@@ -60,12 +65,14 @@ if not os.path.exists(img_dir):
 
 """ SET HSV BOUNDS """
 
+config_file = config_dir + "vision_cfg.ini"
+
 # read config file for HSV bounds
-if os.path.exists("vision_cfg.ini"):
+if os.path.exists(config_file):
     print("[VISION]: Reading configuration file.")
 
     config = configparser.ConfigParser()
-    config.read_file(open(r'vision_cfg.ini'))
+    config.read_file(open(config_file))
 
     h_l = int(config.get("HSV BOUNDS", "h_l"))
     s_l = int(config.get("HSV BOUNDS", "s_l"))
@@ -170,7 +177,7 @@ while True:
 
     # save image every time interval
     if (current_time - last_recorded_time) >= image_capture_interval:
-        date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        date = datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
         file = img_dir + date + ".jpg"
 
         cv2.imwrite(file, frame)

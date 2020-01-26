@@ -24,9 +24,12 @@ import frc.robot.subsystems.*;
  * project.
  */
 public class Robot extends TimedRobot {
-  private static final Drive Drive = null;
+  private Drive Drive = null;
   private Command autonomousCommand;
   private Command driveCommand;
+  private boolean left = true; 
+  private boolean right = false; 
+  private boolean stop = false; 
   
  
   private RobotContainer m_robotContainer;
@@ -80,11 +83,6 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     autonomousCommand = m_robotContainer.getAutonomousCommand();
-    // Command aum = m_robotContainer.getturnright();
-    // if (aum!= null){
-    //   aum.schedule();
-    // }
-    // // schedule the autonomous command (example)
     if (autonomousCommand != null) {
       autonomousCommand.schedule();
     }
@@ -95,6 +93,27 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
+    left = SmartDashboard.getBoolean("left", true);
+    right = SmartDashboard.getBoolean("right", false);
+    stop = SmartDashboard.getBoolean("stop", false);
+    if (left == true){
+      Command aum = m_robotContainer.getTurnLeftCommand();
+      if (aum!= null){
+        aum.schedule();
+      }
+    }
+    else if (right == true){
+      Command aum = m_robotContainer.getTurnRightCommand();
+      if (aum!= null){
+        aum.schedule();
+      }
+    }
+    else {
+      Command aum = m_robotContainer.stopdrive();
+      if (aum!= null){
+        aum.schedule();
+      }
+    }
   }
 
   @Override

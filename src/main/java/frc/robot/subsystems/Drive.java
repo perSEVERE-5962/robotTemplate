@@ -132,14 +132,14 @@ public void stopDrive(){
   SmartDashboard.putString("stoprobot", "");
 }
 
-public void getgoforwards(){
+public void goforwards(){
   // leftTalon().setInverted(true);
   // rightTalon().setInverted(true);
   leftTalon().set(ControlMode.PercentOutput, speedfactor);
   rightTalon().set(ControlMode.PercentOutput, speedfactor);
 }
 
-public void getgobackwards(){
+public void gobackwards(){
   
   leftTalon().set(ControlMode.PercentOutput, -speedfactor);
   rightTalon().set(ControlMode.PercentOutput, -speedfactor);

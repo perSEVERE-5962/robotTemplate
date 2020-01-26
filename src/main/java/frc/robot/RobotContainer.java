@@ -42,10 +42,10 @@ public class RobotContainer {
   // private final RunTankDrive driveCommand = new RunTankDrive(driveSubsystem);
   private Command driveCommand;
   private DriveLeft left = new DriveLeft(driveSubsystem);
-  private DriveRight Right = new DriveRight(driveSubsystem);
-  private StopDrive Stop = new StopDrive(driveSubsystem);
-  private DriveForward getgoForward = new DriveForward(driveSubsystem);
-  private DriveBackwards getgoBackwards = new DriveBackwards(driveSubsystem);
+  private DriveRight right= new DriveRight(driveSubsystem);
+  private StopDrive stop = new StopDrive(driveSubsystem);
+  private DriveForward goForward = new DriveForward(driveSubsystem);
+  private DriveBackwards goBackwards = new DriveBackwards(driveSubsystem);
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -87,12 +87,12 @@ public class RobotContainer {
     return driveCommand;
   }
 
-   public Command getturnleft () {
+   public Command getTurnLeftCommand () {
      return left;
    }
 
-  public Command getturnright () {
-    return Right;
+  public Command getTurnRightCommand () {
+    return right;
   }
   public Joystick getDriverJoystick() {
     return driverController;
@@ -101,54 +101,22 @@ public class RobotContainer {
   public Joystick getCopilotJoystick() {
     return copilotController;
   }
-  public Command getgoforward () {
-    return getgoForward;
+  public Command getgoForward () {
+    return goForward;
   }
-  public Command getgobackwards () {
-    return getgoBackwards;
+  public Command getgoBackwards () {
+    return goBackwards;
   }
 
 public Command stopdrive() {
-  return Stop;
+  return stop;
 }
 
-public Command DriveLeft() {
+public Command driveLeft() {
+	return null;
+}
+public Command driveRight() {
 	return null;
 }
 
-  
-  
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

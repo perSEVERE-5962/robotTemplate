@@ -27,7 +27,7 @@ public class DriveBackwards extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    subsystem.getgobackwards();
+    subsystem.gobackwards();
   }
 
   // Called once the command ends or is interrupted.

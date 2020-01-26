@@ -19,6 +19,10 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.RunIntake;
 import frc.robot.subsystems.MoveArm;
 
+import frc.robot.commands.DriveLeft;
+import frc.robot.subsystems.*;
+
+
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
  * each mode, as described in the TimedRobot documentation. If you change the name of this class or
@@ -26,11 +30,20 @@ import frc.robot.subsystems.MoveArm;
  * project.
  */
 public class Robot extends TimedRobot {
+  private Drive Drive = null;
   private Command autonomousCommand;
   private Command driveCommand;
+
+  private boolean left = true; 
+  private boolean right = false; 
+  private boolean stop = false; 
+  
+ 
+  private RobotContainer m_robotContainer;
+
   private Command motor;
   private MoveArm arm = new MoveArm(); 
-  public static RobotContainer m_robotContainer;
+
   private ADIS16448_IMU gyro = new ADIS16448_IMU();
   private Command runIntake;
   private Command shoot;
@@ -80,8 +93,9 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     autonomousCommand = m_robotContainer.getAutonomousCommand();
-   
+
     // // schedule the autonomous command (example)
+
     if (autonomousCommand != null) {
       autonomousCommand.schedule();
     } 
@@ -92,7 +106,29 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
-    
+
+    left = SmartDashboard.getBoolean("left", true);
+    right = SmartDashboard.getBoolean("right", false);
+    stop = SmartDashboard.getBoolean("stop", false);
+    if (left == true){
+      Command aum = m_robotContainer.getTurnLeftCommand();
+      if (aum!= null){
+        aum.schedule();
+      }
+    }
+    else if (right == true){
+      Command aum = m_robotContainer.getTurnRightCommand();
+      if (aum!= null){
+        aum.schedule();
+      }
+    }
+    else {
+      Command aum = m_robotContainer.stopdrive();
+      if (aum!= null){
+        aum.schedule();
+      }
+    }
+
   }
 
   @Override

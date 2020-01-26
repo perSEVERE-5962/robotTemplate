@@ -26,7 +26,7 @@ public class Drive extends SubsystemBase {
   // private static SpeedController leftDrive;
   // private static SpeedController rightDrive;
   private Joystick joystick;
-  private static final double speedfactor = 1.0;
+  private static final double speedfactor = 0.3;
 
   public static WPI_TalonSRX leftTalon() {
     return robotLeftTalon;
@@ -118,5 +118,32 @@ public class Drive extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
   }
+public void driveLeft(){
+  leftTalon().set(ControlMode.PercentOutput, speedfactor);
+  rightTalon().set(ControlMode.PercentOutput, -speedfactor);
+}
+public void driveRight(){
+  leftTalon().set(ControlMode.PercentOutput, -speedfactor);
+  rightTalon().set(ControlMode.PercentOutput, speedfactor);
+}
+
+public void stopDrive(){
+  leftTalon().set(ControlMode.PercentOutput, 0);
+  rightTalon().set(ControlMode.PercentOutput, 0);
+  SmartDashboard.putString("stoprobot", "");
+}
+
+public void goforwards(){
+  // leftTalon().setInverted(true);
+  // rightTalon().setInverted(true);
+  leftTalon().set(ControlMode.PercentOutput, speedfactor);
+  rightTalon().set(ControlMode.PercentOutput, speedfactor);
+}
+
+public void gobackwards(){
+  
+  leftTalon().set(ControlMode.PercentOutput, -speedfactor);
+  rightTalon().set(ControlMode.PercentOutput, -speedfactor);
+}
 
 }

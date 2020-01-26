@@ -14,12 +14,20 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.AutoCommand;
+
+import frc.robot.commands.DriveBackwards;
+import frc.robot.commands.DriveForward;
+import frc.robot.commands.DriveLeft;
+import frc.robot.commands.DriveRight;
+
 import frc.robot.commands.MoveArmDownCommand;
 import frc.robot.commands.MoveArmUpCommand;
+
 import frc.robot.commands.RunJamieDrive;
 import frc.robot.commands.RunTankDrive;
 import frc.robot.commands.SmoothArcadeDrive;
 import frc.robot.commands.SmoothTankDrive;
+import frc.robot.commands.StopDrive;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.MoveArm;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -67,8 +75,12 @@ public class RobotContainer {
   private final MoveArm armSub = new MoveArm();
   // private final RunTankDrive driveCommand = new RunTankDrive(driveSubsystem);
   private Command driveCommand;
-  
-  
+
+  private DriveLeft left = new DriveLeft(driveSubsystem);
+  private DriveRight right= new DriveRight(driveSubsystem);
+  private StopDrive stop = new StopDrive(driveSubsystem);
+  private DriveForward goForward = new DriveForward(driveSubsystem);
+  private DriveBackwards goBackwards = new DriveBackwards(driveSubsystem);
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -112,6 +124,13 @@ public class RobotContainer {
     return driveCommand;
   }
 
+   public Command getTurnLeftCommand () {
+     return left;
+   }
+
+  public Command getTurnRightCommand () {
+    return right;
+  }
   public Joystick getDriverJoystick() {
     return driverController;
   }
@@ -119,6 +138,22 @@ public class RobotContainer {
   public Joystick getCopilotJoystick() {
     return copilotController;
   }
+  public Command getgoForward () {
+    return goForward;
+  }
+  public Command getgoBackwards () {
+    return goBackwards;
+  }
 
-  
+public Command stopdrive() {
+  return stop;
+}
+
+public Command driveLeft() {
+	return null;
+}
+public Command driveRight() {
+	return null;
+}
+
 }

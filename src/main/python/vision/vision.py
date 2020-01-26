@@ -6,7 +6,6 @@ from cscore import CameraServer
 import numpy as np
 import configparser
 from time import time as Time # prevents conflict w/ `time` variable
-from datetime import datetime
 from networktables import NetworkTables
 
 ##########
@@ -177,8 +176,7 @@ while True:
 
     # save image every time interval
     if (current_time - last_recorded_time) >= image_capture_interval:
-        date = datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
-        file = img_dir + date + ".jpg"
+        file = img_dir + str(int(current_time)) + ".jpg"
 
         cv2.imwrite(file, frame)
         print("[VISION]: Image saved:" + file)

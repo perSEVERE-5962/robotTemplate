@@ -16,8 +16,10 @@ import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.AutoCommand;
 import frc.robot.commands.MoveArmDownCommand;
 import frc.robot.commands.MoveArmUpCommand;
+import frc.robot.commands.RunIntake;
 import frc.robot.commands.RunJamieDrive;
 import frc.robot.commands.RunTankDrive;
+import frc.robot.commands.Shoot;
 import frc.robot.commands.SmoothArcadeDrive;
 import frc.robot.commands.SmoothTankDrive;
 import frc.robot.subsystems.Drive;
@@ -40,14 +42,11 @@ public class RobotContainer {
   private final  JoystickButton buttonB = new JoystickButton(copilotController, 2);
 
   public double getIntake(){
-    double ballIn = copilotController.getRawAxis(1);
-    return ballIn;
+    double axisValue = copilotController.getRawAxis(1);
+    return axisValue;
   }
 
-  public double getOuttake(){
-    double ballOut = copilotController.getRawAxis(1);
-    return ballOut;
-  }
+  
 
   public boolean armDown(){
     boolean ArmDown = copilotController.getRawButtonPressed(1);
@@ -67,9 +66,16 @@ public class RobotContainer {
   private final MoveArm armSub = new MoveArm();
   // private final RunTankDrive driveCommand = new RunTankDrive(driveSubsystem);
   private Command driveCommand;
+  private final RunIntake runIntake = new RunIntake();
+  private final Shoot shoot = new Shoot();
   
-  
+  public Command getRunIntake(){
+    return runIntake;
+  }
 
+  public Command getShoot(){
+    return shoot;
+  }
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */

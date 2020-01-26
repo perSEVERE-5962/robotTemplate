@@ -8,32 +8,19 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Robot;
 import frc.robot.subsystems.Intake;
 
-public class BallCommands extends CommandBase {
+public class Shoot extends CommandBase {
 
   Intake subsytem;
   
-  public boolean RunIntake() {
-    if (Robot.m_robotContainer.getIntake() >= 0.1)
-    return true;
-    else
-      return false;
-  }
 
-  public boolean RunOuttake(){
-    if (Robot.m_robotContainer.getOuttake() <= -0.1)
-    return true;
-    else 
-      return false;
-  }
-  
+ 
   
   /**
    * Creates a new BallCommands.
    */
-  public BallCommands() {
+  public Shoot() {
     // Use addRequirements() here to declare subsystem dependencies.
     subsytem = new Intake();
   }
@@ -48,24 +35,19 @@ public class BallCommands extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (RunIntake() == true)
-      subsytem.SpinPMotor();
-
-    else if (RunOuttake() == true)
-      subsytem.SpinNMotor();
-
-    else 
-      subsytem.stop();
+      subsytem.shoot();
   }
-
+  
+  
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    subsytem.stop();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

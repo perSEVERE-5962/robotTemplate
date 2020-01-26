@@ -14,16 +14,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class MoveArm extends SubsystemBase {
-  private static WPI_TalonSRX armTalon;
+  private WPI_TalonSRX armTalon;
   /**
    * Creates a new moveUp.
    */
-  private boolean isPIDRunning = false;
-  private int armPosition;
   private double measureAngle;
-  public static WPI_TalonSRX armT(){
-    return armTalon;
-  }
+  
+
   public MoveArm() {
     armTalon = new WPI_TalonSRX(12);
   }
@@ -35,13 +32,11 @@ public double setAngle(double angle){
 }
 
 public void shootingPosition(){
-  isPIDRunning = true;
   armTalon.set(ControlMode.Position, setAngle(70.0));
   SmartDashboard.putNumber("Absolute", armTalon.getSelectedSensorPosition());
 }
 
 public void intakePosition(){
-  isPIDRunning = true;
   armTalon.set(ControlMode.Position, setAngle(35.0));
   SmartDashboard.putNumber("Absolute", armTalon.getSelectedSensorPosition());
 }

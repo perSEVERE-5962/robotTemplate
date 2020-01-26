@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.RunIntake;
 import frc.robot.subsystems.MoveArm;
 
 /**
@@ -31,6 +32,8 @@ public class Robot extends TimedRobot {
   private MoveArm arm = new MoveArm(); 
   public static RobotContainer m_robotContainer;
   private ADIS16448_IMU gyro = new ADIS16448_IMU();
+  private Command runIntake;
+  private Command shoot;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -125,7 +128,20 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+    if (m_robotContainer.getIntake()>0.2){
+      runIntake = m_robotContainer.getRunIntake();
+    }
+    else if(m_robotContainer.getIntake()<-0.2){
+      runIntake = m_robotContainer.getShoot();
+    }
+    else{
+      runIntake = null;
+    }
+    if (runIntake != null){
+      runIntake.schedule();
+    }
   }
+
 
   @Override
   public void testInit() {

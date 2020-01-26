@@ -38,7 +38,7 @@ To be run on the robot. This script is to be run after the values have been
 dialed in. It will read the network table for the HSV bounds and write it to a
 configuration file for `vision.py` to read.
 
-Example configuration file:
+Example configuration file: `vision_cfg.ini`
 
 ```
 [HSV BOUNDS]

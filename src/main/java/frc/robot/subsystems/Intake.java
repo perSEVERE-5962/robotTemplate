@@ -22,13 +22,12 @@ public class Intake extends SubsystemBase {
 
   }
   
-public void SpinPMotor(){
-  motorControl.set(0.1);
-
+public void runIntake(){
+  motorControl.set(0.3);
 }
 
-public void SpinNMotor(){
-  motorControl.set(-0.1);
+public void shoot(){
+  motorControl.set(-0.3);
 }
 
 public void stop(){

@@ -22,11 +22,13 @@ import frc.robot.commands.DriveRight;
 
 import frc.robot.commands.MoveArmDownCommand;
 import frc.robot.commands.MoveArmUpCommand;
-
+import frc.robot.commands.RunIntake;
 import frc.robot.commands.RunJamieDrive;
 import frc.robot.commands.RunTankDrive;
+import frc.robot.commands.Shoot;
 import frc.robot.commands.SmoothArcadeDrive;
 import frc.robot.commands.SmoothTankDrive;
+import frc.robot.commands.StopArm;
 import frc.robot.commands.StopDrive;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.MoveArm;
@@ -48,14 +50,11 @@ public class RobotContainer {
   private final  JoystickButton buttonB = new JoystickButton(copilotController, 2);
 
   public double getIntake(){
-    double ballIn = copilotController.getRawAxis(1);
-    return ballIn;
+    double axisValue = copilotController.getRawAxis(1);
+    return axisValue;
   }
 
-  public double getOuttake(){
-    double ballOut = copilotController.getRawAxis(1);
-    return ballOut;
-  }
+  
 
   public boolean armDown(){
     boolean ArmDown = copilotController.getRawButtonPressed(1);
@@ -75,13 +74,22 @@ public class RobotContainer {
   private final MoveArm armSub = new MoveArm();
   // private final RunTankDrive driveCommand = new RunTankDrive(driveSubsystem);
   private Command driveCommand;
+  private final RunIntake runIntake = new RunIntake();
+  private final Shoot shoot = new Shoot();
+  
+  public Command getRunIntake(){
+    return runIntake;
+  }
 
   private DriveLeft left = new DriveLeft(driveSubsystem);
   private DriveRight right= new DriveRight(driveSubsystem);
   private StopDrive stop = new StopDrive(driveSubsystem);
   private DriveForward goForward = new DriveForward(driveSubsystem);
   private DriveBackwards goBackwards = new DriveBackwards(driveSubsystem);
-
+  private StopArm stopArm = new StopArm(); 
+  public Command getShoot(){
+    return shoot;
+  }
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -143,6 +151,9 @@ public class RobotContainer {
   }
   public Command getgoBackwards () {
     return goBackwards;
+  }
+  public Command getStopArm(){
+    return stopArm;
   }
 
 public Command stopdrive() {

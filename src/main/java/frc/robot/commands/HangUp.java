@@ -6,39 +6,23 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot.commands;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Robot;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Hang;
 
-public class BallCommands extends CommandBase {
 
-  Intake subsytem;
+public class HangUp extends CommandBase {
   
-  public boolean RunIntake() {
-    if (Robot.m_robotContainer.getIntake() >= 0.1)
-    return true;
-    else
-      return false;
-  }
+  Hang subsystem;
 
-  public boolean RunOuttake(){
-    if (Robot.m_robotContainer.getOuttake() <= -0.1)
-    return true;
-    else 
-      return false;
-  }
-  
   
   /**
-   * Creates a new BallCommands.
+   * Creates a new HangUp.
    */
-  public BallCommands() {
+  public HangUp() {
     // Use addRequirements() here to declare subsystem dependencies.
-    subsytem = new Intake();
+    subsystem = new Hang();
+    addRequirements(subsystem);
   }
-
-  
 
   // Called when the command is initially scheduled.
   @Override
@@ -48,15 +32,11 @@ public class BallCommands extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (RunIntake() == true)
-      subsytem.SpinPMotor();
-
-    else if (RunOuttake() == true)
-      subsytem.SpinNMotor();
-
-    else 
-      subsytem.stop();
+    //I MADE this CODE and for that it need number otherwise it red.
+    subsystem.findTicks(10);
   }
+
+  
 
   // Called once the command ends or is interrupted.
   @Override

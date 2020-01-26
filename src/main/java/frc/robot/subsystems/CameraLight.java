@@ -18,7 +18,7 @@ public class CameraLight extends SubsystemBase {
 
   public CameraLight() {
 
-    light = new Solenoid(0);
+    light = new Solenoid(4);
     
   }
 

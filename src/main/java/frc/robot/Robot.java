@@ -8,13 +8,15 @@
 package frc.robot;
 
 import com.analog.adis16448.frc.ADIS16448_IMU;
+
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.subsystems.*;
+import frc.robot.subsystems.MoveArm;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -25,9 +27,9 @@ import frc.robot.subsystems.*;
 public class Robot extends TimedRobot {
   private Command autonomousCommand;
   private Command driveCommand;
-  
- 
-  private RobotContainer m_robotContainer;
+  private Command motor;
+  private MoveArm arm = new MoveArm(); 
+  public static RobotContainer m_robotContainer;
   private ADIS16448_IMU gyro = new ADIS16448_IMU();
 
   /**
@@ -38,10 +40,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-    m_robotContainer = new RobotContainer();
-   
-    
-    
+    gyro.reset();
   }
 
   /**
@@ -78,11 +77,11 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     autonomousCommand = m_robotContainer.getAutonomousCommand();
-
+   
     // // schedule the autonomous command (example)
     if (autonomousCommand != null) {
       autonomousCommand.schedule();
-    }
+    } 
   }
 
   /**
@@ -90,6 +89,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
+    
   }
 
   @Override
@@ -101,6 +101,12 @@ public class Robot extends TimedRobot {
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
     }
+  // motor = new BallCommands();
+  //   if  (motor != null){
+  //     motor.schedule();
+  //   }
+
+    
 
     driveCommand = m_robotContainer.getDriveCommand();
     if (driveCommand != null) {

@@ -14,12 +14,18 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.AutoCommand;
+import frc.robot.commands.MoveArmDownCommand;
+import frc.robot.commands.MoveArmUpCommand;
 import frc.robot.commands.RunJamieDrive;
 import frc.robot.commands.RunTankDrive;
 import frc.robot.commands.SmoothArcadeDrive;
 import frc.robot.commands.SmoothTankDrive;
 import frc.robot.subsystems.Drive;
+import frc.robot.subsystems.MoveArm;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.HangUp;
+import frc.robot.subsystems.Hang;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -30,12 +36,38 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class RobotContainer {
   private final Joystick driverController = new Joystick(0);
   private final Joystick copilotController = new Joystick(1);
+  private final  JoystickButton buttonA = new JoystickButton(copilotController, 1);
+  private final  JoystickButton buttonB = new JoystickButton(copilotController, 2);
+
+  public double getIntake(){
+    double ballIn = copilotController.getRawAxis(1);
+    return ballIn;
+  }
+
+  public double getOuttake(){
+    double ballOut = copilotController.getRawAxis(1);
+    return ballOut;
+  }
+
+  public boolean armDown(){
+    boolean ArmDown = copilotController.getRawButtonPressed(1);
+    return ArmDown;
+  }
+
+  public boolean armUp(){
+    boolean ArmUp = copilotController.getRawButtonPressed(2);
+    return ArmUp;
+  }
+
   private SendableChooser chooser= new SendableChooser<Command>();
+
   // The robot's subsystems and commands are defined here...
   private final Drive driveSubsystem = new Drive(driverController);
   private final AutoCommand autoCommand = new AutoCommand(driveSubsystem);
+  private final MoveArm armSub = new MoveArm();
   // private final RunTankDrive driveCommand = new RunTankDrive(driveSubsystem);
   private Command driveCommand;
+  
   
 
   /**
@@ -44,13 +76,13 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+    
     chooser.setDefaultOption("smooth tankdrive", new SmoothTankDrive(driveSubsystem));
     chooser.addOption("smooth arcadedrive", new SmoothArcadeDrive(driveSubsystem));
     chooser.addOption("tankdrive", new RunTankDrive(driveSubsystem));
     chooser.addOption("arcadedrive", new ArcadeDrive(driveSubsystem));
     chooser.addOption("JamieDrive", new RunJamieDrive(driveSubsystem));
     SmartDashboard.putData("drivercontrol", chooser);
-    
   }
 
   /**
@@ -60,7 +92,8 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-
+    buttonA.whenPressed(new MoveArmDownCommand());
+    buttonB.whenPressed(new MoveArmUpCommand());
   }
 
 

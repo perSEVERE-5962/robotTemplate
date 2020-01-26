@@ -37,3 +37,15 @@ to the network table.
 To be run on the robot. This script is to be run after the values have been
 dialed in. It will read the network table for the HSV bounds and write it to a
 configuration file for `vision.py` to read.
+
+Example configuration file:
+
+```
+[HSV BOUNDS]
+h_l = 0
+s_l = 0
+v_l = 0
+h_u = 255
+s_u = 255
+v_u = 255
+```

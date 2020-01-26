@@ -13,13 +13,15 @@ from networktables import NetworkTables
 ##########
 
 # directory of config file
-config_dir='/mnt/storage/config/'
+#config_dir='/mnt/storage/config/'
+config_dir='config/'
 
 # directory to save images
-img_dir = '/mnt/storage/images/'
+#img_dir = '/mnt/storage/images/'
+img_dir = 'images/'
 
 # network table server
-nt_server = "rei.local"
+nt_server = "10.99.88.2"
 
 # image capture interval (in seconds)
 image_capture_interval = 1.0
@@ -35,6 +37,7 @@ cs.enableLogging()
 # Capture from the first USB Camera on the system
 camera = cs.startAutomaticCapture()
 camera.setResolution(320, 240)
+camera.setFPS(30)
 
 # Get a CvSink. This will capture images from the camera
 cvSink = cs.getVideo()
@@ -111,13 +114,13 @@ while True:
     #cv2.imshow("HSV Frame", hsv_frame)
 
     # apply Gaussian Blur to frame
-    blur_frame = cv2.GaussianBlur(hsv_frame, (11,11), 0)
+    #blur_frame = cv2.GaussianBlur(hsv_frame, (3,3), 0)
     #cv2.imshow("Blur Image", blur_frame)
 
     # set lower and upper HSV bounds for mask
     lower = np.array([h_l, s_l, v_l])
     upper = np.array([h_u, s_u, v_u])
-    mask = cv2.inRange(blur_frame, lower, upper)
+    mask = cv2.inRange(hsv_frame, lower, upper)
     #cv2.imshow("Mask", mask)
 
     # find contours
@@ -152,7 +155,7 @@ while True:
         table.putNumber("Image Center Y", img_center_y)
 
         # make decision based on relative position of centroid to image center
-        if (img_center_x - 5) <= x <= (img_center_x + 5):
+        if (img_center_x - 10) <= x <= (img_center_x + 10):
             #print("[VISION]: ACTION: None")
             table.putString("Action", "None")
         elif x < img_center_x:

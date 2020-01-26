@@ -12,11 +12,11 @@ from networktables import NetworkTables
 ##########
 
 # directory to save config file
-config_dir='/mnt/storage/config/'
-#config_dir='config/'
+#config_dir='/mnt/storage/config/'
+config_dir='config/'
 
 # networktable server
-nt_server = 'rei.local'
+nt_server = '10.99.88.2'
 
 #####################################
 

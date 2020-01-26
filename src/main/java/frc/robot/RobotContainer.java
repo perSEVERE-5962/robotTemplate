@@ -49,6 +49,10 @@ public class RobotContainer {
   private final  JoystickButton buttonA = new JoystickButton(copilotController, 1);
   private final  JoystickButton buttonB = new JoystickButton(copilotController, 2);
 
+  private final JoystickButton buttonY = new JoystickButton(copilotController, 3);
+  private final JoystickButton buttonX = new JoystickButton(copilotController, 4);
+
+
   public double getIntake(){
     double axisValue = copilotController.getRawAxis(1);
     return axisValue;
@@ -72,6 +76,7 @@ public class RobotContainer {
   private final Drive driveSubsystem = new Drive(driverController);
   private final AutoCommand autoCommand = new AutoCommand(driveSubsystem);
   private final MoveArm armSub = new MoveArm();
+  private final CameraLight cameraLight = new CameraLight();
   // private final RunTankDrive driveCommand = new RunTankDrive(driveSubsystem);
   private Command driveCommand;
   private final RunIntake runIntake = new RunIntake();
@@ -114,6 +119,8 @@ public class RobotContainer {
   private void configureButtonBindings() {
     buttonA.whenPressed(new MoveArmDownCommand());
     buttonB.whenPressed(new MoveArmUpCommand());
+    buttonX.whenPressed(new TurnOnLight(cameraLight));
+    buttonY.whenPressed(new TurnOffLight(cameraLight));
   }
 
 

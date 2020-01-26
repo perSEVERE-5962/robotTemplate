@@ -28,6 +28,7 @@ import frc.robot.commands.RunTankDrive;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.SmoothArcadeDrive;
 import frc.robot.commands.SmoothTankDrive;
+import frc.robot.commands.StopArm;
 import frc.robot.commands.StopDrive;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.MoveArm;
@@ -85,7 +86,7 @@ public class RobotContainer {
   private StopDrive stop = new StopDrive(driveSubsystem);
   private DriveForward goForward = new DriveForward(driveSubsystem);
   private DriveBackwards goBackwards = new DriveBackwards(driveSubsystem);
-
+  private StopArm stopArm = new StopArm(); 
   public Command getShoot(){
     return shoot;
   }
@@ -150,6 +151,9 @@ public class RobotContainer {
   }
   public Command getgoBackwards () {
     return goBackwards;
+  }
+  public Command getStopArm(){
+    return stopArm;
   }
 
 public Command stopdrive() {

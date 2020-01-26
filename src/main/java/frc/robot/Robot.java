@@ -57,6 +57,7 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     gyro.reset();
+    m_robotContainer  = new RobotContainer();
   }
 
   /**
@@ -171,7 +172,7 @@ public class Robot extends TimedRobot {
       runIntake = m_robotContainer.getShoot();
     }
     else{
-      runIntake = null;
+      runIntake = m_robotContainer.getStopArm();
     }
     if (runIntake != null){
       runIntake.schedule();

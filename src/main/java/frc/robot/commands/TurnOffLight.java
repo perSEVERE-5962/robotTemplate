@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.CameraLight;
 
 public class TurnOffLight extends CommandBase {
   /**
@@ -17,7 +18,7 @@ public class TurnOffLight extends CommandBase {
    private CameraLight light;
   public TurnOffLight(CameraLight light) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.light. = light;
+    this.light = light;
     addRequirements(light);
   }
 

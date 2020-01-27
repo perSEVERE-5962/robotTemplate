@@ -8,7 +8,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Robot;
 import frc.robot.subsystems.MoveArm;
 
 public class MoveArmDownCommand extends CommandBase {
@@ -40,13 +39,6 @@ public class MoveArmDownCommand extends CommandBase {
     subsystem.intakePosition();
 
   }
-
-  private boolean RunMoveArm() {
-    return false;
-  }
-
-
-
 
   // Called once the command ends or is interrupted.
   @Override

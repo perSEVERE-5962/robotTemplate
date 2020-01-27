@@ -10,16 +10,11 @@ package frc.robot;
 import com.analog.adis16448.frc.ADIS16448_IMU;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.RunIntake;
 import frc.robot.subsystems.MoveArm;
 
-import frc.robot.commands.DriveLeft;
 import frc.robot.subsystems.*;
 
 
@@ -30,7 +25,7 @@ import frc.robot.subsystems.*;
  * project.
  */
 public class Robot extends TimedRobot {
-  private Drive Drive = null;
+  private Drive drive = null;
   private Command autonomousCommand;
   private Command driveCommand;
 

@@ -20,8 +20,8 @@ import frc.robot.commands.DriveForward;
 import frc.robot.commands.DriveLeft;
 import frc.robot.commands.DriveRight;
 
-import frc.robot.commands.MoveArmDownCommand;
-import frc.robot.commands.MoveArmUpCommand;
+import frc.robot.commands.MoveArmDown;
+import frc.robot.commands.MoveArmUp;
 import frc.robot.commands.RunIntake;
 import frc.robot.commands.RunJamieDrive;
 import frc.robot.commands.RunTankDrive;
@@ -31,7 +31,7 @@ import frc.robot.commands.SmoothTankDrive;
 import frc.robot.commands.StopArm;
 import frc.robot.commands.StopDrive;
 import frc.robot.subsystems.Drive;
-import frc.robot.subsystems.MoveArm;
+import frc.robot.subsystems.Arm;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.HangUp;
@@ -54,24 +54,12 @@ public class RobotContainer {
     return axisValue;
   }
 
-  
-
-  public boolean armDown(){
-    boolean ArmDown = copilotController.getRawButtonPressed(1);
-    return ArmDown;
-  }
-
-  public boolean armUp(){
-    boolean ArmUp = copilotController.getRawButtonPressed(2);
-    return ArmUp;
-  }
-
   private SendableChooser chooser= new SendableChooser<Command>();
 
   // The robot's subsystems and commands are defined here...
   private final Drive driveSubsystem = new Drive(driverController);
   private final AutoCommand autoCommand = new AutoCommand(driveSubsystem);
-  private final MoveArm armSub = new MoveArm();
+  private final Arm armSub = new Arm();
   // private final RunTankDrive driveCommand = new RunTankDrive(driveSubsystem);
   private Command driveCommand;
   private final RunIntake runIntake = new RunIntake();
@@ -112,8 +100,8 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    buttonA.whenPressed(new MoveArmDownCommand());
-    buttonB.whenPressed(new MoveArmUpCommand());
+    buttonA.whenPressed(new MoveArmDown());
+    buttonB.whenPressed(new MoveArmUp());
   }
 
 

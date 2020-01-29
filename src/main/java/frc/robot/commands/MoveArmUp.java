@@ -10,19 +10,19 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
-import frc.robot.subsystems.MoveArm;
+import frc.robot.subsystems.Arm;
 
-public class MoveArmUpCommand extends CommandBase {
+public class MoveArmUp extends CommandBase {
 
-  MoveArm subsystem;
+  Arm subsystem;
   
   
   /**
    * Creates a new MoveArmCommand.
    */
-  public MoveArmUpCommand() {
+  public MoveArmUp() {
     // Use addRequirements() here to declare subsystem dependencies.
-    subsystem = new MoveArm();
+    subsystem = new Arm();
     addRequirements(subsystem);
   }
 

@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class CameraLight extends SubsystemBase {
@@ -17,8 +18,7 @@ public class CameraLight extends SubsystemBase {
   private Solenoid light;
 
   public CameraLight() {
-
-    light = new Solenoid(4);
+    light = new Solenoid(3,4);
     
   }
 

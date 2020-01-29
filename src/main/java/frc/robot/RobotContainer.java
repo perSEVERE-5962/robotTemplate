@@ -30,12 +30,13 @@ import frc.robot.commands.SmoothArcadeDrive;
 import frc.robot.commands.SmoothTankDrive;
 import frc.robot.commands.StopArm;
 import frc.robot.commands.StopDrive;
+import frc.robot.commands.TurnOffLight;
+import frc.robot.commands.TurnOnLight;
+import frc.robot.subsystems.CameraLight;
 import frc.robot.subsystems.Drive;
-import frc.robot.subsystems.MoveArm;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.HangUp;
-import frc.robot.subsystems.Hang;
+
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -46,9 +47,12 @@ import frc.robot.subsystems.Hang;
 public class RobotContainer {
   private final Joystick driverController = new Joystick(0);
   private final Joystick copilotController = new Joystick(1);
+
+  // arm buttons
   private final  JoystickButton buttonA = new JoystickButton(copilotController, 1);
   private final  JoystickButton buttonB = new JoystickButton(copilotController, 2);
 
+  // camera led buttons
   private final JoystickButton buttonY = new JoystickButton(copilotController, 3);
   private final JoystickButton buttonX = new JoystickButton(copilotController, 4);
 
@@ -75,7 +79,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Drive driveSubsystem = new Drive(driverController);
   private final AutoCommand autoCommand = new AutoCommand(driveSubsystem);
-  private final MoveArm armSub = new MoveArm();
+  //private final MoveArm armSub = new MoveArm();
   private final CameraLight cameraLight = new CameraLight();
   // private final RunTankDrive driveCommand = new RunTankDrive(driveSubsystem);
   private Command driveCommand;
@@ -121,6 +125,7 @@ public class RobotContainer {
     buttonB.whenPressed(new MoveArmUpCommand());
     buttonX.whenPressed(new TurnOnLight(cameraLight));
     buttonY.whenPressed(new TurnOffLight(cameraLight));
+
   }
 
 

@@ -13,8 +13,13 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.AutoCommand;
 import frc.robot.commands.RunTankDrive;
+import frc.robot.subsystems.ColorSensor;
+import frc.robot.subsystems.ControlPanel;
 import frc.robot.subsystems.Drive;
 import edu.wpi.first.wpilibj2.command.Command;
+
+import frc.robot.commands.*;
+
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -31,7 +36,16 @@ public class RobotContainer {
   private final AutoCommand autoCommand = new AutoCommand(driveSubsystem);
   // private final RunTankDrive driveCommand = new RunTankDrive(driveSubsystem);
   private final ArcadeDrive driveCommand = new ArcadeDrive(driveSubsystem);
+
+  private final ColorSensor colorSensor = new ColorSensor();
+  private final ControlPanel controlPanel = new ControlPanel(colorSensor);
+
+  private final SenseColor senseColorCommand = new SenseColor(colorSensor);
+  private final SpinToColor spinColorCommand = new SpinToColor(controlPanel);
+  private final SpinRotations spinRotCommand = new SpinRotations(controlPanel);
   
+
+  //private final CPSubsystem cpSubsystem = new CPSubsystem();
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -74,5 +88,18 @@ public class RobotContainer {
     return copilotController;
   }
 
+  
+  public Command getSenseColorCommand(){
+    return senseColorCommand;
+  }
+
+  public Command getSpinColorCommand(){
+    return spinColorCommand;
+  }
+
+  public Command getSpinRotCommand(){
+    return spinRotCommand;
+  }
+  
   
 }

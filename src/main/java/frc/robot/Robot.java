@@ -23,7 +23,9 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 public class Robot extends TimedRobot {
   private Command autonomousCommand;
   private Command driveCommand;
-
+  private Command senseColorCommand;
+  private Command spinColorCommand;
+  private Command spinRotCommand;
   private RobotContainer m_robotContainer;
   private Gyro gyro = new AnalogGyro(0);
 
@@ -100,6 +102,11 @@ public class Robot extends TimedRobot {
     if (driveCommand != null) {
       driveCommand.schedule();
     }
+
+    senseColorCommand = m_robotContainer.getSenseColorCommand();
+    spinColorCommand = m_robotContainer.getSpinColorCommand();
+    spinRotCommand = m_robotContainer.getSpinRotCommand();
+
   }
 
   /**
@@ -107,6 +114,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+    spinRotCommand = m_robotContainer.getSpinRotCommand();
+    spinColorCommand = m_robotContainer.getSpinColorCommand();
+    spinRotCommand.execute();
+  
   }
 
   @Override

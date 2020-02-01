@@ -8,14 +8,18 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.CameraLight;
 
-public class vision extends CommandBase {
-  
+public class TurnOffLight extends CommandBase {
   /**
-   * Creates a new vision.
+   * Creates a new TurnOffLight.
    */
-  public vision() {
+
+   private CameraLight light;
+  public TurnOffLight(CameraLight light) {
     // Use addRequirements() here to declare subsystem dependencies.
+    this.light = light;
+    addRequirements(light);
   }
 
   // Called when the command is initially scheduled.
@@ -31,11 +35,12 @@ public class vision extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    this.light.turnOffLight();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

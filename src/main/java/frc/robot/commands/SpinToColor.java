@@ -29,7 +29,7 @@ public class SpinToColor extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    controlPanel.spinToColor("Blue");
+    controlPanel.spinToColor();
   }
 
   // Called once the command ends or is interrupted.

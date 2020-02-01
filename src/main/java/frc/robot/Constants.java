@@ -16,4 +16,7 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    public static int MAX_COLOR_ROTATIONS = 3;
+    public static String SPIN_COLOR = "";
+    public static boolean IS_SPIN_COMPLETE = false;
 }

@@ -14,6 +14,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
+import frc.robot.Constants;
+
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
  * each mode, as described in the TimedRobot documentation. If you change the name of this class or
@@ -116,7 +118,10 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     spinRotCommand = m_robotContainer.getSpinRotCommand();
     spinColorCommand = m_robotContainer.getSpinColorCommand();
-    spinRotCommand.execute();
+    
+    if(!Constants.IS_SPIN_COMPLETE){
+      spinColorCommand.execute();
+    }
   
   }
 

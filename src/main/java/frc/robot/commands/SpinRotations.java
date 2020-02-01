@@ -15,7 +15,6 @@ public class SpinRotations extends CommandBase {
    * Creates a new SpinRotations.
    */
   private ControlPanel controlPanel;
-  private int MAX_SPIN_ROTATIONS = 3;
   public SpinRotations(ControlPanel controlPanel) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.controlPanel = controlPanel;
@@ -29,7 +28,7 @@ public class SpinRotations extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    controlPanel.spinRotations(MAX_SPIN_ROTATIONS);
+    controlPanel.spinRotations();
   }
 
   // Called once the command ends or is interrupted.

@@ -25,6 +25,8 @@ import frc.robot.commands.MoveArmUp;
 import frc.robot.commands.RunIntake;
 import frc.robot.commands.RunJamieDrive;
 import frc.robot.commands.RunTankDrive;
+import frc.robot.subsystems.ColorSensor;
+import frc.robot.subsystems.ControlPanel;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.SmoothArcadeDrive;
 import frc.robot.commands.SmoothTankDrive;
@@ -37,6 +39,9 @@ import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Arm;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+
+
+import frc.robot.commands.*;
 
 
 /**
@@ -71,6 +76,13 @@ public class RobotContainer {
   private final Arm armSub = new Arm();
   private final CameraLight cameraLight = new CameraLight();
   // private final RunTankDrive driveCommand = new RunTankDrive(driveSubsystem);
+  
+  private final ColorSensor colorSensor = new ColorSensor();
+  private final ControlPanel controlPanel = new ControlPanel(colorSensor);
+
+  private final SenseColor senseColorCommand = new SenseColor(colorSensor);
+  private final SpinToColor spinColorCommand = new SpinToColor(controlPanel);
+  private final SpinRotations spinRotCommand = new SpinRotations(controlPanel);
   private Command driveCommand;
   private final RunIntake runIntake = new RunIntake();
   private final Shoot shoot = new Shoot();
@@ -78,6 +90,8 @@ public class RobotContainer {
   public Command getRunIntake(){
     return runIntake;
   }
+
+  //private final CPSubsystem cpSubsystem = new CPSubsystem();
 
   private DriveLeft left = new DriveLeft(driveSubsystem);
   private DriveRight right= new DriveRight(driveSubsystem);
@@ -156,6 +170,19 @@ public class RobotContainer {
     return stopArm;
   }
 
+  public Command getSenseColorCommand(){
+    return senseColorCommand;
+  }
+
+  public Command getSpinColorCommand(){
+    return spinColorCommand;
+  }
+
+  public Command getSpinRotCommand(){
+    return spinRotCommand;
+  }
+  
+  
 public Command stopdrive() {
   return stop;
 }

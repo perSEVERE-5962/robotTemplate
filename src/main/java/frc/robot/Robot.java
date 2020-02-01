@@ -19,6 +19,8 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.*;
 
 
+import frc.robot.Constants;
+
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
  * each mode, as described in the TimedRobot documentation. If you change the name of this class or
@@ -29,12 +31,14 @@ public class Robot extends TimedRobot {
   private Drive drive = null;
   private Command autonomousCommand;
   private Command driveCommand;
+  private Command senseColorCommand;
+  private Command spinColorCommand;
+  private Command spinRotCommand;
 
   private boolean left = true; 
   private boolean right = false; 
   private boolean stop = false; 
-  
- 
+   
   private RobotContainer m_robotContainer;
 
   private Command motor;
@@ -148,6 +152,10 @@ public class Robot extends TimedRobot {
     if (driveCommand != null) {
       driveCommand.schedule();
     }
+
+    senseColorCommand = m_robotContainer.getSenseColorCommand();
+    spinColorCommand = m_robotContainer.getSpinColorCommand();
+    spinRotCommand = m_robotContainer.getSpinRotCommand();
     
     // Drive.leftTalon().configNominalOutputForward(0.1, 30);
     // Drive.leftTalon().configNominalOutputReverse(-0.1, 30);
@@ -161,6 +169,13 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+    spinRotCommand = m_robotContainer.getSpinRotCommand();
+    spinColorCommand = m_robotContainer.getSpinColorCommand();
+    
+    if(!Constants.IS_SPIN_COMPLETE){
+      spinColorCommand.execute();
+    }
+  
     if (m_robotContainer.getIntake()>0.2){
       runIntake = m_robotContainer.getRunIntake();
     }

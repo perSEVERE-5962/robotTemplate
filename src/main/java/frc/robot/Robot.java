@@ -7,12 +7,17 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.AnalogGyro;
+import com.analog.adis16448.frc.ADIS16448_IMU;
+
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.RunIntake;
+import frc.robot.subsystems.Arm;
+
+import frc.robot.subsystems.*;
+
 
 import frc.robot.Constants;
 
@@ -23,13 +28,25 @@ import frc.robot.Constants;
  * project.
  */
 public class Robot extends TimedRobot {
+  private Drive drive = null;
   private Command autonomousCommand;
   private Command driveCommand;
   private Command senseColorCommand;
   private Command spinColorCommand;
   private Command spinRotCommand;
+
+  private boolean left = true; 
+  private boolean right = false; 
+  private boolean stop = false; 
+   
   private RobotContainer m_robotContainer;
-  private Gyro gyro = new AnalogGyro(0);
+
+  private Command motor;
+  private Arm arm = new Arm(); 
+
+  private ADIS16448_IMU gyro = new ADIS16448_IMU();
+  private Command runIntake;
+  private Command shoot;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -39,7 +56,8 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-    m_robotContainer = new RobotContainer();
+    gyro.reset();
+    m_robotContainer  = new RobotContainer();
   }
 
   /**
@@ -78,9 +96,10 @@ public class Robot extends TimedRobot {
     autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // // schedule the autonomous command (example)
+
     if (autonomousCommand != null) {
       autonomousCommand.schedule();
-    }
+    } 
   }
 
   /**
@@ -88,6 +107,29 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
+
+    left = SmartDashboard.getBoolean("left", true);
+    right = SmartDashboard.getBoolean("right", false);
+    stop = SmartDashboard.getBoolean("stop", false);
+    if (left == true){
+      Command aum = m_robotContainer.getTurnLeftCommand();
+      if (aum!= null){
+        aum.schedule();
+      }
+    }
+    else if (right == true){
+      Command aum = m_robotContainer.getTurnRightCommand();
+      if (aum!= null){
+        aum.schedule();
+      }
+    }
+    else {
+      Command aum = m_robotContainer.stopdrive();
+      if (aum!= null){
+        aum.schedule();
+      }
+    }
+
   }
 
   @Override
@@ -99,6 +141,12 @@ public class Robot extends TimedRobot {
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
     }
+  // motor = new BallCommands();
+  //   if  (motor != null){
+  //     motor.schedule();
+  //   }
+
+    
 
     driveCommand = m_robotContainer.getDriveCommand();
     if (driveCommand != null) {
@@ -108,6 +156,11 @@ public class Robot extends TimedRobot {
     senseColorCommand = m_robotContainer.getSenseColorCommand();
     spinColorCommand = m_robotContainer.getSpinColorCommand();
     spinRotCommand = m_robotContainer.getSpinRotCommand();
+    
+    // Drive.leftTalon().configNominalOutputForward(0.1, 30);
+    // Drive.leftTalon().configNominalOutputReverse(-0.1, 30);
+    // Drive.rightTalon().configNominalOutputForward(0.1, 30);
+    // Drive.rightTalon().configNominalOutputReverse(-0.1, 30);
 
   }
 
@@ -123,7 +176,20 @@ public class Robot extends TimedRobot {
       spinColorCommand.execute();
     }
   
+    if (m_robotContainer.getIntake()>0.2){
+      runIntake = m_robotContainer.getRunIntake();
+    }
+    else if(m_robotContainer.getIntake()<-0.2){
+      runIntake = m_robotContainer.getShoot();
+    }
+    else{
+      runIntake = m_robotContainer.getStopArm();
+    }
+    if (runIntake != null){
+      runIntake.schedule();
+    }
   }
+
 
   @Override
   public void testInit() {

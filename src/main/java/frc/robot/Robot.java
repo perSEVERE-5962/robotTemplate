@@ -176,6 +176,7 @@ public class Robot extends TimedRobot {
       spinColorCommand.execute();
     }
   
+    SmartDashboard.putNumber("Arm Encoder Value", arm.armTal().getSelectedSensorPosition());
     if (m_robotContainer.getIntake()>0.2){
       runIntake = m_robotContainer.getRunIntake();
     }

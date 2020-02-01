@@ -15,6 +15,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Arm extends SubsystemBase {
   private WPI_TalonSRX armTalon;
+  public WPI_TalonSRX armTal(){
+    return armTalon;
+  }
   /**
    * Creates a new moveUp.
    */
@@ -23,6 +26,12 @@ public class Arm extends SubsystemBase {
 
   public Arm() {
     armTalon = new WPI_TalonSRX(12);
+    armTalon.setSensorPhase(true);
+    armTalon.setSelectedSensorPosition(0);
+    // armTalon.set(ControlMode.PercentOutput, 0);
+  }
+  public void stop() {
+    armTalon.set(ControlMode.PercentOutput, 0);
   }
 
 public double setAngle(double angle){

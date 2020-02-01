@@ -18,6 +18,9 @@ public class Arm extends SubsystemBase {
   /**
    * Creates a new moveUp.
    */
+  public WPI_TalonSRX armT(){
+    return armTalon;
+  }
   private double measureAngle;
   
 
@@ -39,6 +42,11 @@ public void shootingPosition(){
 public void intakePosition(){
   armTalon.set(ControlMode.Position, setAngle(35.0));
   SmartDashboard.putNumber("Absolute", armTalon.getSelectedSensorPosition());
+}
+
+//NEW resetPosition
+public void resetPosition(){
+  armTalon.set(ControlMode.Position, 0);
 }
 
 public double getEncoderValues(){

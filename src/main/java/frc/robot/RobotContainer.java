@@ -22,6 +22,7 @@ import frc.robot.commands.DriveRight;
 
 import frc.robot.commands.MoveArmDown;
 import frc.robot.commands.MoveArmUp;
+import frc.robot.commands.MoveArmReset;
 import frc.robot.commands.RunIntake;
 import frc.robot.commands.RunJamieDrive;
 import frc.robot.commands.RunTankDrive;
@@ -57,6 +58,7 @@ public class RobotContainer {
   // arm buttons
   private final  JoystickButton buttonA = new JoystickButton(copilotController, 1);
   private final  JoystickButton buttonB = new JoystickButton(copilotController, 2);
+  private final  JoystickButton button6 = new JoystickButton(copilotController, 6);
 
   // camera led buttons
   private final JoystickButton buttonY = new JoystickButton(copilotController, 3);
@@ -128,6 +130,7 @@ public class RobotContainer {
     buttonB.whenPressed(new MoveArmUp());
     buttonX.whenPressed(new TurnOnLight(cameraLight));
     buttonY.whenPressed(new TurnOffLight(cameraLight));
+    button6.whenPressed(new MoveArmReset());
   }
 
 

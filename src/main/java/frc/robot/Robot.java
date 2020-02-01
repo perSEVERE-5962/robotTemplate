@@ -171,7 +171,7 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     spinRotCommand = m_robotContainer.getSpinRotCommand();
     spinColorCommand = m_robotContainer.getSpinColorCommand();
-    
+    SmartDashboard.putNumber("Arm", arm.armT().getSelectedSensorPosition());
     if(!Constants.IS_SPIN_COMPLETE){
       spinColorCommand.execute();
     }

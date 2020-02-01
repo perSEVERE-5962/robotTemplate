@@ -13,7 +13,8 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.subsystems.MoveArm;
+import frc.robot.commands.RunIntake;
+import frc.robot.subsystems.Arm;
 
 import frc.robot.subsystems.*;
 
@@ -37,7 +38,7 @@ public class Robot extends TimedRobot {
   private RobotContainer m_robotContainer;
 
   private Command motor;
-  private MoveArm arm = new MoveArm(); 
+  private Arm arm = new Arm(); 
 
   private ADIS16448_IMU gyro = new ADIS16448_IMU();
   private Command runIntake;

@@ -24,6 +24,8 @@ import frc.robot.commands.MoveArmDownCommand;
 import frc.robot.commands.MoveArmUpCommand;
 
 import frc.robot.commands.RunJamieDrive;
+import frc.robot.commands.Climbstringup;
+import frc.robot.commands.Hangup;
 import frc.robot.commands.RunTankDrive;
 import frc.robot.commands.SmoothArcadeDrive;
 import frc.robot.commands.SmoothTankDrive;
@@ -32,8 +34,6 @@ import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.MoveArm;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.HangUp;
-import frc.robot.subsystems.Hang;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -75,6 +75,8 @@ public class RobotContainer {
   private final MoveArm armSub = new MoveArm();
   // private final RunTankDrive driveCommand = new RunTankDrive(driveSubsystem);
   private Command driveCommand;
+  private final JoystickButton buttonX = new JoystickButton(copilotController, 3);
+  private final JoystickButton buttonY = new JoystickButton(copilotController, 4);
 
   private DriveLeft left = new DriveLeft(driveSubsystem);
   private DriveRight right= new DriveRight(driveSubsystem);
@@ -106,6 +108,9 @@ public class RobotContainer {
   private void configureButtonBindings() {
     buttonA.whenPressed(new MoveArmDownCommand());
     buttonB.whenPressed(new MoveArmUpCommand());
+    buttonX.whenPressed(new Hangup());
+    buttonY.whenPressed(new Climbstringup());
+
   }
 
 

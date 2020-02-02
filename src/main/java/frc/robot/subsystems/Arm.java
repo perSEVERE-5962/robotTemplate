@@ -15,6 +15,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Arm extends SubsystemBase {
   private WPI_TalonSRX armTalon;
+  private final double shootAngle = 35.0;
+  private final double intakeAngle = 70.0;
   /**
    * Creates a new moveUp.
    */
@@ -35,12 +37,12 @@ public double setAngle(double angle){
 }
 
 public void shootingPosition(){
-  armTalon.set(ControlMode.Position, setAngle(70.0));
+  armTalon.set(ControlMode.Position, setAngle(shootAngle));
   SmartDashboard.putNumber("Absolute", armTalon.getSelectedSensorPosition());
 }
 
 public void intakePosition(){
-  armTalon.set(ControlMode.Position, setAngle(35.0));
+  armTalon.set(ControlMode.Position, setAngle(intakeAngle));
   SmartDashboard.putNumber("Absolute", armTalon.getSelectedSensorPosition());
 }
 

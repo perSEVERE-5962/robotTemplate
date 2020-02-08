@@ -34,6 +34,7 @@ public class Robot extends TimedRobot {
   private Command senseColorCommand;
   private Command spinColorCommand;
   private Command spinRotCommand;
+  private Command winchCommand;
 
   private boolean left = true; 
   private boolean right = false; 
@@ -141,6 +142,11 @@ public class Robot extends TimedRobot {
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
     }
+
+    winchCommand = m_robotContainer.getWinchUp();
+    if (winchCommand != null){
+      winchCommand.schedule();
+    }
   // motor = new BallCommands();
   //   if  (motor != null){
   //     motor.schedule();
@@ -171,7 +177,7 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     spinRotCommand = m_robotContainer.getSpinRotCommand();
     spinColorCommand = m_robotContainer.getSpinColorCommand();
-    
+    SmartDashboard.putNumber("Arm", arm.armT().getSelectedSensorPosition());
     if(!Constants.IS_SPIN_COMPLETE){
       spinColorCommand.execute();
     }
@@ -188,7 +194,22 @@ public class Robot extends TimedRobot {
     if (runIntake != null){
       runIntake.schedule();
     }
+//new for Winch
+    if (m_robotContainer.getIntake()>0.2){
+      runIntake = m_robotContainer.getRunIntake();
+    }
+    else if(m_robotContainer.getIntake()<-0.2){
+      runIntake = m_robotContainer.getShoot();
+    }
+    else{
+      runIntake = m_robotContainer.getStopArm();
+    }
+    if (runIntake != null){
+      runIntake.schedule();
+    }
   }
+
+
 
 
   @Override

@@ -6,21 +6,21 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot.commands;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Hang;
+import frc.robot.Robot;
+import frc.robot.subsystems.Arm;
 
+public class ResetArm extends CommandBase {
 
-public class HangUp extends CommandBase {
-  
-  Hang subsystem;
+Arm subsystem;
 
-  
   /**
-   * Creates a new HangUp.
+   * Creates a new MoveArmReset.
    */
-  public HangUp() {
+  public ResetArm() {
     // Use addRequirements() here to declare subsystem dependencies.
-    subsystem = new Hang();
+    subsystem = new Arm();
     addRequirements(subsystem);
   }
 
@@ -32,11 +32,8 @@ public class HangUp extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //I MADE this CODE and for that it need number otherwise it red.
-    subsystem.findTicks(10);
+    subsystem.resetPosition();
   }
-
-  
 
   // Called once the command ends or is interrupted.
   @Override
@@ -46,6 +43,6 @@ public class HangUp extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

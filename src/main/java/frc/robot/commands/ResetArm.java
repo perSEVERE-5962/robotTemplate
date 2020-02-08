@@ -11,14 +11,14 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 import frc.robot.subsystems.Arm;
 
-public class MoveArmReset extends CommandBase {
+public class ResetArm extends CommandBase {
 
 Arm subsystem;
 
   /**
    * Creates a new MoveArmReset.
    */
-  public MoveArmReset() {
+  public ResetArm() {
     // Use addRequirements() here to declare subsystem dependencies.
     subsystem = new Arm();
     addRequirements(subsystem);

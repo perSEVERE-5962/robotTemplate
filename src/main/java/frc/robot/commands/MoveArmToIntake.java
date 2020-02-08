@@ -7,20 +7,19 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 import frc.robot.subsystems.Arm;
 
-public class MoveArmUp extends CommandBase {
+public class MoveArmToIntake extends CommandBase {
 
   Arm subsystem;
-  
-  
+
+
   /**
    * Creates a new MoveArmCommand.
    */
-  public MoveArmUp() {
+  public MoveArmToIntake() {
     // Use addRequirements() here to declare subsystem dependencies.
     subsystem = new Arm();
     addRequirements(subsystem);
@@ -31,20 +30,20 @@ public class MoveArmUp extends CommandBase {
   public void initialize() {
   }
 
-  // public double getEncoderValues(){
-  //   return subsystem.getEncoderValues();
-  // }
+  public double getEncoderValues(){
+    return subsystem.getEncoderValues();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-  
-  subsystem.shootingPosition();
+    subsystem.intakePosition();
+
   }
 
-  private boolean RunMoveArm() {
-    return false;
-  }
+  // private boolean RunMoveArm() {
+  //   return false;
+  // }
 
 
 
@@ -60,3 +59,5 @@ public class MoveArmUp extends CommandBase {
     return true;
   }
 }
+
+

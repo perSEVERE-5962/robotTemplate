@@ -120,7 +120,7 @@ public class ControlPanel extends SubsystemBase {
   }
 
   public ControlPanel(ColorSensor colorSensor) {
-    motorControl = new WPI_VictorSPX(19);
+    motorControl = new WPI_VictorSPX(30);
     this.colorSensor = colorSensor;
     setTargetColor();
   }

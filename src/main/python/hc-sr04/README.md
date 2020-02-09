@@ -13,7 +13,7 @@ Right_HC-SR04.py
     ECHO = 18
 
 ## Raspberry Pi
-ssh to the raspberry pi and create a folder called ```hc-sr04```
+ssh to the raspberry pi and create a folder called *hc-sr04*
 
 scp the **Left_HC-SR04.py** and **Right_HC-SR04.py** to the *hc-sr04* folder on the raspberry pi
 

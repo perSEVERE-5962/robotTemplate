@@ -20,10 +20,13 @@ scp the **Left_HC-SR04.py** and **Right_HC-SR04.py** to the *hc-sr04* folder on 
 To have the python scripts automatically start when the raspberry pi boots do the following:
 
     *assuming that the FRC raspberry pi image is being used*
-    
-    * edit the ```runCamera``` file
+
+    * edit the **runCamera** file
     * add the following before the last line in the file
-        * ```python3 ~/hc-sr04/Left_HC-SR04.py &```
-        * ```python3 ~/hc-sr04/Right_HC-SR04.py &```
+
+        ```python3 ~/hc-sr04/Left_HC-SR04.py &```
+
+        ```python3 ~/hc-sr04/Right_HC-SR04.py &```
+        
     * reboot the raspberry pi
     * open the OutlineViewer and you should see the left & right values being written to the networktables once the raspberry pi starts

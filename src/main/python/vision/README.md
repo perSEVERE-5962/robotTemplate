@@ -10,13 +10,19 @@ The vision subsystem is further split into two main functions: `vision` and
 Automonously identifies the reflective tape on the LOADING BAY and writes data
 to the NetworkTable.
 
-Saves one processed image per second by default.
+Saves one processed image per second to the Pi by default.
 
 Under the `Vision` table in the `Action` entry, the relevant action to take is
 written.
 
 Reads a configuration file created by the calibration function. If it cannot be
 found, it will use default HSV bound values.
+
+The minimum contour area that the script considers to be the reflective tape can
+be adjusted as well as the +/- pixel bounds that the robot is considered
+centered with the reflective tape.
+
+The color of the contour that is drawn by the script can also be adjusted.
 
 ## Calibration
 

@@ -159,13 +159,11 @@ while True:
         x,y,w,h = cv2.boundingRect(c)
         x += w/2
         y += h/2
-        #print("[VISION]: CENTROID X: " + str(x) + " Y: " + str(y))
         table.putNumber("Centroid X", x)
         table.putNumber("Centroid Y", y)
 
         # find area
         area = cv2.contourArea(c)
-        #print("[VISION]: AREA: " + str(area))
         table.putNumber("Area", area)
 
         # if contour area of sufficient size found ...

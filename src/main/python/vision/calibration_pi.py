@@ -17,6 +17,7 @@ config_dir='config/'
 
 # networktable server
 nt_server = '10.99.88.2'
+#nt_server = "rei.local"
 
 #####################################
 

@@ -7,13 +7,12 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drive;
 
 public class DriveRight extends CommandBase {
   private final Drive subsystem;
-  private String action = "None";
+ 
   public DriveRight(Drive subsystem) {
    this.subsystem = subsystem;
    // Use addRequirements() here to declare subsystem dependencies.
@@ -24,9 +23,6 @@ public class DriveRight extends CommandBase {
  @Override
  public void initialize() {
 
- }
- public void setAction(String action){
-   this.action = action;
  }
 
   // Called every time the scheduler runs while the command is scheduled.

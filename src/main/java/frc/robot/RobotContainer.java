@@ -65,7 +65,6 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Drive driveSubsystem = new Drive(driverController);
   private final AutoCommand autoCommand = new AutoCommand(driveSubsystem);
-  private final Arm armSub = new Arm();
   private final CameraLight cameraLight = new CameraLight();
   private final Winch winchSubsystem = new Winch();
   // private final RunTankDrive driveCommand = new RunTankDrive(driveSubsystem);
@@ -167,10 +166,7 @@ public double getRightUltrasonic(){
   }
   return value;
 }
-  
-
-
-
+ 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *

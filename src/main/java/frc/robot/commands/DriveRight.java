@@ -7,12 +7,13 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drive;
 
 public class DriveRight extends CommandBase {
   private final Drive subsystem;
-
+  private String action = "None";
   public DriveRight(Drive subsystem) {
    this.subsystem = subsystem;
    // Use addRequirements() here to declare subsystem dependencies.
@@ -22,12 +23,17 @@ public class DriveRight extends CommandBase {
  // Called when the command is initially scheduled.
  @Override
  public void initialize() {
+
+ }
+ public void setAction(String action){
+   this.action = action;
  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    subsystem.driveRight();
+      subsystem.driveRight();
+
   }
 
   // Called once the command ends or is interrupted.
@@ -38,6 +44,6 @@ public class DriveRight extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

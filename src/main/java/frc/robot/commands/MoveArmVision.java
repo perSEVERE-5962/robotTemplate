@@ -9,27 +9,36 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Drive;
+import frc.robot.Robot;
+import frc.robot.subsystems.Arm;
 
+public class MoveArmVision extends CommandBase {
 
-public class DriveLeft extends CommandBase {
-  private final Drive subsystem;
+  Arm subsystem;
+  
+  
+  /**
+   * Creates a new MoveArmCommand.
+   */
+  public MoveArmVision() {
+    // Use addRequirements() here to declare subsystem dependencies.
+    subsystem = new Arm();
+    addRequirements(subsystem);
+  }
 
-  public DriveLeft(Drive subsystem) {
-   this.subsystem = subsystem;
-   // Use addRequirements() here to declare subsystem dependencies.
-   addRequirements(subsystem);
- }
+  // Called when the command is initially scheduled.
+  @Override
+  public void initialize() {
+  }
 
- // Called when the command is initially scheduled.
- @Override
- public void initialize() {
- }
+  // public double getEncoderValues(){
+  //   return subsystem.getEncoderValues();
+  // }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    subsystem.driveLeft();
+  subsystem.visionPosition();
   }
 
   // Called once the command ends or is interrupted.
@@ -41,7 +50,5 @@ public class DriveLeft extends CommandBase {
   @Override
   public boolean isFinished() {
     return true;
-
-    }
-  
+  }
 }

@@ -26,7 +26,7 @@ public class Arm extends SubsystemBase {
 
   public Arm() {
     armTalon = new WPI_TalonSRX(12);
-    armTalon.setSensorPhase(true);
+     //armTalon.setSensorPhase(true);
     armTalon.setSelectedSensorPosition(0);
     // armTalon.set(ControlMode.PercentOutput, 0);
   }
@@ -41,12 +41,15 @@ public double setAngle(double angle){
 }
 
 public void shootingPosition(){
-  armTalon.set(ControlMode.Position, setAngle(70.0));
+  armTalon.set(ControlMode.Position, setAngle(10.0));
   SmartDashboard.putNumber("Absolute", armTalon.getSelectedSensorPosition());
 }
-
+public void visionPosition(){
+  armTalon.set(ControlMode.Position, setAngle(38.0));
+  SmartDashboard.putNumber("Absolute", armTalon.getSelectedSensorPosition());
+}
 public void intakePosition(){
-  armTalon.set(ControlMode.Position, setAngle(35.0));
+  armTalon.set(ControlMode.Position, setAngle(80.0));
   SmartDashboard.putNumber("Absolute", armTalon.getSelectedSensorPosition());
 }
 

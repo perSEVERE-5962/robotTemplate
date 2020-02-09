@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.CameraLight;
 
 public class TurnOnLight extends CommandBase {
@@ -16,6 +17,7 @@ public class TurnOnLight extends CommandBase {
    */
 
    private CameraLight light;
+   
   public TurnOnLight(CameraLight light) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.light = light;
@@ -31,7 +33,6 @@ public class TurnOnLight extends CommandBase {
   @Override
   public void execute() {
     this.light.turnOnLight();
-
   }
 
   // Called once the command ends or is interrupted.

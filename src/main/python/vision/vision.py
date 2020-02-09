@@ -2,10 +2,10 @@
 
 import os
 import cv2
-from cscore import CameraServer
 import numpy as np
 import configparser
 from time import time as Time # prevents conflict w/ `time` variable
+from cscore import CameraServer
 from networktables import NetworkTables
 
 ##########
@@ -22,6 +22,17 @@ img_dir = 'images/'
 
 # network table server
 nt_server = "10.99.88.2"
+#nt_server = "rei.local"
+
+# minimum contour area detected by script to make a decision
+min_contour_area = 75
+
+# +/- range in pixels that the robot is considered to be centered
+centered_bounds = 20
+
+# the color of the contour drawn
+# CYAN = (255, 255, 0) | GREEN = (0, 255, 0) | YELLOW = (0, 255, 255)
+contour_color = (255, 255, 0)
 
 # image capture interval (in seconds)
 image_capture_interval = 1.0
@@ -92,11 +103,16 @@ else:
     s_u = 24
     v_u = 255
 
+# print values of bounds
+print("[VISION]: Lower H: " + str(h_l) + " S: " + str(s_l) + " V: " + str(v_l))
+print("[VISION]: Upper H: " + str(h_u) + " S: " + str(s_u) + " V: " + str(v_u))
+
 """ PROCESS CAMERA FEED """
 
 print("[VISION]: Vision processing initialized.")
 
 last_recorded_time = Time()
+img_center_found = False
 
 while True:
     # Tell the CvSink to grab a frame from the camera and put it
@@ -108,20 +124,27 @@ while True:
         # skip the rest of the current iteration
         continue
 
+    # find x center of image
+    if img_center_found == False:
+        # get dimensions of image
+        img_height, img_width, img_channels = frame.shape
+
+        # find x center
+        img_center_x = int(img_width/2)
+        img_center_y = int(img_width/2)
+        table.putNumber("Image Center X", img_center_x)
+        table.putNumber("Image Center Y", img_center_y)
+
+        img_center_found = True
+        print("[VISION]: Image center found.")
+
     # convert frame to hsv color space
     hsv_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-    #cv2.imshow("Original Frame", frame)
-    #cv2.imshow("HSV Frame", hsv_frame)
-
-    # apply Gaussian Blur to frame
-    #blur_frame = cv2.GaussianBlur(hsv_frame, (3,3), 0)
-    #cv2.imshow("Blur Image", blur_frame)
 
     # set lower and upper HSV bounds for mask
     lower = np.array([h_l, s_l, v_l])
     upper = np.array([h_u, s_u, v_u])
     mask = cv2.inRange(hsv_frame, lower, upper)
-    #cv2.imshow("Mask", mask)
 
     # find contours
     # NOTE: On the rPi, `_, contours, _` works but `contours, _` works on local
@@ -136,38 +159,29 @@ while True:
         x,y,w,h = cv2.boundingRect(c)
         x += w/2
         y += h/2
-        #print("[VISION]: CENTROID X: " + str(x) + " Y: " + str(y))
         table.putNumber("Centroid X", x)
         table.putNumber("Centroid Y", y)
 
         # find area
         area = cv2.contourArea(c)
-        #print("[VISION]: AREA: " + str(area))
         table.putNumber("Area", area)
 
-        # get dimensions of image
-        img_height, img_width, img_channels = frame.shape
-
-        # find x center of image
-        img_center_x = int(img_width/2)
-        img_center_y = int(img_width/2)
-        table.putNumber("Image Center X", img_center_x)
-        table.putNumber("Image Center Y", img_center_y)
-
+        # if contour area of sufficient size found ...
         # make decision based on relative position of centroid to image center
-        if (img_center_x - 10) <= x <= (img_center_x + 10):
-            #print("[VISION]: ACTION: None")
-            table.putString("Action", "None")
-        elif x < img_center_x:
-            #print("[VISION]: ACTION: Left")
-            table.putString("Action", "Left")
-        elif x > img_center_x:
-            #print("[VISION]: ACTION: Right")
+        if area >= min_contour_area:
+            if (img_center_x - centered_bounds) <= x <= (img_center_x + centered_bounds):
+                table.putString("Action", "None")
+            elif x < img_center_x:
+                table.putString("Action", "Left")
+            elif x > img_center_x:
+                table.putString("Action", "Right")
+        # else keep turning right
+        else:
             table.putString("Action", "Right")
 
         # create processed contour image
         inrange_frame = cv2.bitwise_and(frame, frame, mask=mask)
-        cv2.drawContours(frame, c, -1, (0, 25, 0), 3)
+        cv2.drawContours(frame, c, -1, contour_color, 3)
     else:
         inrange_frame = frame
 

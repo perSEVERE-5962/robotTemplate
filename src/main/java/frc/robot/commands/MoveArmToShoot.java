@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 import frc.robot.subsystems.Arm;
 
-public class MoveArmUp extends CommandBase {
+public class MoveArmToShoot extends CommandBase {
 
   Arm subsystem;
   
@@ -20,7 +20,7 @@ public class MoveArmUp extends CommandBase {
   /**
    * Creates a new MoveArmCommand.
    */
-  public MoveArmUp() {
+  public MoveArmToShoot() {
     // Use addRequirements() here to declare subsystem dependencies.
     subsystem = new Arm();
     addRequirements(subsystem);
@@ -42,9 +42,9 @@ public class MoveArmUp extends CommandBase {
   subsystem.shootingPosition();
   }
 
-  private boolean RunMoveArm() {
-    return false;
-  }
+  // private boolean RunMoveArm() {
+  //   return false;
+  // }
 
 
 

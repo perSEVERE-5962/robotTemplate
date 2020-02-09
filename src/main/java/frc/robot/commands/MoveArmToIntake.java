@@ -6,21 +6,23 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot.commands;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Hang;
+import frc.robot.Robot;
+import frc.robot.subsystems.Arm;
+
+public class MoveArmToIntake extends CommandBase {
+
+  Arm subsystem;
 
 
-public class HangUp extends CommandBase {
-  
-  Hang subsystem;
-
-  
   /**
-   * Creates a new HangUp.
+   * Creates a new MoveArmCommand.
    */
-  public HangUp() {
+  public MoveArmToIntake() {
     // Use addRequirements() here to declare subsystem dependencies.
-    subsystem = new Hang();
+    subsystem = new Arm();
     addRequirements(subsystem);
   }
 
@@ -29,14 +31,24 @@ public class HangUp extends CommandBase {
   public void initialize() {
   }
 
+  public double getEncoderValues(){
+    return subsystem.getEncoderValues();
+  }
+
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //I MADE this CODE and for that it need number otherwise it red.
-    subsystem.findTicks(10);
+    SmartDashboard.putString("down", "down");
+    subsystem.intakePosition();
+
   }
 
-  
+  // private boolean RunMoveArm() {
+  //   return false;
+  // }
+
+
+
 
   // Called once the command ends or is interrupted.
   @Override
@@ -46,6 +58,8 @@ public class HangUp extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }
+
+

@@ -15,19 +15,6 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.ArcadeDrive;
-import frc.robot.commands.AutoCommand;
-
-import frc.robot.commands.DriveBackwards;
-import frc.robot.commands.DriveForward;
-import frc.robot.commands.DriveLeft;
-import frc.robot.commands.DriveRight;
-
-import frc.robot.commands.MoveArmDown;
-import frc.robot.commands.MoveArmUp;
-import frc.robot.commands.RunIntake;
-import frc.robot.commands.RunJamieDrive;
-import frc.robot.commands.RunTankDrive;
 import frc.robot.subsystems.ColorSensor;
 import frc.robot.subsystems.ControlPanel;
 import frc.robot.subsystems.Drive;
@@ -39,6 +26,7 @@ import frc.robot.commands.StopDrive;
 import frc.robot.commands.TurnOffLight;
 import frc.robot.commands.TurnOnLight;
 import frc.robot.subsystems.CameraLight;
+import frc.robot.subsystems.Winch;
 import frc.robot.subsystems.Arm;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -60,11 +48,12 @@ public class RobotContainer {
   // arm buttons
   private final  JoystickButton buttonA = new JoystickButton(copilotController, 1);
   private final  JoystickButton buttonB = new JoystickButton(copilotController, 2);
+  private final  JoystickButton button8 = new JoystickButton(copilotController, 8);
 
   // camera led buttons
   private final JoystickButton buttonY = new JoystickButton(copilotController, 3);
   private final JoystickButton buttonX = new JoystickButton(copilotController, 4);
-
+  
 
   public double getIntake(){
     double axisValue = copilotController.getRawAxis(1);
@@ -78,7 +67,11 @@ public class RobotContainer {
   private final AutoCommand autoCommand = new AutoCommand(driveSubsystem);
   private final Arm armSub = new Arm();
   private final CameraLight cameraLight = new CameraLight();
+  private final Winch winchSubsystem = new Winch();
   // private final RunTankDrive driveCommand = new RunTankDrive(driveSubsystem);
+
+  private final WinchUp winchUp = new WinchUp(winchSubsystem);
+
 
   private NetworkTableInstance inst = NetworkTableInstance.getDefault();
   private NetworkTable table;
@@ -117,6 +110,8 @@ public class RobotContainer {
   private DriveForward goForward = new DriveForward(driveSubsystem);
   private DriveBackwards goBackwards = new DriveBackwards(driveSubsystem);
   private StopArm stopArm = new StopArm(); 
+  // private WinchUp winchUp = new WinchUp();
+
   public Command getShoot(){
     return shoot;
   }
@@ -142,10 +137,12 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    buttonA.whenPressed(new MoveArmDown());
-    buttonB.whenPressed(new MoveArmUp());
+    buttonA.whenPressed(new MoveArmToIntake());
+    buttonB.whenPressed(new MoveArmToShoot());
     buttonX.whenPressed(new TurnOnLight(cameraLight));
     buttonY.whenPressed(new TurnOffLight(cameraLight));
+    button8.whenPressed(new ResetArm());
+    // button7.whenPressed(new WinchUp());
   }
   public String getVisionAction(){
     table = inst.getTable("Vision");
@@ -211,6 +208,10 @@ public double getRightUltrasonic(){
   }
   public Command getStopArm(){
     return stopArm;
+  }
+
+  public Command getWinchUp(){
+    return winchUp;
   }
 
   public Command getSenseColorCommand(){

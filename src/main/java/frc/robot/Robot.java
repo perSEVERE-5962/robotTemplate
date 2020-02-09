@@ -23,7 +23,7 @@ import frc.robot.subsystems.Arm;
  */
 public class Robot extends TimedRobot {
   private Command autonomousCommand;
-  private Command driveCommandommand;
+  private Command driveCommand;
   private Command lightOn;
   private Command spinColorCommand;
   private Command senseColorCommand;
@@ -181,9 +181,9 @@ private void inchForward(){
   //     motor.schedule();
   //   } 
 
-    driveCommandommand = m_robotContainer.getDriveCommand();
-    if (driveCommandommand != null) {
-      driveCommandommand.schedule();
+    driveCommand = m_robotContainer.getDriveCommand();
+    if (driveCommand != null) {
+      driveCommand.schedule();
     }
 
     senseColorCommand = m_robotContainer.getSenseColorCommand();

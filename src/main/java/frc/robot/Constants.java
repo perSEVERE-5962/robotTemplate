@@ -19,4 +19,5 @@ public final class Constants {
     public static int MAX_COLOR_ROTATIONS = 3;
     public static String SPIN_COLOR = "";
     public static boolean IS_SPIN_COMPLETE = false;
+    public static boolean IS_CAPTURE_COMPLETE = true;
 }

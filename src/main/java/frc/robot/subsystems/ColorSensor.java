@@ -8,8 +8,12 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardComponent;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.smartdashboard.*;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -36,6 +40,8 @@ public class ColorSensor{
   private final double[] tYellow = {0.35, 0.55, 0.10};
   
   private final double tConfidence = 0.93;
+
+  private Color detectedColor;
 
   private final Color colorBlue = ColorMatch.makeColor(tBlue[0], tBlue[1], tBlue[2]);
   private final Color colorGreen = ColorMatch.makeColor(tGreen[0], tGreen[1], tGreen[2]);
@@ -77,12 +83,24 @@ public class ColorSensor{
     return (colorName);
   }
 
-  public void testColor(){
-    Color detectedColor = m_colorSensor.getColor();
+  public void captureColor(){
+    if(!SmartDashboard.containsKey("Capture")){
+      SmartDashboard.putBoolean("Capture", false);
+    }
 
-    SmartDashboard.putNumber("Red", detectedColor.red);
-    SmartDashboard.putNumber("Green", detectedColor.green);
-    SmartDashboard.putNumber("Blue", detectedColor.blue);
+    if(SmartDashboard.getBoolean("Capture", false)){
+      SmartDashboard.putBoolean("Capture", false);
+      testColor();
+      SmartDashboard.putString("Captured", "{"+detectedColor.red+", "+detectedColor.green+", "+detectedColor.blue+"}");
+    }
+  }
+  public void testColor(){
+    detectedColor = m_colorSensor.getColor();
+
+    SmartDashboard.putNumber("Red", detectedColor.red*100);
+    SmartDashboard.putNumber("Green", detectedColor.green*100);
+    SmartDashboard.putNumber("Blue", detectedColor.blue*100);
+   
   }
 
   public ColorSensor() {

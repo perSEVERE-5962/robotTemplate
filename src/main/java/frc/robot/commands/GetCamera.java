@@ -7,20 +7,15 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.*;
-
-public class SenseColor extends CommandBase {
+import frc.robot.subsystems.Camera;
+public class GetCamera extends CommandBase {
   /**
-   * Creates a new GetColor.
+   * Creates a new GetCamera.
    */
-
-  private final ColorSensor colorSensor;
-
-  public SenseColor(final ColorSensor colorSensor) {
+  public Camera cam;
+  public GetCamera() {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.colorSensor = colorSensor;
   }
 
   // Called when the command is initially scheduled.
@@ -31,12 +26,12 @@ public class SenseColor extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    colorSensor.testColor();
+    cam = new Camera();
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(final boolean interrupted) {
+  public void end(boolean interrupted) {
   }
 
   // Returns true when the command should end.

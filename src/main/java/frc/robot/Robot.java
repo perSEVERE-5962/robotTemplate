@@ -20,6 +20,10 @@ import frc.robot.subsystems.*;
 
 
 import frc.robot.Constants;
+import frc.robot.commands.CaptureColor;
+import frc.robot.subsystems.ColorSensor;
+
+import frc.robot.subsystems.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -34,6 +38,8 @@ public class Robot extends TimedRobot {
   private Command senseColorCommand;
   private Command spinColorCommand;
   private Command spinRotCommand;
+  private Command captureColorCommand;
+  private Command cameraCommand;
   private Command winchCommand;
 
   private boolean left = true; 
@@ -75,7 +81,7 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-    SmartDashboard.putNumber("Gyro", gyro.getAngle());
+    //SmartDashboard.putNumber("Gyro", gyro.getAngle());
   }
 
   /**
@@ -159,15 +165,20 @@ public class Robot extends TimedRobot {
       driveCommand.schedule();
     }
 
+    captureColorCommand = m_robotContainer.getCaptureColorCommand();
     senseColorCommand = m_robotContainer.getSenseColorCommand();
     spinColorCommand = m_robotContainer.getSpinColorCommand();
     spinRotCommand = m_robotContainer.getSpinRotCommand();
+    cameraCommand = m_robotContainer.getCamera();
     
     // Drive.leftTalon().configNominalOutputForward(0.1, 30);
     // Drive.leftTalon().configNominalOutputReverse(-0.1, 30);
     // Drive.rightTalon().configNominalOutputForward(0.1, 30);
     // Drive.rightTalon().configNominalOutputReverse(-0.1, 30);
 
+    cameraCommand.execute();
+
+   // SmartDashboard.putData("Capture color", new CaptureColor(new ColorSensor()));
   }
 
   /**
@@ -177,6 +188,8 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     spinRotCommand = m_robotContainer.getSpinRotCommand();
     spinColorCommand = m_robotContainer.getSpinColorCommand();
+    captureColorCommand = m_robotContainer.getCaptureColorCommand();
+
     SmartDashboard.putNumber("Arm", arm.armT().getSelectedSensorPosition());
     if(!Constants.IS_SPIN_COMPLETE){
       spinColorCommand.execute();

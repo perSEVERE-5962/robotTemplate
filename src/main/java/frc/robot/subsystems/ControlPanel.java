@@ -129,6 +129,6 @@ public class ControlPanel extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putString("Color", colorSensor.getColor());
+    //SmartDashboard.putString("Color", colorSensor.getColor());
   }
 }

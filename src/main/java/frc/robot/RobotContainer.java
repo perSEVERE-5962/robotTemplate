@@ -24,7 +24,6 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import frc.robot.commands.*;
 
-
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -69,6 +68,9 @@ public class RobotContainer {
   private final SenseColor senseColorCommand = new SenseColor(colorSensor);
   private final SpinToColor spinColorCommand = new SpinToColor(controlPanel);
   private final SpinRotations spinRotCommand = new SpinRotations(controlPanel);
+  private final CaptureColor captureColorCommand = new CaptureColor(colorSensor);
+
+  private final GetCamera cameraCommand = new GetCamera();
   private Command driveCommand;
   private final RunIntake runIntake = new RunIntake();
   private final Shoot shoot = new Shoot();
@@ -174,6 +176,14 @@ public class RobotContainer {
 
   public Command getSpinRotCommand(){
     return spinRotCommand;
+  }
+
+  public Command getCaptureColorCommand(){
+    return captureColorCommand;
+  }
+
+  public Command getCamera(){
+    return cameraCommand;
   }
   
   

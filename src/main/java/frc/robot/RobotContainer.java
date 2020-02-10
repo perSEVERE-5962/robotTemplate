@@ -16,6 +16,7 @@ import frc.robot.subsystems.ColorSensor;
 import frc.robot.subsystems.ControlPanel;
 import frc.robot.subsystems.CameraLight;
 import frc.robot.subsystems.Drive;
+import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Winch;
 import frc.robot.subsystems.Arm;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -45,10 +46,12 @@ public class RobotContainer {
   private final JoystickButton buttonX = new JoystickButton(copilotController, 4);
   
 
-  public double getIntake(){
-    double axisValue = copilotController.getRawAxis(1);
-    return axisValue;
-  }
+
+
+  // public double getIntake(){
+  //   double axisValue = copilotController.getRawAxis(1);
+  //   return axisValue;
+  // }
 
   private SendableChooser chooser= new SendableChooser<Command>();
 
@@ -58,6 +61,7 @@ public class RobotContainer {
   private final Arm armSub = new Arm();
   private final CameraLight cameraLight = new CameraLight();
   private final Winch winchSubsystem = new Winch();
+  private final Elevator elevatorsubsystem = new Elevator();
   // private final RunTankDrive driveCommand = new RunTankDrive(driveSubsystem);
 
   private final WinchUp winchUp = new WinchUp(winchSubsystem);
@@ -72,6 +76,9 @@ public class RobotContainer {
   private Command driveCommand;
   private final RunIntake runIntake = new RunIntake();
   private final Shoot shoot = new Shoot();
+  private final ElevatorUp elevatorUp = new ElevatorUp(elevatorsubsystem);
+  private final ElevatorDown elevatorDown = new ElevatorDown(elevatorsubsystem);
+
     
   public Command getRunIntake(){
     return runIntake;
@@ -84,12 +91,21 @@ public class RobotContainer {
   private StopDrive stop = new StopDrive(driveSubsystem);
   private DriveForward goForward = new DriveForward(driveSubsystem);
   private DriveBackwards goBackwards = new DriveBackwards(driveSubsystem);
-  private StopArm stopArm = new StopArm(); 
+  private StopIntake stopIntake = new StopIntake(); 
   // private WinchUp winchUp = new WinchUp();
 
   public Command getShoot(){
     return shoot;
   }
+
+  public Command getElevatorUp(){
+    return elevatorUp;
+  }
+
+  public Command getElevatorDown(){
+    return elevatorDown;
+  }
+
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -156,13 +172,14 @@ public class RobotContainer {
   public Command getgoBackwards () {
     return goBackwards;
   }
-  public Command getStopArm(){
-    return stopArm;
+  public Command getStopIntake(){
+    return stopIntake;
   }
 
   public Command getWinchUp(){
     return winchUp;
   }
+
 
   public Command getSenseColorCommand(){
     return senseColorCommand;

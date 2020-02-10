@@ -6,13 +6,14 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot;
-
 import com.analog.adis16448.frc.ADIS16448_IMU;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.ElevatorUp;
 import frc.robot.commands.RunIntake;
 import frc.robot.subsystems.Arm;
 
@@ -35,7 +36,7 @@ public class Robot extends TimedRobot {
   private Command spinColorCommand;
   private Command spinRotCommand;
   private Command winchCommand;
-
+  public Joystick joystick = new Joystick(1);
   private boolean left = true; 
   private boolean right = false; 
   private boolean stop = false; 
@@ -48,6 +49,9 @@ public class Robot extends TimedRobot {
   private ADIS16448_IMU gyro = new ADIS16448_IMU();
   private Command runIntake;
   private Command shoot;
+  private Command stopArm;
+  private Command elevatorUp;
+  private Command elevatorDown;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -182,34 +186,39 @@ public class Robot extends TimedRobot {
       spinColorCommand.execute();
     }
   
-    if (m_robotContainer.getIntake()>0.2){
+    if (joystick.getRawAxis(1)>0.2){
       runIntake = m_robotContainer.getRunIntake();
+      if (runIntake != null){
+        runIntake.schedule();
+      }
     }
-    else if(m_robotContainer.getIntake()<-0.2){
-      runIntake = m_robotContainer.getShoot();
+    else if(joystick.getRawAxis(1)<-0.2){
+      shoot = m_robotContainer.getShoot();
+      if(shoot != null){
+        shoot.schedule();
+      }
     }
     else{
-      runIntake = m_robotContainer.getStopArm();
+      stopArm = m_robotContainer.getStopIntake();
+      if(stopArm != null){
+        stopArm.schedule();
+      }
     }
-    if (runIntake != null){
-      runIntake.schedule();
-    }
-//new for Winch
-    if (m_robotContainer.getIntake()>0.2){
-      runIntake = m_robotContainer.getRunIntake();
-    }
-    else if(m_robotContainer.getIntake()<-0.2){
-      runIntake = m_robotContainer.getShoot();
-    }
-    else{
-      runIntake = m_robotContainer.getStopArm();
-    }
-    if (runIntake != null){
-      runIntake.schedule();
-    }
-  }
 
 
+    if (joystick.getRawAxis(3)>0.2){
+      elevatorUp = m_robotContainer.getElevatorUp();
+      if (elevatorUp != null){
+        elevatorUp.schedule();
+      }
+    }
+    else if(joystick.getRawAxis(2)>0.2){
+      elevatorDown = m_robotContainer.getElevatorDown();
+      if(elevatorDown != null){
+        elevatorDown.schedule();
+      }
+    }
+    }
 
 
   @Override

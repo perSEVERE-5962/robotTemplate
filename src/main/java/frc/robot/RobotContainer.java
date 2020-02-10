@@ -7,6 +7,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -14,13 +17,20 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.ColorSensor;
 import frc.robot.subsystems.ControlPanel;
-import frc.robot.subsystems.CameraLight;
 import frc.robot.subsystems.Drive;
+import frc.robot.commands.Shoot;
+import frc.robot.commands.SmoothArcadeDrive;
+import frc.robot.commands.SmoothTankDrive;
+import frc.robot.commands.StopArm;
+import frc.robot.commands.StopDrive;
+import frc.robot.commands.TurnOffLight;
+import frc.robot.commands.TurnOnLight;
+import frc.robot.subsystems.CameraLight;
 import frc.robot.subsystems.Winch;
 import frc.robot.subsystems.Arm;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-
+import frc.robot.commands.InchForward;
 
 import frc.robot.commands.*;
 
@@ -55,24 +65,38 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Drive driveSubsystem = new Drive(driverController);
   private final AutoCommand autoCommand = new AutoCommand(driveSubsystem);
-  private final Arm armSub = new Arm();
   private final CameraLight cameraLight = new CameraLight();
   private final Winch winchSubsystem = new Winch();
   // private final RunTankDrive driveCommand = new RunTankDrive(driveSubsystem);
 
   private final WinchUp winchUp = new WinchUp(winchSubsystem);
 
+
+  private NetworkTableInstance inst = NetworkTableInstance.getDefault();
+  private NetworkTable table;
+  private NetworkTableEntry myEntry;
   
   private final ColorSensor colorSensor = new ColorSensor();
   private final ControlPanel controlPanel = new ControlPanel(colorSensor);
-
+  private final InchForward inchForward = new InchForward(driveSubsystem);
   private final SenseColor senseColorCommand = new SenseColor(colorSensor);
   private final SpinToColor spinColorCommand = new SpinToColor(controlPanel);
   private final SpinRotations spinRotCommand = new SpinRotations(controlPanel);
   private Command driveCommand;
   private final RunIntake runIntake = new RunIntake();
   private final Shoot shoot = new Shoot();
-    
+  private final TurnOnLight lightOn = new TurnOnLight(cameraLight);
+  private final MoveArmVision armVision = new MoveArmVision();
+  public Command getTurnOnLight(){
+    return lightOn;
+  }
+  public Command getArmVision(){
+    return armVision;
+  }
+  public Command
+  getInchForward(){
+    return inchForward;
+  }
   public Command getRunIntake(){
     return runIntake;
   }
@@ -119,8 +143,30 @@ public class RobotContainer {
     button8.whenPressed(new ResetArm());
     // button7.whenPressed(new WinchUp());
   }
-
-
+  public String getVisionAction(){
+    table = inst.getTable("Vision");
+    myEntry = table.getEntry("Action");
+    return myEntry.getString("None");
+}
+public double getLeftUltrasonic(){
+  table = inst.getTable("HC-SR04");
+  myEntry = table.getEntry("Left Distance");
+  double value = myEntry.getDouble(0);
+  if (value > 54){
+    //value = 0.0;
+  }
+  return value;
+}
+public double getRightUltrasonic(){
+  table = inst.getTable("HC-SR04");
+  myEntry = table.getEntry("Right Distance");
+  double value = myEntry.getDouble(0);
+  if (value > 54){
+    //value = 0.0;
+  }
+  return value;
+}
+ 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
@@ -140,7 +186,7 @@ public class RobotContainer {
      return left;
    }
 
-  public Command getTurnRightCommand () {
+  public DriveRight getTurnRightCommand () {
     return right;
   }
   public Joystick getDriverJoystick() {

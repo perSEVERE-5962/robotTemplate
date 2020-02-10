@@ -12,7 +12,7 @@ import frc.robot.subsystems.Drive;
 
 public class DriveRight extends CommandBase {
   private final Drive subsystem;
-
+ 
   public DriveRight(Drive subsystem) {
    this.subsystem = subsystem;
    // Use addRequirements() here to declare subsystem dependencies.
@@ -22,12 +22,14 @@ public class DriveRight extends CommandBase {
  // Called when the command is initially scheduled.
  @Override
  public void initialize() {
+
  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    subsystem.driveRight();
+      subsystem.driveRight();
+
   }
 
   // Called once the command ends or is interrupted.
@@ -38,6 +40,6 @@ public class DriveRight extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

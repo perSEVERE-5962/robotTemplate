@@ -9,35 +9,29 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import jdk.jfr.Percentage;
 
 public class Arm extends SubsystemBase {
   private WPI_TalonSRX armTalon;
   private final double shootAngle = 10.0;
   private final double intakeAngle = 80.0;
 
-  private DigitalInput limitSwitch;
- 
-  private final double armPosition = 0;
-
-  /**
-   * Creates a new moveUp.
-   */
-  public WPI_TalonSRX armT(){
-    return armTalon;
-  }
+  //private DigitalInput limitSwitch;
   private double measureAngle;
   
 
   public Arm() {
     armTalon = new WPI_TalonSRX(12);
     //limitSwitch = new DigitalInput(9);
+     //armTalon.setSensorPhase(true);
+    armTalon.setSelectedSensorPosition(0);
+    // armTalon.set(ControlMode.PercentOutput, 0);
   }
-    
+  public void stop() {
+    armTalon.set(ControlMode.PercentOutput, 0);
+  }
 
 
 public double setAngle(double angle){
@@ -50,7 +44,10 @@ public void shootingPosition(){
   armTalon.set(ControlMode.Position, setAngle(shootAngle));
   SmartDashboard.putNumber("Absolute", armTalon.getSelectedSensorPosition());
 }
-
+public void visionPosition(){
+  armTalon.set(ControlMode.Position, setAngle(38.0));
+  SmartDashboard.putNumber("Absolute", armTalon.getSelectedSensorPosition());
+}
 public void intakePosition(){
   armTalon.set(ControlMode.Position, setAngle(intakeAngle));
   SmartDashboard.putNumber("Absolute", armTalon.getSelectedSensorPosition());

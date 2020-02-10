@@ -19,15 +19,15 @@ public class Intake extends SubsystemBase {
    */
   public Intake(){
     motorControl = new WPI_VictorSPX(19);
-
-  }
+    motorControl.setInverted(true);
+}
   
 public void runIntake(){
-  motorControl.set(0.3);
+  motorControl.set(0.9);
 }
 
 public void shoot(){
-  motorControl.set(-0.3);
+  motorControl.set(-0.9);
 }
 
 public void stop(){

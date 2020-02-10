@@ -8,9 +8,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
-
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Winch extends SubsystemBase {
@@ -20,13 +18,11 @@ public class Winch extends SubsystemBase {
    */
   public Winch() {
     motorControl = new WPI_VictorSPX(11);//13
-
   }
 
   public void moveWinch(double speed){
     motorControl.set(ControlMode.PercentOutput, speed);
   }
-  
 
   @Override
   public void periodic() {

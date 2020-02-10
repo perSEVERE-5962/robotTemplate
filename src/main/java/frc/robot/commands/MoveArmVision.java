@@ -8,19 +8,20 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.CameraLight;
+import frc.robot.subsystems.Arm;
 
-public class TurnOnLight extends CommandBase {
+public class MoveArmVision extends CommandBase {
+
+  Arm subsystem;
+  
+  
   /**
-   * Creates a new TurnOnLight.
+   * Creates a new MoveArmCommand.
    */
-
-   private CameraLight light;
-   
-  public TurnOnLight(CameraLight light) {
+  public MoveArmVision() {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.light = light;
-    addRequirements(light);
+    subsystem = new Arm();
+    addRequirements(subsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -28,10 +29,14 @@ public class TurnOnLight extends CommandBase {
   public void initialize() {
   }
 
+  // public double getEncoderValues(){
+  //   return subsystem.getEncoderValues();
+  // }
+
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    this.light.turnOnLight();
+  subsystem.visionPosition();
   }
 
   // Called once the command ends or is interrupted.

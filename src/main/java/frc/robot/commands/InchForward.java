@@ -8,30 +8,26 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.CameraLight;
+import frc.robot.subsystems.Drive;
 
-public class TurnOnLight extends CommandBase {
-  /**
-   * Creates a new TurnOnLight.
-   */
+public class InchForward extends CommandBase {
+  private final Drive subsystem;
+private double speed = 0.3;
+  public InchForward(Drive subsystem) {
+   this.subsystem = subsystem;
+   // Use addRequirements() here to declare subsystem dependencies.
+   addRequirements(subsystem);
+ }
 
-   private CameraLight light;
-   
-  public TurnOnLight(CameraLight light) {
-    // Use addRequirements() here to declare subsystem dependencies.
-    this.light = light;
-    addRequirements(light);
-  }
-
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-  }
+ // Called when the command is initially scheduled.
+ @Override
+ public void initialize() {
+ }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    this.light.turnOnLight();
+    subsystem.inchforward(speed);
   }
 
   // Called once the command ends or is interrupted.
@@ -43,5 +39,8 @@ public class TurnOnLight extends CommandBase {
   @Override
   public boolean isFinished() {
     return true;
+  }
+  public void setspeed(double speed){
+    this.speed = speed;
   }
 }

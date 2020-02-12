@@ -11,45 +11,53 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FollowerType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.sensors.UltrasonicHCSR04;
 
 public class Drive extends SubsystemBase {
   private static WPI_TalonSRX robotLeftTalon;
   private static WPI_VictorSPX robotLeftVictor;
   private static WPI_TalonSRX robotRightTalon;
   private static WPI_VictorSPX robotRightVictor;
-  // private static DifferentialDrive myRobot;
-  // private static SpeedController leftDrive;
-  // private static SpeedController rightDrive;
-  private Joystick joystick;
   private static final double speedfactor = 0.125;
-
   public WPI_TalonSRX leftTalon() {
     return robotLeftTalon;
   }
+
 
   public WPI_TalonSRX rightTalon() {
     return robotRightTalon;
   }
 
-  public Drive(Joystick joystick) {
-    robotLeftTalon = new WPI_TalonSRX(22);
-    // robotLeftTalon.configOpenloopRamp(0.1);
-    // robotLeftTalon.configClosedloopRamp(0);
+  private double ultrasonicRange;
+  private boolean ultrasonicCheck = false;
+  public UltrasonicHCSR04 ultrasonic;
+  }
+  
+  public static WPI_TalonSRX leftTalon(){
+    return robotLeftTalon;
+  }
+  public Drive() {
+    robotRightTalon = new WPI_TalonSRX(23);
+		robotRightVictor = new WPI_VictorSPX(20);
+		robotLeftTalon = new WPI_TalonSRX(22);
     robotLeftVictor = new WPI_VictorSPX(21);
-     robotRightTalon = new WPI_TalonSRX(23);
-    // robotRightTalon.configOpenloopRamp(0.1);
-    // robotRightTalon.configOpenloopRamp(0);
-    robotRightVictor = new WPI_VictorSPX(20);
-    robotRightVictor.follow(robotRightTalon, FollowerType.PercentOutput);
-    robotLeftVictor.follow(robotLeftTalon, FollowerType.PercentOutput);
-    this.joystick = joystick;
-    robotRightTalon.setInverted(false);
-    robotRightVictor.setInverted(false);
-    robotLeftTalon.setInverted(true);
-    robotLeftVictor.setInverted(true);
+    robotLeftVictor.follow(robotLeftTalon,FollowerType.PercentOutput);
+    robotRightVictor.follow(robotRightTalon,FollowerType.PercentOutput);
+    // rightTalon().setInverted(true);
+    // leftTalon().setInverted(true);
+    // rightTalon().setSensorPhase(true);
+    // leftTalon().setSelectedSensorPosition(0);
+    // rightTalon().setSelectedSensorPosition(0);
+		// leftDrive = new MultiSpeedController(robotLeftTalon, robotLeftTalon);
+		// rightDrive = new MultiSpeedController(robotRightTalon, robotRightTalon);
+    // myRobot = new DifferentialDrive(leftDrive, rightDrive);
+    // this.joystick = joystick;
   }
 
   private void setsmooth() {
@@ -83,22 +91,36 @@ public class Drive extends SubsystemBase {
       rightTalon().set(ControlMode.PercentOutput, speedfactor);
     }
 
-    else if (joystick.getRawAxis(0) > 0.1) {
-      leftTalon().set(ControlMode.PercentOutput, speedfactor);
-      rightTalon().set(ControlMode.PercentOutput, -speedfactor);
-    } else {
+
+  }
+    }
       leftTalon().set(ControlMode.PercentOutput, speedfactor * joystick.getRawAxis(5));
       rightTalon().set(ControlMode.PercentOutput, speedfactor * joystick.getRawAxis(5));
+    } else {
+      rightTalon().set(ControlMode.PercentOutput, -speedfactor);
+      leftTalon().set(ControlMode.PercentOutput, speedfactor);
+    else if (joystick.getRawAxis(0) > 0.1) {
+  public void tankDrive(double leftSpeed, double rightSpeed) {
+    robotLeftTalon.set(ControlMode.PercentOutput, leftSpeed);
+    robotRightTalon.set(ControlMode.PercentOutput, rightSpeed);
+    SmartDashboard.putNumber("tankdrive left", leftSpeed);
+    // myRobot.tankDrive(joystick.getRawAxis(1), joystick.getRawAxis(4));
+    SmartDashboard.putNumber("tankdrive right", rightSpeed);
+    SmartDashboard.putNumber("encoder left", leftTalon().getSelectedSensorPosition());
+    SmartDashboard.putNumber("encoder right", rightTalon().getSelectedSensorPosition());
+	}
+  
+  public void driveToScoringArea(){
+    ultrasonicRange = ultrasonic.averageRange();
+    if(ultrasonicCheck = false){
+      robotLeftTalon.set(ControlMode.PercentOutput, 0.5);
+      robotRightTalon.set(ControlMode.PercentOutput, 0.5);
+      ultrasonicCheck = true;
     }
-  }
-
-  public void tankDrive() {
-
-    // myRobot.tankDrive(joystick.getRawAxis(1), joystick.getRawAxis(5));
-    leftTalon().set(ControlMode.PercentOutput, speedfactor * joystick.getRawAxis(5));
-    rightTalon().set(ControlMode.PercentOutput, speedfactor * joystick.getRawAxis(1));
-    SmartDashboard.putNumber("right Encoder Value", rightTalon().getSelectedSensorPosition());
-    SmartDashboard.putNumber("left Encoder Value", leftTalon().getSelectedSensorPosition());
+    else if(ultrasonicCheck = true && ultrasonicRange < 5){
+      robotLeftTalon.set(ControlMode.PercentOutput, 0);
+      robotRightTalon.set(ControlMode.PercentOutput, 0);
+    }
   }
 
   public void arcadeDrive() {
@@ -106,7 +128,6 @@ public class Drive extends SubsystemBase {
     rightTalon().set(ControlMode.PercentOutput, speedfactor * joystick.getRawAxis(5));
     // myRobot.arcadeDrive(joystick.getRawAxis(5), joystick.getRawAxis(4));
   }
-
   public void autoDrive() {
     leftTalon().set(ControlMode.PercentOutput, speedfactor);
     rightTalon().set(ControlMode.PercentOutput, -speedfactor);

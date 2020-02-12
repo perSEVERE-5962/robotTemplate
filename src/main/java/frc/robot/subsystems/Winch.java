@@ -7,23 +7,25 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+
+
 public class Winch extends SubsystemBase {
-  private static WPI_VictorSPX motorControl;
   /**
    * Creates a new Winch.
    */
+  private WPI_VictorSPX winchVictor;
+
   public Winch() {
-    motorControl = new WPI_VictorSPX(11);//13
+    winchVictor = new WPI_VictorSPX(13);
+    
   }
-
   public void moveWinch(double speed){
-    motorControl.set(ControlMode.PercentOutput, speed);
+    winchVictor.set(ControlMode.PercentOutput, speed);
   }
-
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

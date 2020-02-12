@@ -6,12 +6,14 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot;
+import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -28,9 +30,11 @@ import frc.robot.commands.TurnOnLight;
 import frc.robot.subsystems.CameraLight;
 import frc.robot.subsystems.Winch;
 import frc.robot.subsystems.Arm;
+import frc.robot.commands.PathFollow;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.InchForward;
+import frc.robot.sensors.PIDControl;
 
 import frc.robot.commands.*;
 
@@ -44,6 +48,8 @@ import frc.robot.commands.*;
 public class RobotContainer {
   private final Joystick driverController = new Joystick(0);
   private final Joystick copilotController = new Joystick(1);
+  // private final JoystickButton joyButton = new JoystickButton(copilotController, 5);
+  // private final JoystickButton joyButton6 = new JoystickButton(copilotController, 6);
 
   // arm buttons
   private final  JoystickButton buttonA = new JoystickButton(copilotController, 1);
@@ -63,7 +69,8 @@ public class RobotContainer {
   private SendableChooser chooser= new SendableChooser<Command>();
 
   // The robot's subsystems and commands are defined here...
-  private final Drive driveSubsystem = new Drive(driverController);
+  private final Drive driveSubsystem = new Drive();
+  private final Winch winchSubsystem = new Winch();
   private final AutoCommand autoCommand = new AutoCommand(driveSubsystem);
   private final CameraLight cameraLight = new CameraLight();
   private final Winch winchSubsystem = new Winch();
@@ -75,6 +82,9 @@ public class RobotContainer {
   private NetworkTableInstance inst = NetworkTableInstance.getDefault();
   private NetworkTable table;
   private NetworkTableEntry myEntry;
+  private AHRS ahrs = new AHRS(SPI.Port.kMXP);
+  private final PIDControl pidControl = new PIDControl();
+  private final PathFollow followPath = new PathFollow(driveSubsystem, pidControl, ahrs);
   
   private final ColorSensor colorSensor = new ColorSensor();
   private final ControlPanel controlPanel = new ControlPanel(colorSensor);
@@ -196,6 +206,9 @@ public double getRightUltrasonic(){
   public Joystick getCopilotJoystick() {
     return copilotController;
   }
+  public Command getFollowPath(){
+  }
+    return followPath;
   public Command getgoForward () {
     return goForward;
   }

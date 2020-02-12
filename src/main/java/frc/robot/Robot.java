@@ -7,14 +7,19 @@
 
 package frc.robot;
 
-import com.analog.adis16448.frc.ADIS16448_IMU;
-
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.Arm;
 
+import frc.robot.sensors.PIDControl;
+import frc.robot.subsystems.Drive;
+
+import frc.robot.commands.PathFollow;
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
  * each mode, as described in the TimedRobot documentation. If you change the name of this class or
@@ -30,10 +35,18 @@ public class Robot extends TimedRobot {
   private Command spinRotCommand;
   private Command winchCommand;
   private Command armVision;
+  private Command moveWinch;
+  public PIDControl pidControl;
+  public Drive drive;
   private RobotContainer m_robotContainer;
-  private Arm arm = new Arm(); 
-  private ADIS16448_IMU gyro = new ADIS16448_IMU();
+  private PathFollow autoPath;
+ 
+  public Robot(){
+    
+    super(0.01);
+  }
   private Command runIntake;
+  private Arm arm = new Arm(); 
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -45,6 +58,8 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     gyro.reset();
     m_robotContainer = new RobotContainer();
+    
+
   }
 
   /**
@@ -77,7 +92,7 @@ public class Robot extends TimedRobot {
 
   /**
    * This autonomous runs the autonomous command selected by your {@link RobotContainer} class.
-   */
+   */ 
   @Override
   public void autonomousInit() {
     autonomousCommand = m_robotContainer.getAutonomousCommand();
@@ -91,6 +106,10 @@ public class Robot extends TimedRobot {
     if(armVision != null){
       armVision.schedule();
     }
+    autonomousCommand = m_robotContainer.getFollowPath();
+    
+    Drive.robotLeftTalon.setSelectedSensorPosition(0);
+    Drive.robotRightTalon.setSelectedSensorPosition(0);
     if (autonomousCommand != null) {
       autonomousCommand.schedule();
     } 
@@ -202,6 +221,9 @@ private void inchForward(){
    */
   @Override
   public void teleopPeriodic() {
+    SmartDashboard.putNumber("Encoder Right Value", Drive.rightTalon().getSelectedSensorPosition());
+    SmartDashboard.putNumber("Encoder Left Value", Drive.leftTalon().getSelectedSensorPosition());
+
     spinRotCommand = m_robotContainer.getSpinRotCommand();
     spinColorCommand = m_robotContainer.getSpinColorCommand();
 

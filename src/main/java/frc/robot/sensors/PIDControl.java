@@ -9,7 +9,8 @@ public class PIDControl{
         Drive.robotLeftVictor.follow(Drive.robotLeftTalon);
         Drive.robotRightVictor.follow(Drive.robotRightTalon);
 
-        
+		// Drive.robotLeftTalon.setSelectedSensorPosition(0);
+		// Drive.robotRightTalon.setSelectedSensorPosition(0);
         /** Track button state for single press event */
         boolean _lastButton1 = false;
     
@@ -26,21 +27,25 @@ public class PIDControl{
 		/**
 		 * Set based on what direction you want forward/positive to be.
 		 * This does not affect sensor phase. 
-		 */ 
-        Drive.robotRightTalon.setInverted(true);//true
-        Drive.robotRightVictor.setInverted(true);//true
-        Drive.robotLeftTalon.setInverted(false);//false
-        Drive.robotLeftVictor.setInverted(false);//false
+		//  */ 
+        Drive.robotRightTalon.setInverted(true);//compbot: true testbot: false
+        Drive.robotRightVictor.setInverted(true);//compbot: true testbot: false
+        Drive.robotLeftTalon.setInverted(false);//compbot: false testbot:true
+        Drive.robotLeftVictor.setInverted(false);//compbot: false testbot:true
 
 		/* Config the peak and nominal outputs, 12V means full */
         //Drive.robotLeftTalp8uy76tr54e3w2q1w2e3r5tyt-iuyte4r5t54687on.configNominalOutputForward(0, 30);
         Drive.robotRightTalon.configNominalOutputForward(0, 30);
         Drive.robotLeftTalon.configNominalOutputReverse(0, 30);
 		Drive.robotRightTalon.configNominalOutputReverse(0, 30);
-        Drive.robotLeftTalon.configPeakOutputForward(0.3, 30);
-        Drive.robotRightTalon.configPeakOutputForward(0.3, 30);
-        Drive.robotLeftTalon.configPeakOutputReverse(-0.3, 30);
-        Drive.robotRightTalon.configPeakOutputReverse(-0.3, 30);
+        Drive.robotLeftTalon.configPeakOutputForward(1, 30);
+        Drive.robotRightTalon.configPeakOutputForward(1, 30);
+        Drive.robotLeftTalon.configPeakOutputReverse(-1, 30);
+		Drive.robotRightTalon.configPeakOutputReverse(-1, 30);
+		
+		/* Disable Ramping for Auto */
+		Drive.robotRightTalon.configOpenloopRamp(0);
+		Drive.robotLeftTalon.configOpenloopRamp(0);
 
 		/**
 		 * Config the allowable closed-loop error, Closed-Loop output will be
@@ -52,13 +57,13 @@ public class PIDControl{
 
 		/* Config Position Closed Loop gains in slot0, tsypically kF stays zero. */
 		Drive.robotLeftTalon.config_kF(0, 0, 30);
-		Drive.robotLeftTalon.config_kP(0, 0.057, 30);
+		Drive.robotLeftTalon.config_kP(0, 1, 30);
 		Drive.robotLeftTalon.config_kI(0, 0, 30);
 		Drive.robotLeftTalon.config_kD(0, 0, 30);
 
 
 		Drive.robotRightTalon.config_kF(0, 0, 30);
-		Drive.robotRightTalon.config_kP(0, 0.057, 30);
+		Drive.robotRightTalon.config_kP(0, 1, 30);
 		Drive.robotRightTalon.config_kI(0, 0, 30);
 	    Drive.robotRightTalon.config_kD(0, 0, 30);
     

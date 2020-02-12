@@ -6,14 +6,22 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot;
+import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.AutoCommand;
+// import frc.robot.commands.PathFollowing;
 import frc.robot.commands.RunTankDrive;
 import frc.robot.subsystems.Drive;
+import frc.robot.commands.PathFollow;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.sensors.PIDControl;
+import frc.robot.commands.MoveWinch;
+import frc.robot.subsystems.Winch;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -24,12 +32,18 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class RobotContainer {
   private final Joystick driverController = new Joystick(0);
   private final Joystick copilotController = new Joystick(1);
+  // private final JoystickButton joyButton = new JoystickButton(copilotController, 5);
+  // private final JoystickButton joyButton6 = new JoystickButton(copilotController, 6);
 
   // The robot's subsystems and commands are defined here...
-  private final Drive driveSubsystem = new Drive(driverController);
+  private final Drive driveSubsystem = new Drive();
+  private final Winch winchSubsystem = new Winch();
   private final AutoCommand autoCommand = new AutoCommand(driveSubsystem);
   private final RunTankDrive driveCommand = new RunTankDrive(driveSubsystem);
-  
+  private final PIDControl pidControl = new PIDControl();
+  private AHRS ahrs = new AHRS(SPI.Port.kMXP);
+  private final PathFollow followPath = new PathFollow(driveSubsystem, pidControl, ahrs);
+  private final MoveWinch moveWinch = new MoveWinch(winchSubsystem);
   
 
   /**
@@ -47,7 +61,7 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-
+    // copilotController.getBut
   }
 
 
@@ -72,6 +86,11 @@ public class RobotContainer {
   public Joystick getCopilotJoystick() {
     return copilotController;
   }
-
+  public Command getFollowPath(){
+    return followPath;
+  }
+  public Command getMoveWinch(){
+    return moveWinch;
+  }
   
 }

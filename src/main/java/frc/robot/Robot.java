@@ -7,10 +7,19 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.kauailabs.navx.frc.AHRS;
+
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
+import frc.robot.sensors.PIDControl;
+import frc.robot.subsystems.Drive;
+
+import frc.robot.commands.PathFollow;
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
  * each mode, as described in the TimedRobot documentation. If you change the name of this class or
@@ -20,8 +29,16 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 public class Robot extends TimedRobot {
   private Command autonomousCommand;
   private Command driveCommand;
-
+  private Command moveWinch;
+  public PIDControl pidControl;
+  public Drive drive;
   private RobotContainer m_robotContainer;
+  private PathFollow autoPath;
+ 
+  public Robot(){
+    
+    super(0.01);
+  }
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -32,6 +49,8 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    
+
   }
 
   /**
@@ -63,11 +82,16 @@ public class Robot extends TimedRobot {
 
   /**
    * This autonomous runs the autonomous command selected by your {@link RobotContainer} class.
-   */
+   */ 
   @Override
   public void autonomousInit() {
-    autonomousCommand = m_robotContainer.getAutonomousCommand();
-
+    autonomousCommand = m_robotContainer.getFollowPath();
+    
+    Drive.robotLeftTalon.setSelectedSensorPosition(0);
+    Drive.robotRightTalon.setSelectedSensorPosition(0);
+    // double pValue = autoPath.getkP();
+    // SmartDashboard.putNumber("P Val", pValue);
+    // SmartDashboard.getNumber("P Value", pValue);
     // // schedule the autonomous command (example)
     if (autonomousCommand != null) {
       autonomousCommand.schedule();
@@ -79,6 +103,11 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
+    // Drive.robotLeftTalon.set(ControlMode.PercentOutput, 1);
+    // Drive.robotRightTalon.set(ControlMode.PercentOutput, 1);
+    SmartDashboard.putNumber("Right Velocity", Drive.robotRightTalon.getSelectedSensorVelocity());
+    SmartDashboard.putNumber("Left Velocity", Drive.robotLeftTalon.getSelectedSensorVelocity());
+
   }
 
   @Override
@@ -91,10 +120,14 @@ public class Robot extends TimedRobot {
       autonomousCommand.cancel();
     }
 
-    driveCommand = m_robotContainer.getDriveCommand();
-    if (driveCommand != null) {
-      driveCommand.schedule();
-    }
+    // driveCommand = m_robotContainer.getDriveCommand();
+    // if (driveCommand != null) {
+    //   driveCommand.schedule();
+    // }
+    // moveWinch = m_robotContainer.getMoveWinch();
+    // if(moveWinch != null){
+    //   moveWinch.schedule();
+    // }
   }
 
   /**
@@ -102,6 +135,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+    SmartDashboard.putNumber("Encoder Right Value", Drive.rightTalon().getSelectedSensorPosition());
+    SmartDashboard.putNumber("Encoder Left Value", Drive.leftTalon().getSelectedSensorPosition());
+
   }
 
   @Override

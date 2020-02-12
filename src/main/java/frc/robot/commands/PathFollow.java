@@ -60,7 +60,7 @@ public class PathFollow extends CommandBase {
     this.gyro = gyro;
     
 
-    configTalon.configTalons();
+    configTalon.configTalons(drive);
     
   }
   public EncoderFollower follower(Trajectory trajec) {
@@ -106,7 +106,7 @@ public class PathFollow extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     System.err.println("Stopping!");
-    drive.tankDrive(0, 0);
+    drive.endPathFollower();
   } 
 
   // Returns true when the command should end.

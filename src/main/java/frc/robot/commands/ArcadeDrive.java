@@ -7,11 +7,13 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drive;
 
 public class ArcadeDrive extends CommandBase {
  private final Drive subsystem;
+ public Joystick joystick = new Joystick(0);
 
  public ArcadeDrive(Drive subsystem) {
   this.subsystem = subsystem;
@@ -27,7 +29,7 @@ public class ArcadeDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    subsystem.arcadeDrive();
+    subsystem.arcadeDrive(joystick.getRawAxis(4), joystick.getRawAxis(5));
   }
 
   // Called once the command ends or is interrupted.

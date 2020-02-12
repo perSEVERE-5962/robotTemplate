@@ -5,9 +5,9 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import frc.robot.subsystems.Drive;
 
 public class PIDControl{
-    public void configTalons(){
-        Drive.robotLeftVictor.follow(Drive.robotLeftTalon);
-        Drive.robotRightVictor.follow(Drive.robotRightTalon);
+    public void configTalons(Drive drive){
+        drive.getRobotLeftVictor().follow(drive.getRobotLeftTalon());
+        drive.getRobotRightVictor().follow(drive.getRobotRightTalon());
 
 		// Drive.robotLeftTalon.setSelectedSensorPosition(0);
 		// Drive.robotRightTalon.setSelectedSensorPosition(0);
@@ -17,55 +17,56 @@ public class PIDControl{
         /** Save the target position to servo to */
         double targetPositionRotations;
 		/* Config the sensor used for Primary PID and sensor direction */
-        Drive.robotRightTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0 , 30);
-        Drive.robotLeftTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0 , 30);
+        drive.getRobotRightTalon().configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0 , 30);
+        drive.getRobotLeftTalon().configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0 , 30);
 
 
 		/* Ensure sensor is positive when output is positive */
-		Drive.robotRightTalon.setSensorPhase(true);//true
-		Drive.robotLeftTalon.setSensorPhase(true);//true
+		drive.getRobotRightTalon().setSensorPhase(true);//true
+		drive.getRobotLeftTalon().setSensorPhase(true);//true
 		/**
 		 * Set based on what direction you want forward/positive to be.
 		 * This does not affect sensor phase. 
 		//  */ 
-        Drive.robotRightTalon.setInverted(true);//compbot: true testbot: false
-        Drive.robotRightVictor.setInverted(true);//compbot: true testbot: false
-        Drive.robotLeftTalon.setInverted(false);//compbot: false testbot:true
-        Drive.robotLeftVictor.setInverted(false);//compbot: false testbot:true
+        drive.getRobotRightTalon().setInverted(true);//compbot: true testbot: false
+        drive.getRobotRightVictor().setInverted(true);//compbot: true testbot: false
+        drive.getRobotLeftTalon().setInverted(false);//compbot: false testbot:true
+        drive.getRobotLeftVictor().setInverted(false);//compbot: false testbot:true
 
 		/* Config the peak and nominal outputs, 12V means full */
         //Drive.robotLeftTalp8uy76tr54e3w2q1w2e3r5tyt-iuyte4r5t54687on.configNominalOutputForward(0, 30);
-        Drive.robotRightTalon.configNominalOutputForward(0, 30);
-        Drive.robotLeftTalon.configNominalOutputReverse(0, 30);
-		Drive.robotRightTalon.configNominalOutputReverse(0, 30);
-        Drive.robotLeftTalon.configPeakOutputForward(1, 30);
-        Drive.robotRightTalon.configPeakOutputForward(1, 30);
-        Drive.robotLeftTalon.configPeakOutputReverse(-1, 30);
-		Drive.robotRightTalon.configPeakOutputReverse(-1, 30);
+		drive.getRobotLeftTalon().configNominalOutputForward(0, 30);        
+		drive.getRobotRightTalon().configNominalOutputForward(0, 30);
+        drive.getRobotLeftTalon().configNominalOutputReverse(0, 30);
+		drive.getRobotRightTalon().configNominalOutputReverse(0, 30);
+        drive.getRobotLeftTalon().configPeakOutputForward(1, 30);
+        drive.getRobotRightTalon().configPeakOutputForward(1, 30);
+        drive.getRobotLeftTalon().configPeakOutputReverse(-1, 30);
+		drive.getRobotRightTalon().configPeakOutputReverse(-1, 30);
 		
 		/* Disable Ramping for Auto */
-		Drive.robotRightTalon.configOpenloopRamp(0);
-		Drive.robotLeftTalon.configOpenloopRamp(0);
+		drive.getRobotRightTalon().configOpenloopRamp(0);
+		drive.getRobotLeftTalon().configOpenloopRamp(0);
 
 		/**
 		 * Config the allowable closed-loop error, Closed-Loop output will be
 		 * neutral within this range. See Table in Section 17.2.1 for native
 		 * units per rotation.
 		 */
-		Drive.robotLeftTalon.configAllowableClosedloopError(0, 0, 30);
-		Drive.robotRightTalon.configAllowableClosedloopError(0, 0, 30);
+		drive.getRobotLeftTalon().configAllowableClosedloopError(0, 0, 30);
+		drive.getRobotRightTalon().configAllowableClosedloopError(0, 0, 30);
 
 		/* Config Position Closed Loop gains in slot0, tsypically kF stays zero. */
-		Drive.robotLeftTalon.config_kF(0, 0, 30);
-		Drive.robotLeftTalon.config_kP(0, 1, 30);
-		Drive.robotLeftTalon.config_kI(0, 0, 30);
-		Drive.robotLeftTalon.config_kD(0, 0, 30);
+		drive.getRobotLeftTalon().config_kF(0, 0, 30);
+		drive.getRobotLeftTalon().config_kP(0, 1, 30);
+		drive.getRobotLeftTalon().config_kI(0, 0, 30);
+		drive.getRobotLeftTalon().config_kD(0, 0, 30);
 
 
-		Drive.robotRightTalon.config_kF(0, 0, 30);
-		Drive.robotRightTalon.config_kP(0, 1, 30);
-		Drive.robotRightTalon.config_kI(0, 0, 30);
-	    Drive.robotRightTalon.config_kD(0, 0, 30);
+		drive.getRobotRightTalon().config_kF(0, 0, 30);
+		drive.getRobotRightTalon().config_kP(0, 1, 30);
+		drive.getRobotRightTalon().config_kI(0, 0, 30);
+	    drive.getRobotRightTalon().config_kD(0, 0, 30);
     
 		/**
 		 * Grab the 360 degree position of the MagEncoder's absolute
@@ -73,12 +74,12 @@ public class PIDControl{
 		 */
 
 		 //resetting ENC
-		 Drive.robotLeftTalon.getSensorCollection().setPulseWidthPosition(0, 30);
-		 Drive.robotRightTalon.getSensorCollection().setPulseWidthPosition(0, 30);
+		 drive.getRobotLeftTalon().getSensorCollection().setPulseWidthPosition(0, 30);
+		 drive.getRobotRightTalon().getSensorCollection().setPulseWidthPosition(0, 30);
 
 
-		int absolutePositionLeft = Drive.robotLeftTalon.getSensorCollection().getPulseWidthPosition();
-		int absolutePositionRight = Drive.robotRightTalon.getSensorCollection().getPulseWidthPosition();
+		int absolutePositionLeft = drive.getRobotLeftTalon().getSensorCollection().getPulseWidthPosition();
+		int absolutePositionRight = drive.getRobotRightTalon().getSensorCollection().getPulseWidthPosition();
 
 		/* Mask out overflows, keep bottom 12 bits */
         absolutePositionLeft &= 0xFFF;
@@ -90,8 +91,8 @@ public class PIDControl{
 
 		
 		/* Set the quadrature (relative) sensor to match absolute */
-		Drive.robotLeftTalon.setSelectedSensorPosition(0, 0, 30);
-		Drive.robotRightTalon.setSelectedSensorPosition(0, 0, 30);
+		drive.getRobotLeftTalon().setSelectedSensorPosition(0, 0, 30);
+		drive.getRobotRightTalon().setSelectedSensorPosition(0, 0, 30);
 
     }
 

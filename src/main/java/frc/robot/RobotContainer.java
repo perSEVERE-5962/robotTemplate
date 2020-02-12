@@ -6,6 +6,7 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot;
+
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.networktables.NetworkTable;
@@ -38,46 +39,45 @@ import frc.robot.sensors.PIDControl;
 
 import frc.robot.commands.*;
 
-
 /**
- * This class is where the bulk of the robot should be declared.  Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls).  Instead, the structure of the robot
- * (including subsystems, commands, and button mappings) should be declared here.
+ * This class is where the bulk of the robot should be declared. Since
+ * Command-based is a "declarative" paradigm, very little robot logic should
+ * actually be handled in the {@link Robot} periodic methods (other than the
+ * scheduler calls). Instead, the structure of the robot (including subsystems,
+ * commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
   private final Joystick driverController = new Joystick(0);
   private final Joystick copilotController = new Joystick(1);
-  // private final JoystickButton joyButton = new JoystickButton(copilotController, 5);
-  // private final JoystickButton joyButton6 = new JoystickButton(copilotController, 6);
+  // private final JoystickButton joyButton = new
+  // JoystickButton(copilotController, 5);
+  // private final JoystickButton joyButton6 = new
+  // JoystickButton(copilotController, 6);
 
   // arm buttons
-  private final  JoystickButton buttonA = new JoystickButton(copilotController, 1);
-  private final  JoystickButton buttonB = new JoystickButton(copilotController, 2);
-  private final  JoystickButton button8 = new JoystickButton(copilotController, 8);
+  private final JoystickButton buttonA = new JoystickButton(copilotController, 1);
+  private final JoystickButton buttonB = new JoystickButton(copilotController, 2);
+  private final JoystickButton button8 = new JoystickButton(copilotController, 8);
 
   // camera led buttons
   private final JoystickButton buttonY = new JoystickButton(copilotController, 3);
   private final JoystickButton buttonX = new JoystickButton(copilotController, 4);
-  
 
-  public double getIntake(){
+  public double getIntake() {
     double axisValue = copilotController.getRawAxis(1);
     return axisValue;
   }
 
-  private SendableChooser chooser= new SendableChooser<Command>();
+  private SendableChooser chooser = new SendableChooser<Command>();
 
   // The robot's subsystems and commands are defined here...
   private final Drive driveSubsystem = new Drive();
   private final Winch winchSubsystem = new Winch();
   private final AutoCommand autoCommand = new AutoCommand(driveSubsystem);
   private final CameraLight cameraLight = new CameraLight();
-  private final Winch winchSubsystem = new Winch();
   // private final RunTankDrive driveCommand = new RunTankDrive(driveSubsystem);
 
   private final WinchUp winchUp = new WinchUp(winchSubsystem);
-
 
   private NetworkTableInstance inst = NetworkTableInstance.getDefault();
   private NetworkTable table;
@@ -85,7 +85,7 @@ public class RobotContainer {
   private AHRS ahrs = new AHRS(SPI.Port.kMXP);
   private final PIDControl pidControl = new PIDControl();
   private final PathFollow followPath = new PathFollow(driveSubsystem, pidControl, ahrs);
-  
+
   private final ColorSensor colorSensor = new ColorSensor();
   private final ControlPanel controlPanel = new ControlPanel(colorSensor);
   private final InchForward inchForward = new InchForward(driveSubsystem);
@@ -96,54 +96,62 @@ public class RobotContainer {
   private final RunIntake runIntake = new RunIntake();
   private final Shoot shoot = new Shoot();
   private final TurnOnLight lightOn = new TurnOnLight(cameraLight);
+  private final TurnOffLight lightOff = new TurnOffLight(cameraLight);
   private final MoveArmVision armVision = new MoveArmVision();
-  public Command getTurnOnLight(){
+
+  public Command getTurnOnLight() {
     return lightOn;
   }
-  public Command getArmVision(){
+  public Command getTurnOffLight() {
+    return lightOff;
+  }
+
+  public Command getArmVision() {
     return armVision;
   }
-  public Command
-  getInchForward(){
+
+  public Command getInchForward() {
     return inchForward;
   }
-  public Command getRunIntake(){
+
+  public Command getRunIntake() {
     return runIntake;
   }
 
-  //private final CPSubsystem cpSubsystem = new CPSubsystem();
+  // private final CPSubsystem cpSubsystem = new CPSubsystem();
 
   private DriveLeft left = new DriveLeft(driveSubsystem);
-  private DriveRight right= new DriveRight(driveSubsystem);
+  private DriveRight right = new DriveRight(driveSubsystem);
   private StopDrive stop = new StopDrive(driveSubsystem);
   private DriveForward goForward = new DriveForward(driveSubsystem);
   private DriveBackwards goBackwards = new DriveBackwards(driveSubsystem);
-  private StopArm stopArm = new StopArm(); 
+  private StopArm stopArm = new StopArm();
   // private WinchUp winchUp = new WinchUp();
 
-  public Command getShoot(){
+  public Command getShoot() {
     return shoot;
   }
+
   /**
-   * The container for the robot.  Contains subsystems, OI devices, and commands.
+   * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
-    
-    chooser.setDefaultOption("smooth tankdrive", new SmoothTankDrive(driveSubsystem));
+
+    chooser.setDefaultOption("JamieDrive", new RunJamieDrive(driveSubsystem));
+    chooser.addOption("smooth tankdrive", new SmoothTankDrive(driveSubsystem));
     chooser.addOption("smooth arcadedrive", new SmoothArcadeDrive(driveSubsystem));
     chooser.addOption("tankdrive", new RunTankDrive(driveSubsystem));
     chooser.addOption("arcadedrive", new ArcadeDrive(driveSubsystem));
-    chooser.addOption("JamieDrive", new RunJamieDrive(driveSubsystem));
     SmartDashboard.putData("drivercontrol", chooser);
   }
 
   /**
-   * Use this method to define your button->command mappings.  Buttons can be created by
-   * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a
-   * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+   * Use this method to define your button->command mappings. Buttons can be
+   * created by instantiating a {@link GenericHID} or one of its subclasses
+   * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then
+   * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
     buttonA.whenPressed(new MoveArmToIntake());
@@ -153,30 +161,33 @@ public class RobotContainer {
     button8.whenPressed(new ResetArm());
     // button7.whenPressed(new WinchUp());
   }
-  public String getVisionAction(){
+
+  public String getVisionAction() {
     table = inst.getTable("Vision");
     myEntry = table.getEntry("Action");
     return myEntry.getString("None");
-}
-public double getLeftUltrasonic(){
-  table = inst.getTable("HC-SR04");
-  myEntry = table.getEntry("Left Distance");
-  double value = myEntry.getDouble(0);
-  if (value > 54){
-    //value = 0.0;
   }
-  return value;
-}
-public double getRightUltrasonic(){
-  table = inst.getTable("HC-SR04");
-  myEntry = table.getEntry("Right Distance");
-  double value = myEntry.getDouble(0);
-  if (value > 54){
-    //value = 0.0;
+
+  public double getLeftUltrasonic() {
+    table = inst.getTable("HC-SR04");
+    myEntry = table.getEntry("Left Distance");
+    double value = myEntry.getDouble(0);
+    if (value > 54) {
+      // value = 0.0;
+    }
+    return value;
   }
-  return value;
-}
- 
+
+  public double getRightUltrasonic() {
+    table = inst.getTable("HC-SR04");
+    myEntry = table.getEntry("Right Distance");
+    double value = myEntry.getDouble(0);
+    if (value > 54) {
+      // value = 0.0;
+    }
+    return value;
+  }
+
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
@@ -188,17 +199,18 @@ public double getRightUltrasonic(){
   }
 
   public Command getDriveCommand() {
-    driveCommand=(Command)chooser.getSelected();
+    driveCommand = (Command) chooser.getSelected();
     return driveCommand;
   }
 
-   public Command getTurnLeftCommand () {
-     return left;
-   }
+  public Command getTurnLeftCommand() {
+    return left;
+  }
 
-  public DriveRight getTurnRightCommand () {
+  public DriveRight getTurnRightCommand() {
     return right;
   }
+
   public Joystick getDriverJoystick() {
     return driverController;
   }
@@ -206,45 +218,60 @@ public double getRightUltrasonic(){
   public Joystick getCopilotJoystick() {
     return copilotController;
   }
-  public Command getFollowPath(){
-  }
+
+  public Command getFollowPath() {
     return followPath;
-  public Command getgoForward () {
+  }
+
+  public Command getgoForward() {
     return goForward;
   }
-  public Command getgoBackwards () {
+
+  public Command getgoBackwards() {
     return goBackwards;
   }
-  public Command getStopArm(){
+
+  public Command getStopArm() {
     return stopArm;
   }
 
-  public Command getWinchUp(){
+  public Command getWinchUp() {
     return winchUp;
   }
 
-  public Command getSenseColorCommand(){
+  public Command getSenseColorCommand() {
     return senseColorCommand;
   }
 
-  public Command getSpinColorCommand(){
+  public Command getSpinColorCommand() {
     return spinColorCommand;
   }
 
-  public Command getSpinRotCommand(){
+  public Command getSpinRotCommand() {
     return spinRotCommand;
   }
-  
-  
-public Command stopdrive() {
-  return stop;
-}
 
-public Command driveLeft() {
-	return null;
-}
-public Command driveRight() {
-	return null;
-}
+  public Command stopdrive() {
+    return stop;
+  }
 
+  public Command driveLeft() {
+    return null;
+  }
+
+  public Command driveRight() {
+    return null;
+  }
+
+  public Drive getDrive() {
+    return driveSubsystem;
+  }
+
+  public void resetGyro() {
+    ahrs.reset();
+  }
+
+  public double getGyroAngle() {
+    return ahrs.getAngle();
+  }
 }

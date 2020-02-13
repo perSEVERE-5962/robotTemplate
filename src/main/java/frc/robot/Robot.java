@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.ElevatorUp;
 import frc.robot.subsystems.Arm;
 
 import frc.robot.sensors.PIDControl;
@@ -249,8 +250,21 @@ public class Robot extends TimedRobot {
     }
     if (runIntake != null) {
       runIntake.schedule();
+    if (joystick.getRawAxis(3)>0.2){
+      elevatorUp = m_robotContainer.getElevatorUp();
+      if (elevatorUp != null){
+        elevatorUp.schedule();
+      }
     }
   }
+    else if(joystick.getRawAxis(2)>0.2){
+      elevatorDown = m_robotContainer.getElevatorDown();
+      if(elevatorDown != null){
+        elevatorDown.schedule();
+      }
+
+
+
 
   @Override
   public void testInit() {

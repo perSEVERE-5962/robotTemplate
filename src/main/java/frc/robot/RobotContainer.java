@@ -29,6 +29,7 @@ import frc.robot.commands.StopDrive;
 import frc.robot.commands.TurnOffLight;
 import frc.robot.commands.TurnOnLight;
 import frc.robot.subsystems.CameraLight;
+import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Winch;
 import frc.robot.subsystems.Arm;
 import frc.robot.commands.PathFollow;
@@ -75,6 +76,7 @@ public class RobotContainer {
   private final Winch winchSubsystem = new Winch();
   private final AutoCommand autoCommand = new AutoCommand(driveSubsystem);
   private final CameraLight cameraLight = new CameraLight();
+  private final Elevator elevatorsubsystem = new Elevator();
   // private final RunTankDrive driveCommand = new RunTankDrive(driveSubsystem);
 
   private final WinchUp winchUp = new WinchUp(winchSubsystem);
@@ -115,6 +117,8 @@ public class RobotContainer {
   }
 
   public Command getRunIntake() {
+  private final ElevatorUp elevatorUp = new ElevatorUp(elevatorsubsystem);
+  private final ElevatorDown elevatorDown = new ElevatorDown(elevatorsubsystem);
     return runIntake;
   }
 
@@ -130,6 +134,14 @@ public class RobotContainer {
 
   public Command getShoot() {
     return shoot;
+  }
+
+  public Command getElevatorUp(){
+    return elevatorUp;
+  }
+
+  public Command getElevatorDown(){
+    return elevatorDown;
   }
 
   /**

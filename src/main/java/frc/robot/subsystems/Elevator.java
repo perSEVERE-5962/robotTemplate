@@ -20,7 +20,7 @@ public class Elevator extends SubsystemBase {
    */
   public Elevator() {
 
-    motorControl = new WPI_VictorSPX(13);
+    motorControl = new WPI_VictorSPX(11);
 
   }
 

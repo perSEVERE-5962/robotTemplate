@@ -235,9 +235,9 @@ public class Robot extends TimedRobot {
     // spinRotCommand = m_robotContainer.getSpinRotCommand();
     // spinColorCommand = m_robotContainer.getSpinColorCommand();
 
-    if (!Constants.IS_SPIN_COMPLETE) {
-      spinColorCommand.execute();
-    }
+    // if (!Constants.IS_SPIN_COMPLETE) {
+    //   spinColorCommand.execute();
+    // }
 
     SmartDashboard.putNumber("Arm Encoder Value", arm.getEncoderValues());
     if (m_robotContainer.getIntake() > 0.2) {

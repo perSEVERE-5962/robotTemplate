@@ -50,6 +50,8 @@ public class Robot extends TimedRobot {
   }
 
   private Command runIntake;
+  private Command elevatorUp;
+  private Command elevatorDown;
   private Arm arm = new Arm();
 
   /**
@@ -250,19 +252,20 @@ public class Robot extends TimedRobot {
     }
     if (runIntake != null) {
       runIntake.schedule();
-    if (joystick.getRawAxis(3)>0.2){
+    if (m_robotContainer.getElevatorUpAxis()>0.2){
       elevatorUp = m_robotContainer.getElevatorUp();
       if (elevatorUp != null){
         elevatorUp.schedule();
       }
     }
   }
-    else if(joystick.getRawAxis(2)>0.2){
+    else if(m_robotContainer.getElevatorDownAxis()>0.2){
       elevatorDown = m_robotContainer.getElevatorDown();
       if(elevatorDown != null){
         elevatorDown.schedule();
       }
-
+    }
+  }
 
 
 

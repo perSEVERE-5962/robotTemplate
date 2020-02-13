@@ -64,11 +64,6 @@ public class RobotContainer {
   private final JoystickButton buttonY = new JoystickButton(copilotController, 3);
   private final JoystickButton buttonX = new JoystickButton(copilotController, 4);
 
-  public double getIntake() {
-    double axisValue = copilotController.getRawAxis(1);
-    return axisValue;
-  }
-
   private SendableChooser chooser = new SendableChooser<Command>();
 
   // The robot's subsystems and commands are defined here...
@@ -100,6 +95,23 @@ public class RobotContainer {
   private final TurnOnLight lightOn = new TurnOnLight(cameraLight);
   private final TurnOffLight lightOff = new TurnOffLight(cameraLight);
   private final MoveArmVision armVision = new MoveArmVision();
+  private final ElevatorUp elevatorUp = new ElevatorUp(elevatorsubsystem);
+  private final ElevatorDown elevatorDown = new ElevatorDown(elevatorsubsystem);
+
+
+  public double getIntake() {
+    double axisValue = copilotController.getRawAxis(1);
+    return axisValue;
+  }
+
+  public double getElevatorUpAxis() {
+    double axisValue = copilotController.getRawAxis(3);
+    return axisValue;
+  }
+  public double getElevatorDownAxis() {
+    double axisValue = copilotController.getRawAxis(2);
+    return axisValue;
+  }
 
   public Command getTurnOnLight() {
     return lightOn;
@@ -117,8 +129,6 @@ public class RobotContainer {
   }
 
   public Command getRunIntake() {
-  private final ElevatorUp elevatorUp = new ElevatorUp(elevatorsubsystem);
-  private final ElevatorDown elevatorDown = new ElevatorDown(elevatorsubsystem);
     return runIntake;
   }
 

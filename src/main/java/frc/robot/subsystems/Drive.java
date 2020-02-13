@@ -47,10 +47,10 @@ public class Drive extends SubsystemBase {
     robotLeftVictor = new WPI_VictorSPX(21);
     robotLeftVictor.follow(robotLeftTalon, FollowerType.PercentOutput);
     robotRightVictor.follow(robotRightTalon, FollowerType.PercentOutput);
-    robotLeftVictor.setInverted(true);
-    robotLeftTalon.setInverted(true);
-    robotRightVictor.setInverted(false);
-    robotRightTalon.setInverted(false);
+    robotLeftVictor.setInverted(false);
+    robotLeftTalon.setInverted(false);
+    robotRightVictor.setInverted(true);
+    robotRightTalon.setInverted(true);
   }
 
   public WPI_TalonSRX getRobotRightTalon() {
@@ -104,14 +104,14 @@ public class Drive extends SubsystemBase {
       leftTalon().set(ControlMode.PercentOutput, speedfactor);
       rightTalon().set(ControlMode.PercentOutput, -speedfactor);
     } else {
-      leftTalon().set(ControlMode.PercentOutput, speedfactor * leftSpeed);
-      rightTalon().set(ControlMode.PercentOutput, speedfactor * rightSpeed);
+      leftTalon().set(ControlMode.PercentOutput, -speedfactor * rightSpeed);
+      rightTalon().set(ControlMode.PercentOutput, -speedfactor * rightSpeed);
     }
   }
 
   public void tankDrive(double leftSpeed, double rightSpeed) {
-    robotLeftTalon.set(ControlMode.PercentOutput, speedfactor * leftSpeed);
-    robotRightTalon.set(ControlMode.PercentOutput, speedfactor * rightSpeed);
+    robotLeftTalon.set(ControlMode.PercentOutput, -speedfactor * leftSpeed);
+    robotRightTalon.set(ControlMode.PercentOutput, -speedfactor * rightSpeed);
   }
 
   public void driveToScoringArea(){
@@ -128,8 +128,8 @@ public class Drive extends SubsystemBase {
   }
 
   public void arcadeDrive(double leftSpeed, double rightSpeed) {
-    leftTalon().set(ControlMode.PercentOutput, speedfactor * leftSpeed); 
-    rightTalon().set(ControlMode.PercentOutput, speedfactor * rightSpeed);
+    leftTalon().set(ControlMode.PercentOutput, -speedfactor * leftSpeed); 
+    rightTalon().set(ControlMode.PercentOutput, -speedfactor * rightSpeed);
   }
 
   public void autoDrive() {

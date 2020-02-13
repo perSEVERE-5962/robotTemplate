@@ -86,12 +86,12 @@ public class RobotContainer {
   private final PIDControl pidControl = new PIDControl();
   private final PathFollow followPath = new PathFollow(driveSubsystem, pidControl, ahrs);
 
-  private final ColorSensor colorSensor = new ColorSensor();
-  private final ControlPanel controlPanel = new ControlPanel(colorSensor);
+  // private final ColorSensor colorSensor = new ColorSensor();
+  // private final ControlPanel controlPanel = new ControlPanel(colorSensor);
+  // private final SenseColor senseColorCommand = new SenseColor(colorSensor);
+  // private final SpinToColor spinColorCommand = new SpinToColor(controlPanel);
+  // private final SpinRotations spinRotCommand = new SpinRotations(controlPanel);
   private final InchForward inchForward = new InchForward(driveSubsystem);
-  private final SenseColor senseColorCommand = new SenseColor(colorSensor);
-  private final SpinToColor spinColorCommand = new SpinToColor(controlPanel);
-  private final SpinRotations spinRotCommand = new SpinRotations(controlPanel);
   private Command driveCommand;
   private final RunIntake runIntake = new RunIntake();
   private final Shoot shoot = new Shoot();
@@ -239,17 +239,17 @@ public class RobotContainer {
     return winchUp;
   }
 
-  public Command getSenseColorCommand() {
-    return senseColorCommand;
-  }
+  // public Command getSenseColorCommand() {
+  //   return senseColorCommand;
+  // }
 
-  public Command getSpinColorCommand() {
-    return spinColorCommand;
-  }
+  // public Command getSpinColorCommand() {
+  //   return spinColorCommand;
+  // }
 
-  public Command getSpinRotCommand() {
-    return spinRotCommand;
-  }
+  // public Command getSpinRotCommand() {
+  //   return spinRotCommand;
+  // }
 
   public Command stopdrive() {
     return stop;

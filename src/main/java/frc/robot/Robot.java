@@ -129,7 +129,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
-    if (drive.isPathFollowerDone()) {
+    if (m_robotContainer.getDrive().isPathFollowerDone()) {
       double ultrasonicLeft = m_robotContainer.getLeftUltrasonic();
       double ultrasonicRight = m_robotContainer.getRightUltrasonic();
       SmartDashboard.putNumber("LeftUltrasonic", ultrasonicLeft);
@@ -214,9 +214,9 @@ public class Robot extends TimedRobot {
       lightToggle.schedule();
     }
 
-    senseColorCommand = m_robotContainer.getSenseColorCommand();
-    spinColorCommand = m_robotContainer.getSpinColorCommand();
-    spinRotCommand = m_robotContainer.getSpinRotCommand();
+    // senseColorCommand = m_robotContainer.getSenseColorCommand();
+    // spinColorCommand = m_robotContainer.getSpinColorCommand();
+    // spinRotCommand = m_robotContainer.getSpinRotCommand();
 
     // Drive.leftTalon().configNominalOutputForward(0.1, 30);
     // Drive.leftTalon().configNominalOutputReverse(-0.1, 30);
@@ -232,8 +232,8 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     m_robotContainer.getDrive().writeEncoderValues();
 
-    spinRotCommand = m_robotContainer.getSpinRotCommand();
-    spinColorCommand = m_robotContainer.getSpinColorCommand();
+    // spinRotCommand = m_robotContainer.getSpinRotCommand();
+    // spinColorCommand = m_robotContainer.getSpinColorCommand();
 
     if (!Constants.IS_SPIN_COMPLETE) {
       spinColorCommand.execute();

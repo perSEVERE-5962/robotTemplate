@@ -132,7 +132,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
-    /*
+    
     if (m_robotContainer.getDrive().isPathFollowerDone()) {
       double ultrasonicLeft = m_robotContainer.getLeftUltrasonic();
       double ultrasonicRight = m_robotContainer.getRightUltrasonic();
@@ -156,7 +156,7 @@ public class Robot extends TimedRobot {
         }
 
       }
-    }*/
+    }
   }
 
   private void moveLeft() {

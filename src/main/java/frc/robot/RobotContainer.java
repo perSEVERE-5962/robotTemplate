@@ -59,6 +59,7 @@ public class RobotContainer {
   private final JoystickButton buttonA = new JoystickButton(copilotController, 1);
   private final JoystickButton buttonB = new JoystickButton(copilotController, 2);
   private final JoystickButton button8 = new JoystickButton(copilotController, 8);
+  private final JoystickButton button7 = new JoystickButton(copilotController, 7);
 
   // camera led buttons
   private final JoystickButton buttonY = new JoystickButton(copilotController, 3);
@@ -74,7 +75,7 @@ public class RobotContainer {
   private final Elevator elevatorsubsystem = new Elevator();
   // private final RunTankDrive driveCommand = new RunTankDrive(driveSubsystem);
 
-  private final WinchUp winchUp = new WinchUp(winchSubsystem);
+  //private final WinchUp winchUp = new WinchUp(winchSubsystem);
 
   private NetworkTableInstance inst = NetworkTableInstance.getDefault();
   private NetworkTable table;
@@ -98,6 +99,15 @@ public class RobotContainer {
   private final ElevatorUp elevatorUp = new ElevatorUp(elevatorsubsystem);
   private final ElevatorDown elevatorDown = new ElevatorDown(elevatorsubsystem);
 
+  // private final CPSubsystem cpSubsystem = new CPSubsystem();
+
+  private DriveLeft left = new DriveLeft(driveSubsystem);
+  private DriveRight right = new DriveRight(driveSubsystem);
+  private StopDrive stop = new StopDrive(driveSubsystem);
+  private DriveForward goForward = new DriveForward(driveSubsystem);
+  private DriveBackwards goBackwards = new DriveBackwards(driveSubsystem);
+  private StopArm stopArm = new StopArm();
+  // private WinchUp winchUp = new WinchUp();
 
   public double getIntake() {
     double axisValue = copilotController.getRawAxis(1);
@@ -132,15 +142,6 @@ public class RobotContainer {
     return runIntake;
   }
 
-  // private final CPSubsystem cpSubsystem = new CPSubsystem();
-
-  private DriveLeft left = new DriveLeft(driveSubsystem);
-  private DriveRight right = new DriveRight(driveSubsystem);
-  private StopDrive stop = new StopDrive(driveSubsystem);
-  private DriveForward goForward = new DriveForward(driveSubsystem);
-  private DriveBackwards goBackwards = new DriveBackwards(driveSubsystem);
-  private StopArm stopArm = new StopArm();
-  // private WinchUp winchUp = new WinchUp();
 
   public Command getShoot() {
     return shoot;
@@ -181,7 +182,7 @@ public class RobotContainer {
     buttonX.whenPressed(new TurnOnLight(cameraLight));
     buttonY.whenPressed(new TurnOffLight(cameraLight));
     button8.whenPressed(new ResetArm());
-    // button7.whenPressed(new WinchUp());
+    button7.whileHeld(new WinchUp(winchSubsystem));
   }
 
   public String getVisionAction() {
@@ -257,9 +258,9 @@ public class RobotContainer {
     return stopArm;
   }
 
-  public Command getWinchUp() {
-    return winchUp;
-  }
+  // public Command getWinchUp() {
+  //   return winchUp;
+  // }
 
   // public Command getSenseColorCommand() {
   //   return senseColorCommand;

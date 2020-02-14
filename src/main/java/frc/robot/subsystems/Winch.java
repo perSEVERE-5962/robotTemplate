@@ -20,7 +20,7 @@ public class Winch extends SubsystemBase {
   private WPI_VictorSPX winchVictor;
 
   public Winch() {
-    winchVictor = new WPI_VictorSPX(13);
+    winchVictor = new WPI_VictorSPX(11);
     
   }
   public void moveWinch(double speed){

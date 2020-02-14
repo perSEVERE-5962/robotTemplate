@@ -95,7 +95,7 @@ public class PathFollow extends CommandBase {
 
     double turn = 0.8 * (-1.0/80.0) * angleDifference;
 
-    drive.tankDrive(leftCalculate - turn, rightCalculate + turn);
+    drive.tankDrive(-1*(leftCalculate - turn), -1*(rightCalculate + turn));
     // System.out.println("gyro" + gyro_heading);
     // System.out.println("desired" + desired_heading);
     // System.out.println("angleDiff" + angleDifference);

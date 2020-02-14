@@ -199,10 +199,11 @@ public class Robot extends TimedRobot {
       autonomousCommand.cancel();
     }
 
-    winchCommand = m_robotContainer.getWinchUp();
-    if (winchCommand != null) {
-      winchCommand.schedule();
-    }
+    // winchCommand = m_robotContainer.getWinchUp();
+    // if (winchCommand != null) {
+    //   winchCommand.schedule();
+    // }
+    
     // motor = new BallCommands();
     // if (motor != null){
     // motor.schedule();
@@ -253,11 +254,11 @@ public class Robot extends TimedRobot {
     }
     if (runIntake != null) {
       runIntake.schedule();
-    if (m_robotContainer.getElevatorUpAxis()>0.2){
-      elevatorUp = m_robotContainer.getElevatorUp();
-      if (elevatorUp != null){
-        elevatorUp.schedule();
-      }
+
+  }    if (m_robotContainer.getElevatorUpAxis()>0.2){
+    elevatorUp = m_robotContainer.getElevatorUp();
+    if (elevatorUp != null){
+      elevatorUp.schedule();
     }
   }
     else if(m_robotContainer.getElevatorDownAxis()>0.2){

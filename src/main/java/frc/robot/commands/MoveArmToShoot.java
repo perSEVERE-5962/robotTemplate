@@ -14,6 +14,7 @@ import frc.robot.subsystems.Arm;
 public class MoveArmToShoot extends CommandBase {
 
   Arm subsystem;
+  private final double shootAngle = 10.0;
   
   
   /**
@@ -37,25 +38,25 @@ public class MoveArmToShoot extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-  SmartDashboard.putString("up", "up");
-  subsystem.shootingPosition();
+    SmartDashboard.putString("up", "up");
+    subsystem.shootingPosition(shootAngle);
   }
 
   // private boolean RunMoveArm() {
   //   return false;
   // }
 
-
-
-
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    subsystem.stop();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    double encoderValue = subsystem.getEncoderValues();
+    // done if encoder is between 7 and 13
+    return ( encoderValue >= (shootAngle-3) && encoderValue <= (shootAngle+3) );
   }
 }

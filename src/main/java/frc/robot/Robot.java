@@ -107,14 +107,13 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    // autonomousCommand = m_robotContainer.getAutonomousCommand();
-    autonomousCommand = m_robotContainer.getFollowPath();
 
     m_robotContainer.getDrive().resetEncoders();
+    // autonomousCommand = m_robotContainer.getFollowPath();
 
-    if (autonomousCommand != null) {
-      autonomousCommand.schedule();
-    }
+    // if (autonomousCommand != null) {
+    //   autonomousCommand.schedule();
+    // }
 
     lightToggle = m_robotContainer.getTurnOnLight();
     if (lightToggle != null) {
@@ -140,20 +139,20 @@ public class Robot extends TimedRobot {
       SmartDashboard.putNumber("RightUltrasonic", ultrasonicRight);
       String action = m_robotContainer.getVisionAction();
       SmartDashboard.putString("Visionaction", action);
-      if (ultrasonicLeft <= 5 || ultrasonicRight <= 5) {
+      if (ultrasonicLeft <= 20 || ultrasonicRight <= 20) {
         stop();
-      } else if (ultrasonicLeft <= 65 && ultrasonicRight <= 65) {
-        inchForward();
       } else if (action.equals("Left")) {
         moveLeft();
       } else if (action.equals("Right")) {
         moveRight();
+      } else if (ultrasonicLeft >= 20 && ultrasonicRight >= 20) {
+        inchForward();
       } else {
-        if (ultrasonicLeft <= 20 && ultrasonicRight <= 20) {
-          stop();
-        } else {
-          inchForward();
-        }
+        // if (ultrasonicLeft <= 20 && ultrasonicRight <= 20) {
+           stop();
+        // } else {
+        //   inchForward();
+        // }
 
       }
     }
@@ -199,6 +198,7 @@ public class Robot extends TimedRobot {
       autonomousCommand.cancel();
     }
 
+    m_robotContainer.getDrive().resetEncoders();
     // winchCommand = m_robotContainer.getWinchUp();
     // if (winchCommand != null) {
     //   winchCommand.schedule();

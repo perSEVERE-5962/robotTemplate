@@ -181,7 +181,7 @@ public class RobotContainer {
     buttonB.whenPressed(new MoveArmToShoot());
     buttonX.whenPressed(new TurnOnLight(cameraLight));
     buttonY.whenPressed(new TurnOffLight(cameraLight));
-    button8.whenPressed(new ResetArm());
+//    button8.whenPressed(new ResetArm());
     button7.whileHeld(new WinchUp(winchSubsystem));
   }
 

@@ -96,13 +96,13 @@ public class Drive extends SubsystemBase {
   public void jamieDrive(double leftSpeed, double rightSpeed) {
     unsetsmooth();
     if (leftSpeed < -0.1) {
-      leftTalon().set(ControlMode.PercentOutput, -speedfactor);
-      rightTalon().set(ControlMode.PercentOutput, speedfactor);
+      leftTalon().set(ControlMode.PercentOutput, -speedfactor*0.5);
+      rightTalon().set(ControlMode.PercentOutput, speedfactor*0.5);
     }
 
     else if (leftSpeed > 0.1) {
-      leftTalon().set(ControlMode.PercentOutput, speedfactor);
-      rightTalon().set(ControlMode.PercentOutput, -speedfactor);
+      leftTalon().set(ControlMode.PercentOutput, speedfactor*0.5);
+      rightTalon().set(ControlMode.PercentOutput, -speedfactor*0.5);
     } else {
       leftTalon().set(ControlMode.PercentOutput, -speedfactor * rightSpeed);
       rightTalon().set(ControlMode.PercentOutput, -speedfactor * rightSpeed);
@@ -197,6 +197,7 @@ public class Drive extends SubsystemBase {
   }
 
   public boolean isPathFollowerDone() {
-    return pathFollowerDone;
+    //return pathFollowerDone;
+    return true;
   }
 }

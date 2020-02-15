@@ -195,7 +195,7 @@ public class RobotContainer {
     table = inst.getTable("HC-SR04");
     myEntry = table.getEntry("Left Distance");
     double value = myEntry.getDouble(0);
-    if (value > 54) {
+    if (value > 40) {
       // value = 0.0;
     }
     return value;
@@ -205,7 +205,7 @@ public class RobotContainer {
     table = inst.getTable("HC-SR04");
     myEntry = table.getEntry("Right Distance");
     double value = myEntry.getDouble(0);
-    if (value > 54) {
+    if (value > 40) {
       // value = 0.0;
     }
     return value;

@@ -21,7 +21,7 @@ public class Drive extends SubsystemBase {
   private WPI_TalonSRX robotRightTalon;
   private WPI_VictorSPX robotRightVictor;
   private final double speedfactor = 1.0;
-  private final double autospeedfactor = 0.125;
+  private final double autospeedfactor = 0.23;
   // private double ultrasonicRange;
   // private boolean ultrasonicCheck = false;
   private double radius = 3;
@@ -160,8 +160,8 @@ public class Drive extends SubsystemBase {
   }
 
   public void inchforward(double speed) {
-    leftTalon().set(ControlMode.PercentOutput, -speed);
-    rightTalon().set(ControlMode.PercentOutput, -speed);
+    leftTalon().set(ControlMode.PercentOutput, speed);
+    rightTalon().set(ControlMode.PercentOutput, speed);
   }
 
   public double inchesToTicks(double inch) {

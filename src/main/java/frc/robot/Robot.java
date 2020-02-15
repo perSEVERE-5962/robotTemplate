@@ -115,6 +115,10 @@ public class Robot extends TimedRobot {
     //   autonomousCommand.schedule();
     // }
 
+    // if (autonomousCommand != null) {
+    //   autonomousCommand.schedule();
+    // }
+
     lightToggle = m_robotContainer.getTurnOnLight();
     if (lightToggle != null) {
       lightToggle.schedule();
@@ -141,9 +145,9 @@ public class Robot extends TimedRobot {
       SmartDashboard.putString("Visionaction", action);
       if (ultrasonicLeft <= 20 || ultrasonicRight <= 20) {
         stop();
-      } else if (action.equals("Left")) {
+      } else if (action.equals("Left") && (ultrasonicLeft >= 54 && ultrasonicRight >=54)) {
         moveLeft();
-      } else if (action.equals("Right")) {
+      } else if (action.equals("Right") && (ultrasonicLeft >= 54 && ultrasonicRight >=54)) {
         moveRight();
       } else if (ultrasonicLeft >= 20 && ultrasonicRight >= 20) {
         inchForward();
@@ -156,7 +160,7 @@ public class Robot extends TimedRobot {
 
       }
     }
-  }
+  
 
   private void moveLeft() {
     Command driveCommand = m_robotContainer.getTurnLeftCommand();

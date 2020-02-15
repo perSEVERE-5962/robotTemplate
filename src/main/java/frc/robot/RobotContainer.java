@@ -21,21 +21,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.ColorSensor;
 import frc.robot.subsystems.ControlPanel;
 import frc.robot.subsystems.Drive;
-import frc.robot.commands.Shoot;
-import frc.robot.commands.SmoothArcadeDrive;
-import frc.robot.commands.SmoothTankDrive;
-import frc.robot.commands.StopArm;
-import frc.robot.commands.StopDrive;
-import frc.robot.commands.TurnOffLight;
-import frc.robot.commands.TurnOnLight;
 import frc.robot.subsystems.CameraLight;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Winch;
 import frc.robot.subsystems.Arm;
-import frc.robot.commands.PathFollow;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.InchForward;
 import frc.robot.sensors.PIDControl;
 
 import frc.robot.commands.*;
@@ -73,6 +64,7 @@ public class RobotContainer {
   private final AutoCommand autoCommand = new AutoCommand(driveSubsystem);
   private final CameraLight cameraLight = new CameraLight();
   private final Elevator elevatorsubsystem = new Elevator();
+  private final Arm arm = new Arm();
   // private final RunTankDrive driveCommand = new RunTankDrive(driveSubsystem);
 
   //private final WinchUp winchUp = new WinchUp(winchSubsystem);
@@ -98,7 +90,7 @@ public class RobotContainer {
   private final MoveArmVision armVision = new MoveArmVision();
   private final ElevatorUp elevatorUp = new ElevatorUp(elevatorsubsystem);
   private final ElevatorDown elevatorDown = new ElevatorDown(elevatorsubsystem);
-
+  private final GetCamera cameraCommand = new GetCamera();
   // private final CPSubsystem cpSubsystem = new CPSubsystem();
 
   private DriveLeft left = new DriveLeft(driveSubsystem);
@@ -142,7 +134,10 @@ public class RobotContainer {
     return runIntake;
   }
 
+  public Command getCamera(){
+    return cameraCommand;
 
+  }
   public Command getShoot() {
     return shoot;
   }
@@ -177,12 +172,18 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    buttonA.whenPressed(new MoveArmToIntake());
-    buttonB.whenPressed(new MoveArmToShoot());
+    buttonA.whenPressed(new MoveArmToIntake(arm));
+    buttonB.whenPressed(new MoveArmToShoot(arm));
     buttonX.whenPressed(new TurnOnLight(cameraLight));
     buttonY.whenPressed(new TurnOffLight(cameraLight));
 //    button8.whenPressed(new ResetArm());
     button7.whileHeld(new WinchUp(winchSubsystem));
+  }
+  public void moveArmToIntake(){
+    Command move = new MoveArmToShoot(arm);
+    if (move != null) {
+      move.schedule();
+    }
   }
 
   public String getVisionAction() {

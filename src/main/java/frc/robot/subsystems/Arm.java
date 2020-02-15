@@ -55,7 +55,7 @@ public void intakePosition(double intakeAngle){
 
 //NEW resetPosition
 public void resetPosition(){
-  armTalon.set(ControlMode.Position, setAngle(80.0));
+  armTalon.set(ControlMode.Position, setAngle(79.0));
 }
 
 

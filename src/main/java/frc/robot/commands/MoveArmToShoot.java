@@ -14,15 +14,15 @@ import frc.robot.subsystems.Arm;
 public class MoveArmToShoot extends CommandBase {
 
   Arm subsystem;
-  private final double shootAngle = 10.0;
+  private final double shootAngle = 12.0;
   
   
   /**
    * Creates a new MoveArmCommand.
    */
-  public MoveArmToShoot() {
+  public MoveArmToShoot(Arm arm) {
     // Use addRequirements() here to declare subsystem dependencies.
-    subsystem = new Arm();
+    subsystem = arm;
     addRequirements(subsystem);
   }
 
@@ -57,6 +57,6 @@ public class MoveArmToShoot extends CommandBase {
   public boolean isFinished() {
     double encoderValue = subsystem.getEncoderValues();
     // done if encoder is between 7 and 13
-    return ( encoderValue >= (shootAngle-3) && encoderValue <= (shootAngle+3) );
+    return ( encoderValue >= (shootAngle-5) && encoderValue <= (shootAngle+5) );
   }
 }

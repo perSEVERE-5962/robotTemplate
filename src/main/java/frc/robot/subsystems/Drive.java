@@ -197,7 +197,7 @@ public class Drive extends SubsystemBase {
   }
 
   public boolean isPathFollowerDone() {
-    //return pathFollowerDone;
-    return true;
+    return pathFollowerDone;
+    //return true;
   }
 }

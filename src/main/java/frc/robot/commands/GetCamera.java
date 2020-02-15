@@ -7,22 +7,15 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Arm;
-
-public class MoveArmToIntake extends CommandBase {
-
-  Arm subsystem;
-  private final double intakeAngle = 79.0;
-
+import frc.robot.subsystems.Camera;
+public class GetCamera extends CommandBase {
   /**
-   * Creates a new MoveArmCommand.
+   * Creates a new GetCamera.
    */
-  public MoveArmToIntake(Arm arm) {
+  public Camera cam;
+  public GetCamera() {
     // Use addRequirements() here to declare subsystem dependencies.
-    subsystem = arm;
-    addRequirements(subsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -30,34 +23,20 @@ public class MoveArmToIntake extends CommandBase {
   public void initialize() {
   }
 
-  public double getEncoderValues(){
-    return subsystem.getEncoderValues();
-  }
-
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    SmartDashboard.putString("down", "down");
-    subsystem.intakePosition(intakeAngle);
+    cam = new Camera();
   }
-
-  // private boolean RunMoveArm() {
-  //   return false;
-  // }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    subsystem.stop();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    double encoderValue = subsystem.getEncoderValues();
-    // done if encoder is between 77 and 83
-    return ( encoderValue >= (intakeAngle-5) && encoderValue <= (intakeAngle+5) );
+    return false;
   }
 }
-
-

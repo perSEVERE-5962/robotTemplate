@@ -50,6 +50,6 @@ public class MoveArmVision extends CommandBase {
   public boolean isFinished() {
     double encoderValue = subsystem.getEncoderValues();
     // done if encoder is between 35 and 41
-    return ( encoderValue >= (visionAngle-3) && encoderValue <= (visionAngle+3) );
+    return ( encoderValue >= (visionAngle-5) && encoderValue <= (visionAngle+5) );
   }
 }

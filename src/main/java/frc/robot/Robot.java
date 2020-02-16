@@ -155,7 +155,8 @@ public class Robot extends TimedRobot {
       m_robotContainer.putMessage("Left ultrasonic: " + ultrasonicLeft);
       m_robotContainer.putMessage("Right ultrasonic: " + ultrasonicRight);
       m_robotContainer.putMessage("Vision action: " + action);
-      
+      m_robotContainer.putMessage("Arm position: " + m_robotContainer.getArmPosition());
+
       if (ultrasonicLeft <= 5 && ultrasonicRight <=  5) {
         m_robotContainer.putMessage("Stop and shoot");
         

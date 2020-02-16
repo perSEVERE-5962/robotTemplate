@@ -194,6 +194,10 @@ public class RobotContainer {
     }
   }
 
+  public double getArmPosition() {
+    return arm.getEncoderValues();
+  }
+
   public String getVisionAction() {
     table = inst.getTable("Vision");
     myEntry = table.getEntry("Action");

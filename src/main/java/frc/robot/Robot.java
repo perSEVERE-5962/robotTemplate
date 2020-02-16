@@ -9,6 +9,8 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.kauailabs.navx.frc.AHRS;
+
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -148,10 +150,12 @@ public class Robot extends TimedRobot {
       SmartDashboard.putNumber("RightUltrasonic", ultrasonicRight);
       String action = m_robotContainer.getVisionAction();
       SmartDashboard.putString("Visionaction", action);
-      m_robotContainer.putMessage("LeftUltrasonic: " + ultrasonicLeft);
-      m_robotContainer.putMessage("RightUltrasonic: " + ultrasonicRight);
-      m_robotContainer.putMessage("Visionaction: " + action);
 
+      m_robotContainer.putMessage("Remaining match time: " + DriverStation.getInstance().getMatchTime());
+      m_robotContainer.putMessage("Left ultrasonic: " + ultrasonicLeft);
+      m_robotContainer.putMessage("Right ultrasonic: " + ultrasonicRight);
+      m_robotContainer.putMessage("Vision action: " + action);
+      
       if (ultrasonicLeft <= 5 && ultrasonicRight <=  5) {
         m_robotContainer.putMessage("Stop and shoot");
         

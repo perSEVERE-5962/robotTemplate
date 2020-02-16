@@ -148,24 +148,35 @@ public class Robot extends TimedRobot {
       SmartDashboard.putNumber("RightUltrasonic", ultrasonicRight);
       String action = m_robotContainer.getVisionAction();
       SmartDashboard.putString("Visionaction", action);
+      m_robotContainer.putMessage("LeftUltrasonic: " + ultrasonicLeft);
+      m_robotContainer.putMessage("RightUltrasonic: " + ultrasonicRight);
+      m_robotContainer.putMessage("Visionaction: " + action);
+
       if (ultrasonicLeft <= 5 && ultrasonicRight <=  5) {
+        m_robotContainer.putMessage("Stop and shoot");
+        
         stop();
          Command shoot = m_robotContainer.getShoot();
         if(shoot != null) {
           shoot.schedule();
         }
       } else if (action.equals("Left") && (ultrasonicLeft >= 54 && ultrasonicRight >=54)) {
+        m_robotContainer.putMessage("Move left");
         moveLeft();
       } else if (action.equals("Right") && (ultrasonicLeft >= 54 && ultrasonicRight >=54)) {
+        m_robotContainer.putMessage("Move right");
         moveRight();
       } else if (ultrasonicLeft >= 5 && ultrasonicRight >= 5) {
+        m_robotContainer.putMessage("Inch forward");
         inchForward();
         if (arminshootposition == false) {
+          m_robotContainer.putMessage("Move arm to intake position");
           m_robotContainer.moveArmToIntake();
           arminshootposition = true;
         }
         
       } else {
+        m_robotContainer.putMessage("Stop");
         // if (ultrasonicLeft <= 20 && ultrasonicRight <= 20) {
            stop();
         // } else {

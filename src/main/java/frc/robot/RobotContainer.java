@@ -7,6 +7,10 @@
 
 package frc.robot;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.networktables.NetworkTable;
@@ -67,7 +71,7 @@ public class RobotContainer {
   private final Arm arm = new Arm();
   // private final RunTankDrive driveCommand = new RunTankDrive(driveSubsystem);
 
-  //private final WinchUp winchUp = new WinchUp(winchSubsystem);
+  // private final WinchUp winchUp = new WinchUp(winchSubsystem);
 
   private NetworkTableInstance inst = NetworkTableInstance.getDefault();
   private NetworkTable table;
@@ -110,6 +114,7 @@ public class RobotContainer {
     double axisValue = copilotController.getRawAxis(3);
     return axisValue;
   }
+
   public double getElevatorDownAxis() {
     double axisValue = copilotController.getRawAxis(2);
     return axisValue;
@@ -118,6 +123,7 @@ public class RobotContainer {
   public Command getTurnOnLight() {
     return lightOn;
   }
+
   public Command getTurnOffLight() {
     return lightOff;
   }
@@ -134,19 +140,20 @@ public class RobotContainer {
     return runIntake;
   }
 
-  public Command getCamera(){
+  public Command getCamera() {
     return cameraCommand;
 
   }
+
   public Command getShoot() {
     return shoot;
   }
 
-  public Command getElevatorUp(){
+  public Command getElevatorUp() {
     return elevatorUp;
   }
 
-  public Command getElevatorDown(){
+  public Command getElevatorDown() {
     return elevatorDown;
   }
 
@@ -176,10 +183,11 @@ public class RobotContainer {
     buttonB.whenPressed(new MoveArmToShoot(arm));
     buttonX.whenPressed(new TurnOnLight(cameraLight));
     buttonY.whenPressed(new TurnOffLight(cameraLight));
-//    button8.whenPressed(new ResetArm());
+    // button8.whenPressed(new ResetArm());
     button7.whileHeld(new WinchUp(winchSubsystem));
   }
-  public void moveArmToIntake(){
+
+  public void moveArmToIntake() {
     Command move = new MoveArmToShoot(arm);
     if (move != null) {
       move.schedule();
@@ -260,19 +268,19 @@ public class RobotContainer {
   }
 
   // public Command getWinchUp() {
-  //   return winchUp;
+  // return winchUp;
   // }
 
   // public Command getSenseColorCommand() {
-  //   return senseColorCommand;
+  // return senseColorCommand;
   // }
 
   // public Command getSpinColorCommand() {
-  //   return spinColorCommand;
+  // return spinColorCommand;
   // }
 
   // public Command getSpinRotCommand() {
-  //   return spinRotCommand;
+  // return spinRotCommand;
   // }
 
   public Command stopdrive() {
@@ -297,5 +305,15 @@ public class RobotContainer {
 
   public double getGyroAngle() {
     return ahrs.getAngle();
+  }
+
+  private String getCurrentTime() {
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd@HH-mm-ss", Locale.US);
+    return dateFormat.format(new Date());
+  }
+
+  public void putMessage(String message) {
+    String logString = getCurrentTime() + " " + message + System.lineSeparator();
+    System.out.println(logString);
   }
 }

@@ -12,11 +12,11 @@ from networktables import NetworkTables
 ##########
 
 # camera source
-webcam = 'http://10.99.88.15:1181/stream.mjpg'
+webcam = 'http://10.59.62.55:1181/stream.mjpg'
 #webcam = 'http://frcvision.local:1181/stream.mjpg'
 
 # network table server
-nt_server = "10.99.88.2"
+nt_server = "10.59.62.2"
 #nt_server = "rei.local"
 
 #####################################

@@ -115,11 +115,11 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
 
     m_robotContainer.getDrive().resetEncoders();
-    autonomousCommand = m_robotContainer.getFollowPath();
+    // autonomousCommand = m_robotContainer.getFollowPath();
 
-    if (autonomousCommand != null) {
-      autonomousCommand.schedule();
-    }
+    // if (autonomousCommand != null) {
+    //   autonomousCommand.schedule();
+    // }
 
     // if (autonomousCommand != null) {
     //   autonomousCommand.schedule();
@@ -143,7 +143,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     
-    if (m_robotContainer.getDrive().isPathFollowerDone()) {
+    //if (m_robotContainer.getDrive().isPathFollowerDone()) {
       double ultrasonicLeft = m_robotContainer.getLeftUltrasonic();
       double ultrasonicRight = m_robotContainer.getRightUltrasonic();
       SmartDashboard.putNumber("LeftUltrasonic", ultrasonicLeft);
@@ -151,13 +151,12 @@ public class Robot extends TimedRobot {
       String action = m_robotContainer.getVisionAction();
       SmartDashboard.putString("Visionaction", action);
 
-      m_robotContainer.putMessage("Remaining match time: " + DriverStation.getInstance().getMatchTime());
       m_robotContainer.putMessage("Left ultrasonic: " + ultrasonicLeft);
       m_robotContainer.putMessage("Right ultrasonic: " + ultrasonicRight);
       m_robotContainer.putMessage("Vision action: " + action);
       m_robotContainer.putMessage("Arm position: " + m_robotContainer.getArmPosition());
 
-      if (ultrasonicLeft <= 5 && ultrasonicRight <=  5) {
+      if (ultrasonicLeft <= 9 && ultrasonicRight <=  9) {
         m_robotContainer.putMessage("Stop and shoot");
         
         stop();
@@ -171,12 +170,12 @@ public class Robot extends TimedRobot {
       } else if (action.equals("Right") && (ultrasonicLeft >= 54 && ultrasonicRight >=54)) {
         m_robotContainer.putMessage("Move right");
         moveRight();
-      } else if (ultrasonicLeft >= 5 && ultrasonicRight >= 5) {
+      } else if (ultrasonicLeft >= 9 && ultrasonicRight >= 9) {
         m_robotContainer.putMessage("Inch forward");
         inchForward();
-        if (arminshootposition == false) {
-          m_robotContainer.putMessage("Move arm to intake position");
-          m_robotContainer.moveArmToIntake();
+        if (arminshootposition == false&& (ultrasonicLeft < 54 && ultrasonicRight < 54)) {
+          m_robotContainer.putMessage("Move arm to shoot position");
+          m_robotContainer.moveArmToShoot();;
           arminshootposition = true;
         }
         
@@ -189,8 +188,8 @@ public class Robot extends TimedRobot {
         // }
 
       }
-    }
-    }
+    //}
+  }
   
 
   private void moveLeft() {

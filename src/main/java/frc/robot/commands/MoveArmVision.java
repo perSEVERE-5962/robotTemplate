@@ -13,7 +13,7 @@ import frc.robot.subsystems.Arm;
 public class MoveArmVision extends CommandBase {
 
   Arm subsystem;
-  private final double visionAngle = 38.0;
+  private final double visionAngle = 48.0;
   
   
   /**

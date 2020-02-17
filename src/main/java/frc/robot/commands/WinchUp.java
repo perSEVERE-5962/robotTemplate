@@ -36,7 +36,7 @@ public Joystick joystick = new Joystick(1);
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    subsystem.moveWinch(1);
+    subsystem.moveWinch(0.5);
     // subsystem.moveWinch(Math.abs(055*joystick.getRawAxis(5)));
   }
 

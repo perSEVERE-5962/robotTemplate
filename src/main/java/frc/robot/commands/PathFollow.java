@@ -105,7 +105,7 @@ public class PathFollow extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    System.err.println("Stopping!");
+    System.err.println("Stopping Pathplanner!");
     drive.endPathFollower();
   } 
 

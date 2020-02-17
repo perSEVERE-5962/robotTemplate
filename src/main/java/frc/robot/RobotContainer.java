@@ -187,7 +187,7 @@ public class RobotContainer {
     button7.whileHeld(new WinchUp(winchSubsystem));
   }
 
-  public void moveArmToIntake() {
+  public void moveArmToShoot() {
     Command move = new MoveArmToShoot(arm);
     if (move != null) {
       move.schedule();

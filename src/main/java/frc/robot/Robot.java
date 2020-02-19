@@ -115,15 +115,13 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
 
     m_robotContainer.getDrive().resetEncoders();
-    // autonomousCommand = m_robotContainer.getFollowPath();
-
-    // if (autonomousCommand != null) {
-    //   autonomousCommand.schedule();
-    // }
-
-    // if (autonomousCommand != null) {
-    //   autonomousCommand.schedule();
-    // }
+    
+    if (m_robotContainer.isUsingPathFollower() == true) {
+      autonomousCommand = m_robotContainer.getFollowPath();
+      if (autonomousCommand != null) {
+        autonomousCommand.schedule();
+      }
+    } 
 
     lightToggle = m_robotContainer.getTurnOnLight();
     if (lightToggle != null) {
@@ -142,8 +140,7 @@ public class Robot extends TimedRobot {
   boolean arminshootposition = false;
   @Override
   public void autonomousPeriodic() {
-    
-    //if (m_robotContainer.getDrive().isPathFollowerDone()) {
+    if (m_robotContainer.isUsingPathFollower() == false || m_robotContainer.getDrive().isPathFollowerDone()) {      
       double ultrasonicLeft = m_robotContainer.getLeftUltrasonic();
       double ultrasonicRight = m_robotContainer.getRightUltrasonic();
       SmartDashboard.putNumber("LeftUltrasonic", ultrasonicLeft);
@@ -188,7 +185,7 @@ public class Robot extends TimedRobot {
         // }
 
       }
-    //}
+    }
   }
   
 

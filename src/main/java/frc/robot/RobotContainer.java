@@ -60,7 +60,7 @@ public class RobotContainer {
   private final JoystickButton buttonY = new JoystickButton(copilotController, 3);
   private final JoystickButton buttonX = new JoystickButton(copilotController, 4);
 
-  private SendableChooser chooser = new SendableChooser<Command>();
+  private SendableChooser driveChooser = new SendableChooser<Command>();
 
   // The robot's subsystems and commands are defined here...
   private final Drive driveSubsystem = new Drive();
@@ -164,12 +164,13 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
-    chooser.setDefaultOption("JamieDrive", new RunJamieDrive(driveSubsystem));
-    chooser.addOption("smooth tankdrive", new SmoothTankDrive(driveSubsystem));
-    chooser.addOption("smooth arcadedrive", new SmoothArcadeDrive(driveSubsystem));
-    chooser.addOption("tankdrive", new RunTankDrive(driveSubsystem));
-    chooser.addOption("arcadedrive", new ArcadeDrive(driveSubsystem));
-    SmartDashboard.putData("drivercontrol", chooser);
+    driveChooser.setDefaultOption("JamieDrive", new RunJamieDrive(driveSubsystem));
+    driveChooser.addOption("smooth tankdrive", new SmoothTankDrive(driveSubsystem));
+    driveChooser.addOption("smooth arcadedrive", new SmoothArcadeDrive(driveSubsystem));
+    driveChooser.addOption("tankdrive", new RunTankDrive(driveSubsystem));
+    driveChooser.addOption("arcadedrive", new ArcadeDrive(driveSubsystem));
+    SmartDashboard.putData("drivercontrol", driveChooser);
+    SmartDashboard.putBoolean("Use PathFollower", true);
   }
 
   /**
@@ -235,7 +236,7 @@ public class RobotContainer {
   }
 
   public Command getDriveCommand() {
-    driveCommand = (Command) chooser.getSelected();
+    driveCommand = (Command) driveChooser.getSelected();
     return driveCommand;
   }
 
@@ -319,5 +320,9 @@ public class RobotContainer {
   public void putMessage(String message) {
     String logString = getCurrentTime() + " " + message + System.lineSeparator();
     System.out.println(logString);
+  }
+
+  public boolean isUsingPathFollower() {
+    return SmartDashboard.getBoolean("Use PathFollower", true);
   }
 }

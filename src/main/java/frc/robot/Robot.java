@@ -7,22 +7,14 @@
 
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.kauailabs.navx.frc.AHRS;
 
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.ElevatorUp;
 import frc.robot.subsystems.Arm;
-
 import frc.robot.sensors.PIDControl;
 import frc.robot.subsystems.Drive;
-
-import frc.robot.commands.PathFollow;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -40,13 +32,11 @@ public class Robot extends TimedRobot {
   private Command spinRotCommand;
   private Command winchCommand;
   private Command armVision;
-  private Command moveWinch;
   private Command cameraCommand;
   public PIDControl pidControl;
   public Drive drive;
   private RobotContainer m_robotContainer;
-  private PathFollow autoPath;
-
+ 
   public Robot() {
 
     super(0.01);

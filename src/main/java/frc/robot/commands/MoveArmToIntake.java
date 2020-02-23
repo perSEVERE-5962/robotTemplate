@@ -14,7 +14,7 @@ import frc.robot.subsystems.Arm;
 public class MoveArmToIntake extends CommandBase {
 
   Arm subsystem;
-  private final double intakeAngle = 79.0;
+  private final double intakeAngle = 72.0;
 
   /**
    * Creates a new MoveArmCommand.

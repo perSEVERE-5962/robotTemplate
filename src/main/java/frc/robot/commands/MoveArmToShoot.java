@@ -14,7 +14,7 @@ import frc.robot.subsystems.Arm;
 public class MoveArmToShoot extends CommandBase {
 
   Arm subsystem;
-  private final double shootAngle = 12.0;
+  private final double shootAngle = 13.0;
   
   
   /**

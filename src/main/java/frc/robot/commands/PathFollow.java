@@ -33,8 +33,8 @@ public class PathFollow extends CommandBase {
   final double kP = 0.3; //0.25
   final double kI = 0;
   final double kD = 0; //0.001
-  final double kV = 1/12.3;//1/22.72;
-  final double kA = 1/10;//1/72.29;
+  final double kV = 1/7.83;//1/22.72; (ACTUAL VELOCITY: 12.3 ACTUAL ACCELERATION: 10)
+  final double kA = 1/6;//1/72.29;
 
   public double leftPos;
   public double rightPos;
@@ -49,9 +49,9 @@ public class PathFollow extends CommandBase {
     // configTalon.configTalons();
     try{
     //need to implement PIDControl, Encoders??
-    leftFollower = follower(Pathfinder.readFromCSV(new File("/home/lvuser/deploy/path31_left.csv")));
+    leftFollower = follower(Pathfinder.readFromCSV(new File("/home/lvuser/deploy/path35_left.csv")));
     //add left location
-    rightFollower = follower(Pathfinder.readFromCSV(new File("/home/lvuser/deploy/path31_right.csv")));   
+    rightFollower = follower(Pathfinder.readFromCSV(new File("/home/lvuser/deploy/path35_right.csv")));   
     }catch(IOException ex){
       System.err.println(ex);
     }

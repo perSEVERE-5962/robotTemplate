@@ -23,11 +23,11 @@ public class Intake extends SubsystemBase {
 }
   
 public void runIntake(){
-  motorControl.set(0.9);
+  motorControl.set(0.75);
 }
 
 public void shoot(){
-  motorControl.set(-0.9);
+  motorControl.set(-0.75);
 }
 
 public void stop(){

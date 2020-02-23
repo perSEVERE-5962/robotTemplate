@@ -21,7 +21,7 @@ public class Drive extends SubsystemBase {
   private WPI_TalonSRX robotRightTalon;
   private WPI_VictorSPX robotRightVictor;
   private final double speedfactor = 1;
-  private final double autospeedfactor = 0.23;
+  private final double autospeedfactor = 0.23; // 0.23 for comp bot
   // private double ultrasonicRange;
   // private boolean ultrasonicCheck = false;
   private double radius = 3;
@@ -94,7 +94,7 @@ public class Drive extends SubsystemBase {
   }
 
   public void jamieDrive(double leftSpeed, double rightSpeed) {
-    unsetsmooth();
+    setsmooth();
     if (leftSpeed < -0.1) {
       leftTalon().set(ControlMode.PercentOutput, -speedfactor*0.5);
       rightTalon().set(ControlMode.PercentOutput, speedfactor*0.5);
@@ -159,9 +159,25 @@ public class Drive extends SubsystemBase {
     SmartDashboard.putString("stoprobot", "");
   }
 
-  public void inchforward(double speed) {
-    leftTalon().set(ControlMode.PercentOutput, speed);
-    rightTalon().set(ControlMode.PercentOutput, speed);
+  public void inchforward(double speed, double leftultrasonic, double rightultrasonic) {
+     if (leftultrasonic >=20 && rightultrasonic >=20){
+      leftTalon().set(ControlMode.PercentOutput, speed);
+      rightTalon().set(ControlMode.PercentOutput, speed);
+     }
+     else if (Math.abs(leftultrasonic - rightultrasonic) <= 4){
+      leftTalon().set(ControlMode.PercentOutput, speed);
+      rightTalon().set(ControlMode.PercentOutput, speed);
+    }
+    else if (rightultrasonic > leftultrasonic){
+      driveLeft();
+    }
+    else if (rightultrasonic < leftultrasonic){
+      driveRight();
+    }
+    else {
+      leftTalon().set(ControlMode.PercentOutput, speed);
+      rightTalon().set(ControlMode.PercentOutput, speed);
+    }
   }
 
   public double inchesToTicks(double inch) {

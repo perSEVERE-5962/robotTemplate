@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.Arm;
+import frc.robot.commands.InchForward;
 import frc.robot.sensors.PIDControl;
 import frc.robot.subsystems.Drive;
 
@@ -143,7 +144,7 @@ public class Robot extends TimedRobot {
       m_robotContainer.putMessage("Vision action: " + action);
       m_robotContainer.putMessage("Arm position: " + m_robotContainer.getArmPosition());
 
-      if (ultrasonicLeft <= 9 && ultrasonicRight <=  9) {
+      if (ultrasonicLeft <= 7 || ultrasonicRight <=  7) {
         m_robotContainer.putMessage("Stop and shoot");
         
         stop();
@@ -157,10 +158,10 @@ public class Robot extends TimedRobot {
       } else if (action.equals("Right") && (ultrasonicLeft >= 54 && ultrasonicRight >=54)) {
         m_robotContainer.putMessage("Move right");
         moveRight();
-      } else if (ultrasonicLeft >= 9 && ultrasonicRight >= 9) {
+      } else if (ultrasonicLeft >= 7 || ultrasonicRight >= 7) {
         m_robotContainer.putMessage("Inch forward");
-        inchForward();
-        if (arminshootposition == false&& (ultrasonicLeft < 54 && ultrasonicRight < 54)) {
+        inchForward(ultrasonicLeft, ultrasonicRight);
+        if (arminshootposition == false && (ultrasonicLeft < 54 && ultrasonicRight < 54)) {
           m_robotContainer.putMessage("Move arm to shoot position");
           m_robotContainer.moveArmToShoot();;
           arminshootposition = true;
@@ -171,7 +172,7 @@ public class Robot extends TimedRobot {
         // if (ultrasonicLeft <= 20 && ultrasonicRight <= 20) {
            stop();
         // } else {
-        //   inchForward();
+        //inchForward(ultrasonicLeft, ultrasonicRight);
         // }
 
       }
@@ -201,9 +202,11 @@ public class Robot extends TimedRobot {
     }
   }
 
-  private void inchForward() {
-    Command inchForwardCommand = m_robotContainer.getInchForward();
+  private void inchForward(double leftUltrasonic, double rightUltrasonic) {
+      InchForward inchForwardCommand = (InchForward) m_robotContainer.getInchForward();
     if (inchForwardCommand != null) {
+      inchForwardCommand.setLeftUltrasonic(leftUltrasonic);
+      inchForwardCommand.setRightultrasonic(rightUltrasonic);
       inchForwardCommand.schedule();
 
     }

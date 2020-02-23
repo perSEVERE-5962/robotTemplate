@@ -12,24 +12,29 @@ from networktables import NetworkTables
 ##########
 
 # camera source
-webcam = 'http://10.99.88.15:1181/stream.mjpg'
+#webcam = 'http://10.99.88.15:1181/stream.mjpg'
 #webcam = 'http://frcvision.local:1181/stream.mjpg'
+webcam = 'http://10.59.62.55:1181/stream.mjpg'
 
 # network table server
-nt_server = "10.99.88.2"
+#nt_server = "10.99.88.2"
 #nt_server = "rei.local"
+nt_server = "10.59.62.2"
+
+# True = doesn't connect to networktables // False = connect to networktables
+is_competition = False
 
 #####################################
 
 """ INIT NETWORK TABLES """
 
-NetworkTables.initialize(server=nt_server)
-table = NetworkTables.getTable("Calibration")
-
-print("[CALIBRATION]: Network Tables initialized.")
-
-# wait for connection to settle
-time.sleep(1)
+if is_competition == False:
+    NetworkTables.initialize(server=nt_server)
+    table = NetworkTables.getTable("Calibration")
+    print("[CALIBRATION]: Network Tables initialized.")
+    
+    # wait for connection to settle
+    time.sleep(1)
 
 """ INIT CALIBRATION GUI """
 
@@ -75,13 +80,14 @@ while True:
     # process image to show pixel in hsv bounds
     img = cv2.inRange(hsv, hsv_lower, hsv_upper)
 
-    # write trackbar values to network table
-    table.putNumber("H-lower", h_l)
-    table.putNumber("S-lower", s_l)
-    table.putNumber("V-lower", v_l)
-    table.putNumber("H-upper", h_u)
-    table.putNumber("S-upper", s_u)
-    table.putNumber("V-upper", v_u)
+    if is_competition == False:
+        # write trackbar values to network table
+        table.putNumber("H-lower", h_l)
+        table.putNumber("S-lower", s_l)
+        table.putNumber("V-lower", v_l)
+        table.putNumber("H-upper", h_u)
+        table.putNumber("S-upper", s_u)
+        table.putNumber("V-upper", v_u)
 
     # If 'ESC' pressed then print and exit
     k = cv2.waitKey(1) & 0xFF

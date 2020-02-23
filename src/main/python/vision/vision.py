@@ -21,17 +21,19 @@ config_dir='config/'
 img_dir = 'images/'
 
 # network table server
-nt_server = "10.99.88.2"
+#nt_server = "10.99.88.2"
 #nt_server = "rei.local"
+nt_server = "10.59.62.2"
 
 # minimum contour area detected by script to make a decision
 min_contour_area = 75
 
 # +/- range in pixels that the robot is considered to be centered
-centered_bounds = 20
+centered_bounds = 50
 
 # the color of the contour drawn
-# CYAN = (255, 255, 0) | GREEN = (0, 255, 0) | YELLOW = (0, 255, 255)
+# CYAN = (255, 255, 0)     //   GREEN = (0, 255, 0)
+# YELLOW = (0, 255, 255)   //   MAGENTA = (255, 0, 255)
 contour_color = (255, 255, 0)
 
 # image capture interval (in seconds)
@@ -49,6 +51,7 @@ cs.enableLogging()
 camera = cs.startAutomaticCapture()
 camera.setResolution(320, 240)
 camera.setFPS(30)
+camera.setExposureManual(0)
 
 # Get a CvSink. This will capture images from the camera
 cvSink = cs.getVideo()
@@ -65,7 +68,8 @@ print("[VISION]: Camera initialized.")
 
 # set up network tables
 NetworkTables.initialize(server=nt_server)
-table = NetworkTables.getTable("Vision")
+vision_table = NetworkTables.getTable("Vision")
+smartdashboard_table = NetworkTables.getTable("SmartDashboard")
 
 print("[VISION]: Network Tables initialized.")
 
@@ -96,12 +100,12 @@ if os.path.exists(config_file):
 else:
     print("[VISION]: Configuration file doesn't exist; using default settings.")
 
-    h_l = 0
-    s_l = 0
-    v_l = 251
-    h_u = 177
-    s_u = 24
-    v_u = 255
+    h_l = 47
+    s_l = 176
+    v_l = 41
+    h_u = 96
+    s_u = 255
+    v_u = 185
 
 # print values of bounds
 print("[VISION]: Lower H: " + str(h_l) + " S: " + str(s_l) + " V: " + str(v_l))
@@ -113,6 +117,7 @@ print("[VISION]: Vision processing initialized.")
 
 last_recorded_time = Time()
 img_center_found = False
+#contour_found = False
 
 while True:
     # Tell the CvSink to grab a frame from the camera and put it
@@ -132,11 +137,14 @@ while True:
         # find x center
         img_center_x = int(img_width/2)
         img_center_y = int(img_width/2)
-        table.putNumber("Image Center X", img_center_x)
-        table.putNumber("Image Center Y", img_center_y)
+        vision_table.putNumber("Image Center X", img_center_x)
+        vision_table.putNumber("Image Center Y", img_center_y)
 
         img_center_found = True
         print("[VISION]: Image center found.")
+
+    # get vision mode
+    vision_mode = smartdashboard_table.getString("mode", "camera")
 
     # convert frame to hsv color space
     hsv_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
@@ -159,31 +167,52 @@ while True:
         x,y,w,h = cv2.boundingRect(c)
         x += w/2
         y += h/2
-        table.putNumber("Centroid X", x)
-        table.putNumber("Centroid Y", y)
+        vision_table.putNumber("Centroid X", x)
+        vision_table.putNumber("Centroid Y", y)
 
         # find area
         area = cv2.contourArea(c)
-        table.putNumber("Area", area)
+        vision_table.putNumber("Area", area)
 
         # if contour area of sufficient size found ...
         # make decision based on relative position of centroid to image center
         if area >= min_contour_area:
             if (img_center_x - centered_bounds) <= x <= (img_center_x + centered_bounds):
-                table.putString("Action", "None")
+                vision_table.putString("Action", "None")
+                #contour_found = True
             elif x < img_center_x:
-                table.putString("Action", "Left")
+                vision_table.putString("Action", "Left")
             elif x > img_center_x:
-                table.putString("Action", "Right")
+                vision_table.putString("Action", "Right")
         # else keep turning right
         else:
-            table.putString("Action", "Right")
+            vision_table.putString("Action", "Right")
+            """
+            if vision_mode == "stop":
+                contour_found = Falsex
+            else:
+                if contour_found == False:
+                    vision_table.putString("Action", "Right")
+                else:
+                    vision_table.putString("Action", "Unkown")
+            """
 
         # create processed contour image
         inrange_frame = cv2.bitwise_and(frame, frame, mask=mask)
         cv2.drawContours(frame, c, -1, contour_color, 3)
     else:
         inrange_frame = frame
+        vision_table.putString("Action", "Right")
+
+        """
+        if vision_mode == "stop":
+                contour_found = False
+        else:
+            if contour_found == False:
+                vision_table.putString("Action", "Right")
+            else:
+                vision_table.putString("Action", "Unkown")
+        """
 
     # send some image back to the dashboard
     outputStream.putFrame(frame)

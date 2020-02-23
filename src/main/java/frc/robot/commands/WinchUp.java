@@ -36,14 +36,16 @@ public Joystick joystick = new Joystick(1);
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    subsystem.moveWinch(Math.abs(0.5*joystick.getRawAxis(5)));
-
+    subsystem.moveWinch(1.0);
+    // subsystem.moveWinch(Math.abs(055*joystick.getRawAxis(5)));
   }
 
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    subsystem.moveWinch(0);
+
   }
 
   // Returns true when the command should end.

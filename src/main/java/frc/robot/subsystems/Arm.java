@@ -15,12 +15,12 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Arm extends SubsystemBase {
   private WPI_TalonSRX armTalon;
-  private final double shootAngle = 10.0;
-  private final double intakeAngle = 80.0;
+//  private final double shootAngle = 10.0;
+//  private final double intakeAngle = 80.0;
+//  private final double visionAngle = 38.0;
 
   //private DigitalInput limitSwitch;
   private double measureAngle;
-  
 
   public Arm() {
     armTalon = new WPI_TalonSRX(12);
@@ -40,23 +40,24 @@ public double setAngle(double angle){
   return finalAngle;
 }
 
-public void shootingPosition(){
+public void shootingPosition(double shootAngle){
   armTalon.set(ControlMode.Position, setAngle(shootAngle));
   SmartDashboard.putNumber("Absolute", armTalon.getSelectedSensorPosition());
 }
-public void visionPosition(){
-  armTalon.set(ControlMode.Position, setAngle(38.0));
+public void visionPosition(double visionAngle){
+  armTalon.set(ControlMode.Position, setAngle(visionAngle));
   SmartDashboard.putNumber("Absolute", armTalon.getSelectedSensorPosition());
 }
-public void intakePosition(){
+public void intakePosition(double intakeAngle){
   armTalon.set(ControlMode.Position, setAngle(intakeAngle));
   SmartDashboard.putNumber("Absolute", armTalon.getSelectedSensorPosition());
 }
 
 //NEW resetPosition
 public void resetPosition(){
-  armTalon.set(ControlMode.Position, intakeAngle);
+  armTalon.set(ControlMode.Position, setAngle(79.0));
 }
+
 
 public double getEncoderValues(){
   return armTalon.getSelectedSensorPosition();

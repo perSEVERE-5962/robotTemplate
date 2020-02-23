@@ -14,14 +14,14 @@ import frc.robot.subsystems.Arm;
 public class MoveArmToIntake extends CommandBase {
 
   Arm subsystem;
-
+  private final double intakeAngle = 72.0;
 
   /**
    * Creates a new MoveArmCommand.
    */
-  public MoveArmToIntake() {
+  public MoveArmToIntake(Arm arm) {
     // Use addRequirements() here to declare subsystem dependencies.
-    subsystem = new Arm();
+    subsystem = arm;
     addRequirements(subsystem);
   }
 
@@ -38,26 +38,25 @@ public class MoveArmToIntake extends CommandBase {
   @Override
   public void execute() {
     SmartDashboard.putString("down", "down");
-    subsystem.intakePosition();
-
+    subsystem.intakePosition(intakeAngle);
   }
 
   // private boolean RunMoveArm() {
   //   return false;
   // }
 
-
-
-
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    subsystem.stop();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    double encoderValue = subsystem.getEncoderValues();
+    // done if encoder is between 77 and 83
+    return ( encoderValue >= (intakeAngle-5) && encoderValue <= (intakeAngle+5) );
   }
 }
 

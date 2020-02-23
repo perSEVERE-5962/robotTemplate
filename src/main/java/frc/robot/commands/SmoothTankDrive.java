@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.Drive;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /**
@@ -8,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
  */
 public class SmoothTankDrive extends CommandBase {
     private final Drive subsystem;
+    public Joystick joystick = new Joystick(0);
 
     public SmoothTankDrive(Drive subsystem) {
         this.subsystem = subsystem;
@@ -21,7 +23,8 @@ public class SmoothTankDrive extends CommandBase {
 
     // Called repeatedly when this Command is scheduled to run
     public void execute() {
-    	subsystem.smoothTankDrive();
+      subsystem.smoothTankDrive(joystick.getRawAxis(1), joystick.getRawAxis(5));
+
     }
 
     // Make this return true when this Command no longer needs to run execute()

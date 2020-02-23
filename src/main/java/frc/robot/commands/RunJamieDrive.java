@@ -7,6 +7,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.*;
 
@@ -15,6 +16,7 @@ public class RunJamieDrive extends CommandBase {
    * Creates a new RunJamieDrive.
    */
   private final Drive subsystem;
+  public Joystick joystick = new Joystick(0);
 
   public RunJamieDrive(Drive subsystem) {
     this.subsystem = subsystem;
@@ -30,7 +32,7 @@ public class RunJamieDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    subsystem.jamieDrive();
+    subsystem.jamieDrive(joystick.getRawAxis(0), joystick.getRawAxis(5));
   }
 
   // Called once the command ends or is interrupted.

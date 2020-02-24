@@ -7,19 +7,18 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ArmServo;
+import frc.robot.subsystems.Drive;
 
-public class MoveServoToClose extends CommandBase {
-  
-  private ArmServo subsystem;
+public class EndPathFollower extends CommandBase {
+  private final Drive subsystem;
+
   /**
-   * Creates a new MoveArmServoToNegative.
+   * Creates a new EndPathPlanner.
    */
-  public MoveServoToClose(ArmServo ArmServo) {
+  public EndPathFollower(Drive subsystem) {
+    this.subsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
-    subsystem = ArmServo;
     addRequirements(subsystem);
   }
 
@@ -31,14 +30,12 @@ public class MoveServoToClose extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    SmartDashboard.putString("close", "close");
-    subsystem.negativePosition();  
+    subsystem.endPathFollower();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-
   }
 
   // Returns true when the command should end.

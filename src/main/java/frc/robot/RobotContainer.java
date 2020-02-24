@@ -82,9 +82,6 @@ public class RobotContainer {
   private NetworkTableInstance inst = NetworkTableInstance.getDefault();
   private NetworkTable table;
   private NetworkTableEntry myEntry;
-  private AHRS ahrs = new AHRS(SPI.Port.kMXP);
-  private final PIDControl pidControl = new PIDControl();
-  private final PathFollow followPath = new PathFollow(driveSubsystem, pidControl, ahrs);
 
   // private final ColorSensor colorSensor = new ColorSensor();
   // private final ControlPanel controlPanel = new ControlPanel(colorSensor);
@@ -98,6 +95,7 @@ public class RobotContainer {
   private final TurnOnLight lightOn = new TurnOnLight(cameraLight);
   private final TurnOffLight lightOff = new TurnOffLight(cameraLight);
   private final MoveArmVision armVision = new MoveArmVision();
+  private final MoveArmToIntake armToIntake = new MoveArmToIntake(arm);
   private final ElevatorUp elevatorUp = new ElevatorUp(elevatorsubsystem);
   private final ElevatorDown elevatorDown = new ElevatorDown(elevatorsubsystem);
   private final GetCamera cameraCommand = new GetCamera();
@@ -110,6 +108,17 @@ public class RobotContainer {
   private DriveBackwards goBackwards = new DriveBackwards(driveSubsystem);
   private StopArm stopArm = new StopArm();
   // private WinchUp winchUp = new WinchUp();
+  private EndPathFollower endPathFollower = new EndPathFollower(driveSubsystem);
+
+  private Command pathChooser;
+  private final AHRS ahrs = new AHRS(SPI.Port.kMXP);
+  private final GyroTurn180 gyroTurn = new GyroTurn180(driveSubsystem, ahrs);
+  private final PIDControl pidControl = new PIDControl();
+  private final PathFollow followPath = new PathFollow(driveSubsystem, pidControl, ahrs);
+  private final PathFollowStraight followPathStraight = new PathFollowStraight(driveSubsystem, pidControl, ahrs);
+  private final PathFollowDrift followPathDrift = new PathFollowDrift(driveSubsystem, pidControl, ahrs);
+  private final AutoFiveSequence autoSeq = new AutoFiveSequence(this);
+ 
 
   public double getIntake() {
     double axisValue = copilotController.getRawAxis(1);
@@ -136,6 +145,10 @@ public class RobotContainer {
 
   public Command getArmVision() {
     return armVision;
+  }
+
+  public Command getArmToIntake() {
+    return armToIntake;
   }
 
   public Command getInchForward() {
@@ -177,6 +190,11 @@ public class RobotContainer {
     driveChooser.addOption("arcadedrive", new ArcadeDrive(driveSubsystem));
     SmartDashboard.putData("drivercontrol", driveChooser);
     SmartDashboard.putBoolean("Use PathFollower", true);
+
+    // autoPathChooser.setDefaultOption("Test", followPath);
+    // autoPathChooser.addOption("Straight Path", followPathStraight);
+    // autoPathChooser.addOption("Turning Path", followPathDrift);
+    // SmartDashboard.putData("path chooser", autoPathChooser);
   }
 
   /**
@@ -264,10 +282,6 @@ public class RobotContainer {
     return copilotController;
   }
 
-  public Command getFollowPath() {
-    return followPath;
-  }
-
   public Command getgoForward() {
     return goForward;
   }
@@ -333,4 +347,24 @@ public class RobotContainer {
   public boolean isUsingPathFollower() {
     return SmartDashboard.getBoolean("Use PathFollower", true);
   }
+
+  public Command getStraightPath(){
+    return followPathStraight;
+  }
+  public Command getAutoSequence(){
+    return autoSeq;
+  }
+
+  public Command getGyroTurn(){
+    return gyroTurn;
+  }
+
+  public Command getFollowPath(){
+    return followPath;
+  }
+
+  public Command getEndPathFollower() {
+    return endPathFollower;
+  }
+
 }

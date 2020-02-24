@@ -22,22 +22,22 @@ public class PathFollow extends CommandBase {
    * 
    * Creates a new PathFollow.
    */
-  public int intialPosition = 0;
-  public int ticksPerRotation = 4096;
-  public double wheelDiameter = 0.5;
-  public EncoderFollower leftFollower;
-  public EncoderFollower rightFollower;
+  private int intialPosition = 0;
+  private int ticksPerRotation = 4096;
+  private double wheelDiameter = 0.5;
+  private EncoderFollower leftFollower;
+  private EncoderFollower rightFollower;
   private Drive drive;
   private PIDControl configTalon;
   private AHRS gyro;
-  final double kP = 0.3; //0.25
-  final double kI = 0;
-  final double kD = 0; //0.001
-  final double kV = 1/7.83;//1/22.72; (ACTUAL VELOCITY: 12.3 ACTUAL ACCELERATION: 10)
-  final double kA = 1/6;//1/72.29;
+  private final double kP = 0.3; //0.25
+  private final double kI = 0;
+  private final double kD = 0; //0.001
+  private final double kV = 1/7.83;//1/22.72; (ACTUAL VELOCITY: 12.3 ACTUAL ACCELERATION: 10)
+  private final double kA = 1/6;//1/72.29;
 
-  public double leftPos;
-  public double rightPos;
+  private double leftPos;
+  private double rightPos;
 
   public double leftCalculate;
   public double rightCalculate;

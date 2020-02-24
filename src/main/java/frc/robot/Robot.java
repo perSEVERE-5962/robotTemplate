@@ -105,23 +105,33 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
 
-    m_robotContainer.getDrive().resetEncoders();
-    
     if (m_robotContainer.isUsingPathFollower() == true) {
-      autonomousCommand = m_robotContainer.getFollowPath();
+      // intake.set(-1);
+      // runIntake = m_robotContainer.getRunIntake();
+      // if (runIntake != null) {
+      //   runIntake.schedule();
+      // }      
+
+      autonomousCommand = m_robotContainer.getAutoSequence();
       if (autonomousCommand != null) {
         autonomousCommand.schedule();
       }
-    } 
-
-    lightToggle = m_robotContainer.getTurnOnLight();
-    if (lightToggle != null) {
-      lightToggle.schedule();
-    }
     
-    armVision = m_robotContainer.getArmVision();
-    if (armVision != null) {
-      armVision.schedule();
+      // autonomousCommand = m_robotContainer.getFollowPath();
+      // if (autonomousCommand != null) {
+      //   autonomousCommand.schedule();
+      // }
+
+    } else {
+      lightToggle = m_robotContainer.getTurnOnLight();
+      if (lightToggle != null) {
+        lightToggle.schedule();
+      }
+    
+      armVision = m_robotContainer.getArmVision();
+      if (armVision != null) {
+        armVision.schedule();
+      }
     }
   }
 
@@ -177,6 +187,7 @@ public class Robot extends TimedRobot {
 
       }
     }
+    SmartDashboard.putNumber("Angle NavX", m_robotContainer.getGyroAngle());
   }
   
 

@@ -13,8 +13,8 @@ import frc.robot.subsystems.ArmServo;
 
 public class MoveServoToOpen extends CommandBase {
   
-  ArmServo subsystem;
-  private final double positiveSpeed = 1.0;
+  private ArmServo subsystem;
+
   /**
    * Creates a new MoveServoToPositive.
    */

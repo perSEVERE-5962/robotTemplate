@@ -7,7 +7,12 @@
 
 package frc.robot;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.SPI;
@@ -18,6 +23,8 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 import frc.robot.sensors.PIDControl;
 import frc.robot.subsystems.Drive;
+import com.kauailabs.navx.frc.AHRS;
+
 
 import frc.robot.commands.PathFollow;
 /**
@@ -27,14 +34,24 @@ import frc.robot.commands.PathFollow;
  * project.
  */
 public class Robot extends TimedRobot {
+  public WPI_VictorSPX intake = new WPI_VictorSPX(19);
+
   private Command autonomousCommand;
   private Command driveCommand;
   private Command moveWinch;
+  private Command turn;
   public PIDControl pidControl;
   public Drive drive;
   private RobotContainer m_robotContainer;
   private PathFollow autoPath;
- 
+  //private AHRS ahrs;
+  private File file;
+  private FileWriter fileWriter;
+  private File fileN;
+  private FileWriter fileWriterN;
+  // private long start;
+  // private long finish;
+  // private long elapsed;
   public Robot(){
     
     super(0.01);
@@ -49,7 +66,7 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    
+    // m_robotContainer.ahrs.reset();
 
   }
 
@@ -85,28 +102,66 @@ public class Robot extends TimedRobot {
    */ 
   @Override
   public void autonomousInit() {
-    autonomousCommand = m_robotContainer.getFollowPath();
-    
-    Drive.robotLeftTalon.setSelectedSensorPosition(0);
-    Drive.robotRightTalon.setSelectedSensorPosition(0);
-    // double pValue = autoPath.getkP();
-    // SmartDashboard.putNumber("P Val", pValue);
-    // SmartDashboard.getNumber("P Value", pValue);
-    // // schedule the autonomous command (example)
+    intake.set(-1);
+
+    autonomousCommand = m_robotContainer.getAutoSequence();
+    // turn = m_robotContainer.getGyroTurn();
+    // autonomousCommand.andThen(turn);
     if (autonomousCommand != null) {
       autonomousCommand.schedule();
     }
-  }
 
+
+    // if(turn != null){
+    //   turn.schedule();
+    // }
+    // if(turn != null){
+    //   turn.schedule();
+    // }
+    // try{
+    // file = new File("/home/lvuser/accelerationLINEAR.csv");
+    // fileWriter = new FileWriter(file, true);
+    // fileWriter.write("accelX,  accelY, accelZ" + "\n");
+    // fileWriter.close();
+    // } catch(Exception e){   
+    // }
+    // try{
+    //   fileN = new File("/home/lvuser/accelerationRAW.csv");
+    //   fileWriterN = new FileWriter(file, true);
+    //   fileWriterN.write("accelX,  accelY, accelZ" + "\n");
+    //   fileWriterN.close();
+    //   } catch(Exception e){   
+    //   }
+    // start = System.currentTimeMillis();
+
+  }
+ 
   /**
    * This function is called periodically during autonomous.
    */
   @Override
   public void autonomousPeriodic() {
-    // Drive.robotLeftTalon.set(ControlMode.PercentOutput, 1);
-    // Drive.robotRightTalon.set(ControlMode.PercentOutput, 1);
-    SmartDashboard.putNumber("Right Velocity", Drive.robotRightTalon.getSelectedSensorVelocity());
-    SmartDashboard.putNumber("Left Velocity", Drive.robotLeftTalon.getSelectedSensorVelocity());
+    SmartDashboard.putNumber("Angle NavX", m_robotContainer.ahrs.getAngle());
+ 
+  //   Drive.robotLeftTalon.set(ControlMode.PercentOutput, 1);
+  //   Drive.robotRightTalon.set(ControlMode.PercentOutput, 1);
+  //   // SmartDashboard.putNumber("Right Velocity", Drive.robotRightTalon.getSelectedSensorVelocity());
+  //   // SmartDashboard.putNumber("Left Velocity", Drive.robotLeftTalon.getSelectedSensorVelocity());
+  //   // finish = System.currentTimeMillis();
+  //   // elapsed = finish - start;
+  //   try{    
+  //     fileWriter = new FileWriter(file, true);
+  //     fileWriter.write(m_robotContainer.ahrs.getWorldLinearAccelX() + ", " + m_robotContainer.ahrs.getWorldLinearAccelY() + ", " + m_robotContainer.ahrs.getWorldLinearAccelZ() + "\n" );
+  //     fileWriter.close();
+  //   }catch(Exception e){}
+  //   try{    
+  //     fileWriterN = new FileWriter(fileN, true);
+  //     fileWriterN.write(m_robotContainer.ahrs.getRawAccelX() + ", " + m_robotContainer.ahrs.getRawAccelY() + ", " + m_robotContainer.ahrs.getRawAccelZ() + "\n" );
+  //     fileWriterN.close();
+  //   }catch(Exception e){}
+  //   SmartDashboard.putNumber("Accelerationx", m_robotContainer.ahrs.getWorldLinearAccelX());
+  //   SmartDashboard.putNumber("Accelerationy", m_robotContainer.ahrs.getWorldLinearAccelY());
+  //   SmartDashboard.putNumber("Accelerationz", m_robotContainer.ahrs.getWorldLinearAccelZ());
 
   }
 
@@ -116,14 +171,17 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
+    Drive.robotRightTalon.setSelectedSensorPosition(0);
+    Drive.robotLeftTalon.setSelectedSensorPosition(0);
+
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
     }
 
-    // driveCommand = m_robotContainer.getDriveCommand();
-    // if (driveCommand != null) {
-    //   driveCommand.schedule();
-    // }
+    driveCommand = m_robotContainer.getDriveCommand();
+    if (driveCommand != null) {
+      driveCommand.schedule();
+    }
     // moveWinch = m_robotContainer.getMoveWinch();
     // if(moveWinch != null){
     //   moveWinch.schedule();
@@ -137,6 +195,7 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     SmartDashboard.putNumber("Encoder Right Value", Drive.rightTalon().getSelectedSensorPosition());
     SmartDashboard.putNumber("Encoder Left Value", Drive.leftTalon().getSelectedSensorPosition());
+    SmartDashboard.putNumber("Angle NavX", m_robotContainer.ahrs.getAngle());
 
   }
 

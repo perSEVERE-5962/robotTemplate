@@ -7,7 +7,6 @@
 
 package frc.robot.commands;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drive;
@@ -18,7 +17,7 @@ import jaci.pathfinder.Trajectory;
 import java.io.File;
 import java.io.IOException;
 
-public class PathFollow extends CommandBase {
+public class PathFollowStraight extends CommandBase {
   /**
    * 
    * Creates a new PathFollow.
@@ -43,16 +42,16 @@ public class PathFollow extends CommandBase {
   public double leftCalculate;
   public double rightCalculate;
 
-  public PathFollow(Drive drive, PIDControl configTalon, AHRS gyro)
+  public PathFollowStraight(Drive drive, PIDControl configTalon, AHRS gyro)
    {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drive); 
     // configTalon.configTalons();
     try{
     //need to implement PIDControl, Encoders??
-    leftFollower = follower(Pathfinder.readFromCSV(new File("/home/lvuser/deploy/turnpath3_left.csv")));
+    leftFollower = follower(Pathfinder.readFromCSV(new File("/home/lvuser/deploy/reversedpath3_left.csv")));
     //add left location
-    rightFollower = follower(Pathfinder.readFromCSV(new File("/home/lvuser/deploy/turnpath3_right.csv")));   
+    rightFollower = follower(Pathfinder.readFromCSV(new File("/home/lvuser/deploy/reversedpath3_right.csv")));   
     }catch(IOException ex){
       System.err.println(ex);
     }
@@ -73,6 +72,7 @@ public class PathFollow extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+
     this.gyro.reset();
   }
 
@@ -108,7 +108,6 @@ public class PathFollow extends CommandBase {
   public void end(boolean interrupted) {
     System.err.println("Stopping!");
     drive.tankDrive(0, 0);
-    
   } 
 
   // Returns true when the command should end.

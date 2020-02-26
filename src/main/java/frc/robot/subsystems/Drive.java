@@ -48,6 +48,7 @@ public class Drive extends SubsystemBase {
     robotLeftVictor = new WPI_VictorSPX(21);
     robotLeftVictor.follow(robotLeftTalon,FollowerType.PercentOutput);
     robotRightVictor.follow(robotRightTalon,FollowerType.PercentOutput);
+    resetEncoders();
     // rightTalon().setInverted(true);
     // leftTalon().setInverted(true);
     // rightTalon().setSensorPhase(true);
@@ -58,6 +59,12 @@ public class Drive extends SubsystemBase {
     // myRobot = new DifferentialDrive(leftDrive, rightDrive);
     // this.joystick = joystick;
   }
+  public void resetEncoders(){
+    robotLeftTalon.setSelectedSensorPosition(0);
+    robotRightTalon.setSelectedSensorPosition(0);
+  
+  }
+
 
 
   public void tankDrive(double leftSpeed, double rightSpeed) {
@@ -81,6 +88,14 @@ public class Drive extends SubsystemBase {
       robotLeftTalon.set(ControlMode.PercentOutput, 0);
       robotRightTalon.set(ControlMode.PercentOutput, 0);
     }
+  }
+  public void turnRight(){
+    robotLeftTalon.set(ControlMode.PercentOutput, 0.8);
+    robotRightTalon.set(ControlMode.PercentOutput, -0.8);
+  }
+  public void stopDrive(){
+    robotLeftTalon.set(ControlMode.PercentOutput, 0);
+    robotRightTalon.set(ControlMode.PercentOutput, 0);
   }
   public void autoDrive() {
     // placeholder

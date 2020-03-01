@@ -33,8 +33,8 @@ public class PathFollowStraight extends CommandBase {
   private final double kP = 0.3; //0.25
   private final double kI = 0;
   private final double kD = 0; //0.001
-  private final double kV = 1/6.15;//1/22.72;real value: 12.3
-  private final double kA = 1/10.45;//1/72.29;real value: 20.9
+  private final double kV = 1/7.83;//1/22.72;real value: 12.3
+  private final double kA = 1/6;//1/72.29;real value: 20.9
 
   private double leftPos;
   private double rightPos;
@@ -49,9 +49,9 @@ public class PathFollowStraight extends CommandBase {
     // configTalon.configTalons();
     try{
     //need to implement PIDControl, Encoders??
-    leftFollower = follower(Pathfinder.readFromCSV(new File("/home/lvuser/deploy/reversedpath3_left.csv")));
+    leftFollower = follower(Pathfinder.readFromCSV(new File("/home/lvuser/deploy/13Back_left.csv")));
     //add left location
-    rightFollower = follower(Pathfinder.readFromCSV(new File("/home/lvuser/deploy/reversedpath3_right.csv")));   
+    rightFollower = follower(Pathfinder.readFromCSV(new File("/home/lvuser/deploy/13Back_right.csv")));   
     }catch(IOException ex){
       System.err.println(ex);
     }
@@ -72,8 +72,8 @@ public class PathFollowStraight extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
     this.gyro.reset();
+    drive.resetEncoders();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -96,7 +96,7 @@ public class PathFollowStraight extends CommandBase {
 
     double turn = 0.8 * (-1.0/80.0) * angleDifference;
 
-    drive.tankDrive(leftCalculate - turn, rightCalculate + turn);
+    drive.tankDrive(-1*(leftCalculate - turn), -1*(rightCalculate + turn));
     // System.out.println("gyro" + gyro_heading);
     // System.out.println("desired" + desired_heading);
     // System.out.println("angleDiff" + angleDifference);

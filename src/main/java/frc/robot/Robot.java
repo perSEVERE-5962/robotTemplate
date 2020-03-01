@@ -42,6 +42,7 @@ public class Robot extends TimedRobot {
 
     super(0.01);
   }
+  private Command armDown;
 
   private Command runIntake;
   private Command elevatorUp;
@@ -62,7 +63,7 @@ public class Robot extends TimedRobot {
 
     cameraCommand = m_robotContainer.getCamera();
     cameraCommand.execute();
-
+    drive = m_robotContainer.getDrive();
   }
 
   /**
@@ -105,12 +106,20 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
 
-    if (m_robotContainer.isUsingPathFollower() == true) {
+    //if (m_robotContainer.isUsingPathFollower() == true) {
       // intake.set(-1);
+      armDown = m_robotContainer.getArmToIntake();
+      if(armDown != null){
+        armDown.schedule();
+      }
       // runIntake = m_robotContainer.getRunIntake();
       // if (runIntake != null) {
       //   runIntake.schedule();
-      // }      
+      // } 
+      lightToggle = m_robotContainer.getTurnOnLight();
+      if (lightToggle != null) {
+        lightToggle.schedule();
+      }     
 
       autonomousCommand = m_robotContainer.getAutoSequence();
       if (autonomousCommand != null) {
@@ -122,26 +131,33 @@ public class Robot extends TimedRobot {
       //   autonomousCommand.schedule();
       // }
 
-    } else {
-      lightToggle = m_robotContainer.getTurnOnLight();
-      if (lightToggle != null) {
-        lightToggle.schedule();
-      }
+    //} 
+    // else {
+      
     
-      armVision = m_robotContainer.getArmVision();
-      if (armVision != null) {
-        armVision.schedule();
-      }
-    }
+    //   armVision = m_robotContainer.getArmVision();
+    //   if (armVision != null) {
+    //     armVision.schedule();
+    //   }
+    // }
   }
 
   /**
    * This function is called periodically during autonomous.
    */
   boolean arminshootposition = false;
+  private boolean visionCenter = false;
+  private boolean armInVisionPos = false;
   @Override
   public void autonomousPeriodic() {
-    if (m_robotContainer.isUsingPathFollower() == false || m_robotContainer.getDrive().isPathFollowerDone()) {      
+    if (m_robotContainer.isUsingPathFollower() == false || m_robotContainer.getDrive().isPathFollowerDone()) { 
+      if(armInVisionPos == false){
+        armVision = m_robotContainer.getArmVision();
+        if (armVision != null) {
+          armVision.schedule();
+        }
+        armInVisionPos = true; 
+      }     
       double ultrasonicLeft = m_robotContainer.getLeftUltrasonic();
       double ultrasonicRight = m_robotContainer.getRightUltrasonic();
       SmartDashboard.putNumber("LeftUltrasonic", ultrasonicLeft);
@@ -154,21 +170,29 @@ public class Robot extends TimedRobot {
       m_robotContainer.putMessage("Vision action: " + action);
       m_robotContainer.putMessage("Arm position: " + m_robotContainer.getArmPosition());
 
-      if (ultrasonicLeft <= 7 || ultrasonicRight <=  7) {
+      if (ultrasonicLeft <= 7 && ultrasonicRight <=  7 && visionCenter == true) {
         m_robotContainer.putMessage("Stop and shoot");
         
         stop();
          Command shoot = m_robotContainer.getShoot();
         if(shoot != null) {
           shoot.schedule();
+          System.out.print("Shooting!!");
         }
-      } else if (action.equals("Left") && (ultrasonicLeft >= 54 && ultrasonicRight >=54)) {
+      } else if (action.equals("Left") && (ultrasonicLeft >= 54 && ultrasonicRight >=54) ) {
         m_robotContainer.putMessage("Move left");
         moveLeft();
+        visionCenter = false;
       } else if (action.equals("Right") && (ultrasonicLeft >= 54 && ultrasonicRight >=54)) {
         m_robotContainer.putMessage("Move right");
         moveRight();
-      } else if (ultrasonicLeft >= 7 || ultrasonicRight >= 7) {
+        visionCenter = false;
+      } 
+      else if (action.equals("None")){
+        visionCenter = true;
+
+      }
+      else if (ultrasonicLeft >= 7 || ultrasonicRight >= 7) {
         m_robotContainer.putMessage("Inch forward");
         inchForward(ultrasonicLeft, ultrasonicRight);
         if (arminshootposition == false && (ultrasonicLeft < 54 && ultrasonicRight < 54)) {
@@ -188,6 +212,11 @@ public class Robot extends TimedRobot {
       }
     }
     SmartDashboard.putNumber("Angle NavX", m_robotContainer.getGyroAngle());
+    SmartDashboard.putNumber("Right Encoder Value", drive.rightTalon().getSelectedSensorPosition());
+    SmartDashboard.putNumber("Left Encoder Value", drive.leftTalon().getSelectedSensorPosition());
+    SmartDashboard.putNumber("Arm Auto Value", arm.getEncoderValues());
+
+
   }
   
 
@@ -302,6 +331,8 @@ public class Robot extends TimedRobot {
         elevatorDown.schedule();
       }
     }
+    SmartDashboard.putNumber("Angle", m_robotContainer.getGyroAngle());
+
   }
 
 

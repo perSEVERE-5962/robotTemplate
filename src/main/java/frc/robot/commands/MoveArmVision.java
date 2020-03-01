@@ -13,7 +13,7 @@ import frc.robot.subsystems.Arm;
 public class MoveArmVision extends CommandBase {
 
   Arm subsystem;
-  private final double visionAngle = 36.0;
+  private final double visionAngle = 35;
   
   
   /**
@@ -50,6 +50,6 @@ public class MoveArmVision extends CommandBase {
   public boolean isFinished() {
     double encoderValue = subsystem.getEncoderValues();
     // done if encoder is between 35 and 41
-    return ( encoderValue >= (visionAngle-5) && encoderValue <= (visionAngle+5) );
+    return ( encoderValue >= (visionAngle-2) && encoderValue <= (visionAngle+2) );
   }
 }

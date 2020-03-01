@@ -149,8 +149,11 @@ public class Drive extends SubsystemBase {
   }
 
   public void driveRight() {
-    leftTalon().set(ControlMode.PercentOutput, autospeedfactor);
-    rightTalon().set(ControlMode.PercentOutput, -autospeedfactor);
+    driveRight(autospeedfactor);
+  }
+  public void driveRight(double speed) {
+    leftTalon().set(ControlMode.PercentOutput, speed);
+    rightTalon().set(ControlMode.PercentOutput, -speed);
   }
 
   public void stopDrive() {

@@ -16,7 +16,7 @@ public class TurnOnLight extends CommandBase {
    */
 
    private CameraLight light;
-   
+ 
   public TurnOnLight(CameraLight light) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.light = light;

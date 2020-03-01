@@ -27,7 +27,7 @@ public class AutoFiveSequence extends SequentialCommandGroup {
   public AutoFiveSequence(RobotContainer robotC) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
-    super();
+    super(robotC.getFollowPath(), robotC.getStraightPath(), robotC.getGyroTurn(), robotC.getEndPathFollower());
     // AHRS ahrs = new AHRS(SPI.Port.kMXP);
     // addCommands(new PathFollow(new Drive(), new PIDControl(), new AHRS(SPI.Port.kMXP)),
     //             new PathFollowStraight(new Drive(), new PIDControl(), new AHRS(SPI.Port.kMXP)),
@@ -44,8 +44,10 @@ public class AutoFiveSequence extends SequentialCommandGroup {
      *    robotC.getGyroTurn(),
      *    robotC.getEndPathFollower(),
      *    robotC.getArmVision());
-     */
-
-    addCommands(robotC.getRunIntake(), robotC.getFollowPath(), robotC.getStraightPath());
+     * new RunIntake(), robotC.getFollowPath(), robotC.getGyroTurn()
+     * new RunIntake(), robotC.getFollowPath(), robotC.getStraightPath()
+     * robotC.getGyroTurn(), 
+     * robotC.getArmToIntake(),
+     */    
   }
 }

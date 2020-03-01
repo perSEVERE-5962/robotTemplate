@@ -9,12 +9,14 @@ package frc.robot;
 
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.Arm;
 import frc.robot.commands.InchForward;
 import frc.robot.sensors.PIDControl;
+import frc.robot.sensors.UltrasonicHCSR04;
 import frc.robot.subsystems.Drive;
 
 /**
@@ -37,6 +39,7 @@ public class Robot extends TimedRobot {
   public PIDControl pidControl;
   public Drive drive;
   private RobotContainer m_robotContainer;
+  private UltrasonicHCSR04 ultrasonics = new UltrasonicHCSR04();
  
   public Robot() {
 
@@ -131,20 +134,24 @@ public class Robot extends TimedRobot {
   boolean arminshootposition = false;
   @Override
   public void autonomousPeriodic() {
+    double ultrasonictopleft = ultrasonics.getTopLeftUltrasonicRange();
+      double ultrasonictopright = ultrasonics.getTopRightUltrasonicRange();
     if (m_robotContainer.isUsingPathFollower() == false || m_robotContainer.getDrive().isPathFollowerDone()) {      
       double ultrasonicLeft = m_robotContainer.getLeftUltrasonic();
-      double ultrasonicRight = m_robotContainer.getRightUltrasonic();
+      double ultrasonicRight = m_robotContainer.getRightUltrasonic();  
       SmartDashboard.putNumber("LeftUltrasonic", ultrasonicLeft);
       SmartDashboard.putNumber("RightUltrasonic", ultrasonicRight);
       String action = m_robotContainer.getVisionAction();
+      boolean targetfound = m_robotContainer.getTargetfound();
       SmartDashboard.putString("Visionaction", action);
+      SmartDashboard.putNumber("ArmPosition",  m_robotContainer.getArmPosition());
 
       m_robotContainer.putMessage("Left ultrasonic: " + ultrasonicLeft);
       m_robotContainer.putMessage("Right ultrasonic: " + ultrasonicRight);
       m_robotContainer.putMessage("Vision action: " + action);
       m_robotContainer.putMessage("Arm position: " + m_robotContainer.getArmPosition());
 
-      if (ultrasonicLeft <= 7 || ultrasonicRight <=  7) {
+      if ((ultrasonicLeft <= 7 && ultrasonicRight <=  7) && arminshootposition == true) {
         m_robotContainer.putMessage("Stop and shoot");
         
         stop();
@@ -152,21 +159,24 @@ public class Robot extends TimedRobot {
         if(shoot != null) {
           shoot.schedule();
         }
-      } else if (action.equals("Left") && (ultrasonicLeft >= 54 && ultrasonicRight >=54)) {
+       //} else if (targetfound == true){
+
+       } else if (action.equals("Left") && (ultrasonictopleft >= 54 && ultrasonictopright >=54)) {
         m_robotContainer.putMessage("Move left");
         moveLeft();
-      } else if (action.equals("Right") && (ultrasonicLeft >= 54 && ultrasonicRight >=54)) {
+      } else if (action.equals("Right") && (ultrasonictopleft >= 54 && ultrasonictopright >=54)) {
         m_robotContainer.putMessage("Move right");
         moveRight();
-      } else if (ultrasonicLeft >= 7 || ultrasonicRight >= 7) {
+      } else if (ultrasonictopleft >= 20 && ultrasonictopright >=20) {
         m_robotContainer.putMessage("Inch forward");
-        inchForward(ultrasonicLeft, ultrasonicRight);
-        if (arminshootposition == false && (ultrasonicLeft < 54 && ultrasonicRight < 54)) {
+        inchForward(ultrasonictopleft, ultrasonictopright);
+        if (arminshootposition == false && (ultrasonictopleft < 54 && ultrasonictopright < 54)) {
           m_robotContainer.putMessage("Move arm to shoot position");
           m_robotContainer.moveArmToShoot();;
           arminshootposition = true;
         }
-        
+      } else if(ultrasonicLeft >= 7 && ultrasonicRight >=  7){
+        inchForward(ultrasonicLeft, ultrasonicRight);
       } else {
         m_robotContainer.putMessage("Stop");
         // if (ultrasonicLeft <= 20 && ultrasonicRight <= 20) {
@@ -306,6 +316,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
+    ultrasonics.getTopLeftUltrasonicRange();
+    ultrasonics.getTopRightUltrasonicRange();
   }
 
 }

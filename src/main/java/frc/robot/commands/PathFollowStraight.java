@@ -17,7 +17,7 @@ import jaci.pathfinder.Trajectory;
 import java.io.File;
 import java.io.IOException;
 
-public class PathFollow extends CommandBase {
+public class PathFollowStraight extends CommandBase {
   /**
    * 
    * Creates a new PathFollow.
@@ -42,7 +42,7 @@ public class PathFollow extends CommandBase {
   public double leftCalculate;
   public double rightCalculate;
 
-  public PathFollow(Drive drive, PIDControl configTalon, AHRS gyro)
+  public PathFollowStraight(Drive drive, PIDControl configTalon, AHRS gyro)
    {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drive); 

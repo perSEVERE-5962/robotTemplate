@@ -204,6 +204,11 @@ public class RobotContainer {
     myEntry = table.getEntry("Action");
     return myEntry.getString("None");
   }
+  public boolean getTargetfound() {
+    table = inst.getTable("Vision");
+    myEntry = table.getEntry("Target Found");
+    return myEntry.getBoolean(false);
+  }
 
   public double getLeftUltrasonic() {
     table = inst.getTable("HC-SR04");

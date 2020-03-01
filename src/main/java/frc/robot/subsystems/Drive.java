@@ -21,7 +21,7 @@ public class Drive extends SubsystemBase {
   private WPI_TalonSRX robotRightTalon;
   private WPI_VictorSPX robotRightVictor;
   private final double speedfactor = 1;
-  private final double autospeedfactor = 0.23; // 0.23 for comp bot
+  private final double autospeedfactor = 0.23; // 0.23 for comp bot 
   // private double ultrasonicRange;
   // private boolean ultrasonicCheck = false;
   private double radius = 3;
@@ -70,9 +70,9 @@ public class Drive extends SubsystemBase {
   }
   
   private void setsmooth() {
-    robotLeftTalon.configOpenloopRamp(0.7);
+    robotLeftTalon.configOpenloopRamp(0.5);
     robotLeftTalon.configClosedloopRamp(0);
-    robotRightTalon.configOpenloopRamp(0.7);
+    robotRightTalon.configOpenloopRamp(0.5);
     robotRightTalon.configOpenloopRamp(0);
   }
 
@@ -112,6 +112,7 @@ public class Drive extends SubsystemBase {
   public void tankDrive(double leftSpeed, double rightSpeed) {
     robotLeftTalon.set(ControlMode.PercentOutput, -speedfactor * leftSpeed);
     robotRightTalon.set(ControlMode.PercentOutput, -speedfactor * rightSpeed);
+    
   }
 
   public void driveToScoringArea(){

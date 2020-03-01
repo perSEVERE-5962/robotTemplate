@@ -161,15 +161,14 @@ public class Drive extends SubsystemBase {
   }
 
   public void inchforward(double speed, double leftultrasonic, double rightultrasonic) {
-     if (leftultrasonic >=20 && rightultrasonic >=20){
+    //  if (leftultrasonic >=54 && rightultrasonic >=54){
+    //   leftTalon().set(ControlMode.PercentOutput, speed);
+    //   rightTalon().set(ControlMode.PercentOutput, speed);
+    //  }
+    if (Math.abs(leftultrasonic - rightultrasonic) <= 6){
       leftTalon().set(ControlMode.PercentOutput, speed);
       rightTalon().set(ControlMode.PercentOutput, speed);
-     }
-     else if (Math.abs(leftultrasonic - rightultrasonic) <= 4){
-      leftTalon().set(ControlMode.PercentOutput, speed);
-      rightTalon().set(ControlMode.PercentOutput, speed);
-    }
-    else if (rightultrasonic > leftultrasonic){
+    }else if (rightultrasonic > leftultrasonic){
       driveLeft();
     }
     else if (rightultrasonic < leftultrasonic){

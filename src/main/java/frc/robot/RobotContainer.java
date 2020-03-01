@@ -104,6 +104,7 @@ public class RobotContainer {
   private DriveBackwards goBackwards = new DriveBackwards(driveSubsystem);
   private StopArm stopArm = new StopArm();
   // private WinchUp winchUp = new WinchUp();
+  private final double shootAngle = 13.0;
 
   public double getIntake() {
     double axisValue = copilotController.getRawAxis(1);
@@ -181,7 +182,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     buttonA.whenPressed(new MoveArmToIntake(arm));
-    buttonB.whenPressed(new MoveArmToShoot(arm));
+    buttonB.whenPressed(new MoveArmToShoot(arm, shootAngle));
     buttonX.whenPressed(new TurnOnLight(cameraLight));
     buttonY.whenPressed(new TurnOffLight(cameraLight));
     // button8.whenPressed(new ResetArm());
@@ -189,10 +190,14 @@ public class RobotContainer {
   }
 
   public void moveArmToShoot() {
-    Command move = new MoveArmToShoot(arm);
+    Command move = new MoveArmToShoot(arm,shootAngle);
     if (move != null) {
       move.schedule();
     }
+  }
+
+  public boolean armInShoootPosition() {
+    return arm.isInShootPosition(shootAngle);
   }
 
   public double getArmPosition() {

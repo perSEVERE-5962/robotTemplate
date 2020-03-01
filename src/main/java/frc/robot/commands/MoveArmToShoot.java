@@ -14,16 +14,18 @@ import frc.robot.subsystems.Arm;
 public class MoveArmToShoot extends CommandBase {
 
   Arm subsystem;
-  private final double shootAngle = 13.0;
+  // private final double shootAngle = 13.0;
+  private double shootAngle;
   
   
   /**
    * Creates a new MoveArmCommand.
    */
-  public MoveArmToShoot(Arm arm) {
+  public MoveArmToShoot(Arm arm, double angle) {
     // Use addRequirements() here to declare subsystem dependencies.
     subsystem = arm;
     addRequirements(subsystem);
+    shootAngle = angle;
   }
 
   // Called when the command is initially scheduled.

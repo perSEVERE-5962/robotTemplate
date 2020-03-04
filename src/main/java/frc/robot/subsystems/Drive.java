@@ -11,6 +11,10 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FollowerType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 //import frc.robot.sensors.UltrasonicHCSR04;
@@ -28,6 +32,9 @@ public class Drive extends SubsystemBase {
   private double circumfrence = 2 * Math.PI * radius;
 
   private boolean pathFollowerDone = false;
+  private NetworkTableInstance inst = NetworkTableInstance.getDefault();
+  private NetworkTable table;
+  private NetworkTableEntry myEntry;
 
   public WPI_TalonSRX leftTalon() {
     return robotLeftTalon;
@@ -215,5 +222,24 @@ public class Drive extends SubsystemBase {
 
   public boolean isPathFollowerDone() {
     return pathFollowerDone;
+  }
+  public double getLeftUltrasonic() {
+    table = inst.getTable("HC-SR04");
+    myEntry = table.getEntry("Left Distance");
+    double value = myEntry.getDouble(0);
+    if (value > 40) {
+      // value = 0.0;
+    }
+    return value;
+  }
+
+  public double getRightUltrasonic() {
+    table = inst.getTable("HC-SR04");
+    myEntry = table.getEntry("Right Distance");
+    double value = myEntry.getDouble(0);
+    if (value > 40) {
+      // value = 0.0;
+    }
+    return value;
   }
 }

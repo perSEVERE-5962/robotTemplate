@@ -60,7 +60,7 @@ public class Robot extends TimedRobot {
     // and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    m_robotContainer.resetGyro();
+    drive.resetGyro();
 
     cameraCommand = m_robotContainer.getCamera();
     cameraCommand.execute();
@@ -86,7 +86,7 @@ public class Robot extends TimedRobot {
     // robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-    SmartDashboard.putNumber("Gyro", m_robotContainer.getGyroAngle());
+    SmartDashboard.putNumber("Gyro", drive.getGyroAngle());
   }
 
   /**
@@ -148,12 +148,12 @@ public class Robot extends TimedRobot {
     }
 
     if (m_robotContainer.isUsingPathFollower() == false || m_robotContainer.getDrive().isPathFollowerDone()) {
-      double ultrasonicLeft = m_robotContainer.getLeftUltrasonic();
-      double ultrasonicRight = m_robotContainer.getRightUltrasonic();
+      double ultrasonicLeft = drive.getLeftUltrasonic();
+      double ultrasonicRight = drive.getRightUltrasonic();
       SmartDashboard.putNumber("Lower Left Ultrasonic", ultrasonicLeft);
       SmartDashboard.putNumber("Lower Right Ultrasonic", ultrasonicRight);
       // boolean targetfound = m_robotContainer.getTargetfound();
-      String action = m_robotContainer.getVisionAction();
+      String action = drive.getVisionAction();
 
       SmartDashboard.putString("Visionaction", action);
       SmartDashboard.putNumber("ArmPosition", m_robotContainer.getArmPosition());

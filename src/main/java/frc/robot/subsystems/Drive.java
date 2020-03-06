@@ -217,6 +217,7 @@ public class Drive extends SubsystemBase {
     return value;
   }
 
+  public void 
   public String getVisionAction(){
     table = inst.getTable("Vision");
     myEntry = table.getEntry("Action");

@@ -36,10 +36,10 @@ public class ScorePowerCells extends CommandBase {
     if(Math.abs(angle - currentAngle) < 3){
       drive.goforwards();
     }
-    else if(angle > currentAngle){
+    else if(angle < currentAngle){
       drive.driveLeft();
     }
-    else if(angle < currentAngle){
+    else if(angle > currentAngle){
       drive.driveRight();
     }
   }

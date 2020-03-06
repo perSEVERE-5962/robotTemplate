@@ -44,6 +44,11 @@ public void shootingPosition(double shootAngle){
   armTalon.set(ControlMode.Position, setAngle(shootAngle));
   SmartDashboard.putNumber("Absolute", armTalon.getSelectedSensorPosition());
 }
+
+public boolean isInShootPosition(double shootAngle) {
+  SmartDashboard.putString("isInShootPosition", "Encoder="+armTalon.getSelectedSensorPosition()+", angle="+ setAngle(shootAngle) + ", abs = " +  Math.abs(armTalon.getSelectedSensorPosition() - setAngle(shootAngle)));
+  return Math.abs(armTalon.getSelectedSensorPosition() - setAngle(shootAngle)) <= 60;
+}
 public void visionPosition(double visionAngle){
   armTalon.set(ControlMode.Position, setAngle(visionAngle));
   SmartDashboard.putNumber("Absolute", armTalon.getSelectedSensorPosition());

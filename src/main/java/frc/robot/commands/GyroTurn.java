@@ -6,59 +6,52 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot.commands;
+import com.kauailabs.navx.frc.AHRS;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Arm;
-
-public class MoveArmToShoot extends CommandBase {
-
-  Arm subsystem;
-  // private final double shootAngle = 13.0;
-  private double shootAngle;
-  
-  
+import frc.robot.subsystems.Drive;;
+public class GyroTurn extends CommandBase {
   /**
-   * Creates a new MoveArmCommand.
+   * Creates a new gyroTurn180.
    */
-  public MoveArmToShoot(Arm arm, double angle) {
-    // Use addRequirements() here to declare subsystem dependencies.
-    subsystem = arm;
+  // public RobotContainer robotC = new RobotContainer();
+  private Drive subsystem;
+  private AHRS ahrs;
+
+  public GyroTurn(Drive subsystem, AHRS ahrs) {
     addRequirements(subsystem);
-    shootAngle = angle;
+
+    this.subsystem = subsystem;
+    this.ahrs = ahrs;
+    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    ahrs.reset();
   }
 
-  // public double getEncoderValues(){
-  //   return subsystem.getEncoderValues();
-  // }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    SmartDashboard.putString("up", "up");
-    subsystem.shootingPosition(shootAngle);
+      subsystem.driveRight();
   }
-
-  // private boolean RunMoveArm() {
-  //   return false;
-  // }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    subsystem.stop();
+    System.out.println("Finished Turning!");
+    subsystem.stopDrive();
+    // subsystem.resetEncoders();
+    ahrs.reset();
+
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    double encoderValue = subsystem.getEncoderValues();
-    // done if encoder is between 7 and 13
-    return ( encoderValue >= (shootAngle-5) && encoderValue <= (shootAngle+5) );
+    return ahrs.getAngle() > 130;
   }
 }

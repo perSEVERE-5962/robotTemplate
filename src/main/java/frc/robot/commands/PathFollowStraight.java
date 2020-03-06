@@ -49,9 +49,9 @@ public class PathFollowStraight extends CommandBase {
     // configTalon.configTalons();
     try{
     //need to implement PIDControl, Encoders??
-    leftFollower = follower(Pathfinder.readFromCSV(new File("/home/lvuser/deploy/testback_left.csv")));
+    leftFollower = follower(Pathfinder.readFromCSV(new File("/home/lvuser/deploy/Backwards10Feet_left.csv")));
     //add left location
-    rightFollower = follower(Pathfinder.readFromCSV(new File("/home/lvuser/deploy/testback_right.csv")));   
+    rightFollower = follower(Pathfinder.readFromCSV(new File("/home/lvuser/deploy/Backwards10Feet_right.csv")));   
     }catch(IOException ex){
       System.err.println(ex);
     }

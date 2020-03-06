@@ -10,15 +10,8 @@ package frc.robot;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-
-import com.kauailabs.navx.frc.AHRS;
-
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -73,12 +66,9 @@ public class RobotContainer {
 
   // private final WinchUp winchUp = new WinchUp(winchSubsystem);
 
-  private NetworkTableInstance inst = NetworkTableInstance.getDefault();
-  private NetworkTable table;
-  private NetworkTableEntry myEntry;
-  private AHRS ahrs = new AHRS(SPI.Port.kMXP);
+
   private final PIDControl pidControl = new PIDControl();
-  private final PathFollow followPath = new PathFollow(driveSubsystem, pidControl, ahrs);
+  private final PathFollow followPath = new PathFollow(driveSubsystem, pidControl, driveSubsystem.getGyro());
 
   // private final ColorSensor colorSensor = new ColorSensor();
   // private final ControlPanel controlPanel = new ControlPanel(colorSensor);
@@ -104,6 +94,7 @@ public class RobotContainer {
   private DriveBackwards goBackwards = new DriveBackwards(driveSubsystem);
   private StopArm stopArm = new StopArm();
   // private WinchUp winchUp = new WinchUp();
+  private final double shootAngle = 13.0;
 
   public double getIntake() {
     double axisValue = copilotController.getRawAxis(1);
@@ -181,7 +172,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     buttonA.whenPressed(new MoveArmToIntake(arm));
-    buttonB.whenPressed(new MoveArmToShoot(arm));
+    buttonB.whenPressed(new MoveArmToShoot(arm, shootAngle));
     buttonX.whenPressed(new TurnOnLight(cameraLight));
     buttonY.whenPressed(new TurnOffLight(cameraLight));
     // button8.whenPressed(new ResetArm());
@@ -189,46 +180,21 @@ public class RobotContainer {
   }
 
   public void moveArmToShoot() {
-    Command move = new MoveArmToShoot(arm);
+    Command move = new MoveArmToShoot(arm,shootAngle);
     if (move != null) {
       move.schedule();
     }
+  }
+
+  public boolean armInShoootPosition() {
+    return arm.isInShootPosition(shootAngle);
   }
 
   public double getArmPosition() {
     return arm.getEncoderValues();
   }
 
-  public String getVisionAction() {
-    table = inst.getTable("Vision");
-    myEntry = table.getEntry("Action");
-    return myEntry.getString("None");
-  }
-  public boolean getTargetfound() {
-    table = inst.getTable("Vision");
-    myEntry = table.getEntry("Target Found");
-    return myEntry.getBoolean(false);
-  }
 
-  public double getLeftUltrasonic() {
-    table = inst.getTable("HC-SR04");
-    myEntry = table.getEntry("Left Distance");
-    double value = myEntry.getDouble(0);
-    if (value > 40) {
-      // value = 0.0;
-    }
-    return value;
-  }
-
-  public double getRightUltrasonic() {
-    table = inst.getTable("HC-SR04");
-    myEntry = table.getEntry("Right Distance");
-    double value = myEntry.getDouble(0);
-    if (value > 40) {
-      // value = 0.0;
-    }
-    return value;
-  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -309,13 +275,7 @@ public class RobotContainer {
     return driveSubsystem;
   }
 
-  public void resetGyro() {
-    ahrs.reset();
-  }
 
-  public double getGyroAngle() {
-    return ahrs.getAngle();
-  }
 
   private String getCurrentTime() {
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd@HH-mm-ss", Locale.US);

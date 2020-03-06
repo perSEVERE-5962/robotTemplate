@@ -7,25 +7,26 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Drive;
 
-public class MoveArmToShoot extends CommandBase {
-
-  Arm subsystem;
-  // private final double shootAngle = 13.0;
-  private double shootAngle;
-  
-  
+public class FindTarget extends CommandBase {
   /**
-   * Creates a new MoveArmCommand.
+   * Creates a new FindTarget.
    */
-  public MoveArmToShoot(Arm arm, double angle) {
+  private Drive drive;
+  private double angle = 9000;
+  private double currentAngle;
+
+  private String visionAction;
+
+  // private boolean isVisionLost = false;
+  private boolean isTargetFound = false;
+
+  public FindTarget(Drive drive) {
+    this.drive = drive;
+    addRequirements(drive);
     // Use addRequirements() here to declare subsystem dependencies.
-    subsystem = arm;
-    addRequirements(subsystem);
-    shootAngle = angle;
   }
 
   // Called when the command is initially scheduled.
@@ -33,32 +34,42 @@ public class MoveArmToShoot extends CommandBase {
   public void initialize() {
   }
 
-  // public double getEncoderValues(){
-  //   return subsystem.getEncoderValues();
-  // }
-
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    SmartDashboard.putString("up", "up");
-    subsystem.shootingPosition(shootAngle);
-  }
+    currentAngle = drive.getGyroAngle();
+    visionAction = drive.getVisionAction();
+    // isTargetFound = drive.getTargetFound();
+    switch(visionAction){
+      case "None": 
+        angle = drive.getGyroAngle();
+        drive.goforwards();
 
-  // private boolean RunMoveArm() {
-  //   return false;
-  // }
+      case "Left":  
+      if(Math.abs(angle - currentAngle) < 5){
+        isTargetFound = true;
+      }
+      else{
+        drive.driveLeft();
+      }
+      case "Right": 
+      if(Math.abs(angle - currentAngle) < 5){
+        isTargetFound = true;
+      }
+      else{
+        drive.driveRight();
+      }
+    }
+  }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    subsystem.stop();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    double encoderValue = subsystem.getEncoderValues();
-    // done if encoder is between 7 and 13
-    return ( encoderValue >= (shootAngle-5) && encoderValue <= (shootAngle+5) );
+    return isTargetFound;
   }
 }

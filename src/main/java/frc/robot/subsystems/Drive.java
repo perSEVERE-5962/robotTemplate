@@ -12,12 +12,15 @@ import com.ctre.phoenix.motorcontrol.FollowerType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
-import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 //import frc.robot.sensors.UltrasonicHCSR04;
+
+import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.SPI;
 
 public class Drive extends SubsystemBase {
   private WPI_TalonSRX robotLeftTalon;
@@ -30,12 +33,14 @@ public class Drive extends SubsystemBase {
   // private boolean ultrasonicCheck = false;
   private double radius = 3;
   private double circumfrence = 2 * Math.PI * radius;
-
-  private boolean pathFollowerDone = false;
   private NetworkTableInstance inst = NetworkTableInstance.getDefault();
   private NetworkTable table;
   private NetworkTableEntry myEntry;
-
+  private boolean pathFollowerDone = false;
+  private AHRS ahrs = new AHRS(SPI.Port.kMXP);
+  public AHRS getGyro(){
+    return ahrs;
+  }
   public WPI_TalonSRX leftTalon() {
     return robotLeftTalon;
   }
@@ -75,7 +80,13 @@ public class Drive extends SubsystemBase {
   public WPI_VictorSPX getRobotLeftVictor() {
     return robotLeftVictor;
   }
-  
+  public void resetGyro() {
+    ahrs.reset();
+  }
+
+  public double getGyroAngle() {
+    return ahrs.getAngle();
+  }
   private void setsmooth() {
     robotLeftTalon.configOpenloopRamp(0.5);
     robotLeftTalon.configClosedloopRamp(0);
@@ -168,15 +179,14 @@ public class Drive extends SubsystemBase {
   }
 
   public void inchforward(double speed, double leftultrasonic, double rightultrasonic) {
-     if (leftultrasonic >=20 && rightultrasonic >=20){
+    //  if (leftultrasonic >=54 && rightultrasonic >=54){
+    //   leftTalon().set(ControlMode.PercentOutput, speed);
+    //   rightTalon().set(ControlMode.PercentOutput, speed);
+    //  }
+    if (Math.abs(leftultrasonic - rightultrasonic) <= 6){
       leftTalon().set(ControlMode.PercentOutput, speed);
       rightTalon().set(ControlMode.PercentOutput, speed);
-     }
-     else if (Math.abs(leftultrasonic - rightultrasonic) <= 4){
-      leftTalon().set(ControlMode.PercentOutput, speed);
-      rightTalon().set(ControlMode.PercentOutput, speed);
-    }
-    else if (rightultrasonic > leftultrasonic){
+    }else if (rightultrasonic > leftultrasonic){
       driveLeft();
     }
     else if (rightultrasonic < leftultrasonic){
@@ -187,7 +197,37 @@ public class Drive extends SubsystemBase {
       rightTalon().set(ControlMode.PercentOutput, speed);
     }
   }
+  public double getLeftUltrasonic() {
+    table = inst.getTable("HC-SR04");
+    myEntry = table.getEntry("Left Distance");
+    double value = myEntry.getDouble(0);
+    if (value > 40) {
+      // value = 0.0;
+    }
+    return value;
+  }
 
+  public double getRightUltrasonic() {
+    table = inst.getTable("HC-SR04");
+    myEntry = table.getEntry("Right Distance");
+    double value = myEntry.getDouble(0);
+    if (value > 40) {
+      // value = 0.0;
+    }
+    return value;
+  }
+
+  public void 
+  public String getVisionAction(){
+    table = inst.getTable("Vision");
+    myEntry = table.getEntry("Action");
+    return myEntry.getString("None");
+  }
+  public boolean getTargetFound(){
+    table = inst.getTable("Vision");
+    myEntry = table.getEntry("Target Found");
+    return myEntry.getBoolean(false);
+  }
   public double inchesToTicks(double inch) {
     double input = inch * 4096;
     double answer = input / circumfrence;

@@ -7,58 +7,52 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Arm;
-
-public class MoveArmToShoot extends CommandBase {
-
-  Arm subsystem;
-  // private final double shootAngle = 13.0;
-  private double shootAngle;
-  
-  
+import frc.robot.subsystems.Drive;
+public class ScorePowerCells extends CommandBase {
   /**
-   * Creates a new MoveArmCommand.
+   * Creates a new ScorePowerCells.
    */
-  public MoveArmToShoot(Arm arm, double angle) {
+  private double angle;
+  private double currentAngle;
+  private Drive drive;
+
+  public ScorePowerCells(Drive drive) {
+    this.drive = drive;
+    addRequirements(drive);
     // Use addRequirements() here to declare subsystem dependencies.
-    subsystem = arm;
-    addRequirements(subsystem);
-    shootAngle = angle;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    angle = drive.getGyroAngle();
   }
-
-  // public double getEncoderValues(){
-  //   return subsystem.getEncoderValues();
-  // }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    SmartDashboard.putString("up", "up");
-    subsystem.shootingPosition(shootAngle);
+    currentAngle = drive.getGyroAngle();
+    if(Math.abs(angle - currentAngle) < 3){
+      drive.goforwards();
+    }
+    else if(angle < currentAngle){
+      drive.driveLeft();
+    }
+    else if(angle > currentAngle){
+      drive.driveRight();
+    }
   }
 
-  // private boolean RunMoveArm() {
-  //   return false;
-  // }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    subsystem.stop();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    double encoderValue = subsystem.getEncoderValues();
-    // done if encoder is between 7 and 13
-    return ( encoderValue >= (shootAngle-5) && encoderValue <= (shootAngle+5) );
+    return drive.getLeftUltrasonic() < 10 && drive.getRightUltrasonic() < 10;
   }
 }

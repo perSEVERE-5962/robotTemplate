@@ -23,9 +23,9 @@ public class AutoSequence extends SequentialCommandGroup {
    * Creates a new AutoSquence.
    */
   public static Drive drive = new Drive();
-  public static Arm arm = new Arm();
+  //public static Arm arm = new Arm();
   private static PIDControl configTalon = new PIDControl();
-  public AutoSequence() {
+  public AutoSequence(Arm arm) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
     super(new MoveArmToIntake(arm), 

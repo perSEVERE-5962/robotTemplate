@@ -86,7 +86,7 @@ public class RobotContainer {
   private final ElevatorDown elevatorDown = new ElevatorDown(elevatorsubsystem);
   private final GetCamera cameraCommand = new GetCamera();
   // private final CPSubsystem cpSubsystem = new CPSubsystem();
-  private AutoSequence autoSequence = new AutoSequence();
+  private AutoSequence autoSequence = new AutoSequence(arm);
   private DriveLeft left = new DriveLeft(driveSubsystem);
   private DriveRight right = new DriveRight(driveSubsystem);
   private StopDrive stop = new StopDrive(driveSubsystem);
@@ -96,6 +96,10 @@ public class RobotContainer {
   // private WinchUp winchUp = new WinchUp();
   private final double shootAngle = 13.0;
 
+
+  public Arm getArm() {
+    return arm;
+  }
   public Command getAutoSequence(){
     return autoSequence;
   }

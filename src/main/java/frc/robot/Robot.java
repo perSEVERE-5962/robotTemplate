@@ -61,6 +61,7 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
     //drive.resetGyro();
+    
 
     cameraCommand = m_robotContainer.getCamera();
     cameraCommand.execute();

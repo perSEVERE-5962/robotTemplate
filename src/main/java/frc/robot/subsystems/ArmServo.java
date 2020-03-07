@@ -19,18 +19,18 @@ public class ArmServo extends SubsystemBase {
    * Creates a new Servo.
    */
   public ArmServo() {
-    servoPWM = new Servo(8);
+    servoPWM = new Servo(0);
     servoPWM.setBounds(2.0, 1.8, 1.5, 1.2, 1.0);
-    servoPWM.setSpeed(-1.0);
+    // servoPWM.setSpeed(-1.0);
   }
 
   public void negativePosition(){
-    servoPWM.setPosition(-0.3);
+    servoPWM.setPosition(-0.1);
     //servoPWM.setSpeed(-1.0); //to close
   }
 
   public void positivePosition(){
-    servoPWM.setPosition(0.3);
+    servoPWM.setPosition(0.85672);
     //servoPWM.setSpeed(1.0); //to open
   }
   @Override

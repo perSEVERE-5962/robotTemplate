@@ -28,6 +28,7 @@ public class MoveArmToIntake extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    subsystem.enabledLimitSwitch();
   }
 
   public double getEncoderValues(){
@@ -39,6 +40,8 @@ public class MoveArmToIntake extends CommandBase {
   public void execute() {
     SmartDashboard.putString("down", "down");
     subsystem.intakePosition(intakeAngle);
+      //calling isArmUp method from Arm subsystem
+
   }
 
   // private boolean RunMoveArm() {
@@ -49,6 +52,7 @@ public class MoveArmToIntake extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     subsystem.stop();
+    subsystem.disabledLimitSwitch();
   }
 
   // Returns true when the command should end.

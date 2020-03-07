@@ -86,7 +86,7 @@ public class RobotContainer {
   private final ElevatorDown elevatorDown = new ElevatorDown(elevatorsubsystem);
   private final GetCamera cameraCommand = new GetCamera();
   // private final CPSubsystem cpSubsystem = new CPSubsystem();
-
+  private AutoSequence autoSequence = new AutoSequence();
   private DriveLeft left = new DriveLeft(driveSubsystem);
   private DriveRight right = new DriveRight(driveSubsystem);
   private StopDrive stop = new StopDrive(driveSubsystem);
@@ -96,6 +96,9 @@ public class RobotContainer {
   // private WinchUp winchUp = new WinchUp();
   private final double shootAngle = 13.0;
 
+  public Command getAutoSequence(){
+    return autoSequence;
+  }
   public double getIntake() {
     double axisValue = copilotController.getRawAxis(1);
     return axisValue;
@@ -156,10 +159,10 @@ public class RobotContainer {
     configureButtonBindings();
 
     driveChooser.setDefaultOption("JamieDrive", new RunJamieDrive(driveSubsystem));
-    driveChooser.addOption("smooth tankdrive", new SmoothTankDrive(driveSubsystem));
-    driveChooser.addOption("smooth arcadedrive", new SmoothArcadeDrive(driveSubsystem));
-    driveChooser.addOption("tankdrive", new RunTankDrive(driveSubsystem));
-    driveChooser.addOption("arcadedrive", new ArcadeDrive(driveSubsystem));
+    //driveChooser.addOption("smooth tankdrive", new SmoothTankDrive(driveSubsystem));
+    //driveChooser.addOption("smooth arcadedrive", new SmoothArcadeDrive(driveSubsystem));
+    //driveChooser.addOption("tankdrive", new RunTankDrive(driveSubsystem));
+    //driveChooser.addOption("arcadedrive", new ArcadeDrive(driveSubsystem));
     SmartDashboard.putData("drivercontrol", driveChooser);
     SmartDashboard.putBoolean("Use PathFollower", true);
   }

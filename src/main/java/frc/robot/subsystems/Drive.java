@@ -88,9 +88,9 @@ public class Drive extends SubsystemBase {
     return ahrs.getAngle();
   }
   private void setsmooth() {
-    robotLeftTalon.configOpenloopRamp(0.5);
+    robotLeftTalon.configOpenloopRamp(0.7);
     robotLeftTalon.configClosedloopRamp(0);
-    robotRightTalon.configOpenloopRamp(0.5);
+    robotRightTalon.configOpenloopRamp(0.7);
     robotRightTalon.configOpenloopRamp(0);
   }
 
@@ -112,18 +112,21 @@ public class Drive extends SubsystemBase {
   }
 
   public void jamieDrive(double leftSpeed, double rightSpeed) {
-    setsmooth();
-    if (leftSpeed < -0.1) {
+    //setsmooth();
+    if (leftSpeed < -0.001) {
       leftTalon().set(ControlMode.PercentOutput, -speedfactor*0.5);
       rightTalon().set(ControlMode.PercentOutput, speedfactor*0.5);
+      SmartDashboard.putString("Direction", "Right");
     }
 
-    else if (leftSpeed > 0.1) {
+    else if (leftSpeed > 0.001) {
       leftTalon().set(ControlMode.PercentOutput, speedfactor*0.5);
       rightTalon().set(ControlMode.PercentOutput, -speedfactor*0.5);
+      SmartDashboard.putString("Direction", "Left");
     } else {
       leftTalon().set(ControlMode.PercentOutput, -speedfactor * rightSpeed);
       rightTalon().set(ControlMode.PercentOutput, -speedfactor * rightSpeed);
+      SmartDashboard.putString("Direction", "Straight");
     }
   }
 
@@ -197,27 +200,27 @@ public class Drive extends SubsystemBase {
       rightTalon().set(ControlMode.PercentOutput, speed);
     }
   }
-  public double getLeftUltrasonic() {
-    table = inst.getTable("HC-SR04");
-    myEntry = table.getEntry("Left Distance");
-    double value = myEntry.getDouble(0);
-    if (value > 40) {
-      // value = 0.0;
-    }
-    return value;
-  }
+  // }
+  // public double getLeftUltrasonic() {
+  //   table = inst.getTable("HC-SR04");
+  //   myEntry = table.getEntry("Left Distance");
+  //   double value = myEntry.getDouble(0);
+  //   if (value > 40) {
+  //     // value = 0.0;
+  //   }
+  //   return value;
+  // }
 
-  public double getRightUltrasonic() {
-    table = inst.getTable("HC-SR04");
-    myEntry = table.getEntry("Right Distance");
-    double value = myEntry.getDouble(0);
-    if (value > 40) {
-      // value = 0.0;
-    }
-    return value;
-  }
+  // public double getRightUltrasonic() {
+  //   table = inst.getTable("HC-SR04");
+  //   myEntry = table.getEntry("Right Distance");
+  //   double value = myEntry.getDouble(0);
+  //   if (value > 40) {
+  //     // value = 0.0;
+  //   }
+  //   return value;
+  // }
 
-  public void 
   public String getVisionAction(){
     table = inst.getTable("Vision");
     myEntry = table.getEntry("Action");

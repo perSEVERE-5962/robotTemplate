@@ -60,7 +60,7 @@ public class Robot extends TimedRobot {
     // and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    drive.resetGyro();
+    //drive.resetGyro();
 
     cameraCommand = m_robotContainer.getCamera();
     cameraCommand.execute();
@@ -86,7 +86,7 @@ public class Robot extends TimedRobot {
     // robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-    SmartDashboard.putNumber("Gyro", drive.getGyroAngle());
+    //SmartDashboard.putNumber("Gyro", drive.getGyroAngle());
   }
 
   /**
@@ -107,24 +107,24 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
 
-    m_robotContainer.getDrive().resetEncoders();
+    // m_robotContainer.getDrive().resetEncoders();
 
-    if (m_robotContainer.isUsingPathFollower() == true) {
-      autonomousCommand = m_robotContainer.getFollowPath();
+    // if (m_robotContainer.isUsingPathFollower() == true) {
+      autonomousCommand = m_robotContainer.getAutoSequence();
       if (autonomousCommand != null) {
         autonomousCommand.schedule();
       }
-    }
-    armVision = m_robotContainer.getArmVision();
-    if (armVision != null) {
-      armVision.schedule();
-    }
+    // }
+    // armVision = m_robotContainer.getArmVision();
+    // if (armVision != null) {
+    //   armVision.schedule();
+    // }
 
-    lightToggle = m_robotContainer.getTurnOnLight();
-    if (lightToggle != null) {
-      lightToggle.schedule();
-    }
-    inchForward(10, 10);
+    // lightToggle = m_robotContainer.getTurnOnLight();
+    // if (lightToggle != null) {
+    //   lightToggle.schedule();
+    // }
+    // inchForward(10, 10);
   }
 
   /**
@@ -135,91 +135,91 @@ public class Robot extends TimedRobot {
   boolean targetFound = false;
   @Override
   public void autonomousPeriodic() {  
-    double ultrasonictopleft = ultrasonics.getTopLeftUltrasonicRange();
-    double ultrasonictopright = ultrasonics.getTopRightUltrasonicRange();
+    // double ultrasonictopleft = ultrasonics.getTopLeftUltrasonicRange();
+    // double ultrasonictopright = ultrasonics.getTopRightUltrasonicRange();
 
  
-    if (waitingforarm == true && arminshootposition == false) {
-      SmartDashboard.putString("Auto Message", "Waiting for arm");
-      arminshootposition = m_robotContainer.armInShoootPosition();
-      SmartDashboard.putBoolean("Arm in shoot position", arminshootposition);
-      stop();
-      return;
-    }
+    // if (waitingforarm == true && arminshootposition == false) {
+    //   SmartDashboard.putString("Auto Message", "Waiting for arm");
+    //   arminshootposition = m_robotContainer.armInShoootPosition();
+    //   SmartDashboard.putBoolean("Arm in shoot position", arminshootposition);
+    //   stop();
+    //   return;
+    // }
 
-    if (m_robotContainer.isUsingPathFollower() == false || m_robotContainer.getDrive().isPathFollowerDone()) {
-      double ultrasonicLeft = drive.getLeftUltrasonic();
-      double ultrasonicRight = drive.getRightUltrasonic();
-      SmartDashboard.putNumber("Lower Left Ultrasonic", ultrasonicLeft);
-      SmartDashboard.putNumber("Lower Right Ultrasonic", ultrasonicRight);
-      // boolean targetfound = m_robotContainer.getTargetfound();
-      String action = drive.getVisionAction();
+    // if (m_robotContainer.isUsingPathFollower() == false || m_robotContainer.getDrive().isPathFollowerDone()) {
+    //   double ultrasonicLeft = drive.getLeftUltrasonic();
+    //   double ultrasonicRight = drive.getRightUltrasonic();
+    //   SmartDashboard.putNumber("Lower Left Ultrasonic", ultrasonicLeft);
+    //   SmartDashboard.putNumber("Lower Right Ultrasonic", ultrasonicRight);
+    //   // boolean targetfound = m_robotContainer.getTargetfound();
+    //   String action = drive.getVisionAction();
 
-      SmartDashboard.putString("Visionaction", action);
-      SmartDashboard.putNumber("ArmPosition", m_robotContainer.getArmPosition());
-      SmartDashboard.putBoolean("Arm in shoot position", arminshootposition);
+    //   SmartDashboard.putString("Visionaction", action);
+    //   SmartDashboard.putNumber("ArmPosition", m_robotContainer.getArmPosition());
+    //   SmartDashboard.putBoolean("Arm in shoot position", arminshootposition);
 
-      // m_robotContainer.putMessage("Left ultrasonic: " + ultrasonicLeft);
-      // m_robotContainer.putMessage("Right ultrasonic: " + ultrasonicRight);
-      // m_robotContainer.putMessage("Vision action: " + action);
-      // m_robotContainer.putMessage("Arm position: " +
-      // m_robotContainer.getArmPosition());
+    //   // m_robotContainer.putMessage("Left ultrasonic: " + ultrasonicLeft);
+    //   // m_robotContainer.putMessage("Right ultrasonic: " + ultrasonicRight);
+    //   // m_robotContainer.putMessage("Vision action: " + action);
+    //   // m_robotContainer.putMessage("Arm position: " +
+    //   // m_robotContainer.getArmPosition());
 
-      if ((ultrasonicLeft <= 10 && ultrasonicRight <= 10) && arminshootposition == true) {
-        // m_robotContainer.putMessage("Stop and shoot");
-        SmartDashboard.putString("Auto Message", "Stop and shoot");
-        stop();
-        Command shoot = m_robotContainer.getShoot();
-        if (shoot != null) {
-          shoot.schedule();
-        }
-      } else if (arminshootposition == false && action.equals("None")) {
-        inchForward(10, 10);
-        // } else if (targetfound == true){
+    //   if ((ultrasonicLeft <= 10 && ultrasonicRight <= 10) && arminshootposition == true) {
+    //     // m_robotContainer.putMessage("Stop and shoot");
+    //     SmartDashboard.putString("Auto Message", "Stop and shoot");
+    //     stop();
+    //     Command shoot = m_robotContainer.getShoot();
+    //     if (shoot != null) {
+    //       shoot.schedule();
+    //     }
+    //   } else if (arminshootposition == false && action.equals("None")) {
+    //     inchForward(10, 10);
+    //     // } else if (targetfound == true){
 
-      } else if (arminshootposition == false
-          && action.equals("Left") /* && (ultrasonictopleft >= 54 || ultrasonictopright >=54) */) {
-        // m_robotContainer.putMessage("Move left");
-        SmartDashboard.putString("Auto Message", "move left");
-        moveLeft();
-      } else if (arminshootposition == false
-          && action.equals("Right") /* && (ultrasonictopleft >= 54 || ultrasonictopright >=54) */) {
-        SmartDashboard.putString("Auto Message", "move right");
-        // m_robotContainer.putMessage("Move right");
-        moveRight();
-      } else if (arminshootposition == true && ultrasonicLeft <= 30 && ultrasonicRight <= 30) {
-        SmartDashboard.putString("Auto Message", "inchforward - lower");
-        inchForward(ultrasonicLeft, ultrasonicRight);
-      } else {
-        // m_robotContainer.putMessage("Stop");
-        SmartDashboard.putString("Auto Message", "inchforward - top");
-        inchForward(ultrasonictopleft, ultrasonictopright);
-        // if (ultrasonicLeft <= 20 && ultrasonicRight <= 20) {
-        // stop();
-        // } else {
-        // inchForward(ultrasonicLeft, ultrasonicRight);
-        // }
+    //   } else if (arminshootposition == false
+    //       && action.equals("Left") /* && (ultrasonictopleft >= 54 || ultrasonictopright >=54) */) {
+    //     // m_robotContainer.putMessage("Move left");
+    //     SmartDashboard.putString("Auto Message", "move left");
+    //     moveLeft();
+    //   } else if (arminshootposition == false
+    //       && action.equals("Right") /* && (ultrasonictopleft >= 54 || ultrasonictopright >=54) */) {
+    //     SmartDashboard.putString("Auto Message", "move right");
+    //     // m_robotContainer.putMessage("Move right");
+    //     moveRight();
+    //   } else if (arminshootposition == true && ultrasonicLeft <= 30 && ultrasonicRight <= 30) {
+    //     SmartDashboard.putString("Auto Message", "inchforward - lower");
+    //     inchForward(ultrasonicLeft, ultrasonicRight);
+    //   } else {
+    //     // m_robotContainer.putMessage("Stop");
+    //     SmartDashboard.putString("Auto Message", "inchforward - top");
+    //     inchForward(ultrasonictopleft, ultrasonictopright);
+    //     // if (ultrasonicLeft <= 20 && ultrasonicRight <= 20) {
+    //     // stop();
+    //     // } else {
+    //     // inchForward(ultrasonicLeft, ultrasonicRight);
+    //     // }
 
-      }
-      if (arminshootposition == false && ultrasonictopleft >= 20 && ultrasonictopright >= 20 && ultrasonictopleft <= 40
-          && ultrasonictopright <= 40) {
-        // m_robotContainer.putMessage("Inch forward");
-        // inchForward(ultrasonictopleft, ultrasonictopright);
-        // if (arminshootposition == false && (ultrasonictopleft < 54 &&
-        // ultrasonictopright < 54)) {
-        // m_robotContainer.putMessage("Move arm to shoot position");
-        if (arminshootposition == false) {
-          SmartDashboard.putString("Auto Message", "Move arm to shoot position");
-          SmartDashboard.putNumber("Shoot UltrasonicTopLeft", ultrasonictopleft);
-          SmartDashboard.putNumber("Shoot UltrasonicTopRight", ultrasonictopright);
-          m_robotContainer.moveArmToShoot();
-          waitingforarm = true;
-        }
-        inchForward(10,10);
-        // arminshootposition = true;
-        // }
-      }
-    }
+    //   }
+    //   if (arminshootposition == false && ultrasonictopleft >= 20 && ultrasonictopright >= 20 && ultrasonictopleft <= 40
+    //       && ultrasonictopright <= 40) {
+    //     // m_robotContainer.putMessage("Inch forward");
+    //     // inchForward(ultrasonictopleft, ultrasonictopright);
+    //     // if (arminshootposition == false && (ultrasonictopleft < 54 &&
+    //     // ultrasonictopright < 54)) {
+    //     // m_robotContainer.putMessage("Move arm to shoot position");
+    //     if (arminshootposition == false) {
+    //       SmartDashboard.putString("Auto Message", "Move arm to shoot position");
+    //       SmartDashboard.putNumber("Shoot UltrasonicTopLeft", ultrasonictopleft);
+    //       SmartDashboard.putNumber("Shoot UltrasonicTopRight", ultrasonictopright);
+    //       m_robotContainer.moveArmToShoot();
+    //       waitingforarm = true;
+    //     }
+    //     inchForward(10,10);
+    //     // arminshootposition = true;
+    //     // }
+    //   }
+    // }
     
   }
 

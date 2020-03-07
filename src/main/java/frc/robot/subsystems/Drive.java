@@ -200,26 +200,7 @@ public class Drive extends SubsystemBase {
       rightTalon().set(ControlMode.PercentOutput, speed);
     }
   }
-  // }
-  // public double getLeftUltrasonic() {
-  //   table = inst.getTable("HC-SR04");
-  //   myEntry = table.getEntry("Left Distance");
-  //   double value = myEntry.getDouble(0);
-  //   if (value > 40) {
-  //     // value = 0.0;
-  //   }
-  //   return value;
-  // }
 
-  // public double getRightUltrasonic() {
-  //   table = inst.getTable("HC-SR04");
-  //   myEntry = table.getEntry("Right Distance");
-  //   double value = myEntry.getDouble(0);
-  //   if (value > 40) {
-  //     // value = 0.0;
-  //   }
-  //   return value;
-  // }
 
   public String getVisionAction(){
     table = inst.getTable("Vision");

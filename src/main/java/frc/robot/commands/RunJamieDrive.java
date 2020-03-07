@@ -32,7 +32,11 @@ public class RunJamieDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    subsystem.jamieDrive(joystick.getRawAxis(0), joystick.getRawAxis(5));
+    double x = joystick.getRawAxis(5);
+    double y = joystick.getRawAxis(0);
+    x = x*x*x;
+    y = y*y*y;
+    subsystem.jamieDrive(y, x);
   }
 
   // Called once the command ends or is interrupted.

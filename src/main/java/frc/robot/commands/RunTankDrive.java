@@ -23,8 +23,11 @@ public class RunTankDrive extends CommandBase {
 
   // Called repeatedly when this Command is scheduled to run
   public void execute() {
-    // subsystem.tankDrive();
-    subsystem.tankDrive(joystick.getRawAxis(1), joystick.getRawAxis(5));
+    double x = joystick.getRawAxis(5);
+    double y = joystick.getRawAxis(1);
+    // x = x*x*x;
+    // y = y*y*y;
+    subsystem.smoothTankDrive(y, x);
   }
 
   // Make this return true when this Command no longer needs to run execute()

@@ -44,6 +44,11 @@ public double setAngle(double angle){
 public void shootingPosition(double shootAngle){
   armTalon.set(ControlMode.Position, setAngle(shootAngle));
   SmartDashboard.putNumber("Absolute", armTalon.getSelectedSensorPosition());
+} 
+
+public void shakeArm(double shootAngle){
+  armTalon.set(ControlMode.Position, setAngle(shootAngle));
+  SmartDashboard.putNumber("Absolute", armTalon.getSelectedSensorPosition());
 }
 public void shakeArm(double shootAngle){
   armTalon.set(ControlMode.Position, setAngle(shootAngle));
@@ -60,6 +65,9 @@ public void visionPosition(double visionAngle){
 public void intakePosition(double intakeAngle){
   armTalon.set(ControlMode.Position, setAngle(intakeAngle));
   SmartDashboard.putNumber("Absolute", armTalon.getSelectedSensorPosition());
+}
+public void resetArm(){
+  armTalon.setSelectedSensorPosition(0);
 }
 
 //NEW resetPosition

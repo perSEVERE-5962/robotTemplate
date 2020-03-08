@@ -65,7 +65,7 @@ public class Robot extends TimedRobot {
 
     cameraCommand = m_robotContainer.getCamera();
     cameraCommand.execute();
-
+    arm.resetArm();
   }
 
   /**

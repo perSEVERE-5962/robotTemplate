@@ -15,7 +15,7 @@ public class ShakeArm extends CommandBase {
    * Creates a new ShakeArm.
    */
   private Arm arm;
-  private boolean armUp = false;
+  private boolean armUp;
 
   public ShakeArm(Arm arm) {
     this.arm = arm;
@@ -31,13 +31,14 @@ public class ShakeArm extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(armUp == false){
-      arm.shakeArm(40);
-      armUp = true;
+    armUp = false;
+    if(armUp == true){
+      arm.shakeArm(17);
+      armUp = false;
     }
     else{
       arm.shakeArm(13);
-      armUp = false;
+      armUp = true;
 
     }
   }
@@ -49,6 +50,6 @@ public class ShakeArm extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

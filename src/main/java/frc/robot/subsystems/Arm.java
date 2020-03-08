@@ -27,6 +27,7 @@ public class Arm extends SubsystemBase {
     //limitSwitch = new DigitalInput(9);
      //armTalon.setSensorPhase(true);
     armTalon.setSelectedSensorPosition(0);
+    SmartDashboard.putNumber("intialarm", getEncoderValues());
     // armTalon.set(ControlMode.PercentOutput, 0);
   }
   public void stop() {
@@ -43,6 +44,9 @@ public double setAngle(double angle){
 public void shootingPosition(double shootAngle){
   armTalon.set(ControlMode.Position, setAngle(shootAngle));
   SmartDashboard.putNumber("Absolute", armTalon.getSelectedSensorPosition());
+}
+public void shakeArm(double shootAngle){
+  armTalon.set(ControlMode.Position, setAngle(shootAngle));
 }
 
 public boolean isInShootPosition(double shootAngle) {

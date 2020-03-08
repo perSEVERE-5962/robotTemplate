@@ -34,8 +34,10 @@ public class RunJamieDrive extends CommandBase {
   public void execute() {
     double x = joystick.getRawAxis(5);
     double y = joystick.getRawAxis(0);
-    x = x*x*x;
-    y = y*y*y;
+    //x = x*x*x;
+    //y = y*y*y;
+    x = Math.abs(x)*x;
+    y = Math.abs(y)*y;
     subsystem.jamieDrive(y, x);
   }
 

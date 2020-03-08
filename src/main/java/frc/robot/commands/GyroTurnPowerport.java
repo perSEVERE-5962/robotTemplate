@@ -6,56 +6,52 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot.commands;
+import com.kauailabs.navx.frc.AHRS;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Drive;
-public class ScorePowerCells extends CommandBase {
+import frc.robot.subsystems.Drive;;
+public class GyroTurnPowerport extends CommandBase {
   /**
-   * Creates a new ScorePowerCells.
+   * Creates a new gyroTurn180.
    */
-  private double angle;
-  private double currentAngle;
-  private Drive drive;
+  // public RobotContainer robotC = new RobotContainer();
+  private Drive subsystem;
+  private AHRS ahrs;
 
-  public ScorePowerCells(Drive drive) {
-    this.drive = drive;
-    addRequirements(drive);
+  public GyroTurnPowerport(Drive subsystem, AHRS ahrs) {
+    addRequirements(subsystem);
+
+    this.subsystem = subsystem;
+    this.ahrs = ahrs;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    angle = drive.getGyroAngle();
+    ahrs.reset();
   }
+
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    SmartDashboard.putString("auto step", "scorepowercells");
-
-    currentAngle = drive.getGyroAngle();
-    if(Math.abs(angle - currentAngle) < 3){
-      drive.goforwards(false);
-    }
-    else if(angle < currentAngle){
-      drive.driveLeft();
-    }
-    else if(angle > currentAngle){
-      drive.driveRight();
-    }
+      subsystem.driveRight();
   }
-
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    System.out.println("Finished Turning!");
+    subsystem.stopDrive();
+    // subsystem.resetEncoders();
+    ahrs.reset();
+
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return drive.getLeftUltrasonic() < 10 || drive.getRightUltrasonic() < 10;
+    return ahrs.getAngle() > 15;
   }
 }

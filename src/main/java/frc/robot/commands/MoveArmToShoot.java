@@ -40,6 +40,7 @@ public class MoveArmToShoot extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    SmartDashboard.putString("auto step", "movearmtoshoot");
     SmartDashboard.putString("up", "up");
     subsystem.shootingPosition(shootAngle);
   }
@@ -59,6 +60,8 @@ public class MoveArmToShoot extends CommandBase {
   public boolean isFinished() {
     double encoderValue = subsystem.getEncoderValues();
     // done if encoder is between 7 and 13
-    return ( encoderValue >= (shootAngle-5) && encoderValue <= (shootAngle+5) );
+    double shootticks = shootAngle*11.4;
+    SmartDashboard.putString("armshoot", "encoder ="+ encoderValue+" shootticks = "+shootticks );
+    return ( encoderValue >= (shootticks-57) && encoderValue <= (shootticks+57));
   }
 }

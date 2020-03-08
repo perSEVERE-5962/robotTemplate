@@ -48,7 +48,7 @@ public class Robot extends TimedRobot {
   private Command runIntake;
   private Command elevatorUp;
   private Command elevatorDown;
-  private Arm arm = new Arm();
+  //private Arm arm = new Arm();
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -60,7 +60,7 @@ public class Robot extends TimedRobot {
     // and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    //drive.resetGyro();
+    m_robotContainer.getDrive().resetGyro();
     
 
     cameraCommand = m_robotContainer.getCamera();
@@ -111,7 +111,11 @@ public class Robot extends TimedRobot {
     // m_robotContainer.getDrive().resetEncoders();
 
     // if (m_robotContainer.isUsingPathFollower() == true) {
-      autonomousCommand = m_robotContainer.getAutoSequence();
+      // autonomousCommand = m_robotContainer.getAutoSequence();
+      // if (autonomousCommand != null) {
+      //   autonomousCommand.schedule();
+      // }
+      autonomousCommand = m_robotContainer.getAutoCommand();
       if (autonomousCommand != null) {
         autonomousCommand.schedule();
       }
@@ -119,8 +123,7 @@ public class Robot extends TimedRobot {
     // armVision = m_robotContainer.getArmVision();
     // if (armVision != null) {
     //   armVision.schedule();
-    // }
-
+    //
     // lightToggle = m_robotContainer.getTurnOnLight();
     // if (lightToggle != null) {
     //   lightToggle.schedule();
@@ -221,7 +224,7 @@ public class Robot extends TimedRobot {
     //     // }
     //   }
     // }
-    
+    SmartDashboard.putNumber("gyroangle", m_robotContainer.getDrive().getGyroAngle());
   }
 
   private void moveLeft() {
@@ -312,7 +315,7 @@ public class Robot extends TimedRobot {
     // spinColorCommand.execute();
     // }
 
-    SmartDashboard.putNumber("Arm Encoder Value", arm.getEncoderValues());
+    SmartDashboard.putNumber("Arm Encoder Value", m_robotContainer.getArm().getEncoderValues());
     if (m_robotContainer.getIntake() > 0.2) {
       runIntake = m_robotContainer.getRunIntake();
     } else if (m_robotContainer.getIntake() < -0.2) {

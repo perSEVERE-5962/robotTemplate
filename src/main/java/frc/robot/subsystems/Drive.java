@@ -164,6 +164,16 @@ public class Drive extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
+  public void driveLeftGyro() {
+    SmartDashboard.putString("driveleft", "");
+    leftTalon().set(ControlMode.PercentOutput, -.5);
+    rightTalon().set(ControlMode.PercentOutput, .5);
+  }
+
+  public void driveRightGyro() {
+    leftTalon().set(ControlMode.PercentOutput, .5);
+    rightTalon().set(ControlMode.PercentOutput, -.5);
+  }
   public void driveLeft() {
     SmartDashboard.putString("driveleft", "");
     leftTalon().set(ControlMode.PercentOutput, -autospeedfactor);
@@ -174,7 +184,15 @@ public class Drive extends SubsystemBase {
     leftTalon().set(ControlMode.PercentOutput, autospeedfactor);
     rightTalon().set(ControlMode.PercentOutput, -autospeedfactor);
   }
+  public void slowDriveRight() {
+    leftTalon().set(ControlMode.PercentOutput, 0.17);
+    rightTalon().set(ControlMode.PercentOutput, -0.17);
+  }
 
+  public void slowDriveLeft() {
+    leftTalon().set(ControlMode.PercentOutput, -0.17);
+    rightTalon().set(ControlMode.PercentOutput, 0.17);
+  }
   public void stopDrive() {
     leftTalon().set(ControlMode.PercentOutput, 0);
     rightTalon().set(ControlMode.PercentOutput, 0);
@@ -219,9 +237,13 @@ public class Drive extends SubsystemBase {
     return answer;
   }
 
-  public void goforwards() {
-    leftTalon().set(ControlMode.PercentOutput, autospeedfactor);
-    rightTalon().set(ControlMode.PercentOutput, autospeedfactor);
+  public void goforwards(boolean reduceSpeed) {
+    double speed = 0.5;
+    if (reduceSpeed) {
+      speed = 0.23;
+    }
+    leftTalon().set(ControlMode.PercentOutput, speed);
+    rightTalon().set(ControlMode.PercentOutput, speed);
   }
 
   public void gobackwards() {
@@ -264,6 +286,12 @@ public class Drive extends SubsystemBase {
     if (value > 40) {
       // value = 0.0;
     }
+    return value;
+  }
+  public double getVisionArea() {
+    table = inst.getTable("Vision");
+    myEntry = table.getEntry("Area");
+    double value = myEntry.getDouble(0);
     return value;
   }
 }

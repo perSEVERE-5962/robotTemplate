@@ -20,30 +20,28 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-public class AutoSequence extends SequentialCommandGroup {
+public class ThreeBallAuto extends SequentialCommandGroup {
   /**
    * Creates a new AutoSquence.
    */
   public static Drive drive = new Drive();
   public static Intake intake = new Intake();
   //public static Arm arm = new Arm();
-  private static PIDControl configTalon = new PIDControl();
-  public AutoSequence(Arm arm, CameraLight light) {
+  public ThreeBallAuto(Arm arm, CameraLight light) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
     super(
       new MoveArmToIntake(arm), 
     // new WaitCommand(0.5), 
-    new PathFollowAndIntake(),
-    new StopIntake(intake),
-    new ResetDriveEncoders(drive),
-    new PathFollowStraight(drive, configTalon, drive.getGyro()),
-    new MoveArmVision(arm),
-
-     new StopDrive(drive),
-     new GyroTurn(drive, drive.getGyro()),
+    // new PathFollowAndIntake(),
+    // new StopIntake(intake),
+    // new ResetDriveEncoders(drive),
+    // new PathFollowStraight(drive, configTalon, drive.getGyro()),
+    //  new StopDrive(drive),
+    //  new GyroTurn(drive, drive.getGyro()),
     // new WaitCommand(0.5),
     new TurnOnLight(light),
+    new MoveArmVision(arm),
     //new WaitCommand(0.1),
     new FindTarget(drive),
     new StopDrive(drive),
@@ -51,6 +49,7 @@ public class AutoSequence extends SequentialCommandGroup {
      new Squaretopowerport(drive),
     new StopDrive(drive),
     new ShootShakeRight()
+
     );
   }
 }

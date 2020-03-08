@@ -54,6 +54,7 @@ public class RobotContainer {
   private final JoystickButton buttonX = new JoystickButton(copilotController, 4);
 
   private SendableChooser driveChooser = new SendableChooser<Command>();
+  private SendableChooser autoChooser = new SendableChooser<Command>();
 
   // The robot's subsystems and commands are defined here...
   private final Drive driveSubsystem = new Drive();
@@ -62,6 +63,11 @@ public class RobotContainer {
   private final CameraLight cameraLight = new CameraLight();
   private final Elevator elevatorsubsystem = new Elevator();
   private final Arm arm = new Arm();
+  private final ShakeArm shakeArm = new ShakeArm(arm);
+
+  public Command getShakeArm(){
+    return shakeArm;
+  }
   // private final RunTankDrive driveCommand = new RunTankDrive(driveSubsystem);
 
   // private final WinchUp winchUp = new WinchUp(winchSubsystem);
@@ -77,16 +83,17 @@ public class RobotContainer {
   // private final SpinRotations spinRotCommand = new SpinRotations(controlPanel);
   private final InchForward inchForward = new InchForward(driveSubsystem);
   private Command driveCommand;
+  private Command myautoCommand;
   private final RunIntake runIntake = new RunIntake();
   private final Shoot shoot = new Shoot();
   private final TurnOnLight lightOn = new TurnOnLight(cameraLight);
   private final TurnOffLight lightOff = new TurnOffLight(cameraLight);
-  private final MoveArmVision armVision = new MoveArmVision();
+  private final MoveArmVision armVision = new MoveArmVision(arm);
   private final ElevatorUp elevatorUp = new ElevatorUp(elevatorsubsystem);
   private final ElevatorDown elevatorDown = new ElevatorDown(elevatorsubsystem);
   private final GetCamera cameraCommand = new GetCamera();
   // private final CPSubsystem cpSubsystem = new CPSubsystem();
-  private AutoSequence autoSequence = new AutoSequence(arm);
+  private AutoSequence autoSequence = new AutoSequence(arm, cameraLight);
   private DriveLeft left = new DriveLeft(driveSubsystem);
   private DriveRight right = new DriveRight(driveSubsystem);
   private StopDrive stop = new StopDrive(driveSubsystem);
@@ -169,7 +176,14 @@ public class RobotContainer {
     //driveChooser.addOption("arcadedrive", new ArcadeDrive(driveSubsystem));
     SmartDashboard.putData("drivercontrol", driveChooser);
     SmartDashboard.putBoolean("Use PathFollower", true);
+    autoChooser.setDefaultOption("Three Ball Auto (Right)", new ThreeBallAuto(arm, cameraLight));
+     autoChooser.addOption("Five Ball Auto", new AutoSequence(arm, cameraLight));
+     autoChooser.addOption("Three Ball Auto (Left)", new ThreeBallAutoRight(arm, cameraLight));
+
+     SmartDashboard.putData("auto chooser", autoChooser);
   }
+  
+  
 
   /**
    * Use this method to define your button->command mappings. Buttons can be
@@ -216,6 +230,10 @@ public class RobotContainer {
   public Command getDriveCommand() {
     driveCommand = (Command) driveChooser.getSelected();
     return driveCommand;
+  }
+  public Command getAutoCommand() {
+    myautoCommand = (Command) autoChooser.getSelected();
+    return myautoCommand;
   }
 
   public Command getTurnLeftCommand() {

@@ -7,18 +7,14 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drive;
-public class ScorePowerCells extends CommandBase {
+public class ResetDriveEncoders extends CommandBase {
   /**
-   * Creates a new ScorePowerCells.
+   * Creates a new ResetDriveEncoders.
    */
-  private double angle;
-  private double currentAngle;
   private Drive drive;
-
-  public ScorePowerCells(Drive drive) {
+  public ResetDriveEncoders(Drive drive) {
     this.drive = drive;
     addRequirements(drive);
     // Use addRequirements() here to declare subsystem dependencies.
@@ -27,26 +23,13 @@ public class ScorePowerCells extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    angle = drive.getGyroAngle();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    SmartDashboard.putString("auto step", "scorepowercells");
-
-    currentAngle = drive.getGyroAngle();
-    if(Math.abs(angle - currentAngle) < 3){
-      drive.goforwards(false);
-    }
-    else if(angle < currentAngle){
-      drive.driveLeft();
-    }
-    else if(angle > currentAngle){
-      drive.driveRight();
-    }
+    drive.resetEncoders();
   }
-
 
   // Called once the command ends or is interrupted.
   @Override
@@ -56,6 +39,6 @@ public class ScorePowerCells extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return drive.getLeftUltrasonic() < 10 || drive.getRightUltrasonic() < 10;
+    return true;
   }
 }

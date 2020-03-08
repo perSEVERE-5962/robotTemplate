@@ -7,6 +7,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drive;
 
@@ -19,7 +20,7 @@ public class FindTarget extends CommandBase {
   private double currentAngle;
 
   private String visionAction;
-
+  private int counter = 0;
   // private boolean isVisionLost = false;
   private boolean isTargetFound = false;
 
@@ -37,39 +38,61 @@ public class FindTarget extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    currentAngle = drive.getGyroAngle();
+    SmartDashboard.putString("auto step", "findtarget");
+    //currentAngle = drive.getGyroAngle();
     visionAction = drive.getVisionAction();
+    SmartDashboard.putString("findtarget",
+        "angle = " + angle + " currentangle = " + currentAngle + "visionaction =" + visionAction);
     // isTargetFound = drive.getTargetFound();
-    switch(visionAction){
-      case "None": 
-        angle = drive.getGyroAngle();
-        drive.goforwards();
 
-      case "Left":  
-      if(Math.abs(angle - currentAngle) < 5){
-        isTargetFound = true;
-      }
-      else{
+    switch (visionAction) {
+    case "None":
+      //counter = 0;
+      //angle = drive.getGyroAngle();
+      isTargetFound = true;
+      drive.goforwards(false);
+      break;
+    case "Left":
+     // if (drive.getVisionArea() >200) {
+      //   if (Math.abs(angle - currentAngle) > 5) {
+
+      //     isTargetFound = true;
+      //     drive.stopDrive();
+      //   }
+      // } else {
+      //   counter++;
         drive.driveLeft();
-      }
-      case "Right": 
-      if(Math.abs(angle - currentAngle) < 5){
-        isTargetFound = true;
-      }
-      else{
+     // }
+
+      break;
+    case "Right":
+      // if (counter > 100) {
+      //   if (Math.abs(angle - currentAngle) > 5) {
+      //     isTargetFound = true;
+      //     drive.stopDrive();
+      //   }
+      // } else {
+      //   counter++;
         drive.driveRight();
-      }
+      //}
+      break;
+    default:
+      drive.goforwards(false);
+      break;
     }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    SmartDashboard.putString("findtarget",
+        "angle = " + angle + " currentangle = " + currentAngle + "visionaction =" + visionAction);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return isTargetFound;
+
+    return (drive.getVisionArea()<=200 && isTargetFound == true);
   }
 }

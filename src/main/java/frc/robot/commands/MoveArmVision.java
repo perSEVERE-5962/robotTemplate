@@ -7,6 +7,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Arm;
 
@@ -19,9 +20,9 @@ public class MoveArmVision extends CommandBase {
   /**
    * Creates a new MoveArmCommand.
    */
-  public MoveArmVision() {
+  public MoveArmVision(Arm arm) {
     // Use addRequirements() here to declare subsystem dependencies.
-    subsystem = new Arm();
+    subsystem = arm;
     addRequirements(subsystem);
   }
 
@@ -37,6 +38,7 @@ public class MoveArmVision extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    SmartDashboard.putString("auto step", "movearmvision");
   subsystem.visionPosition(visionAngle);
   }
 
@@ -50,6 +52,8 @@ public class MoveArmVision extends CommandBase {
   public boolean isFinished() {
     double encoderValue = subsystem.getEncoderValues();
     // done if encoder is between 35 and 41
-    return ( encoderValue >= (visionAngle-5) && encoderValue <= (visionAngle+5) );
+    double visionticks = visionAngle*11.4;
+    SmartDashboard.putString("movearm", "encoder value = "+ encoderValue+" visiontick ="+ visionticks);
+    return ( encoderValue >= (visionticks-150) && encoderValue <= (visionticks+150) );
   }
 }

@@ -12,19 +12,15 @@ import frc.robot.subsystems.Intake;
 
 public class RunIntake extends CommandBase {
 
-  Intake subsytem;
-  
- 
-
-  
-  
+  Intake subsystem;
   
   /**
    * Creates a new BallCommands.
    */
-  public RunIntake() {
+  public RunIntake(Intake subsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
-    subsytem = new Intake();
+    this.subsystem = subsystem;
+    addRequirements(subsystem);
   }
 
   
@@ -37,7 +33,7 @@ public class RunIntake extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      subsytem.runIntake();
+      subsystem.runIntake();
   }
 
   // Called once the command ends or is interrupted.

@@ -65,7 +65,7 @@ public class Squaretopowerport extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (/* leftultrasonic <= 10|| */rightultrasonic <= 10);
+    return (/* leftultrasonic <= 10|| */rightultrasonic <= 12);
 
   }
 }

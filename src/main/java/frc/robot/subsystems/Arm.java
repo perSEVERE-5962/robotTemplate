@@ -50,9 +50,9 @@ public void shakeArm(double shootAngle){
   armTalon.set(ControlMode.Position, setAngle(shootAngle));
   SmartDashboard.putNumber("Absolute", armTalon.getSelectedSensorPosition());
 }
-public void shakeArm(double shootAngle){
-  armTalon.set(ControlMode.Position, setAngle(shootAngle));
-}
+// public void shakeArm(double shootAngle){
+//   armTalon.set(ControlMode.Position, setAngle(shootAngle));
+// }
 
 public boolean isInShootPosition(double shootAngle) {
   SmartDashboard.putString("isInShootPosition", "Encoder="+armTalon.getSelectedSensorPosition()+", angle="+ setAngle(shootAngle) + ", abs = " +  Math.abs(armTalon.getSelectedSensorPosition() - setAngle(shootAngle)));

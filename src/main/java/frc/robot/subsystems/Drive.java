@@ -28,7 +28,7 @@ public class Drive extends SubsystemBase {
   private WPI_TalonSRX robotRightTalon;
   private WPI_VictorSPX robotRightVictor;
   private final double speedfactor = 1;
-  private final double autospeedfactor = 0.23; // 0.23 for comp bot 
+  private final double autospeedfactor = 0.275; // 0.23 for comp bot 
   // private double ultrasonicRange;
   // private boolean ultrasonicCheck = false;
   private double radius = 3;

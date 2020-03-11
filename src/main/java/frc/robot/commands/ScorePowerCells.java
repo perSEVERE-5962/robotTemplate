@@ -56,6 +56,6 @@ public class ScorePowerCells extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return drive.getLeftUltrasonic() < 10 || drive.getRightUltrasonic() < 10;
+    return drive.getLeftUltrasonic() < 15 || drive.getRightUltrasonic() < 15;
   }
 }

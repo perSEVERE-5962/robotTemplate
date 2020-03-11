@@ -9,6 +9,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.subsystems.Drive;
+import frc.robot.subsystems.Intake;
 import frc.robot.sensors.*;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -18,12 +19,10 @@ public class PathFollowAndIntake extends ParallelCommandGroup {
   /**
    * Creates a new PathFollowAndIntake.
    */
-  public static Drive drive = new Drive();
-  private static PIDControl configTalon = new PIDControl();
 
-  public PathFollowAndIntake() {
+  public PathFollowAndIntake(Drive drive, PIDControl configTalon, Intake intake) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());super();
-    super(new PathFollow(drive, configTalon, drive.getGyro()), new RunIntake());
+    super(new PathFollow(drive, configTalon, drive.getGyro()), new RunIntake(intake));
   }
 }

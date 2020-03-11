@@ -10,6 +10,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drive;
+import frc.robot.subsystems.Intake;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -18,14 +19,11 @@ public class ShootShakeRight extends ParallelCommandGroup {
   /**
    * Creates a new ShootShakeRight.
    */
-  private static Drive drive = new Drive();
-  private static Arm arm = new Arm();
-
-  public ShootShakeRight() {
+  public ShootShakeRight(Drive drive, Arm arm, Intake intake) {
     super(new SlowDriveRight(drive),
           new ShakeArm(arm), 
-          new Shoot());
-    // Add your commands in the super() call, e.g.
+          new Shoot(intake));
+    // Add your commands in the super() call.g.
     // super(new FooCommand(), new BarCommand());super();
   }
 }

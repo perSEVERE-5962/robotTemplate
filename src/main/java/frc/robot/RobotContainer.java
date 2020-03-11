@@ -20,6 +20,7 @@ import frc.robot.subsystems.ControlPanel;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.CameraLight;
 import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Winch;
 import frc.robot.subsystems.Arm;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -58,12 +59,14 @@ public class RobotContainer {
 
   // The robot's subsystems and commands are defined here...
   private final Drive driveSubsystem = new Drive();
+  private final Intake intake = new Intake();
   private final Winch winchSubsystem = new Winch();
   private final AutoCommand autoCommand = new AutoCommand(driveSubsystem);
   private final CameraLight cameraLight = new CameraLight();
   private final Elevator elevatorsubsystem = new Elevator();
   private final Arm arm = new Arm();
   private final ShakeArm shakeArm = new ShakeArm(arm);
+
 
   public Command getShakeArm(){
     return shakeArm;
@@ -84,8 +87,8 @@ public class RobotContainer {
   private final InchForward inchForward = new InchForward(driveSubsystem);
   private Command driveCommand;
   private Command myautoCommand;
-  private final RunIntake runIntake = new RunIntake();
-  private final Shoot shoot = new Shoot();
+  private final RunIntake runIntake = new RunIntake(intake);
+  private final Shoot shoot = new Shoot(intake);
   private final TurnOnLight lightOn = new TurnOnLight(cameraLight);
   private final TurnOffLight lightOff = new TurnOffLight(cameraLight);
   private final MoveArmVision armVision = new MoveArmVision(arm);
@@ -93,7 +96,10 @@ public class RobotContainer {
   private final ElevatorDown elevatorDown = new ElevatorDown(elevatorsubsystem);
   private final GetCamera cameraCommand = new GetCamera();
   // private final CPSubsystem cpSubsystem = new CPSubsystem();
-  private AutoSequence autoSequence = new AutoSequence(arm, cameraLight);
+  private AutoSequence autoSequence = new AutoSequence(arm, cameraLight, driveSubsystem, intake, pidControl);
+  private ThreeBallAuto threeBallAuto = new ThreeBallAuto(arm, cameraLight, driveSubsystem, intake);
+  private ThreeBallAutoRight threeBallAutoRight = new ThreeBallAutoRight(arm, cameraLight, driveSubsystem, intake);
+
   private DriveLeft left = new DriveLeft(driveSubsystem);
   private DriveRight right = new DriveRight(driveSubsystem);
   private StopDrive stop = new StopDrive(driveSubsystem);
@@ -176,9 +182,9 @@ public class RobotContainer {
     //driveChooser.addOption("arcadedrive", new ArcadeDrive(driveSubsystem));
     SmartDashboard.putData("drivercontrol", driveChooser);
     SmartDashboard.putBoolean("Use PathFollower", true);
-    autoChooser.setDefaultOption("Three Ball Auto (Right)", new ThreeBallAuto(arm, cameraLight));
-     autoChooser.addOption("Five Ball Auto", new AutoSequence(arm, cameraLight));
-     autoChooser.addOption("Three Ball Auto (Left)", new ThreeBallAutoRight(arm, cameraLight));
+    autoChooser.setDefaultOption("Three Ball Auto (Left)", threeBallAutoRight);
+     autoChooser.addOption("Five Ball Auto", autoSequence);
+     autoChooser.addOption("Three Ball Auto (Right)", threeBallAuto);
 
      SmartDashboard.putData("auto chooser", autoChooser);
   }

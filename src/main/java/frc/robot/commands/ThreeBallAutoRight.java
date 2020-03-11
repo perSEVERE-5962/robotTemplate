@@ -24,10 +24,8 @@ public class ThreeBallAutoRight extends SequentialCommandGroup {
   /**
    * Creates a new AutoSquence.
    */
-  public static Drive drive = new Drive();
-  public static Intake intake = new Intake();
   //public static Arm arm = new Arm();
-  public ThreeBallAutoRight(Arm arm, CameraLight light) {
+  public ThreeBallAutoRight(Arm arm, CameraLight light, Drive drive, Intake intake) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
     super(
@@ -41,6 +39,7 @@ public class ThreeBallAutoRight extends SequentialCommandGroup {
     //  new GyroTurn(drive, drive.getGyro()),
     // new WaitCommand(0.5),
     new TurnOnLight(light),
+    //new MoveArmToShoot(arm, 36),
     new MoveArmVision(arm),
     //new WaitCommand(0.1),
     new FindTarget(drive),
@@ -48,7 +47,7 @@ public class ThreeBallAutoRight extends SequentialCommandGroup {
     new MoveArmToShoot(arm, 13),
      new Squaretopowerport(drive),
     new StopDrive(drive),
-    new ShootShakeLeft()
+    new ShootShakeLeft(drive, arm, intake)
 
     );
   }

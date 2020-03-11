@@ -13,7 +13,7 @@ import frc.robot.subsystems.Intake;
 
 public class Shoot extends CommandBase {
 
-  Intake subsytem;
+  Intake subsystem;
   
 
  
@@ -21,9 +21,10 @@ public class Shoot extends CommandBase {
   /**
    * Creates a new BallCommands.
    */
-  public Shoot() {
+  public Shoot(Intake subsytem) {
+    this.subsystem = subsytem;
+    addRequirements(subsystem);
     // Use addRequirements() here to declare subsystem dependencies.
-    subsytem = new Intake();
   }
 
   
@@ -38,7 +39,7 @@ public class Shoot extends CommandBase {
   public void execute() {
     SmartDashboard.putString("auto step", "shoot");
 
-      subsytem.shoot();
+      subsystem.shoot();
   }
   
   

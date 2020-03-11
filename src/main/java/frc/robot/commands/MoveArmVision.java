@@ -55,5 +55,6 @@ public class MoveArmVision extends CommandBase {
     double visionticks = visionAngle*11.4;
     SmartDashboard.putString("movearm", "encoder value = "+ encoderValue+" visiontick ="+ visionticks);
     return ( encoderValue >= (visionticks-150) && encoderValue <= (visionticks+150) );
+    //return encoderValue >= 400;
   }
 }

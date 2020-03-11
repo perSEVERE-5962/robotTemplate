@@ -15,6 +15,7 @@ import frc.robot.sensors.*;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.CameraLight;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.RobotContainer;
 
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -24,24 +25,26 @@ public class AutoSequence extends SequentialCommandGroup {
   /**
    * Creates a new AutoSquence.
    */
-  public static Drive drive = new Drive();
-  public static Intake intake = new Intake();
+  private RobotContainer robotContainer;
+  // public static Drive drive = new Drive();
+  // public static Intake intake = new Intake();
   //public static Arm arm = new Arm();
-  private static PIDControl configTalon = new PIDControl();
-  public AutoSequence(Arm arm, CameraLight light) {
+  // private static PIDControl configTalon = new PIDControl();
+  public AutoSequence(Arm arm, CameraLight light, Drive drive, Intake intake, PIDControl pidControl) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
     super(
       new MoveArmToIntake(arm), 
     // new WaitCommand(0.5), 
-    new PathFollowAndIntake(),
+    new PathFollowAndIntake(drive, pidControl, intake),
     new StopIntake(intake),
     new ResetDriveEncoders(drive),
-    new PathFollowStraight(drive, configTalon, drive.getGyro()),
-    new MoveArmVision(arm),
-
-     new StopDrive(drive),
+    new PathFollowStraight(drive, pidControl, drive.getGyro()),
+    new StopDrive(drive),
      new GyroTurn(drive, drive.getGyro()),
+     new StopDrive(drive),
+     new MoveArmVision(arm),
+
     // new WaitCommand(0.5),
     new TurnOnLight(light),
     //new WaitCommand(0.1),
@@ -50,7 +53,7 @@ public class AutoSequence extends SequentialCommandGroup {
     new MoveArmToShoot(arm, 13),
      new Squaretopowerport(drive),
     new StopDrive(drive),
-    new ShootShakeRight()
+    new ShootShakeRight(drive, arm, intake)
     );
   }
 }

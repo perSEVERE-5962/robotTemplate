@@ -65,7 +65,7 @@ public class Robot extends TimedRobot {
 
     cameraCommand = m_robotContainer.getCamera();
     cameraCommand.execute();
-    arm.resetArm();
+    m_robotContainer.getArm().resetArm();
   }
 
   /**
@@ -139,6 +139,9 @@ public class Robot extends TimedRobot {
   boolean targetFound = false;
   @Override
   public void autonomousPeriodic() {  
+    SmartDashboard.putNumber("Left Encoder Value", m_robotContainer.getDrive().leftTalon().getSelectedSensorPosition());
+    SmartDashboard.putNumber("Right Encoder Value", m_robotContainer.getDrive().rightTalon().getSelectedSensorPosition());
+
     // double ultrasonictopleft = ultrasonics.getTopLeftUltrasonicRange();
     // double ultrasonictopright = ultrasonics.getTopRightUltrasonicRange();
 

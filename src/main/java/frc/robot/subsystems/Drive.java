@@ -113,13 +113,13 @@ public class Drive extends SubsystemBase {
 
   public void jamieDrive(double leftSpeed, double rightSpeed) {
     //setsmooth();
-    if (leftSpeed < -0.001) {
+    if (leftSpeed < -0.02) {
       leftTalon().set(ControlMode.PercentOutput, -speedfactor*0.5);
       rightTalon().set(ControlMode.PercentOutput, speedfactor*0.5);
       SmartDashboard.putString("Direction", "Right");
     }
 
-    else if (leftSpeed > 0.001) {
+    else if (leftSpeed > 0.02) {
       leftTalon().set(ControlMode.PercentOutput, speedfactor*0.5);
       rightTalon().set(ControlMode.PercentOutput, -speedfactor*0.5);
       SmartDashboard.putString("Direction", "Left");

@@ -19,7 +19,7 @@ public class ShootShakeLeft extends ParallelCommandGroup {
    * Creates a new ShootShakeRight.
    */
   private static Drive drive = new Drive();
-  private static Arm arm = new Arm();
+  private static Arm arm = new Arm();  
 
   public ShootShakeLeft() {
     super(new SlowDriveLeft(drive),

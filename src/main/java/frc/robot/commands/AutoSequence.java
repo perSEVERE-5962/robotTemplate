@@ -34,23 +34,24 @@ public class AutoSequence extends SequentialCommandGroup {
     super(
       new MoveArmToIntake(arm), 
     // new WaitCommand(0.5), 
-    new PathFollowAndIntake(),
-    new StopIntake(intake),
     new ResetDriveEncoders(drive),
-    new PathFollowStraight(drive, configTalon, drive.getGyro()),
-    new MoveArmVision(arm),
+    new PathFollowAndIntake(),
+    new StopIntake(intake)
+    // new ResetDriveEncoders(drive),
+    // new PathFollowStraight(drive, configTalon, drive.getGyro()),
+    // new MoveArmVision(arm),
 
-     new StopDrive(drive),
-     new GyroTurn(drive, drive.getGyro()),
-    // new WaitCommand(0.5),
-    new TurnOnLight(light),
-    //new WaitCommand(0.1),
-    new FindTarget(drive),
-    new StopDrive(drive),
-    new MoveArmToShoot(arm, 13),
-     new Squaretopowerport(drive),
-    new StopDrive(drive),
-    new ShootShakeRight()
+    //  new StopDrive(drive),
+    //  new GyroTurn(drive, drive.getGyro()),
+    // // new WaitCommand(0.5),
+    // new TurnOnLight(light),
+    // //new WaitCommand(0.1),
+    // new FindTarget(drive),
+    // new StopDrive(drive),
+    // new MoveArmToShoot(arm, 13),
+    //  new Squaretopowerport(drive),
+    // new StopDrive(drive),
+    // new ShootShakeRight()
     );
   }
 }

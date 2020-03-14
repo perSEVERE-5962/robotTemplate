@@ -139,6 +139,9 @@ public class Robot extends TimedRobot {
   boolean targetFound = false;
   @Override
   public void autonomousPeriodic() {  
+    SmartDashboard.putNumber("Enc Left", m_robotContainer.getDrive().leftTalon().getSelectedSensorPosition());
+    SmartDashboard.putNumber("Enc Right", m_robotContainer.getDrive().rightTalon().getSelectedSensorPosition());
+
     // double ultrasonictopleft = ultrasonics.getTopLeftUltrasonicRange();
     // double ultrasonictopright = ultrasonics.getTopRightUltrasonicRange();
 

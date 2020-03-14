@@ -17,9 +17,9 @@ public class ResetArm extends CommandBase {
   /**
    * Creates a new MoveArmReset.
    */
-  public ResetArm() {
+  public ResetArm(Arm arm) {
     // Use addRequirements() here to declare subsystem dependencies.
-    subsystem = new Arm();
+    subsystem = arm;
     addRequirements(subsystem);
   }
 

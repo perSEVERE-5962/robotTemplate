@@ -7,26 +7,30 @@
 
 package frc.robot.sensors;
 
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.Ultrasonic;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Add your docs here.
  */
-public class UltrasonicHCSR04 {
-    NetworkTable networkTable;
-    public UltrasonicHCSR04(){
-        NetworkTableInstance netTabInst = NetworkTableInstance.getDefault();
-        networkTable = netTabInst.getTable("Ultrasonic HCSR04");
+public class UltrasonicHCSR04 {  
+    private Ultrasonic topLeft = new Ultrasonic(0,1);
+    private Ultrasonic topRight = new Ultrasonic(2,3);
+
+    public UltrasonicHCSR04() {
+        topLeft.setEnabled(true);
+        topLeft.setAutomaticMode(true);
+        topRight.setEnabled(true);
     }
-    public double getLeftValue(){
-        return(networkTable.getEntry("Left Value").getDouble(0));
+
+    public double getTopLeftUltrasonicRange() {
+        SmartDashboard.putNumber("Top Left Ultrasonic", topLeft.getRangeInches());
+        return topLeft.getRangeInches();
     }
-    public double getRightValue(){
-        return(networkTable.getEntry("Right Value").getDouble(0));
+
+    public double getTopRightUltrasonicRange() {
+        SmartDashboard.putNumber("Top Right Ultrasonic", topRight.getRangeInches());
+        return topRight.getRangeInches();
     }
-    public double averageRange(){
-        return(getLeftValue()+getRightValue())/2;
-    }
+
 }

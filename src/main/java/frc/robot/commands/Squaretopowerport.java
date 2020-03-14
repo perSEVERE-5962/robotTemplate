@@ -9,25 +9,21 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Drive;
 
-public class Shoot extends CommandBase {
+public class Squaretopowerport extends CommandBase {
+  double leftultrasonic;
+  double rightultrasonic;
+  private final Drive subsystem;
 
-  Intake subsystem;
-  
-
- 
-  
   /**
-   * Creates a new BallCommands.
+   * Creates a new Squaretopowerport.
    */
-  public Shoot(Intake subsytem) {
-    this.subsystem = subsytem;
-    addRequirements(subsystem);
+  public Squaretopowerport(Drive subsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
+    this.subsystem = subsystem;
+    addRequirements(subsystem);
   }
-
-  
 
   // Called when the command is initially scheduled.
   @Override
@@ -37,12 +33,30 @@ public class Shoot extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    SmartDashboard.putString("auto step", "shoot");
+    SmartDashboard.putString("auto step", "squaretopowerport");
 
-      subsystem.shoot();
+    rightultrasonic = subsystem.getRightUltrasonic();
+    leftultrasonic = subsystem.getLeftUltrasonic();
+    boolean halfSpeed = false;
+    if (/* leftultrasonic <= 30 || */rightultrasonic <= 60) {
+      halfSpeed = true;
+    }
+    if (/* leftultrasonic >= 10 || */rightultrasonic >= 10) {
+
+      subsystem.goforwards(halfSpeed);
+    }
+
+    // if (rightultrasonic > leftultrasonic &&(leftultrasonic <=30 ||
+    // rightultrasonic <=30)) {
+    // subsystem.driveLeft();
+    // } else if (rightultrasonic < leftultrasonic && (leftultrasonic <=30||
+    // rightultrasonic <=30)) {
+    // subsystem.driveRight();
+    // } else {
+    // subsystem.goforwards();
+    // }
   }
-  
-  
+
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
@@ -51,6 +65,7 @@ public class Shoot extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return (/* leftultrasonic <= 10|| */rightultrasonic <= 12);
+
   }
 }

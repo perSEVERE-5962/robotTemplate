@@ -20,7 +20,7 @@ public class Camera extends SubsystemBase {
   public static CvSource cameraOutput;
 
   public Camera() {
-    CameraServer.getInstance().startAutomaticCapture();
+    CameraServer.getInstance().startAutomaticCapture(1);
     //cvSink = CameraServer.getInstance().getVideo();
     //cameraOutput = CameraServer.getInstance().putVideo("DriverCamera", 1920, 1080);
   }

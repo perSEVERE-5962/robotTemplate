@@ -14,16 +14,18 @@ import frc.robot.subsystems.Arm;
 public class MoveArmToShoot extends CommandBase {
 
   Arm subsystem;
-  private final double shootAngle = 13.0;
+  // private final double shootAngle = 13.0;
+  private double shootAngle;
   
   
   /**
    * Creates a new MoveArmCommand.
    */
-  public MoveArmToShoot(Arm arm) {
+  public MoveArmToShoot(Arm arm, double angle) {
     // Use addRequirements() here to declare subsystem dependencies.
     subsystem = arm;
     addRequirements(subsystem);
+    shootAngle = angle;
   }
 
   // Called when the command is initially scheduled.
@@ -38,6 +40,7 @@ public class MoveArmToShoot extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    SmartDashboard.putString("auto step", "movearmtoshoot");
     SmartDashboard.putString("up", "up");
     subsystem.shootingPosition(shootAngle);
   }
@@ -57,6 +60,8 @@ public class MoveArmToShoot extends CommandBase {
   public boolean isFinished() {
     double encoderValue = subsystem.getEncoderValues();
     // done if encoder is between 7 and 13
-    return ( encoderValue >= (shootAngle-5) && encoderValue <= (shootAngle+5) );
+    double shootticks = shootAngle*11.4;
+    SmartDashboard.putString("armshoot", "encoder ="+ encoderValue+" shootticks = "+shootticks );
+    return ( encoderValue >= (shootticks-57) && encoderValue <= (shootticks+57));
   }
 }

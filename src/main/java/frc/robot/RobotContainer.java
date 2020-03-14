@@ -10,15 +10,8 @@ package frc.robot;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-
-import com.kauailabs.navx.frc.AHRS;
-
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -27,6 +20,7 @@ import frc.robot.subsystems.ControlPanel;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.CameraLight;
 import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Winch;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.ArmServo;
@@ -66,25 +60,31 @@ public class RobotContainer {
   private final JoystickButton buttonLB = new JoystickButton(copilotController, 5);
 
   private SendableChooser driveChooser = new SendableChooser<Command>();
+  private SendableChooser autoChooser = new SendableChooser<Command>();
 
   // The robot's subsystems and commands are defined here...
   private final Drive driveSubsystem = new Drive();
+  private final Intake intake = new Intake();
   private final Winch winchSubsystem = new Winch();
   private final AutoCommand autoCommand = new AutoCommand(driveSubsystem);
   private final CameraLight cameraLight = new CameraLight();
   private final Elevator elevatorsubsystem = new Elevator();
+  //private final ArmServo servo = new ArmServo();
   private final Arm arm = new Arm();
-  private final ArmServo servo = new ArmServo();
+  private final ShakeArm shakeArm = new ShakeArm(arm);
+
+
+  public Command getShakeArm(){
+    return shakeArm;
+  }
+
   // private final RunTankDrive driveCommand = new RunTankDrive(driveSubsystem);
 
   // private final WinchUp winchUp = new WinchUp(winchSubsystem);
 
-  private NetworkTableInstance inst = NetworkTableInstance.getDefault();
-  private NetworkTable table;
-  private NetworkTableEntry myEntry;
-  private AHRS ahrs = new AHRS(SPI.Port.kMXP);
+
   private final PIDControl pidControl = new PIDControl();
-  private final PathFollow followPath = new PathFollow(driveSubsystem, pidControl, ahrs);
+  private final PathFollow followPath = new PathFollow(driveSubsystem, pidControl, driveSubsystem.getGyro());
 
   // private final ColorSensor colorSensor = new ColorSensor();
   // private final ControlPanel controlPanel = new ControlPanel(colorSensor);
@@ -93,15 +93,19 @@ public class RobotContainer {
   // private final SpinRotations spinRotCommand = new SpinRotations(controlPanel);
   private final InchForward inchForward = new InchForward(driveSubsystem);
   private Command driveCommand;
-  private final RunIntake runIntake = new RunIntake();
-  private final Shoot shoot = new Shoot();
+  private Command myautoCommand;
+  private final RunIntake runIntake = new RunIntake(intake);
+  private final Shoot shoot = new Shoot(intake);
   private final TurnOnLight lightOn = new TurnOnLight(cameraLight);
   private final TurnOffLight lightOff = new TurnOffLight(cameraLight);
-  private final MoveArmVision armVision = new MoveArmVision();
+  private final MoveArmVision armVision = new MoveArmVision(arm);
   private final ElevatorUp elevatorUp = new ElevatorUp(elevatorsubsystem);
   private final ElevatorDown elevatorDown = new ElevatorDown(elevatorsubsystem);
   private final GetCamera cameraCommand = new GetCamera();
   // private final CPSubsystem cpSubsystem = new CPSubsystem();
+  private AutoSequence autoSequence = new AutoSequence(arm, cameraLight, driveSubsystem, intake, pidControl);
+  private ThreeBallAuto threeBallAuto = new ThreeBallAuto(arm, cameraLight, driveSubsystem, intake);
+  private ThreeBallAutoRight threeBallAutoRight = new ThreeBallAutoRight(arm, cameraLight, driveSubsystem, intake);
 
   private DriveLeft left = new DriveLeft(driveSubsystem);
   private DriveRight right = new DriveRight(driveSubsystem);
@@ -110,7 +114,15 @@ public class RobotContainer {
   private DriveBackwards goBackwards = new DriveBackwards(driveSubsystem);
   private StopArm stopArm = new StopArm();
   // private WinchUp winchUp = new WinchUp();
+  private final double shootAngle = 13.0;
 
+
+  public Arm getArm() {
+    return arm;
+  }
+  public Command getAutoSequence(){
+    return autoSequence;
+  }
   public double getIntake() {
     double axisValue = copilotController.getRawAxis(1);
     return axisValue;
@@ -171,13 +183,20 @@ public class RobotContainer {
     configureButtonBindings();
 
     driveChooser.setDefaultOption("JamieDrive", new RunJamieDrive(driveSubsystem));
-    driveChooser.addOption("smooth tankdrive", new SmoothTankDrive(driveSubsystem));
-    driveChooser.addOption("smooth arcadedrive", new SmoothArcadeDrive(driveSubsystem));
-    driveChooser.addOption("tankdrive", new RunTankDrive(driveSubsystem));
-    driveChooser.addOption("arcadedrive", new ArcadeDrive(driveSubsystem));
+    //driveChooser.addOption("smooth tankdrive", new SmoothTankDrive(driveSubsystem));
+    //driveChooser.addOption("smooth arcadedrive", new SmoothArcadeDrive(driveSubsystem));
+    //driveChooser.addOption("tankdrive", new RunTankDrive(driveSubsystem));
+    //driveChooser.addOption("arcadedrive", new ArcadeDrive(driveSubsystem));
     SmartDashboard.putData("drivercontrol", driveChooser);
     SmartDashboard.putBoolean("Use PathFollower", true);
+    autoChooser.setDefaultOption("Three Ball Auto (Left)", threeBallAutoRight);
+     autoChooser.addOption("Five Ball Auto", autoSequence);
+     autoChooser.addOption("Three Ball Auto (Right)", threeBallAuto);
+
+     SmartDashboard.putData("auto chooser", autoChooser);
   }
+  
+  
 
   /**
    * Use this method to define your button->command mappings. Buttons can be
@@ -187,7 +206,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     buttonA.whenPressed(new MoveArmToIntake(arm));
-    buttonB.whenPressed(new MoveArmToShoot(arm));
+    buttonB.whenPressed(new MoveArmToShoot(arm, shootAngle));
     buttonX.whenPressed(new TurnOnLight(cameraLight));
     buttonY.whenPressed(new TurnOffLight(cameraLight));
     buttonRB.whenPressed(new MoveServoToOpen(servo));
@@ -197,41 +216,21 @@ public class RobotContainer {
   }
 
   public void moveArmToShoot() {
-    Command move = new MoveArmToShoot(arm);
+    Command move = new MoveArmToShoot(arm,shootAngle);
     if (move != null) {
       move.schedule();
     }
+  }
+
+  public boolean armInShoootPosition() {
+    return arm.isInShootPosition(shootAngle);
   }
 
   public double getArmPosition() {
     return arm.getEncoderValues();
   }
 
-  public String getVisionAction() {
-    table = inst.getTable("Vision");
-    myEntry = table.getEntry("Action");
-    return myEntry.getString("None");
-  }
 
-  public double getLeftUltrasonic() {
-    table = inst.getTable("HC-SR04");
-    myEntry = table.getEntry("Left Distance");
-    double value = myEntry.getDouble(0);
-    if (value > 40) {
-      // value = 0.0;
-    }
-    return value;
-  }
-
-  public double getRightUltrasonic() {
-    table = inst.getTable("HC-SR04");
-    myEntry = table.getEntry("Right Distance");
-    double value = myEntry.getDouble(0);
-    if (value > 40) {
-      // value = 0.0;
-    }
-    return value;
-  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -246,6 +245,10 @@ public class RobotContainer {
   public Command getDriveCommand() {
     driveCommand = (Command) driveChooser.getSelected();
     return driveCommand;
+  }
+  public Command getAutoCommand() {
+    myautoCommand = (Command) autoChooser.getSelected();
+    return myautoCommand;
   }
 
   public Command getTurnLeftCommand() {
@@ -312,13 +315,7 @@ public class RobotContainer {
     return driveSubsystem;
   }
 
-  public void resetGyro() {
-    ahrs.reset();
-  }
 
-  public double getGyroAngle() {
-    return ahrs.getAngle();
-  }
 
   private String getCurrentTime() {
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd@HH-mm-ss", Locale.US);

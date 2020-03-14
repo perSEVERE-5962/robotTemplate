@@ -7,27 +7,20 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Drive;
 
-public class Shoot extends CommandBase {
-
-  Intake subsystem;
-  
-
- 
-  
+public class SlowDriveRight extends CommandBase {
   /**
-   * Creates a new BallCommands.
+   * Creates a new SlowDriveRight.
    */
-  public Shoot(Intake subsytem) {
-    this.subsystem = subsytem;
-    addRequirements(subsystem);
+  private Drive drive;
+  public SlowDriveRight(Drive drive) {
+    this.drive = drive;
+    addRequirements(drive);
+
     // Use addRequirements() here to declare subsystem dependencies.
   }
-
-  
 
   // Called when the command is initially scheduled.
   @Override
@@ -37,12 +30,9 @@ public class Shoot extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    SmartDashboard.putString("auto step", "shoot");
-
-      subsystem.shoot();
+    drive.slowDriveRight();
   }
-  
-  
+
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {

@@ -14,7 +14,7 @@ import frc.robot.subsystems.Arm;
 public class MoveArmToIntake extends CommandBase {
 
   Arm subsystem;
-  private final double intakeAngle = 72.0;
+  private final double intakeAngle = 74.0;
 
   /**
    * Creates a new MoveArmCommand.
@@ -56,7 +56,8 @@ public class MoveArmToIntake extends CommandBase {
   public boolean isFinished() {
     double encoderValue = subsystem.getEncoderValues();
     // done if encoder is between 77 and 83
-    return ( encoderValue >= (intakeAngle-5) && encoderValue <= (intakeAngle+5) );
+    double intaketicks = intakeAngle*11.4;
+    return ( encoderValue >= (intaketicks-57) && encoderValue <= (intaketicks+57) );
   }
 }
 

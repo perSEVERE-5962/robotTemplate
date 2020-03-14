@@ -27,6 +27,7 @@ public class Arm extends SubsystemBase {
     //limitSwitch = new DigitalInput(9);
      //armTalon.setSensorPhase(true);
     armTalon.setSelectedSensorPosition(0);
+    SmartDashboard.putNumber("intialarm", getEncoderValues());
     // armTalon.set(ControlMode.PercentOutput, 0);
   }
   public void stop() {
@@ -43,6 +44,19 @@ public double setAngle(double angle){
 public void shootingPosition(double shootAngle){
   armTalon.set(ControlMode.Position, setAngle(shootAngle));
   SmartDashboard.putNumber("Absolute", armTalon.getSelectedSensorPosition());
+} 
+
+public void shakeArm(double shootAngle){
+  armTalon.set(ControlMode.Position, setAngle(shootAngle));
+  SmartDashboard.putNumber("Absolute", armTalon.getSelectedSensorPosition());
+}
+// public void shakeArm(double shootAngle){
+//   armTalon.set(ControlMode.Position, setAngle(shootAngle));
+// }
+
+public boolean isInShootPosition(double shootAngle) {
+  SmartDashboard.putString("isInShootPosition", "Encoder="+armTalon.getSelectedSensorPosition()+", angle="+ setAngle(shootAngle) + ", abs = " +  Math.abs(armTalon.getSelectedSensorPosition() - setAngle(shootAngle)));
+  return Math.abs(armTalon.getSelectedSensorPosition() - setAngle(shootAngle)) <= 60;
 }
 public void visionPosition(double visionAngle){
   armTalon.set(ControlMode.Position, setAngle(visionAngle));
@@ -51,6 +65,9 @@ public void visionPosition(double visionAngle){
 public void intakePosition(double intakeAngle){
   armTalon.set(ControlMode.Position, setAngle(intakeAngle));
   SmartDashboard.putNumber("Absolute", armTalon.getSelectedSensorPosition());
+}
+public void resetArm(){
+  armTalon.setSelectedSensorPosition(0);
 }
 
 //NEW resetPosition

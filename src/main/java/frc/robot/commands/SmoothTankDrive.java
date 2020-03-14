@@ -22,9 +22,16 @@ public class SmoothTankDrive extends CommandBase {
     }
 
     // Called repeatedly when this Command is scheduled to run
-    public void execute() {
-      subsystem.smoothTankDrive(joystick.getRawAxis(1), joystick.getRawAxis(5));
+    //public void execute() {
+      //subsystem.smoothTankDrive(joystick.getRawAxis(1), joystick.getRawAxis(5));
 
+    //}
+    public void execute() {
+      double x = joystick.getRawAxis(5);
+      double y = joystick.getRawAxis(1);
+      // x = x*x*x;
+      // y = y*y*y;
+      subsystem.smoothTankDrive(y, x);
     }
 
     // Make this return true when this Command no longer needs to run execute()

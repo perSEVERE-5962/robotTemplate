@@ -6,51 +6,52 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot.commands;
+import com.kauailabs.navx.frc.AHRS;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Intake;
-
-public class Shoot extends CommandBase {
-
-  Intake subsystem;
-  
-
- 
-  
+import frc.robot.subsystems.Drive;;
+public class GyroTurn extends CommandBase {
   /**
-   * Creates a new BallCommands.
+   * Creates a new gyroTurn180.
    */
-  public Shoot(Intake subsytem) {
-    this.subsystem = subsytem;
+  // public RobotContainer robotC = new RobotContainer();
+  private Drive subsystem;
+  private AHRS ahrs;
+
+  public GyroTurn(Drive subsystem, AHRS ahrs) {
     addRequirements(subsystem);
+
+    this.subsystem = subsystem;
+    this.ahrs = ahrs;
     // Use addRequirements() here to declare subsystem dependencies.
   }
-
-  
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    ahrs.reset();
   }
+
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    SmartDashboard.putString("auto step", "shoot");
-
-      subsystem.shoot();
+      subsystem.driveRightGyro();
   }
-  
-  
+
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    System.out.println("Finished Turning!");
+    subsystem.stopDrive();
+    // subsystem.resetEncoders();
+    ahrs.reset();
+
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return ahrs.getAngle() > 120;
   }
 }

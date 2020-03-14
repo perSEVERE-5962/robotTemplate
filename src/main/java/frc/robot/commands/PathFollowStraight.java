@@ -17,7 +17,7 @@ import jaci.pathfinder.Trajectory;
 import java.io.File;
 import java.io.IOException;
 
-public class PathFollow extends CommandBase {
+public class PathFollowStraight extends CommandBase {
   /**
    * 
    * Creates a new PathFollow.
@@ -42,16 +42,16 @@ public class PathFollow extends CommandBase {
   public double leftCalculate;
   public double rightCalculate;
 
-  public PathFollow(Drive drive, PIDControl configTalon, AHRS gyro)
+  public PathFollowStraight(Drive drive, PIDControl configTalon, AHRS gyro)
    {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drive); 
     // configTalon.configTalons();
     try{
     //need to implement PIDControl, Encoders??
-    leftFollower = follower(Pathfinder.readFromCSV(new File("/home/lvuser/deploy/Straight13Feet_left.csv")));
+    leftFollower = follower(Pathfinder.readFromCSV(new File("/home/lvuser/deploy/Backwards13Feet_left.csv")));
     //add left location
-    rightFollower = follower(Pathfinder.readFromCSV(new File("/home/lvuser/deploy/Straight13Feet_right.csv")));   
+    rightFollower = follower(Pathfinder.readFromCSV(new File("/home/lvuser/deploy/Backwards13Feet_right.csv")));   
     }catch(IOException ex){
       System.err.println(ex);
     }

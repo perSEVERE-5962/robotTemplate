@@ -69,7 +69,7 @@ public class RobotContainer {
   private final AutoCommand autoCommand = new AutoCommand(driveSubsystem);
   private final CameraLight cameraLight = new CameraLight();
   private final Elevator elevatorsubsystem = new Elevator();
-  //private final ArmServo servo = new ArmServo();
+  private final ArmServo servo = new ArmServo();
   private final Arm arm = new Arm();
   private final ShakeArm shakeArm = new ShakeArm(arm);
 

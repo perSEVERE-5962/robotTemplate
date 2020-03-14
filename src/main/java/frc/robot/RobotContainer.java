@@ -23,6 +23,7 @@ import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Winch;
 import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.ArmServo;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.sensors.PIDControl;
@@ -54,6 +55,10 @@ public class RobotContainer {
   private final JoystickButton buttonY = new JoystickButton(copilotController, 3);
   private final JoystickButton buttonX = new JoystickButton(copilotController, 4);
 
+  //servo buttons
+  private final JoystickButton buttonRB = new JoystickButton(copilotController, 6);
+  private final JoystickButton buttonLB = new JoystickButton(copilotController, 5);
+
   private SendableChooser driveChooser = new SendableChooser<Command>();
   private SendableChooser autoChooser = new SendableChooser<Command>();
 
@@ -64,6 +69,7 @@ public class RobotContainer {
   private final AutoCommand autoCommand = new AutoCommand(driveSubsystem);
   private final CameraLight cameraLight = new CameraLight();
   private final Elevator elevatorsubsystem = new Elevator();
+  //private final ArmServo servo = new ArmServo();
   private final Arm arm = new Arm();
   private final ShakeArm shakeArm = new ShakeArm(arm);
 
@@ -71,6 +77,7 @@ public class RobotContainer {
   public Command getShakeArm(){
     return shakeArm;
   }
+
   // private final RunTankDrive driveCommand = new RunTankDrive(driveSubsystem);
 
   // private final WinchUp winchUp = new WinchUp(winchSubsystem);
@@ -202,6 +209,8 @@ public class RobotContainer {
     buttonB.whenPressed(new MoveArmToShoot(arm, shootAngle));
     buttonX.whenPressed(new TurnOnLight(cameraLight));
     buttonY.whenPressed(new TurnOffLight(cameraLight));
+    buttonRB.whenPressed(new MoveServoToOpen(servo));
+    buttonLB.whenPressed(new MoveServoToClose(servo));
     // button8.whenPressed(new ResetArm());
     button7.whileHeld(new WinchUp(winchSubsystem));
   }

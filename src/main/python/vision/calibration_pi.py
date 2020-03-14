@@ -16,32 +16,40 @@ from networktables import NetworkTables
 config_dir='config/'
 
 # networktable server
-nt_server = '10.99.88.2'
+#nt_server = '10.99.88.2'
 #nt_server = "rei.local"
+nt_server = "10.59.62.2"
+
+# True = don't connect to networktables, False = connect to networktables
+is_competition = False
 
 #####################################
 
-""" INIT NETWORK TABLES """
+#if is_competition == True:
+#    """ PROMPT TO ENTER BOUNDS """
+#    
 
-NetworkTables.initialize(server=nt_server)
-table = NetworkTables.getTable("Calibration")
+else:
+    """ INIT NETWORK TABLES """
 
-print("[CALIBRATION]: Network Tables initialized.")
+    NetworkTables.initialize(server=nt_server)
+    table = NetworkTables.getTable("Calibration")
 
-# wait for connection to settle
-time.sleep(1)
+    print("[CALIBRATION]: Network Tables initialized.")
 
-""" GET NETWORK TABLE VALUES """
+    # wait for connection to settle
+    time.sleep(1)
 
-h_l = int(table.getNumber("H-lower", 1))
-s_l = int(table.getNumber("S-lower", 1))
-v_l = int(table.getNumber("V-lower", 1))
-h_u = int(table.getNumber("H-upper", 1))
-s_u = int(table.getNumber("S-upper", 1))
-v_u = int(table.getNumber("V-upper", 1))
+    """ GET NETWORK TABLE VALUES """
 
-print("[CALIBRATION]: Fetched HSV Bounds from Network Tables.")
+    h_l = int(table.getNumber("H-lower", 1))
+    s_l = int(table.getNumber("S-lower", 1))
+    v_l = int(table.getNumber("V-lower", 1))
+    h_u = int(table.getNumber("H-upper", 1))
+    s_u = int(table.getNumber("S-upper", 1))
+    v_u = int(table.getNumber("V-upper", 1))
 
+    print("[CALIBRATION]: Fetched HSV Bounds from Network Tables.")
 
 """ SAVE CONIFG FILE """
 
